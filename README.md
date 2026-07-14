@@ -8,7 +8,9 @@ Milestone M1 adds deterministic, action-semantics-aware corruption that turns
 existing action chunks into provenance-preserving, unlabeled proposals.
 Milestone M2A adds a simulator-independent evidence contract, a typed evaluator
 boundary, and an incrementally persisted evaluation runner that can resume
-without duplicating completed attempts.
+without duplicating completed attempts. Milestone M2B-Core adds a generic,
+exact-state paired-replay boundary that content-binds M0 and M1 data and reuses
+the M2A runner for baseline-gated original/corrupted comparisons.
 
 Tracked source is developed and validated in the local repository, which is
 authoritative. Remote servers only pull committed revisions and execute them;
@@ -93,6 +95,26 @@ verification, and must not be used for training, benchmarking, or research
 claims. Only complete `conclusive` evidence can be explicitly projected to an
 M0 `OutcomeLabel`; indeterminate, invalid, skipped, and execution-error records
 cannot become task failures. See [the M2A evidence contract](docs/evaluation_evidence.md).
+
+## Exercise exact-state paired replay locally
+
+`replay-data` binds the complete M0 source and M1 corruption contents, resolves
+each proposal to its original action, restores one opaque state reference in
+two independent sessions, and requires the original action to succeed before
+the transformed action is interpreted. The built-in adapter is a deterministic
+numeric state machine for infrastructure tests only:
+
+```text
+latentguard replay-data --source-dir .tmp/m1-source --corruption-dir .tmp/m1-corrupted --output-dir .tmp/m2b-replayed --adapter deterministic_replay_fixture --config configs/replay/m2b-fixture.json --seed 161803
+latentguard replay-data --source-dir .tmp/m1-source --corruption-dir .tmp/m1-corrupted --output-dir .tmp/m2b-replayed --adapter deterministic_replay_fixture --config configs/replay/m2b-fixture.json --seed 161803 --resume
+```
+
+Use `--dry-run` with a separate absent output path to validate both datasets,
+resolve every selected replay case, and plan M2A attempt identities without
+creating a session or output. Fixture evidence is weak,
+`deterministic_evaluator` evidence: it is not a simulator, is not physically
+meaningful, is unsuitable for research or training claims, and can never set
+simulator verification. See [the exact-replay contract](docs/exact_replay.md).
 
 Preview an exact-revision remote synchronization without network access:
 

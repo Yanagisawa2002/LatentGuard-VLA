@@ -537,7 +537,9 @@ def test_sanitizers_remove_credentials_paths_and_path_arguments() -> None:
     command = sanitize_launch_command(
         (
             "latentguard",
-            "evaluate-data",
+            "replay-data",
+            "--source-dir",
+            "C:\\private\\source",
             "--corruption-dir",
             "C:\\private\\corruptions",
             "--output-dir=C:\\private\\evaluated",

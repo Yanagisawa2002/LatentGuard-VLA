@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import hashlib
 import json
 import math
 import shutil
@@ -223,6 +224,56 @@ def load_episodes(output_dir: Path) -> tuple[Episode, ...]:
     _validate_array_inventory(reader, expected_array_count)
     validate_episodes(episodes)
     return episodes
+
+
+def compute_episode_bundle_identifier(output_dir: Path) -> str:
+    """Hash a validated M0 bundle independently of its absolute location.
+
+    This is the public form of the file-content identity historically used by
+    ``corrupt-data``.  The byte stream is intentionally unchanged: sorted
+    POSIX relative paths, each path length and file size as unsigned 64-bit
+    big-endian integers, followed by the exact file bytes.  Validation and
+    link checks happen before hashing so an identity is never computed through
+    an unsafe bundle entry.
+    """
+
+    requested = Path(output_dir).absolute()
+    # Reuse the complete safe loader rather than assigning an identity to a
+    # malformed bundle.  This also rejects an unsafe bundle root and every
+    # referenced array before any bytes contribute to the digest.
+    load_episodes(requested)
+    try:
+        entries = tuple(requested.rglob("*"))
+        for entry in entries:
+            if entry.is_symlink() or entry.resolve() != entry.absolute():
+                raise SerializationError(
+                    "EpisodeBundle.identity: symbolic links and junctions are "
+                    "unsupported"
+                )
+        files = sorted(
+            (path for path in entries if path.is_file()),
+            key=lambda path: path.relative_to(requested).as_posix(),
+        )
+        if not files:
+            raise SerializationError("EpisodeBundle.identity: bundle contains no files")
+        digest = hashlib.sha256()
+        for path in files:
+            _require_regular_unlinked_file(path, "EpisodeBundle.identity.file")
+            relative = path.relative_to(requested).as_posix().encode("utf-8")
+            digest.update(len(relative).to_bytes(8, byteorder="big"))
+            digest.update(relative)
+            size = path.stat().st_size
+            digest.update(size.to_bytes(8, byteorder="big"))
+            with path.open("rb") as stream:
+                while chunk := stream.read(1024 * 1024):
+                    digest.update(chunk)
+    except SerializationError:
+        raise
+    except (OSError, UnicodeError, ValueError) as exc:
+        raise SerializationError(
+            f"EpisodeBundle.identity: could not compute safely: {exc}"
+        ) from exc
+    return f"sha256:{digest.hexdigest()}"
 
 
 def _encode_value(value: object, writer: _ArrayWriter) -> object:

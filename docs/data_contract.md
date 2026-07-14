@@ -16,6 +16,10 @@ M2A adds evaluation evidence, run-ledger, and resume contracts. Evidence is a
 record of what an evaluator established; it remains distinct from the M0
 `OutcomeLabel` that may be derived only from complete conclusive evidence.
 
+M2B-Core adds content-bound replay references, cases, restoration/execution/task
+evidence, adapter trust, paired results, and a replay bundle. These are generic
+contracts; no simulator-native state or framework object is serializable here.
+
 ## Entities
 
 - `CameraFrame` contains RGB data and optional aligned depth, intrinsics, and
@@ -64,6 +68,24 @@ M2A adds:
 - An evaluation dataset, which binds the complete source corruption-bundle
   digest, exact ordered proposal selection, evaluator and resolved
   configuration, evidence, ledger, summary, and run environment metadata.
+
+M2B-Core adds:
+
+- `ReplayStateReference`, an opaque adapter/version/source reference plus one
+  stable state key or index, expected state digest, comparison semantic, and
+  canonical JSON metadata. It never contains raw state, arrays, or paths.
+- `ReplayTaskReference`, a task ID and contract version with uninterpreted
+  canonical JSON metadata.
+- `ReplayCase`, which binds one M1 proposal to the matching M0 original action,
+  transformed action, source identities, both dataset content digests, state
+  and task references, adapter identity, and progress/unsafe semantics.
+- `StateRestorationEvidence`, `ActionExecutionEvidence`, and
+  `TerminalTaskEvidence`, which retain explicit completeness and missingness
+  without storing raw state or inferring task values.
+- `ReplayTrustDescriptor`, which caps label source, label strength, and
+  simulator-verification permission for an adapter.
+- `PairedReplayResult`, the validated result of the baseline and corrupted
+  sessions, and `ReplayBundle`, an ordered JSON-only case-reference manifest.
 
 Evidence status has exact semantics: `conclusive` is projectable when complete;
 `indeterminate` is a completed but insufficient evaluation; `invalid` is an
@@ -145,6 +167,12 @@ label source and strength, and valid failure events. The canonical mapping is
 substituted and missing values are never derived. Projection does not mutate the
 evidence.
 
+An M2B replay-case ID is canonical SHA-256 over the stable source/proposal,
+action-contract, state/task, adapter, semantic, schema, and complete M0/M1
+content-digest inputs. A replay-bundle digest additionally binds the ordered
+case identities and canonical metadata. Absolute paths, state blobs, hostnames,
+timestamps, process IDs, and Python `hash()` are excluded.
+
 A stochastic proposal seed is derived by hashing canonical UTF-8 JSON
 containing the base seed, source episode ID, source candidate ID, corruption
 name, and configuration ordinal. The first eight SHA-256 digest bytes are read
@@ -200,3 +228,11 @@ and attempt ordinal. Terminal attempts are not rerun on resume. An interrupted
 `execution_error` is retried only by explicit policy, which appends the next
 attempt and preserves the earlier error. Any source digest, proposal selection,
 base-seed, evaluator-version, or resolved-configuration conflict rejects resume.
+
+The M2B replay bundle is a strict JSON manifest that references case IDs and
+the already validated M0/M1 action arrays rather than duplicating them. Initial
+creation is transactional and requires an absent or empty real destination.
+Loading rejects links, traversal, unsupported versions, unknown or duplicate
+fields and IDs, digest or identity tampering, missing source/proposal references,
+and any changed source or corruption content. The caller must supply the current
+content binding when reloading; a stored digest is never trusted by itself.

@@ -75,6 +75,12 @@ Before a full remote run, pass these gates in order: configuration validation; C
 - Simulator verification requires exact state restoration followed by successful replay; approximate reconstruction is not verification.
 - Repeated and resumed evaluation must be idempotent, and source corruption datasets and proposals must remain immutable.
 - Deterministic fixture evaluators are infrastructure tests only and must never support training, benchmark, or research claims.
+- Exact-replay integrations must implement the generic replay protocols; simulator- and framework-native objects must not enter core replay models.
+- Replay identities bind path-independent source and corruption content digests; runtime paths, hosts, process IDs, and timestamps must not participate.
+- Original source-action replay is a mandatory validity gate. A failed baseline is invalid context, not corrupted task failure.
+- Baseline and corrupted actions require independently created or independently reset sessions, both restored from the same content-bound state reference with verified state round trips.
+- Replay adapter exceptions remain execution errors. Restoration mismatch and action-contract mismatch remain invalid context rather than task failure.
+- Replay fixture adapters are non-physical infrastructure tests. Only an explicitly trusted real simulator adapter may emit strong, simulator-verified evidence after every exact-replay gate passes.
 - Preserve complete single-source provenance for every corruption. Multi-source corruption is prohibited until the schema can represent every parent completely.
 - A transformation must never silently clip, normalize, reshape, repair, retarget, or otherwise change its configured meaning. Applicability failures must be explicit skips or descriptive errors.
 - Do not commit machine-specific absolute paths or credentials. Copy training configurations into run outputs.

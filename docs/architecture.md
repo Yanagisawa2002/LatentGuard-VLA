@@ -108,10 +108,37 @@ interrupted `running` attempt with its original identity, and adds a new ordinal
 only when execution-error retry is explicitly requested. The run binds a digest
 of the complete corruption bundle, not only its M0 source ID.
 
-M2B may add a LangMani adapter only after it can restore exact simulator state
-and successfully replay it. Until then, M2A cannot claim simulator verification.
-The built-in deterministic fixture is weak, non-physical infrastructure evidence
-only.
+## Generic exact-state paired replay (M2B-Core)
+
+M2B-Core adds a simulator-independent replay layer and retains M2A as the only
+runner and ledger:
+
+```text
+validated M0 source + validated M1 corruption bundle
+    -> complete path-independent content binding
+    -> deterministic ReplayCase and JSON-only ReplayBundle
+    -> independent baseline and corrupted sessions from one state reference
+    -> validated PairedReplayResult
+    -> M2A EvaluationEvidence, persistence, resume, and retry
+```
+
+The original source action is a mandatory validity gate. A returned state
+mismatch or incomplete/unsuccessful baseline task evidence is invalid context;
+a step or other runtime exception is an execution error. Only after a complete
+successful baseline does the core run the corrupted action from the same state.
+A complete corrupted task failure is therefore valid conclusive evidence, not
+an infrastructure error.
+
+`ReplayStateReference` stores only an adapter-owned state key or index and its
+expected digest. Raw simulator state and framework-native objects stay behind
+the narrow adapter/session protocols. Replay-case and bundle identities bind
+source and corruption content digests plus semantic metadata, never runtime
+paths, host information, or timestamps.
+
+The built-in deterministic replay fixture is weak, non-physical infrastructure
+evidence only. M2C may add an explicitly trusted ManiSkill reference adapter
+without changing the core contracts. LangMani integration is deferred until a
+later typed adapter can satisfy the same exact-state, baseline, and trust gates.
 
 ## Safety and reproducibility
 
@@ -137,4 +164,6 @@ failures are preserved as operational logs and fixed through a new local
 revision. M1 is developed and validated entirely in the authoritative local
 checkout; it requires neither AutoDL access nor any other SSH connection. M2A
 is likewise developed and validated locally, on CPU and without network, SSH,
-simulator, LangMani, ManiSkill, or GPU access.
+simulator, LangMani, ManiSkill, or GPU access. M2B-Core follows the same local
+boundary: its fixture executes only a deterministic numeric state machine and
+does not contact a remote machine or claim physical validation.

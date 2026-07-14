@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 import argparse
-import hashlib
 import sys
 from collections.abc import Mapping, Sequence
 from dataclasses import fields, is_dataclass
@@ -36,11 +35,26 @@ from latentguard.evaluation.runner import (
     sanitize_operational_text,
 )
 from latentguard.evaluation.serialization import (
+    LedgerState,
     compute_corruption_dataset_digest,
     load_evaluation_dataset,
 )
 from latentguard.remote import RemoteSyncError, resolve_remote_config, sync_remote
-from latentguard.serialization import load_episodes, save_episodes
+from latentguard.replay.registry import (
+    create_replay_evaluator,
+    load_replay_adapter_configuration,
+)
+from latentguard.replay.reporting import (
+    build_replay_summary,
+    format_replay_summary,
+    replay_audit_lines,
+)
+from latentguard.replay.source import ReplaySourceBinding
+from latentguard.serialization import (
+    compute_episode_bundle_identifier,
+    load_episodes,
+    save_episodes,
+)
 from latentguard.synthetic import generate_synthetic_episodes
 from latentguard.validation import validate_episodes
 
@@ -144,6 +158,29 @@ def _build_parser() -> argparse.ArgumentParser:
         help="print concise proposal-attempt audit records",
     )
 
+    replay = subparsers.add_parser(
+        "replay-data",
+        help="run content-bound exact-state paired replay through an adapter",
+    )
+    replay.add_argument("--source-dir", type=Path, required=True)
+    replay.add_argument("--corruption-dir", type=Path, required=True)
+    replay.add_argument("--output-dir", type=Path, required=True)
+    replay.add_argument("--adapter", required=True)
+    replay.add_argument("--config", type=Path, required=True)
+    replay.add_argument("--seed", type=_nonnegative_int, required=True)
+    replay.add_argument("--max-proposals", type=_positive_int)
+    replay.add_argument("--resume", action="store_true")
+    replay.add_argument("--fail-fast", action="store_true")
+    replay.add_argument("--retry-execution-errors", action="store_true")
+    replay.add_argument("--dry-run", action="store_true")
+    replay.add_argument(
+        "--audit",
+        "--verbose",
+        dest="audit",
+        action="store_true",
+        help="print concise paired-replay attempt audit records",
+    )
+
     return parser
 
 
@@ -228,28 +265,6 @@ def _run_remote_sync(args: argparse.Namespace) -> int:
     return 0
 
 
-def _source_dataset_identifier(input_dir: Path) -> str:
-    """Hash a validated M0 bundle independently of its absolute location."""
-    root = input_dir.absolute()
-    files = sorted(
-        (path for path in root.rglob("*") if path.is_file()),
-        key=lambda path: path.relative_to(root).as_posix(),
-    )
-    if not files:
-        raise RuntimeError("source dataset bundle contains no files")
-    digest = hashlib.sha256()
-    for path in files:
-        relative = path.relative_to(root).as_posix().encode("utf-8")
-        digest.update(len(relative).to_bytes(8, byteorder="big"))
-        digest.update(relative)
-        size = path.stat().st_size
-        digest.update(size.to_bytes(8, byteorder="big"))
-        with path.open("rb") as stream:
-            while chunk := stream.read(1024 * 1024):
-                digest.update(chunk)
-    return f"sha256:{digest.hexdigest()}"
-
-
 def _validate_dataset_path_separation(input_dir: Path, output_dir: Path) -> None:
     """Reject any source/output ancestry overlap before a bundle can be changed."""
     source = input_dir.absolute().resolve()
@@ -263,6 +278,29 @@ def _validate_dataset_path_separation(input_dir: Path, output_dir: Path) -> None
             "input and output dataset directories must not equal, contain, "
             "or be contained by one another"
         )
+
+
+def _validate_replay_path_separation(
+    source_dir: Path, corruption_dir: Path, output_dir: Path
+) -> None:
+    """Reject equality or ancestry overlap among all replay dataset roots."""
+    resolved = {
+        "source": source_dir.absolute().resolve(),
+        "corruption": corruption_dir.absolute().resolve(),
+        "output": output_dir.absolute().resolve(),
+    }
+    items = tuple(resolved.items())
+    for index, (left_name, left) in enumerate(items):
+        for right_name, right in items[index + 1 :]:
+            if (
+                left == right
+                or left.is_relative_to(right)
+                or right.is_relative_to(left)
+            ):
+                raise ValueError(
+                    "replay dataset directories must not equal, contain, or be "
+                    f"contained by one another ({left_name}, {right_name})"
+                )
 
 
 def _validate_proposal_identifiers(dataset: CorruptionDataset) -> None:
@@ -302,7 +340,7 @@ def _run_corrupt_data(args: argparse.Namespace) -> int:
             strict_applicability=args.strict_applicability,
         )
         dataset = CorruptionDataset(
-            source_dataset_id=_source_dataset_identifier(args.input_dir),
+            source_dataset_id=compute_episode_bundle_identifier(args.input_dir),
             action_layout=plan.action_layout,
             proposals=result.proposals,
         )
@@ -478,6 +516,187 @@ def _run_evaluate_data(args: argparse.Namespace) -> int:
         return 1
 
 
+def _replay_launch_command(args: argparse.Namespace) -> tuple[str, ...]:
+    """Build a complete replay command for conservative manifest sanitization."""
+    command = [
+        "latentguard",
+        "replay-data",
+        "--source-dir",
+        str(args.source_dir),
+        "--corruption-dir",
+        str(args.corruption_dir),
+        "--output-dir",
+        str(args.output_dir),
+        "--adapter",
+        str(args.adapter),
+        "--config",
+        str(args.config),
+        "--seed",
+        str(args.seed),
+    ]
+    if args.max_proposals is not None:
+        command.extend(("--max-proposals", str(args.max_proposals)))
+    for enabled, flag in (
+        (args.resume, "--resume"),
+        (args.fail_fast, "--fail-fast"),
+        (args.retry_execution_errors, "--retry-execution-errors"),
+        (args.audit, "--audit"),
+    ):
+        if enabled:
+            command.append(flag)
+    return tuple(command)
+
+
+def _print_replay_fixture_warning(adapter_id: str) -> None:
+    """State the built-in replay fixture's non-physical boundary prominently."""
+    if adapter_id == "deterministic_replay_fixture":
+        print(
+            "replay-data WARNING: deterministic_replay_fixture is not a simulator, "
+            "is not physically meaningful, produces weak non-simulator evidence "
+            "only, and must not support training, benchmark, or research claims"
+        )
+
+
+def _resume_without_rerun_count(
+    args: argparse.Namespace,
+    *,
+    binding: ReplaySourceBinding,
+) -> int:
+    """Count selected terminal proposals that this resume will preserve as-is."""
+    if not args.resume:
+        return 0
+    existing = load_evaluation_dataset(
+        args.output_dir,
+        corruption_dataset=binding.corruption_dataset,
+        expected_corruption_digest=binding.corruption_dataset_digest,
+    )
+    selected = set(existing.selected_proposal_ids)
+    preserved = 0
+    for proposal_id in selected:
+        attempts = [
+            entry for entry in existing.ledger if entry.proposal_id == proposal_id
+        ]
+        if not attempts:
+            continue
+        latest = max(attempts, key=lambda entry: entry.attempt_ordinal)
+        if latest.state in {LedgerState.PENDING, LedgerState.RUNNING}:
+            continue
+        if latest.state is LedgerState.EXECUTION_ERROR and args.retry_execution_errors:
+            continue
+        preserved += 1
+    return preserved
+
+
+def _run_replay_data(args: argparse.Namespace) -> int:
+    try:
+        if args.retry_execution_errors and not args.resume:
+            raise ValueError("--retry-execution-errors requires --resume")
+        _validate_replay_path_separation(
+            args.source_dir, args.corruption_dir, args.output_dir
+        )
+        binding = ReplaySourceBinding.from_paths(args.source_dir, args.corruption_dir)
+        configuration = load_replay_adapter_configuration(args.config)
+        evaluator = create_replay_evaluator(args.adapter, configuration, binding)
+        plan = plan_evaluation(
+            binding.corruption_dataset,
+            evaluator,
+            source_corruption_dataset_digest=binding.corruption_dataset_digest,
+            base_seed=args.seed,
+            max_proposals=args.max_proposals,
+        )
+        _print_replay_fixture_warning(evaluator.adapter.adapter_id)
+
+        if args.dry_run:
+            if args.resume:
+                existing = load_evaluation_dataset(
+                    args.output_dir,
+                    corruption_dataset=binding.corruption_dataset,
+                    expected_corruption_digest=binding.corruption_dataset_digest,
+                )
+                if existing.run_id != plan.run_id:
+                    raise ValueError(
+                        "dry-run resume inputs conflict with the persisted run"
+                    )
+            elif args.output_dir.exists():
+                if not args.output_dir.is_dir() or any(args.output_dir.iterdir()):
+                    raise ValueError("dry-run output directory must be absent or empty")
+            case_ids = {
+                replay_case.proposal_id: replay_case.case_id
+                for replay_case in evaluator.replay_bundle.replay_cases
+            }
+            if args.audit:
+                for attempt in plan.attempts:
+                    print(
+                        "replay-data dry-run audit: "
+                        f"proposal={attempt.proposal_id} "
+                        f"case={case_ids[attempt.proposal_id]} "
+                        f"attempt={attempt.attempt_ordinal} "
+                        f"seed={attempt.evaluation_seed} "
+                        f"evidence={attempt.evidence_id}"
+                    )
+            print(
+                "replay-data dry-run OK: "
+                f"adapter={evaluator.adapter.adapter_id} "
+                f"adapter_trust_tier={evaluator.trust_descriptor.trust_tier.value} "
+                f"source_episodes={binding.source_episode_count} "
+                f"source_candidates={binding.source_candidate_count} "
+                f"proposals={len(plan.selected_proposal_ids)} "
+                f"planned_attempts={len(plan.attempts)} "
+                f"run_id={plan.run_id} "
+                f"replay_bundle={evaluator.replay_bundle.bundle_digest} "
+                "evaluations=0 sessions=0 output_created=false"
+            )
+            return 0
+
+        resumed_without_rerun = _resume_without_rerun_count(args, binding=binding)
+        result = run_evaluation(
+            binding.corruption_dataset,
+            evaluator,
+            source_corruption_dataset_digest=binding.corruption_dataset_digest,
+            output_dir=args.output_dir,
+            base_seed=args.seed,
+            max_proposals=args.max_proposals,
+            resume=args.resume,
+            fail_fast=args.fail_fast,
+            retry_execution_errors=args.retry_execution_errors,
+            launch_command=_replay_launch_command(args),
+        )
+        binding.assert_unchanged()
+        reloaded = load_evaluation_dataset(
+            args.output_dir,
+            corruption_dataset=binding.corruption_dataset,
+            expected_corruption_digest=binding.corruption_dataset_digest,
+        )
+        if reloaded.run_id != result.dataset.run_id:
+            raise RuntimeError("replay round-trip run identifier changed")
+        if args.audit:
+            for line in replay_audit_lines(reloaded):
+                print(line)
+        summary = build_replay_summary(
+            reloaded,
+            source_episode_count=binding.source_episode_count,
+            source_candidate_count=binding.source_candidate_count,
+            adapter_trust_tier=evaluator.trust_descriptor.trust_tier.value,
+            resumed_without_rerun_count=resumed_without_rerun,
+        )
+        print(format_replay_summary(summary, resumed=result.resumed))
+        if result.stopped_early or reloaded.summary.execution_error:
+            return 1
+        return 0
+    except KeyboardInterrupt:
+        print(
+            "replay-data interrupted: persisted state may be resumed",
+            file=sys.stderr,
+        )
+        return 130
+    except (OSError, RuntimeError, TypeError, ValueError) as error:
+        print(
+            f"replay-data failed: {sanitize_operational_text(error)}",
+            file=sys.stderr,
+        )
+        return 1
+
+
 def main(argv: Sequence[str] | None = None) -> int:
     """Run the LatentGuard-VLA command-line interface."""
     args = _build_parser().parse_args(argv)
@@ -489,4 +708,6 @@ def main(argv: Sequence[str] | None = None) -> int:
         return _run_corrupt_data(args)
     if args.command == "evaluate-data":
         return _run_evaluate_data(args)
+    if args.command == "replay-data":
+        return _run_replay_data(args)
     raise AssertionError(f"unhandled command: {args.command}")

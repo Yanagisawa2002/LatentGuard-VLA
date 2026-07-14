@@ -39,7 +39,9 @@ _SSH_EXECUTABLE_RE = re.compile(
     r"(?i)(?:^|[\\/])(?:ssh|scp|sftp|plink|pscp)(?:\.exe)?$"
 )
 _TRACEBACK_RE = re.compile(r"(?i)traceback\s*\(most recent call last\)")
-_PATH_OPTIONS = frozenset({"--corruption-dir", "--output-dir", "--config"})
+_PATH_OPTIONS = frozenset(
+    {"--source-dir", "--corruption-dir", "--output-dir", "--config"}
+)
 _SECRET_OPTIONS = frozenset(
     {
         "--api-key",

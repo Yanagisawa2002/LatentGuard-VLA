@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "state_dimension": 7,
+  "action_scale": 1.0,
+  "progress_scale": 1.0,
+  "success_tolerance": 0.000001,
+  "unsafe_bound": 10.0,
+  "baseline_failure_ordinals": [0],
+  "restoration_mismatch_ordinals": [1],
+  "indeterminate_ordinals": [2],
+  "step_exception_ordinals": [],
+  "close_exception_ordinals": []
+}

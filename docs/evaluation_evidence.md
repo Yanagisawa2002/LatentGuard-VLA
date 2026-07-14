@@ -94,6 +94,22 @@ indeterminate, skipped, or controlled execution-error paths. These values are
 synthetic, non-physical, and unsuitable for training, benchmarking, or research
 claims.
 
+M2B-Core's `exact_state_paired_replay` evaluator also implements the same M2A
+protocol. It first resolves a content-bound replay case, then delegates generic
+session operations to an explicit replay adapter. Its resolved configuration
+binds the adapter identity and configuration digest, trust-contract version,
+both dataset content digests, progress/unsafe semantics, and paired-replay
+semantic versions. It still uses the M2A evidence identity, runner, ledger,
+incremental persistence, resume, retry, validation, and projection boundary.
+
+The trust descriptor is an upper bound, not a claim. The built-in
+`deterministic_replay_fixture` is fixed to
+`LabelSource.DETERMINISTIC_EVALUATOR`, `LabelStrength.WEAK`, and
+`simulator_replay_verified=False`. Even an adapter declaring exact-simulator
+trust cannot emit verified strong simulator evidence unless both restorations,
+the successful baseline, corrupted execution, and complete terminal evaluation
+all pass. M2B-Core includes no real simulator adapter.
+
 ## Ledger, resume, and retry
 
 The runner processes proposals in M1 generation order. An attempt seed is a
@@ -137,5 +153,7 @@ does not claim storage-device or sudden-power-loss durability on every filesyste
 The run manifest records available Git branch/SHA, evaluator details, both
 source identities, seed, Python/NumPy/platform versions, a sanitized launch
 command, timestamps, and final state. Operational timestamps are never identity
-inputs. M2B may supply a typed LangMani exact-state adapter later; only successful
-exact restoration and replay may set simulator verification.
+inputs. M2C may add a typed ManiSkill reference adapter; a later LangMani adapter
+can implement the same generic protocols. Only a real, explicitly trusted
+adapter that passes every exact restoration and paired-replay gate may set
+simulator verification.
