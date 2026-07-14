@@ -63,11 +63,18 @@ Before a full remote run, pass these gates in order: configuration validation; C
 - Use Python 3.11 and a `src`-layout package.
 - All public functions/classes need type annotations and concise docstrings.
 - Core tests run on CPU without network access. Tests must not download models/datasets; GPU and network/SSH tests require explicit pytest markers or mocked subprocesses.
+- M2A fixture evaluation, evidence validation, serialization, resume, and CLI validation are local, CPU-only, and network-free; they must not use SSH, a simulator, LangMani, ManiSkill, or a GPU.
 - Keep model, data, storage, simulator, policy, remote-execution, and training interfaces decoupled. Add only dependencies needed for the current milestone.
 - Do not silently repair malformed data; raise descriptive validation errors. All random operations take an explicit seed or generator, and all configs are serializable.
 - Preserve complete provenance for generated/transformed samples. Split source episodes before deriving samples, and keep every source episode plus derivatives in the same split.
 - A heuristic corruption is not a label. Any heuristic outcome label assigned by a later evaluator is weak evidence and is not simulator verification.
 - Corruption generation does not determine task outcome. Corrupted actions remain unlabeled proposals until a later evaluator attaches evidence; never represent heuristic corruption as simulator verification.
+- Evidence and outcome labels are distinct. An evaluator may return indeterminate evidence, and missing evidence must never be replaced with default task values.
+- Runtime failure is not task failure. Record evaluator exceptions without fabricating success, progress, safety, or failure outcomes.
+- Only complete, conclusive evidence may be projected into an `OutcomeLabel`.
+- Simulator verification requires exact state restoration followed by successful replay; approximate reconstruction is not verification.
+- Repeated and resumed evaluation must be idempotent, and source corruption datasets and proposals must remain immutable.
+- Deterministic fixture evaluators are infrastructure tests only and must never support training, benchmark, or research claims.
 - Preserve complete single-source provenance for every corruption. Multi-source corruption is prohibited until the schema can represent every parent completely.
 - A transformation must never silently clip, normalize, reshape, repair, retarget, or otherwise change its configured meaning. Applicability failures must be explicit skips or descriptive errors.
 - Do not commit machine-specific absolute paths or credentials. Copy training configurations into run outputs.

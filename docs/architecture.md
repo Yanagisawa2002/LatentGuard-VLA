@@ -76,6 +76,43 @@ not duplicate RGB observations or source episodes. As with M0, a readable
 manifest and non-pickle arrays are staged and published transactionally, then
 validated on reload.
 
+## Evidence pipeline (M2A)
+
+M2A adds an evaluation package without adding a simulator implementation:
+
+```text
+validated CorruptionDataset
+    -> explicit evaluator registry and typed applicability boundary
+    -> ordered single-process runner
+    -> incrementally persisted ledger + EvaluationEvidence
+    -> optional explicit projection of complete conclusive evidence
+    -> existing OutcomeLabel
+```
+
+The evaluator receives only a `CorruptedActionProposal`, stable source identity,
+an explicit derived seed, and an attempt ordinal. LangMani, ManiSkill, simulator,
+and policy-framework native objects cannot enter this core interface. Unknown
+registry names fail; CLI strings cannot dynamically import Python modules.
+
+Evidence is not an outcome label. `conclusive` means enough task evidence exists
+for an explicit projection. `indeterminate` means evaluation completed without
+enough evidence. `invalid` and `skipped` describe evaluation applicability, and
+`execution_error` describes infrastructure failure. None of the latter four is
+silently converted to `success=False`.
+
+The runner derives seeds and evidence IDs from canonical JSON and SHA-256,
+orders proposals by M1 generation ordinal, and persists `running` before calling
+an evaluator. Terminal evidence and ledger state are then published together by
+an atomic manifest replacement. Resume preserves terminal attempts, recovers an
+interrupted `running` attempt with its original identity, and adds a new ordinal
+only when execution-error retry is explicitly requested. The run binds a digest
+of the complete corruption bundle, not only its M0 source ID.
+
+M2B may add a LangMani adapter only after it can restore exact simulator state
+and successfully replay it. Until then, M2A cannot claim simulator verification.
+The built-in deterministic fixture is weak, non-physical infrastructure evidence
+only.
+
 ## Safety and reproducibility
 
 All random generation takes an explicit seed. Derived examples retain their
@@ -96,6 +133,8 @@ configuration and run manifests, and peak GPU-memory reporting.
 All tracked changes are made, checked, committed, and pushed locally. A remote
 machine is an execution target only. It pulls an exact pushed commit, writes
 large outputs outside the checkout, and never edits tracked source. Remote
-failures are preserved as evidence and fixed through a new local revision.
-M1 is developed and validated entirely in the authoritative local checkout; it
-requires neither AutoDL access nor any other SSH connection.
+failures are preserved as operational logs and fixed through a new local
+revision. M1 is developed and validated entirely in the authoritative local
+checkout; it requires neither AutoDL access nor any other SSH connection. M2A
+is likewise developed and validated locally, on CPU and without network, SSH,
+simulator, LangMani, ManiSkill, or GPU access.

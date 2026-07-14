@@ -25,8 +25,13 @@ local implementation
 -> result retrieval
 ```
 
-M0 establishes synchronization only. It performs no remote training and must
-not start a paid GPU instance.
+M0 establishes synchronization only. M1 and M2A are also local CPU milestones.
+They perform no remote training and must not start a paid GPU instance.
+
+M2A evaluation must not use this synchronization path at all. Its deterministic
+fixture, evidence validation, serialization, resume, and CLI tests are local and
+network-free. A runtime exception is evaluation infrastructure state, not task
+failure or remote-run evidence.
 
 ## Configuration
 
@@ -95,3 +100,8 @@ Checkpoints, optimizer states, raw datasets, replay buffers, video, TensorBoard
 events, downloaded models, caches, and large traces stay outside Git. Small
 metrics, compact tables, resolved configs, environment manifests, small plots,
 and Markdown summaries may be retrieved and committed locally after review.
+
+A later M2B LangMani replay adapter must still follow the exact-revision
+lifecycle. It may claim simulator verification only when the adapter restores
+the exact source state and successfully replays it; M2A corruption bundles do
+not contain that state and cannot make the claim.

@@ -22,6 +22,23 @@ from latentguard.corruptions.serialization import (
     load_corruption_dataset,
     save_corruption_dataset,
 )
+from latentguard.evaluation.registry import (
+    create_evaluator,
+    load_evaluator_configuration,
+)
+from latentguard.evaluation.reporting import (
+    evaluation_audit_lines,
+    format_evaluation_summary,
+)
+from latentguard.evaluation.runner import (
+    plan_evaluation,
+    run_evaluation,
+    sanitize_operational_text,
+)
+from latentguard.evaluation.serialization import (
+    compute_corruption_dataset_digest,
+    load_evaluation_dataset,
+)
 from latentguard.remote import RemoteSyncError, resolve_remote_config, sync_remote
 from latentguard.serialization import load_episodes, save_episodes
 from latentguard.synthetic import generate_synthetic_episodes
@@ -103,6 +120,28 @@ def _build_parser() -> argparse.ArgumentParser:
         dest="audit",
         action="store_true",
         help="print concise applicability-skip audit records",
+    )
+
+    evaluate = subparsers.add_parser(
+        "evaluate-data",
+        help="evaluate ordered corruption proposals with resumable evidence",
+    )
+    evaluate.add_argument("--corruption-dir", type=Path, required=True)
+    evaluate.add_argument("--output-dir", type=Path, required=True)
+    evaluate.add_argument("--evaluator", required=True)
+    evaluate.add_argument("--config", type=Path, required=True)
+    evaluate.add_argument("--seed", type=_nonnegative_int, required=True)
+    evaluate.add_argument("--max-proposals", type=_positive_int)
+    evaluate.add_argument("--resume", action="store_true")
+    evaluate.add_argument("--fail-fast", action="store_true")
+    evaluate.add_argument("--retry-execution-errors", action="store_true")
+    evaluate.add_argument("--dry-run", action="store_true")
+    evaluate.add_argument(
+        "--audit",
+        "--verbose",
+        dest="audit",
+        action="store_true",
+        help="print concise proposal-attempt audit records",
     )
 
     return parser
@@ -298,6 +337,147 @@ def _run_corrupt_data(args: argparse.Namespace) -> int:
     return 0
 
 
+def _evaluation_launch_command(args: argparse.Namespace) -> tuple[str, ...]:
+    """Build a complete command record for sanitization in the run manifest."""
+    command = [
+        "latentguard",
+        "evaluate-data",
+        "--corruption-dir",
+        str(args.corruption_dir),
+        "--output-dir",
+        str(args.output_dir),
+        "--evaluator",
+        str(args.evaluator),
+        "--config",
+        str(args.config),
+        "--seed",
+        str(args.seed),
+    ]
+    if args.max_proposals is not None:
+        command.extend(("--max-proposals", str(args.max_proposals)))
+    for enabled, flag in (
+        (args.resume, "--resume"),
+        (args.fail_fast, "--fail-fast"),
+        (args.retry_execution_errors, "--retry-execution-errors"),
+        (args.audit, "--audit"),
+    ):
+        if enabled:
+            command.append(flag)
+    return tuple(command)
+
+
+def _print_fixture_warning(evaluator_id: str) -> None:
+    """State the built-in fixture's non-physical evidence boundary prominently."""
+    if evaluator_id == "deterministic_fixture":
+        print(
+            "evaluate-data WARNING: deterministic_fixture produces synthetic weak "
+            "non-simulator evidence only; it is not physically meaningful"
+        )
+
+
+def _run_evaluate_data(args: argparse.Namespace) -> int:
+    try:
+        if args.retry_execution_errors and not args.resume:
+            raise ValueError("--retry-execution-errors requires --resume")
+        _validate_dataset_path_separation(args.corruption_dir, args.output_dir)
+        corruption_dataset = load_corruption_dataset(args.corruption_dir)
+        source_digest = compute_corruption_dataset_digest(args.corruption_dir)
+        configuration = load_evaluator_configuration(args.config)
+        evaluator = create_evaluator(args.evaluator, configuration)
+        plan = plan_evaluation(
+            corruption_dataset,
+            evaluator,
+            source_corruption_dataset_digest=source_digest,
+            base_seed=args.seed,
+            max_proposals=args.max_proposals,
+        )
+
+        _print_fixture_warning(evaluator.evaluator_id)
+        if args.dry_run:
+            if args.resume:
+                existing = load_evaluation_dataset(
+                    args.output_dir,
+                    corruption_dataset=corruption_dataset,
+                    expected_corruption_digest=source_digest,
+                )
+                if existing.run_id != plan.run_id:
+                    raise ValueError(
+                        "dry-run resume inputs conflict with the persisted run"
+                    )
+            elif args.output_dir.exists():
+                if not args.output_dir.is_dir() or any(args.output_dir.iterdir()):
+                    raise ValueError("dry-run output directory must be absent or empty")
+            if args.audit:
+                for attempt in plan.attempts:
+                    print(
+                        "evaluate-data dry-run audit: "
+                        f"proposal={attempt.proposal_id} "
+                        f"attempt={attempt.attempt_ordinal} "
+                        f"seed={attempt.evaluation_seed} "
+                        f"evidence={attempt.evidence_id}"
+                    )
+            first_evidence = plan.attempts[0].evidence_id if plan.attempts else "<none>"
+            last_evidence = plan.attempts[-1].evidence_id if plan.attempts else "<none>"
+            print(
+                "evaluate-data dry-run OK: "
+                f"evaluator={plan.evaluator_id} "
+                f"proposals={len(plan.selected_proposal_ids)} "
+                f"planned_attempts={len(plan.attempts)} "
+                f"run_id={plan.run_id} "
+                f"first_evidence={first_evidence} "
+                f"last_evidence={last_evidence} "
+                "evaluations=0 output_created=false"
+            )
+            return 0
+
+        result = run_evaluation(
+            corruption_dataset,
+            evaluator,
+            source_corruption_dataset_digest=source_digest,
+            output_dir=args.output_dir,
+            base_seed=args.seed,
+            max_proposals=args.max_proposals,
+            resume=args.resume,
+            fail_fast=args.fail_fast,
+            retry_execution_errors=args.retry_execution_errors,
+            launch_command=_evaluation_launch_command(args),
+        )
+        reloaded = load_evaluation_dataset(
+            args.output_dir,
+            corruption_dataset=corruption_dataset,
+            expected_corruption_digest=source_digest,
+        )
+        if reloaded.run_id != result.dataset.run_id:
+            raise RuntimeError("evaluation round-trip run identifier changed")
+        if args.audit:
+            for line in evaluation_audit_lines(reloaded):
+                print(line)
+        print(
+            format_evaluation_summary(
+                reloaded.summary,
+                evaluator_id=reloaded.evaluator_id,
+                resumed=result.resumed,
+                evaluated_attempts=result.evaluated_attempts,
+                recovered_attempts=result.recovered_attempts,
+            )
+        )
+        if result.stopped_early or reloaded.summary.execution_error:
+            return 1
+        return 0
+    except KeyboardInterrupt:
+        print(
+            "evaluate-data interrupted: persisted state may be resumed",
+            file=sys.stderr,
+        )
+        return 130
+    except (OSError, RuntimeError, TypeError, ValueError) as error:
+        print(
+            f"evaluate-data failed: {sanitize_operational_text(error)}",
+            file=sys.stderr,
+        )
+        return 1
+
+
 def main(argv: Sequence[str] | None = None) -> int:
     """Run the LatentGuard-VLA command-line interface."""
     args = _build_parser().parse_args(argv)
@@ -307,4 +487,6 @@ def main(argv: Sequence[str] | None = None) -> int:
         return _run_remote_sync(args)
     if args.command == "corrupt-data":
         return _run_corrupt_data(args)
+    if args.command == "evaluate-data":
+        return _run_evaluate_data(args)
     raise AssertionError(f"unhandled command: {args.command}")

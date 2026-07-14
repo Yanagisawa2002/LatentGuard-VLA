@@ -1,0 +1,8 @@
+{
+  "schema_version": "1.0",
+  "success_mean_abs_threshold": 1.0,
+  "unsafe_max_abs_threshold": 10.0,
+  "skip_mean_abs_below": null,
+  "indeterminate_temporal_variation_below": null,
+  "execution_error_max_abs_above": null
+}

@@ -12,6 +12,10 @@ M1 adds a separate contract for proposed action corruptions. These values are
 inputs to later evaluation, not evidence that an action succeeds, fails, is
 unsafe, makes no progress, or has been replayed in a simulator.
 
+M2A adds evaluation evidence, run-ledger, and resume contracts. Evidence is a
+record of what an evaluator established; it remains distinct from the M0
+`OutcomeLabel` that may be derived only from complete conclusive evidence.
+
 ## Entities
 
 - `CameraFrame` contains RGB data and optional aligned depth, intrinsics, and
@@ -48,6 +52,25 @@ M1 adds the following entities without changing the meaning of M0 labels:
   action layout with ordered proposal records and their transformed arrays. It
   does not copy observations or RGB data.
 
+M2A adds:
+
+- `EvaluationEvidence`, with stable proposal/source/evaluator identity,
+  configuration digest, seed, attempt ordinal, explicit status, optional task
+  values, failure events, termination information, scalar diagnostics, relative
+  artifact references, label provenance, and schema version.
+- `LedgerEntry`, which records pending, running, completed, indeterminate,
+  invalid, skipped, or execution-error attempt state plus sanitized operational
+  errors, retry eligibility, and audit timestamps.
+- An evaluation dataset, which binds the complete source corruption-bundle
+  digest, exact ordered proposal selection, evaluator and resolved
+  configuration, evidence, ledger, summary, and run environment metadata.
+
+Evidence status has exact semantics: `conclusive` is projectable when complete;
+`indeterminate` is a completed but insufficient evaluation; `invalid` is an
+unevaluable proposal/context; `skipped` is an explicit applicability/policy
+decision; and `execution_error` is evaluator infrastructure failure. Invalid,
+skipped, and execution-error records are not failed robot actions.
+
 Heuristic labels are weak evidence. A simulator-sourced strong label is valid
 only when simulator replay is explicitly verified. M0 synthetic labels remain
 clearly identified as synthetic evidence; they do not claim simulator replay.
@@ -77,6 +100,15 @@ cannot apply to a particular source action/layout pair, generation returns a
 descriptive skip without changing its dimensions or parameters; strict
 applicability mode promotes any such skip to an error.
 
+M2A evidence validation additionally rejects empty identities, unsupported
+versions, forged deterministic IDs, non-finite metrics, normalized progress
+outside `[0,1]`, delta outside `[-1,1]`, inconsistent before/after/delta,
+negative control-step counts, unsafe artifact paths or URLs, and inconsistent
+status/task fields. A verified replay flag is valid only for simulator-sourced
+evidence, strong simulator evidence requires verified exact replay, and
+heuristic evidence cannot be strong. Missing values are never inferred,
+normalized, or filled with defaults.
+
 ## Provenance and splits
 
 Every evaluated derived candidate identifies the source episode, source
@@ -96,6 +128,22 @@ covers canonical UTF-8 JSON containing the source episode ID, source candidate
 ID, corruption name, fully resolved parameters, derived seed, and generation
 ordinal. Canonical JSON uses sorted keys, compact separators, and no NaN. The
 identifier never uses Python `hash()`.
+
+An M2A evidence ID has the form
+`evd-sha256-<64 lowercase hexadecimal characters>`. Its canonical JSON payload
+contains only proposal ID, evaluator ID and version, evaluator-configuration
+digest, evaluation seed, and attempt ordinal. Absolute paths, output directory,
+host, timestamp, process ID, and status/result values are excluded. The run ID
+separately binds the path-independent digest of the complete validated M1
+bundle, the M0 source ID, evaluator/configuration, base seed, and exact ordered
+proposal selection.
+
+`evidence_to_outcome_label` is the only M2A projection boundary. It accepts only
+validated conclusive evidence with success, `progress_after`, unsafe status,
+label source and strength, and valid failure events. The canonical mapping is
+`OutcomeLabel.progress = EvaluationEvidence.progress_after`; delta is never
+substituted and missing values are never derived. Projection does not mutate the
+evidence.
 
 A stochastic proposal seed is derived by hashing canonical UTF-8 JSON
 containing the base seed, source episode ID, source candidate ID, corruption
@@ -132,3 +180,23 @@ Loading rejects unsupported versions, unknown or duplicate fields, unsafe
 links or paths, missing or extra arrays, and any proposal that fails validation.
 Zero-proposal datasets are represented explicitly rather than mistaken for a
 partial write.
+
+The M2A format is a human-readable, versioned JSON manifest and never duplicates
+M1 action arrays. Initial creation stages a complete pending ledger and publishes
+only to an absent or empty real directory. Each subsequent ledger transition
+writes and flushes a sibling temporary manifest before atomically replacing the
+live manifest. A run marked `in_progress` or `interrupted` is loadable but cannot
+be mistaken for `complete`.
+
+M2A artifact references are safety-validated relative POSIX metadata only. The
+runner does not materialize referenced artifacts, and referenced files are not
+part of the evaluation bundle inventory, which contains only `manifest.json`.
+Physical artifact creation and inventory validation require a later adapter
+contract.
+
+Evidence and ledger entries are ordered by source proposal generation ordinal
+and attempt ordinal. Terminal attempts are not rerun on resume. An interrupted
+`running` entry is recovered with the same seed and evidence identity. An
+`execution_error` is retried only by explicit policy, which appends the next
+attempt and preserves the earlier error. Any source digest, proposal selection,
+base-seed, evaluator-version, or resolved-configuration conflict rejects resume.

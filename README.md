@@ -6,6 +6,9 @@ provides typed episode data, deterministic synthetic fixtures, safe local
 serialization, validation, and exact-revision remote synchronization.
 Milestone M1 adds deterministic, action-semantics-aware corruption that turns
 existing action chunks into provenance-preserving, unlabeled proposals.
+Milestone M2A adds a simulator-independent evidence contract, a typed evaluator
+boundary, and an incrementally persisted evaluation runner that can resume
+without duplicating completed attempts.
 
 Tracked source is developed and validated in the local repository, which is
 authoritative. Remote servers only pull committed revisions and execute them;
@@ -66,6 +69,30 @@ Both M0 dataset generation and M1 corruption run locally on CPU. M1 does not
 require or connect to AutoDL or any other SSH server. See
 [the corruption-engine contract](docs/corruption_engine.md) for deterministic
 identifiers, applicability behavior, and the M1/M2 outcome boundary.
+
+## Evaluate proposals with the fixture runner
+
+The checked-in M2A evaluator exists only to test evidence, persistence, resume,
+and reporting infrastructure. This workflow is local, CPU-only, network-free,
+and does not use SSH, a simulator, LangMani, ManiSkill, or a GPU:
+
+```text
+latentguard evaluate-data --corruption-dir .tmp/m1-corrupted --output-dir .tmp/m2a-evaluated --evaluator deterministic_fixture --config configs/evaluation/m2a-fixture.json --seed 271828
+latentguard evaluate-data --corruption-dir .tmp/m1-corrupted --output-dir .tmp/m2a-evaluated --evaluator deterministic_fixture --config configs/evaluation/m2a-fixture.json --seed 271828 --resume
+```
+
+Use `--dry-run` with an absent output path to validate and display the planned
+proposal, seed, and evidence identities without evaluating anything or creating
+output. `--retry-execution-errors` is the only way to append a new attempt after
+an evaluator runtime error; ordinary resume preserves the error without
+rerunning it.
+
+`deterministic_fixture` produces weak synthetic evidence from action statistics.
+It is not a simulator, is not physically meaningful, never sets simulator replay
+verification, and must not be used for training, benchmarking, or research
+claims. Only complete `conclusive` evidence can be explicitly projected to an
+M0 `OutcomeLabel`; indeterminate, invalid, skipped, and execution-error records
+cannot become task failures. See [the M2A evidence contract](docs/evaluation_evidence.md).
 
 Preview an exact-revision remote synchronization without network access:
 
