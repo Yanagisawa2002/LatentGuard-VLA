@@ -66,10 +66,13 @@ Before a full remote run, pass these gates in order: configuration validation; C
 - Keep model, data, storage, simulator, policy, remote-execution, and training interfaces decoupled. Add only dependencies needed for the current milestone.
 - Do not silently repair malformed data; raise descriptive validation errors. All random operations take an explicit seed or generator, and all configs are serializable.
 - Preserve complete provenance for generated/transformed samples. Split source episodes before deriving samples, and keep every source episode plus derivatives in the same split.
-- Heuristic labels are not simulator-verified labels. Heuristically corrupted actions receive weak labels until verified by simulator replay, trusted oracle, deterministic evaluator, or explicit human review.
+- A heuristic corruption is not a label. Any heuristic outcome label assigned by a later evaluator is weak evidence and is not simulator verification.
+- Corruption generation does not determine task outcome. Corrupted actions remain unlabeled proposals until a later evaluator attaches evidence; never represent heuristic corruption as simulator verification.
+- Preserve complete single-source provenance for every corruption. Multi-source corruption is prohibited until the schema can represent every parent completely.
+- A transformation must never silently clip, normalize, reshape, repair, retarget, or otherwise change its configured meaning. Applicability failures must be explicit skips or descriptive errors.
 - Do not commit machine-specific absolute paths or credentials. Copy training configurations into run outputs.
 
-Every derived sample must identify source episode, source policy, source task, transformation/corruption type and parameters, seed, label source and strength, simulator-replay verification status, split-group ID, and schema version.
+Every derived sample must identify source episode, source policy, source task, transformation/corruption type and parameters, seed, split-group ID, and schema version. Evaluated derivatives must additionally record label source, strength, and simulator-replay status; unlabeled proposals must not fabricate those fields.
 
 ## Required validation and completion report
 

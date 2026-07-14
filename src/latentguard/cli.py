@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import argparse
+import hashlib
 import sys
 from collections.abc import Mapping, Sequence
 from dataclasses import fields, is_dataclass
@@ -11,6 +12,16 @@ from typing import Any
 
 import numpy as np
 
+from latentguard.corruptions.config import load_corruption_plan
+from latentguard.corruptions.generation import (
+    build_proposal_identifier,
+    generate_corruption_proposals,
+)
+from latentguard.corruptions.serialization import (
+    CorruptionDataset,
+    load_corruption_dataset,
+    save_corruption_dataset,
+)
 from latentguard.remote import RemoteSyncError, resolve_remote_config, sync_remote
 from latentguard.serialization import load_episodes, save_episodes
 from latentguard.synthetic import generate_synthetic_episodes
@@ -69,6 +80,30 @@ def _build_parser() -> argparse.ArgumentParser:
     remote.add_argument("--commit", dest="expected_commit", help="full commit SHA")
     remote.add_argument("--ssh-executable", help="system SSH executable")
     remote.add_argument("--connect-timeout", type=_positive_int)
+
+    corrupt = subparsers.add_parser(
+        "corrupt-data",
+        help="generate deterministic unlabeled action corruption proposals",
+    )
+    corrupt.add_argument("--input-dir", type=Path, required=True)
+    corrupt.add_argument("--output-dir", type=Path, required=True)
+    corrupt.add_argument("--config", type=Path, required=True)
+    corrupt.add_argument("--seed", type=_nonnegative_int, required=True)
+    corrupt.add_argument("--episode-limit", type=_positive_int)
+    corrupt.add_argument("--candidate-limit", type=_positive_int)
+    corrupt.add_argument("--proposal-limit", type=_positive_int)
+    corrupt.add_argument(
+        "--strict-applicability",
+        action="store_true",
+        help="fail instead of recording a non-applicable transformation skip",
+    )
+    corrupt.add_argument(
+        "--audit",
+        "--verbose",
+        dest="audit",
+        action="store_true",
+        help="print concise applicability-skip audit records",
+    )
 
     return parser
 
@@ -154,6 +189,115 @@ def _run_remote_sync(args: argparse.Namespace) -> int:
     return 0
 
 
+def _source_dataset_identifier(input_dir: Path) -> str:
+    """Hash a validated M0 bundle independently of its absolute location."""
+    root = input_dir.absolute()
+    files = sorted(
+        (path for path in root.rglob("*") if path.is_file()),
+        key=lambda path: path.relative_to(root).as_posix(),
+    )
+    if not files:
+        raise RuntimeError("source dataset bundle contains no files")
+    digest = hashlib.sha256()
+    for path in files:
+        relative = path.relative_to(root).as_posix().encode("utf-8")
+        digest.update(len(relative).to_bytes(8, byteorder="big"))
+        digest.update(relative)
+        size = path.stat().st_size
+        digest.update(size.to_bytes(8, byteorder="big"))
+        with path.open("rb") as stream:
+            while chunk := stream.read(1024 * 1024):
+                digest.update(chunk)
+    return f"sha256:{digest.hexdigest()}"
+
+
+def _validate_dataset_path_separation(input_dir: Path, output_dir: Path) -> None:
+    """Reject any source/output ancestry overlap before a bundle can be changed."""
+    source = input_dir.absolute().resolve()
+    output = output_dir.absolute().resolve()
+    if (
+        source == output
+        or output.is_relative_to(source)
+        or source.is_relative_to(output)
+    ):
+        raise ValueError(
+            "input and output dataset directories must not equal, contain, "
+            "or be contained by one another"
+        )
+
+
+def _validate_proposal_identifiers(dataset: CorruptionDataset) -> None:
+    """Recompute every deterministic proposal identifier from its manifest data."""
+    for proposal in dataset.proposals:
+        expected = build_proposal_identifier(
+            source_episode_id=proposal.source_episode_id,
+            source_candidate_id=proposal.source_candidate_id,
+            corruption_name=proposal.corruption_type,
+            resolved_parameters=proposal.resolved_parameters,
+            seed=proposal.seed,
+            generation_ordinal=proposal.generation_ordinal,
+        )
+        if proposal.proposal_id != expected:
+            raise RuntimeError(
+                f"proposal identifier mismatch for ordinal "
+                f"{proposal.generation_ordinal}: expected {expected}, "
+                f"got {proposal.proposal_id}"
+            )
+
+
+def _run_corrupt_data(args: argparse.Namespace) -> int:
+    try:
+        _validate_dataset_path_separation(args.input_dir, args.output_dir)
+        episodes = load_episodes(args.input_dir)
+        validate_episodes(episodes)
+        if args.episode_limit is not None:
+            episodes = episodes[: args.episode_limit]
+        plan = load_corruption_plan(args.config)
+        result = generate_corruption_proposals(
+            episodes,
+            plan.action_layout,
+            plan.corruptions,
+            base_seed=args.seed,
+            candidate_limit=args.candidate_limit,
+            proposal_limit=args.proposal_limit,
+            strict_applicability=args.strict_applicability,
+        )
+        dataset = CorruptionDataset(
+            source_dataset_id=_source_dataset_identifier(args.input_dir),
+            action_layout=plan.action_layout,
+            proposals=result.proposals,
+        )
+        _validate_proposal_identifiers(dataset)
+        manifest_path = save_corruption_dataset(dataset, args.output_dir)
+        reloaded = load_corruption_dataset(args.output_dir)
+        _validate_proposal_identifiers(reloaded)
+        if not _values_equal(dataset, reloaded):
+            raise RuntimeError("corruption round-trip comparison found a changed value")
+    except (OSError, RuntimeError, TypeError, ValueError) as error:
+        print(f"corrupt-data failed: {error}", file=sys.stderr)
+        return 1
+
+    if args.audit:
+        if result.skips:
+            for skip in result.skips:
+                print(f"corrupt-data audit: skipped {skip}")
+        else:
+            print("corrupt-data audit: no applicability skips")
+    counts = ",".join(
+        f"{name}:{count}" for name, count in result.corruption_counts.items()
+    )
+    print(
+        "corrupt-data OK: "
+        f"source_episodes={result.source_episode_count} "
+        f"source_candidates={result.source_candidate_count} "
+        f"proposals={len(result.proposals)} "
+        f"skipped_non_applicable={len(result.skips)} "
+        "unlabeled=true round-trip=verified "
+        f"corruptions={counts or '<none>'} manifest={manifest_path}"
+    )
+    return 0
+
+
 def main(argv: Sequence[str] | None = None) -> int:
     """Run the LatentGuard-VLA command-line interface."""
     args = _build_parser().parse_args(argv)
@@ -161,4 +305,6 @@ def main(argv: Sequence[str] | None = None) -> int:
         return _run_sanity_data(args)
     if args.command == "remote-sync":
         return _run_remote_sync(args)
+    if args.command == "corrupt-data":
+        return _run_corrupt_data(args)
     raise AssertionError(f"unhandled command: {args.command}")

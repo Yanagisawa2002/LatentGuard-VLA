@@ -1,0 +1,79 @@
+{
+  "schema_version": "1.0",
+  "action_layout": {
+    "schema_version": "1.0",
+    "action_dim": 7,
+    "description": "Synthetic 7-D layout for the M1 smoke workflow.",
+    "metadata": {
+      "coordinate_frame": "robot_base"
+    },
+    "fields": [
+      {
+        "name": "translation",
+        "indices": [0, 1, 2],
+        "semantic": "translation",
+        "units": "normalized_delta"
+      },
+      {
+        "name": "rotation",
+        "indices": [3, 4, 5],
+        "semantic": "rotation",
+        "units": "normalized_delta"
+      },
+      {
+        "name": "gripper",
+        "indices": [6],
+        "semantic": "gripper",
+        "units": "normalized_command"
+      }
+    ]
+  },
+  "corruptions": [
+    {
+      "type": "additive_gaussian_noise",
+      "parameters": {
+        "target_fields": ["translation"],
+        "standard_deviation": 0.05,
+        "mean": 0.0
+      }
+    },
+    {
+      "type": "constant_bias",
+      "parameters": {
+        "target_indices": [3, 4, 5],
+        "bias": [0.01, -0.01, 0.02]
+      }
+    },
+    {
+      "type": "temporal_field_shift",
+      "parameters": {
+        "target_field": "gripper",
+        "shift_steps": 1,
+        "fill_policy": "edge"
+      }
+    },
+    {
+      "type": "segment_hold",
+      "parameters": {
+        "start_step": 2,
+        "end_step": 4,
+        "target_fields": ["rotation"]
+      }
+    },
+    {
+      "type": "segment_zeroing",
+      "parameters": {
+        "start_step": 4,
+        "end_step": 6,
+        "target_fields": ["gripper"]
+      }
+    },
+    {
+      "type": "local_temporal_permutation",
+      "parameters": {
+        "start_step": 1,
+        "end_step": 5
+      }
+    }
+  ]
+}
