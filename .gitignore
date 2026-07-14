@@ -1,0 +1,43 @@
+# Python bytecode and environments
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+
+# Test, type-check, lint, and coverage state
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# Editors and operating systems
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
+
+# Local configuration and credentials
+.env
+.env.*
+!.env.remote.example
+*.pem
+*.key
+
+# Generated data and run artifacts
+.tmp/
+outputs/
+runs/
+checkpoints/
+artifacts/
+datasets/
+wandb/
+*.ckpt
+*.pt
+*.pth
+*.safetensors
+*.mp4
+*.webm
+*.avi
+events.out.tfevents.*

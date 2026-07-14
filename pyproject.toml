@@ -1,0 +1,67 @@
+[build-system]
+requires = ["setuptools>=69"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "latentguard-vla"
+version = "0.1.0"
+description = "Simulator-independent verification data contracts for robot policies"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+  "numpy>=1.26,<2.0",
+]
+
+[project.optional-dependencies]
+dev = [
+  "mypy>=1.10",
+  "pytest>=8.2",
+  "ruff>=0.5",
+]
+
+[project.scripts]
+latentguard = "latentguard.cli:main"
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+latentguard = ["py.typed"]
+
+[tool.pytest.ini_options]
+minversion = "8.0"
+addopts = "-ra --strict-config --strict-markers -m 'not gpu and not network and not ssh and not integration'"
+testpaths = ["tests"]
+pythonpath = ["src"]
+filterwarnings = ["error"]
+markers = [
+  "gpu: requires a GPU and is excluded from the CPU-only core suite",
+  "network: accesses a network and must be explicitly selected",
+  "ssh: exercises SSH behavior and must use mocks unless explicitly enabled",
+  "integration: spans external components and must be explicitly selected",
+]
+
+[tool.ruff]
+target-version = "py311"
+line-length = 88
+src = ["src", "tests"]
+
+[tool.ruff.lint]
+select = ["B", "E", "F", "I", "UP"]
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+line-ending = "lf"
+
+[tool.mypy]
+python_version = "3.11"
+strict = true
+warn_unreachable = true
+show_error_codes = true
+pretty = true
+files = ["src"]
+mypy_path = "src"
