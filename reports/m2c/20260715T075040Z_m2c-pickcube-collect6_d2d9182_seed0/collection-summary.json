@@ -1,0 +1,100 @@
+{
+  "accepted_source_count": 6,
+  "archive_content_digest": "sha256:f6b5f242b0d99cab19b1762c1bc7dfb9e8f8a88b292fc1e3ec46f91a9307c521",
+  "attempt_count": 6,
+  "attempts": [
+    {
+      "accepted": true,
+      "failure_category": null,
+      "seed": 0
+    },
+    {
+      "accepted": true,
+      "failure_category": null,
+      "seed": 1
+    },
+    {
+      "accepted": true,
+      "failure_category": null,
+      "seed": 2
+    },
+    {
+      "accepted": true,
+      "failure_category": null,
+      "seed": 3
+    },
+    {
+      "accepted": true,
+      "failure_category": null,
+      "seed": 4
+    },
+    {
+      "accepted": true,
+      "failure_category": null,
+      "seed": 5
+    }
+  ],
+  "compatibility_identity": "sha256:05a560fd89e0989b6d94017c6456efc535de4a0bf87ededaf468f5e2d9ef71f7",
+  "failure_categories": {},
+  "independent_baseline_success_count": 6,
+  "requested_source_count": 6,
+  "schema_version": "1.0",
+  "source_dataset_id": "sha256:692573599bd64c6b417ee7ef4360507c39d1a1ea75626489923a16bfeb647db5",
+  "sources": [
+    {
+      "action_count": 82,
+      "episode_id": "mspc-episode-b3696ccab9f6ade9385be8d8b2527e51068fc72acb5f001e8d7fa3bb16c1ef1e",
+      "initial_state_digest": "sha256:9cc12bd4ed9ef3f90e9b13f4dceb25fe3071def98d144fd1c325efc41b52da70",
+      "seed": 0,
+      "source_action_digest": "sha256:f4e8bcea3628abe75db21ff9a2ae5c3004b497a1ba8a2583b992bc5dfce7f8fb",
+      "source_trajectory_id": "mspc-trajectory-6086ce65cdf5fd4d9e22f3bd49f0a8a8dcf03935f0897ebce22ad8dd65ddbc61",
+      "terminal_state_digest": "sha256:0da07af90d52c4ef948f1c0262d5581f39211b8e65c85c4ed74a9381673230ed"
+    },
+    {
+      "action_count": 92,
+      "episode_id": "mspc-episode-374322134ce8eba3130e8330b9f6c487edbdc8f87c107d2e43bf7bd4b0265fc4",
+      "initial_state_digest": "sha256:e7560de425cd0324d474765f436c6b4402623c9812d986a0b2c2cfd91216c21e",
+      "seed": 1,
+      "source_action_digest": "sha256:bb88c5777e92a1e09d56248f5a031f4f7606ddcd5389d74cd8ac107b6aef9676",
+      "source_trajectory_id": "mspc-trajectory-29c305406234225ab32dbdaf023f8a7252c692ef58592531597d42aafeb718cf",
+      "terminal_state_digest": "sha256:71a0377745ce851d14a25a83af4bf484ab92e50fed1131326b1afdc8f189395a"
+    },
+    {
+      "action_count": 69,
+      "episode_id": "mspc-episode-d1e3096789fb44bf8a9b939f9e4329016c8a5c0b6238912c98a8259daa028aac",
+      "initial_state_digest": "sha256:09819d1738aa81ddbf9293fef9b328ea8186e0c6e39c9acd848e953b0e03a868",
+      "seed": 2,
+      "source_action_digest": "sha256:a6fa0f7ab6ea8dfa22d6876a512cff460d4502fd5ee64b93397b0e559c66f36d",
+      "source_trajectory_id": "mspc-trajectory-878f45464756e8a11f9b0234d43ef8f7002545c14659930f4af4214c79ef67a2",
+      "terminal_state_digest": "sha256:921531d089df4935f12a9d2df9febd7444f99c7b0fa3d4b3ec1098eed858117c"
+    },
+    {
+      "action_count": 57,
+      "episode_id": "mspc-episode-32ad1b257a41dcab21cfe62aa45bbc985ca0576ec00b87fe25e70e0272611f87",
+      "initial_state_digest": "sha256:7bc9aab923d36d1bf3ab9b8e33c751cf2480e6bb86e667d6ce965e6ccad8797c",
+      "seed": 3,
+      "source_action_digest": "sha256:9b1c06a6be7d32d0b5494be4cb07304e845897dba667d1137068591569c2cc46",
+      "source_trajectory_id": "mspc-trajectory-e0464d81df1d78c8e07a90520d3bd3e2fef1a90c86ee0bdf2e84501791647ef6",
+      "terminal_state_digest": "sha256:43f4c1900d75c3111538dfda909809373a331863e472e2a562e5daa2fbcf0dd4"
+    },
+    {
+      "action_count": 85,
+      "episode_id": "mspc-episode-5d1c30e58dde21f187e2ff03606cee92325ae3dc4066fb743f6dc2f964afabdf",
+      "initial_state_digest": "sha256:4a14651899b1cd4a8b85316f64a68fae06950557bfd665c27858ff4ec0722e94",
+      "seed": 4,
+      "source_action_digest": "sha256:4249bec84b89a5666a9006944afa9899372fc3ea43d7cd0a9ebb312a0beee712",
+      "source_trajectory_id": "mspc-trajectory-a9a44af3151ca0fc5bcfa4a71fd3d67b7b44790a7c66bb641cd538316632c87a",
+      "terminal_state_digest": "sha256:f60c571fa8cfcf05e2cace23d5708d6f4dca6c1191eea565a4382680b97d5769"
+    },
+    {
+      "action_count": 77,
+      "episode_id": "mspc-episode-27f4cb1229f112ce993bb893c9274cf684bd319656aba851005c8a02635e5828",
+      "initial_state_digest": "sha256:962df0a397c77b5caf6318d21d1a5e248bf68add87fb80e123765225cb0a37f1",
+      "seed": 5,
+      "source_action_digest": "sha256:6b1221a9bd50969ab8af14b07ccafa50b19630ff09175fe43b26477eb4f6f024",
+      "source_trajectory_id": "mspc-trajectory-7bcf45b04c00ade5d32bc9a9923405138f96b8afc000c72e2855e48c2b00d51c",
+      "terminal_state_digest": "sha256:b6e23670f44876413a23c568173c46371a6354ecce7ca8757b697037505823af"
+    }
+  ],
+  "status": "complete"
+}

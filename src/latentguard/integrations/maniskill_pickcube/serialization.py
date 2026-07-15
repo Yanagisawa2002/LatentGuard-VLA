@@ -385,6 +385,7 @@ class ManiSkillPickCubeCaseProvider:
                 "compatibility_identity": episode.compatibility_identity,
                 "reference_archive_content_digest": self._archive.content_digest,
                 "source_action_digest": episode.source_action_digest,
+                "source_reset_seed": episode.seed,
                 "source_trajectory_id": episode.source_trajectory_id,
                 "state_semantic": STATE_TREE_SEMANTIC,
                 "state_verification_maximum_absolute_tolerance": (

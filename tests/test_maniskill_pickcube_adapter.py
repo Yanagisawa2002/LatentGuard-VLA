@@ -5,7 +5,7 @@ from __future__ import annotations
 import json
 import subprocess
 import sys
-from dataclasses import dataclass, replace
+from dataclasses import dataclass, field, replace
 from pathlib import Path
 from types import MappingProxyType
 
@@ -38,6 +38,7 @@ from latentguard.integrations.maniskill_pickcube.archive import (
 )
 from latentguard.integrations.maniskill_pickcube.session import (
     ArchivePickCubeReferenceStateStore,
+    LazyManiSkillPickCubeRuntime,
     LoadedReferenceState,
     ManiSkillPickCubeEnvironmentSettings,
     ManiSkillPickCubeReplaySession,
@@ -153,6 +154,7 @@ def _proposal_and_case(
         comparison_semantic=StateComparisonSemantic.NUMERIC_TOLERANCE,
         state_key="initial",
         metadata={
+            "source_reset_seed": 17,
             "state_semantic": "maniskill_state_tree_v1",
             "state_verification_maximum_absolute_tolerance": (
                 PICKCUBE_STATE_VERIFICATION_MAX_ABSOLUTE_TOLERANCE
@@ -208,6 +210,7 @@ class _Environment:
     state: object | None = None
     steps: int = 0
     closed: bool = False
+    events: list[tuple[str, int | None]] = field(default_factory=list)
 
 
 class _FakeRuntime:
@@ -242,12 +245,18 @@ class _FakeRuntime:
         assert isinstance(environment, _Environment)
         return state_tree
 
+    def reset_environment(self, environment: object, *, seed: int) -> None:
+        assert isinstance(environment, _Environment)
+        environment.events.append(("reset", seed))
+
     def set_state_dict(self, environment: object, state_tree: object) -> None:
         assert isinstance(environment, _Environment)
+        environment.events.append(("set", None))
         environment.state = state_tree
 
     def get_state_dict(self, environment: object) -> object:
         assert isinstance(environment, _Environment)
+        environment.events.append(("get", None))
         return environment.state
 
     def capture_task_snapshot(
@@ -304,8 +313,9 @@ class _FakeRuntime:
 
 
 class _StateLoader:
-    def __init__(self) -> None:
+    def __init__(self, *, source_reset_seed: int = 17) -> None:
         self.references: list[ReplayStateReference] = []
+        self.source_reset_seed = source_reset_seed
 
     def load_reference_state(
         self, reference: ReplayStateReference
@@ -314,6 +324,7 @@ class _StateLoader:
         assert reference.state_key is not None
         return LoadedReferenceState(
             source_reference_id=reference.source_reference_id,
+            source_reset_seed=self.source_reset_seed,
             state_key=reference.state_key,
             state_digest=_STATE_DIGEST,
             state_tree={"actors": np.array([1.0, 2.0], dtype=np.float32)},
@@ -516,7 +527,7 @@ def test_pickcube_state_verification_contract_is_fixed_and_identity_bound() -> N
     )
     state_verification = resolved["state_verification"]
 
-    assert MANISKILL_PICKCUBE_ADAPTER_VERSION == "1.1.0"
+    assert MANISKILL_PICKCUBE_ADAPTER_VERSION == "1.1.1"
     assert isinstance(state_verification, MappingProxyType)
     assert dict(state_verification) == {
         "comparison_semantic": StateComparisonSemantic.NUMERIC_TOLERANCE.value,
@@ -764,8 +775,111 @@ def test_session_restores_same_reference_in_two_fresh_environments() -> None:
         replay_case.state_reference,
         replay_case.state_reference,
     ]
+    assert replay_case.state_reference.metadata["source_reset_seed"] == 17
+    assert runtime.environments[0].events == [
+        ("reset", 17),
+        ("set", None),
+        ("get", None),
+    ]
+    assert runtime.environments[1].events == [
+        ("reset", 17),
+        ("set", None),
+        ("get", None),
+    ]
     baseline.close()
     corrupted.close()
+
+
+def test_production_runtime_resets_public_wrapper_before_archived_set() -> None:
+    events: list[tuple[str, int | None]] = []
+
+    class BaseEnvironment:
+        def reset(self, *, seed: int) -> None:
+            events.append(("unwrapped_reset", seed))
+
+        def set_state_dict(self, state: object) -> None:
+            del state
+            events.append(("set", None))
+
+    class PublicWrapper:
+        def __init__(self) -> None:
+            self.unwrapped = BaseEnvironment()
+
+        def reset(self, *, seed: int) -> None:
+            events.append(("wrapper_reset", seed))
+
+    runtime = LazyManiSkillPickCubeRuntime()
+    environment = PublicWrapper()
+
+    runtime.reset_environment(environment, seed=17)
+    runtime.set_state_dict(environment, {"archived": "state"})
+
+    assert events == [("wrapper_reset", 17), ("set", None)]
+
+
+def test_missing_source_reset_seed_fails_before_environment_creation() -> None:
+    _, replay_case = _proposal_and_case()
+    metadata = dict(replay_case.state_reference.metadata)
+    del metadata["source_reset_seed"]
+    missing_seed_reference = replace(replay_case.state_reference, metadata=metadata)
+    missing_seed_case_id = compute_replay_case_identifier(
+        proposal_id=replay_case.proposal_id,
+        source_dataset_id=replay_case.source_dataset_id,
+        source_dataset_digest=replay_case.source_dataset_digest,
+        corruption_dataset_digest=replay_case.corruption_dataset_digest,
+        source_episode_id=replay_case.source_episode_id,
+        source_candidate_id=replay_case.source_candidate_id,
+        split_group_id=replay_case.split_group_id,
+        original_action=replay_case.original_action,
+        transformed_action=replay_case.transformed_action,
+        state_reference=missing_seed_reference,
+        task_reference=replay_case.task_reference,
+        adapter_id=replay_case.adapter_id,
+        adapter_version=replay_case.adapter_version,
+        progress_semantic=replay_case.progress_semantic,
+        unsafe_semantic=replay_case.unsafe_semantic,
+    )
+    missing_seed_case = replace(
+        replay_case,
+        case_id=missing_seed_case_id,
+        state_reference=missing_seed_reference,
+    )
+    runtime = _FakeRuntime()
+
+    with pytest.raises(ReplayInvalidContextError, match="source reset seed"):
+        ManiSkillPickCubeReplaySession(
+            missing_seed_case,
+            execution_role=ReplayExecutionRole.BASELINE,
+            settings=_settings(),
+            action_contract=_action_contract(),
+            task_key_contract=_task_keys(),
+            state_loader=_StateLoader(),
+            state_comparator=_Comparator(),
+            runtime=runtime,
+        )
+
+    assert runtime.environments == []
+
+
+def test_archive_source_reset_seed_drift_fails_before_wrapper_reset() -> None:
+    _, replay_case = _proposal_and_case()
+    runtime = _FakeRuntime()
+    session = ManiSkillPickCubeReplaySession(
+        replay_case,
+        execution_role=ReplayExecutionRole.BASELINE,
+        settings=_settings(),
+        action_contract=_action_contract(),
+        task_key_contract=_task_keys(),
+        state_loader=_StateLoader(source_reset_seed=18),
+        state_comparator=_Comparator(),
+        runtime=runtime,
+    )
+
+    with pytest.raises(ReplayInvalidContextError, match="loaded archive state"):
+        session.restore_state(replay_case.state_reference)
+
+    assert runtime.environments[0].events == []
+    session.close()
 
 
 def test_independent_restores_use_checked_in_numeric_tolerance() -> None:
@@ -882,14 +996,23 @@ def test_runtime_archive_store_loads_content_bound_initial_state(
         expected_state_digest=episode.initial_state_digest,
         comparison_semantic=StateComparisonSemantic.NUMERIC_TOLERANCE,
         state_key="initial_state",
+        metadata={"source_reset_seed": episode.seed},
     )
     store = ArchivePickCubeReferenceStateStore(archive_directory)
 
     store.validate_reference(reference)
     loaded = store.load_reference_state(reference)
     assert loaded.source_reference_id == episode.episode_id
+    assert loaded.source_reset_seed == episode.seed
     assert loaded.state_digest == episode.initial_state_digest
     assert loaded.compared_component_count == 2
+
+    drifted_reference = replace(
+        reference,
+        metadata={"source_reset_seed": episode.seed + 1},
+    )
+    with pytest.raises(ReplayInvalidContextError, match="validated runtime archive"):
+        store.validate_reference(drifted_reference)
 
 
 def test_runtime_action_mutation_is_detected() -> None:

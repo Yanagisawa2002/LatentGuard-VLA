@@ -40,6 +40,7 @@ from .session import (
     PICKCUBE_STATE_VERIFICATION_SEMANTIC,
     ManiSkillPickCubeEnvironmentSettings,
     PickCubeReplayActionContract,
+    require_pickcube_source_reset_seed,
 )
 from .task_evidence import (
     PICKCUBE_PROGRESS_SEMANTIC,
@@ -50,7 +51,7 @@ from .task_evidence import (
 )
 
 MANISKILL_PICKCUBE_ADAPTER_ID = "maniskill_pickcube_v1"
-MANISKILL_PICKCUBE_ADAPTER_VERSION = "1.1.0"
+MANISKILL_PICKCUBE_ADAPTER_VERSION = "1.1.1"
 MANISKILL_REQUIRED_VERSION = "3.0.1"
 MANISKILL_STATE_SEMANTIC_VERSION = "maniskill_state_tree_v1"
 
@@ -586,6 +587,7 @@ class ManiSkillPickCubeAdapter:
             raise ReplayInvalidContextError(
                 "PickCube replay case semantic mismatch: " + ", ".join(mismatches)
             )
+        require_pickcube_source_reset_seed(replay_case.state_reference)
         cls._validate_static_action_contract(
             replay_case.original_action,
             action_contract,

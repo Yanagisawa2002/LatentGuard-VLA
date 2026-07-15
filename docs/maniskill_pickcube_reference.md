@@ -103,11 +103,14 @@ identity. Each replay case uses the standard M2B models and references one
 content-bound archived reset state.
 
 Baseline and corrupted actions execute in separate freshly created GPU
-environments. Both restore and read back the same archived state. The original
-source action must execute completely and succeed before the transformed action
-is interpreted. Simulator exceptions remain execution errors; restoration or
-action-contract mismatches are invalid context; a complete corrupted task
-failure remains conclusive evidence.
+environments. Each public Gym wrapper is first reset with the same source seed
+bound from the exact archive into the replay-case identity. Only then does each
+session restore and read back the same archived state. A missing or archive-
+drifted seed fails closed before state restoration or action execution. The
+original source action must execute completely and succeed before the
+transformed action is interpreted. Simulator exceptions remain execution
+errors; restoration or action-contract mismatches are invalid context; a
+complete corrupted task failure remains conclusive evidence.
 
 Terminal task evidence uses the official `success`, object-placed,
 robot-static, and grasp-status values. Missing, non-scalar, non-boolean, or
@@ -168,11 +171,16 @@ components (seven arm and one gripper), and complete 4-leaf/70-component state
 round trips with maximum error `1.1920929e-7`. The historical schema-1.0 probe
 remains sanitized diagnostic evidence and cannot authorize trust. The passing
 schema-1.1 discovery report
-`20260715T073250Z_m2c-pickcube-compat_bb2c35c_seed0_numeric-v1` now supplies the
-local dependency and expected-contract binding. Committing and pushing that
-binding, the second trusted probe, source collection, paired replay, compact
-final retrieval, and result commit remain pending; no remote M2C acceptance or
-training is claimed.
+`20260715T073250Z_m2c-pickcube-compat_bb2c35c_seed0_numeric-v1` supplied the
+committed dependency and expected-contract binding. A second trusted probe then
+passed, and six official source trajectories passed independent baseline replay.
+The first 12-proposal paired replay preserved complete restoration but produced
+12 `ResetNeeded` execution errors at baseline action step zero because the
+public Gym wrapper had not been initialized. No task failure was fabricated.
+Adapter version `1.1.1` now binds the archived source seed and requires public
+wrapper initialization before state restoration; a clean remote rerun and final
+result retrieval remain pending. No remote M2C acceptance or training is
+claimed.
 
 ## Known limitations
 

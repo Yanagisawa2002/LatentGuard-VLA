@@ -1,0 +1,772 @@
+{
+  "action_layout": {
+    "action_dim": 8,
+    "description": "ManiSkill 3.0.1 PickCube-v1 Panda pd_joint_pos action layout bound to the reviewed schema-1.1 compatibility probe.",
+    "fields": [
+      {
+        "description": "Probe-verified Panda arm controller component; physical semantics remain unspecified.",
+        "indices": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6
+        ],
+        "metadata": {
+          "controller_component_identity": "sha256:cb355ab8727b9c1239bec33a56943858916b8631cfb35706b430ba62e5f96dc4"
+        },
+        "name": "arm",
+        "semantic": "unspecified",
+        "units": "unspecified"
+      },
+      {
+        "description": "Probe-verified Panda gripper controller component; physical semantics remain unspecified.",
+        "indices": [
+          7
+        ],
+        "metadata": {
+          "controller_component_identity": "sha256:820a62d8d213b40ef360ff41eb68b9d11d91cd59feffa339ee842c17c5a25d5c"
+        },
+        "name": "gripper",
+        "semantic": "unspecified",
+        "units": "unspecified"
+      }
+    ],
+    "metadata": {
+      "action_contract_digest": "sha256:028d8c2cbb10e867d709f1c5d4c31e07ef1e084f1a8ad8370f96185ba892f0eb",
+      "compatibility_identity": "sha256:05a560fd89e0989b6d94017c6456efc535de4a0bf87ededaf468f5e2d9ef71f7",
+      "compatibility_report_schema_version": "1.1",
+      "controller_configuration_identity": "sha256:aed1daebe14982021776aaec5dead168fd999d841b6398be01612999383a9072",
+      "source_solver_identity": "sha256:75f6e26118a66b055927e368a7cd73b28d9974c6cf0181069ca55f8fcb1505ed",
+      "state_tree_structure_digest": "sha256:6f7ab9a632dfa7f34305ce5058e41da5c08c0e5926ff7f9ff90f42274a277ca0",
+      "state_verification_semantic": "tolerance_verified_full_state_v1",
+      "state_verification_tolerance": 1e-06,
+      "task_implementation_identity": "sha256:6f881f11151bd124a4ec6d1189e86e20b17d366aa1cbcc6e2f751f1f5bb03ed1"
+    },
+    "schema_version": "1.0"
+  },
+  "array_count": 18,
+  "dataset_schema_version": "1.0",
+  "format": "latentguard-corruption-dataset",
+  "proposal_count": 18,
+  "proposals": [
+    {
+      "corruption_type": "additive_gaussian_noise",
+      "generation_ordinal": 0,
+      "notes": "unlabeled M1 action corruption proposal",
+      "proposal_id": "cap-sha256-a58bbb9e8abf4e2432ed1d88eea5cdcea748bcd2686ee6d63bea9be793078474",
+      "resolved_parameters": {
+        "mean": 0.0,
+        "standard_deviation": 0.005,
+        "target_indices": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6
+        ]
+      },
+      "schema_version": "1.0",
+      "seed": 4653844207648877405,
+      "source_candidate_id": "mspc-source-candidate-25f9a97764b1d0c9b0ac4a2d0a257fb9ba61558cb11f167dea79212edbc2aafa",
+      "source_episode_id": "mspc-episode-b3696ccab9f6ade9385be8d8b2527e51068fc72acb5f001e8d7fa3bb16c1ef1e",
+      "source_policy_id": "maniskill/3.0.1/official-panda-motionplanning/solvePickCube",
+      "source_task_id": "maniskill/PickCube-v1",
+      "split_group_id": "mspc-split-b3696ccab9f6ade9385be8d8b2527e51068fc72acb5f001e8d7fa3bb16c1ef1e",
+      "transformed_action": {
+        "actions": {
+          "dtype": "<f8",
+          "path": "arrays/000000.npy",
+          "shape": [
+            82,
+            8
+          ]
+        },
+        "control_period_s": 0.05,
+        "coordinate_frame": "unspecified",
+        "schema_version": "1.0"
+      }
+    },
+    {
+      "corruption_type": "temporal_field_shift",
+      "generation_ordinal": 1,
+      "notes": "unlabeled M1 action corruption proposal",
+      "proposal_id": "cap-sha256-35e20a4431fa8fed1c44c15d31261f3d65d69645f00907af3c0485c555862764",
+      "resolved_parameters": {
+        "fill_policy": "edge",
+        "shift_steps": 1,
+        "target_field": "arm",
+        "target_indices": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6
+        ]
+      },
+      "schema_version": "1.0",
+      "seed": 6444236872451062728,
+      "source_candidate_id": "mspc-source-candidate-25f9a97764b1d0c9b0ac4a2d0a257fb9ba61558cb11f167dea79212edbc2aafa",
+      "source_episode_id": "mspc-episode-b3696ccab9f6ade9385be8d8b2527e51068fc72acb5f001e8d7fa3bb16c1ef1e",
+      "source_policy_id": "maniskill/3.0.1/official-panda-motionplanning/solvePickCube",
+      "source_task_id": "maniskill/PickCube-v1",
+      "split_group_id": "mspc-split-b3696ccab9f6ade9385be8d8b2527e51068fc72acb5f001e8d7fa3bb16c1ef1e",
+      "transformed_action": {
+        "actions": {
+          "dtype": "<f8",
+          "path": "arrays/000001.npy",
+          "shape": [
+            82,
+            8
+          ]
+        },
+        "control_period_s": 0.05,
+        "coordinate_frame": "unspecified",
+        "schema_version": "1.0"
+      }
+    },
+    {
+      "corruption_type": "segment_hold",
+      "generation_ordinal": 2,
+      "notes": "unlabeled M1 action corruption proposal",
+      "proposal_id": "cap-sha256-f8b0611fae120105fc06018a530a9433ab62ea62a7b72241912559726bd1aaab",
+      "resolved_parameters": {
+        "end_step": 82,
+        "start_step": 1,
+        "target_indices": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7
+        ]
+      },
+      "schema_version": "1.0",
+      "seed": 4388767649067056844,
+      "source_candidate_id": "mspc-source-candidate-25f9a97764b1d0c9b0ac4a2d0a257fb9ba61558cb11f167dea79212edbc2aafa",
+      "source_episode_id": "mspc-episode-b3696ccab9f6ade9385be8d8b2527e51068fc72acb5f001e8d7fa3bb16c1ef1e",
+      "source_policy_id": "maniskill/3.0.1/official-panda-motionplanning/solvePickCube",
+      "source_task_id": "maniskill/PickCube-v1",
+      "split_group_id": "mspc-split-b3696ccab9f6ade9385be8d8b2527e51068fc72acb5f001e8d7fa3bb16c1ef1e",
+      "transformed_action": {
+        "actions": {
+          "dtype": "<f8",
+          "path": "arrays/000002.npy",
+          "shape": [
+            82,
+            8
+          ]
+        },
+        "control_period_s": 0.05,
+        "coordinate_frame": "unspecified",
+        "schema_version": "1.0"
+      }
+    },
+    {
+      "corruption_type": "additive_gaussian_noise",
+      "generation_ordinal": 3,
+      "notes": "unlabeled M1 action corruption proposal",
+      "proposal_id": "cap-sha256-6f0c9b124cbfb1c9c4ed52ec6926233ebeda408f59c047f316132f678b01319f",
+      "resolved_parameters": {
+        "mean": 0.0,
+        "standard_deviation": 0.005,
+        "target_indices": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6
+        ]
+      },
+      "schema_version": "1.0",
+      "seed": 443967467410831671,
+      "source_candidate_id": "mspc-source-candidate-36a757f7529e6282dabb139025ac67771a712a6e9cd1ab161664a18ed9489108",
+      "source_episode_id": "mspc-episode-374322134ce8eba3130e8330b9f6c487edbdc8f87c107d2e43bf7bd4b0265fc4",
+      "source_policy_id": "maniskill/3.0.1/official-panda-motionplanning/solvePickCube",
+      "source_task_id": "maniskill/PickCube-v1",
+      "split_group_id": "mspc-split-374322134ce8eba3130e8330b9f6c487edbdc8f87c107d2e43bf7bd4b0265fc4",
+      "transformed_action": {
+        "actions": {
+          "dtype": "<f8",
+          "path": "arrays/000003.npy",
+          "shape": [
+            92,
+            8
+          ]
+        },
+        "control_period_s": 0.05,
+        "coordinate_frame": "unspecified",
+        "schema_version": "1.0"
+      }
+    },
+    {
+      "corruption_type": "temporal_field_shift",
+      "generation_ordinal": 4,
+      "notes": "unlabeled M1 action corruption proposal",
+      "proposal_id": "cap-sha256-f10fa966e378979f673867fb7a660fc2a8fdb586361716339a024b2813fce16f",
+      "resolved_parameters": {
+        "fill_policy": "edge",
+        "shift_steps": 1,
+        "target_field": "arm",
+        "target_indices": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6
+        ]
+      },
+      "schema_version": "1.0",
+      "seed": 140477896399040430,
+      "source_candidate_id": "mspc-source-candidate-36a757f7529e6282dabb139025ac67771a712a6e9cd1ab161664a18ed9489108",
+      "source_episode_id": "mspc-episode-374322134ce8eba3130e8330b9f6c487edbdc8f87c107d2e43bf7bd4b0265fc4",
+      "source_policy_id": "maniskill/3.0.1/official-panda-motionplanning/solvePickCube",
+      "source_task_id": "maniskill/PickCube-v1",
+      "split_group_id": "mspc-split-374322134ce8eba3130e8330b9f6c487edbdc8f87c107d2e43bf7bd4b0265fc4",
+      "transformed_action": {
+        "actions": {
+          "dtype": "<f8",
+          "path": "arrays/000004.npy",
+          "shape": [
+            92,
+            8
+          ]
+        },
+        "control_period_s": 0.05,
+        "coordinate_frame": "unspecified",
+        "schema_version": "1.0"
+      }
+    },
+    {
+      "corruption_type": "segment_hold",
+      "generation_ordinal": 5,
+      "notes": "unlabeled M1 action corruption proposal",
+      "proposal_id": "cap-sha256-e0147e6fff1205622adfcaa0a09cf23ff2cbf24629b20cf656b20126805f0679",
+      "resolved_parameters": {
+        "end_step": 92,
+        "start_step": 1,
+        "target_indices": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7
+        ]
+      },
+      "schema_version": "1.0",
+      "seed": 6089768576032588001,
+      "source_candidate_id": "mspc-source-candidate-36a757f7529e6282dabb139025ac67771a712a6e9cd1ab161664a18ed9489108",
+      "source_episode_id": "mspc-episode-374322134ce8eba3130e8330b9f6c487edbdc8f87c107d2e43bf7bd4b0265fc4",
+      "source_policy_id": "maniskill/3.0.1/official-panda-motionplanning/solvePickCube",
+      "source_task_id": "maniskill/PickCube-v1",
+      "split_group_id": "mspc-split-374322134ce8eba3130e8330b9f6c487edbdc8f87c107d2e43bf7bd4b0265fc4",
+      "transformed_action": {
+        "actions": {
+          "dtype": "<f8",
+          "path": "arrays/000005.npy",
+          "shape": [
+            92,
+            8
+          ]
+        },
+        "control_period_s": 0.05,
+        "coordinate_frame": "unspecified",
+        "schema_version": "1.0"
+      }
+    },
+    {
+      "corruption_type": "additive_gaussian_noise",
+      "generation_ordinal": 6,
+      "notes": "unlabeled M1 action corruption proposal",
+      "proposal_id": "cap-sha256-ffd1edcbea114579cd08dddcaf782e11f3a992c402ab933066d767f6c4706138",
+      "resolved_parameters": {
+        "mean": 0.0,
+        "standard_deviation": 0.005,
+        "target_indices": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6
+        ]
+      },
+      "schema_version": "1.0",
+      "seed": 3351596655762551641,
+      "source_candidate_id": "mspc-source-candidate-4d4195f109aba699304a4d01d108ce968249aefecc55da1e09743d7ec51984c1",
+      "source_episode_id": "mspc-episode-d1e3096789fb44bf8a9b939f9e4329016c8a5c0b6238912c98a8259daa028aac",
+      "source_policy_id": "maniskill/3.0.1/official-panda-motionplanning/solvePickCube",
+      "source_task_id": "maniskill/PickCube-v1",
+      "split_group_id": "mspc-split-d1e3096789fb44bf8a9b939f9e4329016c8a5c0b6238912c98a8259daa028aac",
+      "transformed_action": {
+        "actions": {
+          "dtype": "<f8",
+          "path": "arrays/000006.npy",
+          "shape": [
+            69,
+            8
+          ]
+        },
+        "control_period_s": 0.05,
+        "coordinate_frame": "unspecified",
+        "schema_version": "1.0"
+      }
+    },
+    {
+      "corruption_type": "temporal_field_shift",
+      "generation_ordinal": 7,
+      "notes": "unlabeled M1 action corruption proposal",
+      "proposal_id": "cap-sha256-70d9e48f3e72c97e577d5e8196ad21df60fe8c20635cc56f3f9a25f75fd3a900",
+      "resolved_parameters": {
+        "fill_policy": "edge",
+        "shift_steps": 1,
+        "target_field": "arm",
+        "target_indices": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6
+        ]
+      },
+      "schema_version": "1.0",
+      "seed": 3824117223700478758,
+      "source_candidate_id": "mspc-source-candidate-4d4195f109aba699304a4d01d108ce968249aefecc55da1e09743d7ec51984c1",
+      "source_episode_id": "mspc-episode-d1e3096789fb44bf8a9b939f9e4329016c8a5c0b6238912c98a8259daa028aac",
+      "source_policy_id": "maniskill/3.0.1/official-panda-motionplanning/solvePickCube",
+      "source_task_id": "maniskill/PickCube-v1",
+      "split_group_id": "mspc-split-d1e3096789fb44bf8a9b939f9e4329016c8a5c0b6238912c98a8259daa028aac",
+      "transformed_action": {
+        "actions": {
+          "dtype": "<f8",
+          "path": "arrays/000007.npy",
+          "shape": [
+            69,
+            8
+          ]
+        },
+        "control_period_s": 0.05,
+        "coordinate_frame": "unspecified",
+        "schema_version": "1.0"
+      }
+    },
+    {
+      "corruption_type": "segment_hold",
+      "generation_ordinal": 8,
+      "notes": "unlabeled M1 action corruption proposal",
+      "proposal_id": "cap-sha256-f9a1375867a14423c729407a5e5dd5daa1ef47b26325611604f4642f6bd059a0",
+      "resolved_parameters": {
+        "end_step": 69,
+        "start_step": 1,
+        "target_indices": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7
+        ]
+      },
+      "schema_version": "1.0",
+      "seed": 8590376714258411613,
+      "source_candidate_id": "mspc-source-candidate-4d4195f109aba699304a4d01d108ce968249aefecc55da1e09743d7ec51984c1",
+      "source_episode_id": "mspc-episode-d1e3096789fb44bf8a9b939f9e4329016c8a5c0b6238912c98a8259daa028aac",
+      "source_policy_id": "maniskill/3.0.1/official-panda-motionplanning/solvePickCube",
+      "source_task_id": "maniskill/PickCube-v1",
+      "split_group_id": "mspc-split-d1e3096789fb44bf8a9b939f9e4329016c8a5c0b6238912c98a8259daa028aac",
+      "transformed_action": {
+        "actions": {
+          "dtype": "<f8",
+          "path": "arrays/000008.npy",
+          "shape": [
+            69,
+            8
+          ]
+        },
+        "control_period_s": 0.05,
+        "coordinate_frame": "unspecified",
+        "schema_version": "1.0"
+      }
+    },
+    {
+      "corruption_type": "additive_gaussian_noise",
+      "generation_ordinal": 9,
+      "notes": "unlabeled M1 action corruption proposal",
+      "proposal_id": "cap-sha256-851316303c3742aa1f88409af1b7a2a15237966102c205bd40fdeafb6fb0855a",
+      "resolved_parameters": {
+        "mean": 0.0,
+        "standard_deviation": 0.005,
+        "target_indices": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6
+        ]
+      },
+      "schema_version": "1.0",
+      "seed": 8778354464951953255,
+      "source_candidate_id": "mspc-source-candidate-01591468f3f5c1f2f6ef3e895982ccdbb1b58604c08fe4e51a1a96593cbf13e5",
+      "source_episode_id": "mspc-episode-32ad1b257a41dcab21cfe62aa45bbc985ca0576ec00b87fe25e70e0272611f87",
+      "source_policy_id": "maniskill/3.0.1/official-panda-motionplanning/solvePickCube",
+      "source_task_id": "maniskill/PickCube-v1",
+      "split_group_id": "mspc-split-32ad1b257a41dcab21cfe62aa45bbc985ca0576ec00b87fe25e70e0272611f87",
+      "transformed_action": {
+        "actions": {
+          "dtype": "<f8",
+          "path": "arrays/000009.npy",
+          "shape": [
+            57,
+            8
+          ]
+        },
+        "control_period_s": 0.05,
+        "coordinate_frame": "unspecified",
+        "schema_version": "1.0"
+      }
+    },
+    {
+      "corruption_type": "temporal_field_shift",
+      "generation_ordinal": 10,
+      "notes": "unlabeled M1 action corruption proposal",
+      "proposal_id": "cap-sha256-508f03c5e5ffcd600f9431eab79ee3434600b5fc0576aa2f88989a5f1d6562a3",
+      "resolved_parameters": {
+        "fill_policy": "edge",
+        "shift_steps": 1,
+        "target_field": "arm",
+        "target_indices": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6
+        ]
+      },
+      "schema_version": "1.0",
+      "seed": 4532780598090266919,
+      "source_candidate_id": "mspc-source-candidate-01591468f3f5c1f2f6ef3e895982ccdbb1b58604c08fe4e51a1a96593cbf13e5",
+      "source_episode_id": "mspc-episode-32ad1b257a41dcab21cfe62aa45bbc985ca0576ec00b87fe25e70e0272611f87",
+      "source_policy_id": "maniskill/3.0.1/official-panda-motionplanning/solvePickCube",
+      "source_task_id": "maniskill/PickCube-v1",
+      "split_group_id": "mspc-split-32ad1b257a41dcab21cfe62aa45bbc985ca0576ec00b87fe25e70e0272611f87",
+      "transformed_action": {
+        "actions": {
+          "dtype": "<f8",
+          "path": "arrays/000010.npy",
+          "shape": [
+            57,
+            8
+          ]
+        },
+        "control_period_s": 0.05,
+        "coordinate_frame": "unspecified",
+        "schema_version": "1.0"
+      }
+    },
+    {
+      "corruption_type": "segment_hold",
+      "generation_ordinal": 11,
+      "notes": "unlabeled M1 action corruption proposal",
+      "proposal_id": "cap-sha256-dfcc7f4da60777a953bde0e4dd1ed853116a34bd12713c7c7a06b500181e45b2",
+      "resolved_parameters": {
+        "end_step": 57,
+        "start_step": 1,
+        "target_indices": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7
+        ]
+      },
+      "schema_version": "1.0",
+      "seed": 1809921040843979270,
+      "source_candidate_id": "mspc-source-candidate-01591468f3f5c1f2f6ef3e895982ccdbb1b58604c08fe4e51a1a96593cbf13e5",
+      "source_episode_id": "mspc-episode-32ad1b257a41dcab21cfe62aa45bbc985ca0576ec00b87fe25e70e0272611f87",
+      "source_policy_id": "maniskill/3.0.1/official-panda-motionplanning/solvePickCube",
+      "source_task_id": "maniskill/PickCube-v1",
+      "split_group_id": "mspc-split-32ad1b257a41dcab21cfe62aa45bbc985ca0576ec00b87fe25e70e0272611f87",
+      "transformed_action": {
+        "actions": {
+          "dtype": "<f8",
+          "path": "arrays/000011.npy",
+          "shape": [
+            57,
+            8
+          ]
+        },
+        "control_period_s": 0.05,
+        "coordinate_frame": "unspecified",
+        "schema_version": "1.0"
+      }
+    },
+    {
+      "corruption_type": "additive_gaussian_noise",
+      "generation_ordinal": 12,
+      "notes": "unlabeled M1 action corruption proposal",
+      "proposal_id": "cap-sha256-3f648a52d0214cf12693597aafda2cb0d86f69470fb79950cc5a7f985d91e6eb",
+      "resolved_parameters": {
+        "mean": 0.0,
+        "standard_deviation": 0.005,
+        "target_indices": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6
+        ]
+      },
+      "schema_version": "1.0",
+      "seed": 669273157236525953,
+      "source_candidate_id": "mspc-source-candidate-cf9cc739dad666217870f41d74d82059a8c7d2703969f0504c3acd2c30ba6c21",
+      "source_episode_id": "mspc-episode-5d1c30e58dde21f187e2ff03606cee92325ae3dc4066fb743f6dc2f964afabdf",
+      "source_policy_id": "maniskill/3.0.1/official-panda-motionplanning/solvePickCube",
+      "source_task_id": "maniskill/PickCube-v1",
+      "split_group_id": "mspc-split-5d1c30e58dde21f187e2ff03606cee92325ae3dc4066fb743f6dc2f964afabdf",
+      "transformed_action": {
+        "actions": {
+          "dtype": "<f8",
+          "path": "arrays/000012.npy",
+          "shape": [
+            85,
+            8
+          ]
+        },
+        "control_period_s": 0.05,
+        "coordinate_frame": "unspecified",
+        "schema_version": "1.0"
+      }
+    },
+    {
+      "corruption_type": "temporal_field_shift",
+      "generation_ordinal": 13,
+      "notes": "unlabeled M1 action corruption proposal",
+      "proposal_id": "cap-sha256-97a9151537d9026e96c899e9c657f2a241e123f1ffee34060b2e3f8d2954f3cc",
+      "resolved_parameters": {
+        "fill_policy": "edge",
+        "shift_steps": 1,
+        "target_field": "arm",
+        "target_indices": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6
+        ]
+      },
+      "schema_version": "1.0",
+      "seed": 2566759285796245803,
+      "source_candidate_id": "mspc-source-candidate-cf9cc739dad666217870f41d74d82059a8c7d2703969f0504c3acd2c30ba6c21",
+      "source_episode_id": "mspc-episode-5d1c30e58dde21f187e2ff03606cee92325ae3dc4066fb743f6dc2f964afabdf",
+      "source_policy_id": "maniskill/3.0.1/official-panda-motionplanning/solvePickCube",
+      "source_task_id": "maniskill/PickCube-v1",
+      "split_group_id": "mspc-split-5d1c30e58dde21f187e2ff03606cee92325ae3dc4066fb743f6dc2f964afabdf",
+      "transformed_action": {
+        "actions": {
+          "dtype": "<f8",
+          "path": "arrays/000013.npy",
+          "shape": [
+            85,
+            8
+          ]
+        },
+        "control_period_s": 0.05,
+        "coordinate_frame": "unspecified",
+        "schema_version": "1.0"
+      }
+    },
+    {
+      "corruption_type": "segment_hold",
+      "generation_ordinal": 14,
+      "notes": "unlabeled M1 action corruption proposal",
+      "proposal_id": "cap-sha256-39c5976f3505f12f085c7a6f8852fe6ca999b74cbe3f6d822078c523af073153",
+      "resolved_parameters": {
+        "end_step": 85,
+        "start_step": 1,
+        "target_indices": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7
+        ]
+      },
+      "schema_version": "1.0",
+      "seed": 4472478384489567718,
+      "source_candidate_id": "mspc-source-candidate-cf9cc739dad666217870f41d74d82059a8c7d2703969f0504c3acd2c30ba6c21",
+      "source_episode_id": "mspc-episode-5d1c30e58dde21f187e2ff03606cee92325ae3dc4066fb743f6dc2f964afabdf",
+      "source_policy_id": "maniskill/3.0.1/official-panda-motionplanning/solvePickCube",
+      "source_task_id": "maniskill/PickCube-v1",
+      "split_group_id": "mspc-split-5d1c30e58dde21f187e2ff03606cee92325ae3dc4066fb743f6dc2f964afabdf",
+      "transformed_action": {
+        "actions": {
+          "dtype": "<f8",
+          "path": "arrays/000014.npy",
+          "shape": [
+            85,
+            8
+          ]
+        },
+        "control_period_s": 0.05,
+        "coordinate_frame": "unspecified",
+        "schema_version": "1.0"
+      }
+    },
+    {
+      "corruption_type": "additive_gaussian_noise",
+      "generation_ordinal": 15,
+      "notes": "unlabeled M1 action corruption proposal",
+      "proposal_id": "cap-sha256-773f8943faf963d2e4bdd64936ba9057914d99cc31569ee68eb6301f0820facf",
+      "resolved_parameters": {
+        "mean": 0.0,
+        "standard_deviation": 0.005,
+        "target_indices": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6
+        ]
+      },
+      "schema_version": "1.0",
+      "seed": 7094342613293550825,
+      "source_candidate_id": "mspc-source-candidate-4726c75a3310fbe94ff9557b7f86e8eb422a8cd35c56af7acd359b71cce91d59",
+      "source_episode_id": "mspc-episode-27f4cb1229f112ce993bb893c9274cf684bd319656aba851005c8a02635e5828",
+      "source_policy_id": "maniskill/3.0.1/official-panda-motionplanning/solvePickCube",
+      "source_task_id": "maniskill/PickCube-v1",
+      "split_group_id": "mspc-split-27f4cb1229f112ce993bb893c9274cf684bd319656aba851005c8a02635e5828",
+      "transformed_action": {
+        "actions": {
+          "dtype": "<f8",
+          "path": "arrays/000015.npy",
+          "shape": [
+            77,
+            8
+          ]
+        },
+        "control_period_s": 0.05,
+        "coordinate_frame": "unspecified",
+        "schema_version": "1.0"
+      }
+    },
+    {
+      "corruption_type": "temporal_field_shift",
+      "generation_ordinal": 16,
+      "notes": "unlabeled M1 action corruption proposal",
+      "proposal_id": "cap-sha256-e979614321f052537e0b8b7335611071b6a41811a64e2c8881c02c67e3d82806",
+      "resolved_parameters": {
+        "fill_policy": "edge",
+        "shift_steps": 1,
+        "target_field": "arm",
+        "target_indices": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6
+        ]
+      },
+      "schema_version": "1.0",
+      "seed": 734047729187833628,
+      "source_candidate_id": "mspc-source-candidate-4726c75a3310fbe94ff9557b7f86e8eb422a8cd35c56af7acd359b71cce91d59",
+      "source_episode_id": "mspc-episode-27f4cb1229f112ce993bb893c9274cf684bd319656aba851005c8a02635e5828",
+      "source_policy_id": "maniskill/3.0.1/official-panda-motionplanning/solvePickCube",
+      "source_task_id": "maniskill/PickCube-v1",
+      "split_group_id": "mspc-split-27f4cb1229f112ce993bb893c9274cf684bd319656aba851005c8a02635e5828",
+      "transformed_action": {
+        "actions": {
+          "dtype": "<f8",
+          "path": "arrays/000016.npy",
+          "shape": [
+            77,
+            8
+          ]
+        },
+        "control_period_s": 0.05,
+        "coordinate_frame": "unspecified",
+        "schema_version": "1.0"
+      }
+    },
+    {
+      "corruption_type": "segment_hold",
+      "generation_ordinal": 17,
+      "notes": "unlabeled M1 action corruption proposal",
+      "proposal_id": "cap-sha256-d676adcffd39480b64334f7a4e9b4189a099b3596c53246dcc119c2558d26941",
+      "resolved_parameters": {
+        "end_step": 77,
+        "start_step": 1,
+        "target_indices": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7
+        ]
+      },
+      "schema_version": "1.0",
+      "seed": 747826232447148038,
+      "source_candidate_id": "mspc-source-candidate-4726c75a3310fbe94ff9557b7f86e8eb422a8cd35c56af7acd359b71cce91d59",
+      "source_episode_id": "mspc-episode-27f4cb1229f112ce993bb893c9274cf684bd319656aba851005c8a02635e5828",
+      "source_policy_id": "maniskill/3.0.1/official-panda-motionplanning/solvePickCube",
+      "source_task_id": "maniskill/PickCube-v1",
+      "split_group_id": "mspc-split-27f4cb1229f112ce993bb893c9274cf684bd319656aba851005c8a02635e5828",
+      "transformed_action": {
+        "actions": {
+          "dtype": "<f8",
+          "path": "arrays/000017.npy",
+          "shape": [
+            77,
+            8
+          ]
+        },
+        "control_period_s": 0.05,
+        "coordinate_frame": "unspecified",
+        "schema_version": "1.0"
+      }
+    }
+  ],
+  "serialization_version": 1,
+  "source_dataset_id": "sha256:692573599bd64c6b417ee7ef4360507c39d1a1ea75626489923a16bfeb647db5"
+}

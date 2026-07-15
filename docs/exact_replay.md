@@ -132,9 +132,15 @@ digest; the archive root itself is runtime-only. The adapter refuses to resolve
 a case unless compatibility, source/corruption content, action layout and
 bounds, solver identity, task identity, and archive digests agree.
 
-Each session lazily creates a fresh one-environment GPU `PickCube-v1` runtime,
-converts safe archive leaves to runtime tensors, calls `set_state_dict`, reads
-the complete state back, and emits restoration evidence. The archive reference
+Each session lazily creates a fresh one-environment GPU `PickCube-v1` runtime.
+The replay reference binds the official source reset seed from the exact archive.
+Before state restoration, each independently created baseline or corrupted
+session calls the public Gym wrapper's `reset(seed=...)` with that same bound
+seed; this initializes wrapper state such as Gymnasium's order enforcement. The
+session then converts safe archive leaves to runtime tensors, calls
+`set_state_dict`, reads the complete state back, and emits restoration evidence.
+A missing seed or a mismatch between the replay reference and exact archive is
+invalid context before restoration or action execution. The archive reference
 remains bound to the exact source-state digest. Live restoration may use the
 checked-in numeric tolerance only when the complete structure matches; both
 fresh sessions must verify against that same descriptor-bound comparison

@@ -44,6 +44,8 @@ from .task_evidence import (
     build_pickcube_task_evidence,
 )
 
+PICKCUBE_SOURCE_RESET_SEED_METADATA_KEY = "source_reset_seed"
+
 
 class ManiSkillPickCubeSessionError(ReplayExecutionError):
     """Raised when a PickCube replay session cannot execute its contract."""
@@ -328,6 +330,7 @@ class LoadedReferenceState:
     """One archive-loaded initial state detached from its runtime path."""
 
     source_reference_id: str
+    source_reset_seed: int
     state_key: str
     state_digest: str
     state_tree: object
@@ -353,6 +356,23 @@ class LoadedReferenceState:
             raise ReplayInvalidContextError(
                 "loaded PickCube state must contain numeric components"
             )
+        if (
+            type(self.source_reset_seed) is not int
+            or not 0 <= self.source_reset_seed < 2**32
+        ):
+            raise ReplayInvalidContextError(
+                "loaded PickCube state has an invalid source reset seed"
+            )
+
+
+def require_pickcube_source_reset_seed(reference: ReplayStateReference) -> int:
+    """Return the exact archive-bound seed used to initialize the Gym wrapper."""
+    seed = reference.metadata.get(PICKCUBE_SOURCE_RESET_SEED_METADATA_KEY)
+    if type(seed) is not int or not 0 <= seed < 2**32:
+        raise ReplayInvalidContextError(
+            "PickCube replay reference requires a content-bound source reset seed"
+        )
+    return seed
 
 
 @dataclass(frozen=True, slots=True)
@@ -453,6 +473,7 @@ class ArchivePickCubeReferenceStateStore:
         from .archive import ReferenceArchiveError, load_archive_state
         from .state_tree import flatten_state_tree
 
+        source_reset_seed = require_pickcube_source_reset_seed(reference)
         if reference.state_key != "initial_state":
             raise ReplayInvalidContextError(
                 "PickCube replay supports only the archived initial state"
@@ -470,13 +491,19 @@ class ArchivePickCubeReferenceStateStore:
         component_count = sum(
             int(leaf.value.size) for leaf in flatten_state_tree(loaded.tree)
         )
-        return LoadedReferenceState(
+        result = LoadedReferenceState(
             source_reference_id=loaded.episode_id,
+            source_reset_seed=loaded.source_reset_seed,
             state_key=loaded.state_key,
             state_digest=loaded.state_digest,
             state_tree=loaded.tree,
             compared_component_count=component_count,
         )
+        if result.source_reset_seed != source_reset_seed:
+            raise ReplayInvalidContextError(
+                "PickCube source reset seed differs from the validated runtime archive"
+            )
+        return result
 
     def validate_reference(self, reference: ReplayStateReference) -> None:
         """Reject a reference whose archive identity or digest changed."""
@@ -518,6 +545,10 @@ class PickCubeRuntime(Protocol):
 
     def prepare_state_tree(self, environment: object, state_tree: object) -> object:
         """Move numeric leaves to the environment's expected device and type."""
+        ...
+
+    def reset_environment(self, environment: object, *, seed: int) -> None:
+        """Initialize the public Gym wrapper with the archive-bound source seed."""
         ...
 
     def set_state_dict(self, environment: object, state_tree: object) -> None:
@@ -679,6 +710,19 @@ class LazyManiSkillPickCubeRuntime:
 
         return convert(clone_state_tree(state_tree))
 
+    def reset_environment(self, environment: object, *, seed: int) -> None:
+        """Reset through the public wrapper before restoring archived state."""
+        if type(seed) is not int or not 0 <= seed < 2**32:
+            raise ReplayInvalidContextError(
+                "PickCube runtime source reset seed is invalid"
+            )
+        reset = getattr(environment, "reset", None)
+        if not callable(reset):
+            raise ManiSkillPickCubeSessionError(
+                "PickCube environment is missing required callable reset"
+            )
+        reset(seed=seed)
+
     def set_state_dict(self, environment: object, state_tree: object) -> None:
         """Call the verified public state restoration API."""
         self._method(environment, "set_state_dict")(state_tree)
@@ -821,6 +865,7 @@ class ManiSkillPickCubeReplaySession:
             else replay_case.transformed_action
         )
         action_contract.validate_action_chunk(action, role=execution_role.value)
+        source_reset_seed = require_pickcube_source_reset_seed(state_reference)
         self._case = replay_case
         self._role = execution_role
         self._settings = settings
@@ -829,6 +874,7 @@ class ManiSkillPickCubeReplaySession:
         self._state_loader = state_loader
         self._state_comparator = state_comparator
         self._runtime = runtime
+        self._source_reset_seed = source_reset_seed
         self._expected_action = action
         self._restored = False
         self._closed = False
@@ -863,6 +909,10 @@ class ManiSkillPickCubeReplaySession:
             raise ReplayInvalidContextError(
                 "PickCube archive state identity does not match the replay reference"
             )
+        if loaded.source_reset_seed != self._source_reset_seed:
+            raise ReplayInvalidContextError(
+                "PickCube source reset seed differs from the loaded archive state"
+            )
         tolerance = (
             0.0
             if reference.comparison_semantic is StateComparisonSemantic.EXACT_DIGEST
@@ -890,6 +940,7 @@ class ManiSkillPickCubeReplaySession:
                     ),
                 },
             )
+        self._runtime.reset_environment(self._environment, seed=self._source_reset_seed)
         runtime_state = self._runtime.prepare_state_tree(
             self._environment, loaded.state_tree
         )
@@ -944,6 +995,7 @@ class ManiSkillPickCubeReplaySession:
                 "pickcube_state_verification_semantic": (
                     PICKCUBE_STATE_VERIFICATION_SEMANTIC
                 ),
+                "pickcube_source_reset_seed": self._source_reset_seed,
             },
         )
 
@@ -1052,8 +1104,10 @@ __all__ = [
     "PickCubeReferenceStateLoader",
     "PickCubeReplayActionContract",
     "PickCubeRuntime",
+    "PICKCUBE_SOURCE_RESET_SEED_METADATA_KEY",
     "PICKCUBE_STATE_VERIFICATION_MAX_ABSOLUTE_TOLERANCE",
     "PICKCUBE_STATE_VERIFICATION_SEMANTIC",
     "PickCubeStateTreeComparator",
     "StateTreeComparison",
+    "require_pickcube_source_reset_seed",
 ]

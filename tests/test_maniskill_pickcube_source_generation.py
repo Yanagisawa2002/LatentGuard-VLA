@@ -367,6 +367,36 @@ def test_recording_rejects_incomplete_interception_count() -> None:
         _record(_Factory(elapsed_offset=1))
 
 
+def test_recording_rejects_solver_reset_seed_drift() -> None:
+    factory = _Factory()
+
+    def wrong_seed_solver(
+        environment: object, *, seed: int, debug: bool, vis: bool
+    ) -> object:
+        assert isinstance(environment, RecordingEnvironmentProxy)
+        environment.reset(seed=seed + 1)
+        result: object = None
+        for action in (
+            np.array([0.1, 0.0], dtype=np.float32),
+            np.array([0.0, 0.1], dtype=np.float32),
+        ):
+            result = environment.step(action)
+        return result
+
+    with pytest.raises(PickCubeSourceGenerationError, match="reset seed differs"):
+        record_official_source_trajectory(
+            seed=7,
+            environment_factory=factory,
+            settings=_settings(),
+            action_contract=_contract(),
+            key_contract=_keys(),
+            solver=wrong_seed_solver,
+            solver_identity=_identity(),
+        )
+
+    assert factory.created[0].closed
+
+
 def test_recording_rejects_solver_failure() -> None:
     def failed_solver(environment: object, *, seed: int, debug: bool, vis: bool) -> int:
         assert isinstance(environment, RecordingEnvironmentProxy)

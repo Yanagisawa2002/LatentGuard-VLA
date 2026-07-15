@@ -422,7 +422,7 @@ def test_replay_case_and_bundle_bind_archive_without_runtime_paths() -> None:
     assert artifacts.settings.state_tolerance == pytest.approx(
         artifacts.compatibility.expected_contract.state_round_trip_tolerance
     )
-    assert replay_case.adapter_version == "1.1.0"
+    assert replay_case.adapter_version == "1.1.1"
     assert replay_case.adapter_version == MANISKILL_PICKCUBE_ADAPTER_VERSION
     assert (
         replay_case.state_reference.metadata["state_verification_semantic"]
@@ -434,6 +434,7 @@ def test_replay_case_and_bundle_bind_archive_without_runtime_paths() -> None:
         ]
         == PICKCUBE_STATE_VERIFICATION_MAX_ABSOLUTE_TOLERANCE
     )
+    assert replay_case.state_reference.metadata["source_reset_seed"] == reference.seed
     assert (
         replay_case.state_reference.metadata["reference_archive_content_digest"]
         == artifacts.archive.content_digest

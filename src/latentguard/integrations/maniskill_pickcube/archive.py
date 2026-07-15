@@ -209,6 +209,7 @@ class LoadedArchiveState:
     """One immutable state selected from a validated runtime archive."""
 
     episode_id: str
+    source_reset_seed: int
     state_key: Literal["initial_state", "terminal_state"]
     tree: NormalizedStateTree
     state_digest: str
@@ -319,9 +320,9 @@ def validate_reference_episode(episode: ManiSkillReferenceEpisode) -> None:
     _freeze_canonical_mapping(
         episode.environment_configuration, f"{context}.environment_configuration"
     )
-    if type(episode.seed) is not int or not 0 <= episode.seed < 2**64:
+    if type(episode.seed) is not int or not 0 <= episode.seed < 2**32:
         raise ReferenceArchiveError(
-            f"{context}.seed: expected an integer in [0, 2**64)"
+            f"{context}.seed: expected an integer in [0, 2**32)"
         )
     actions = _require_numeric_array(
         episode.source_actions, f"{context}.source_actions"
@@ -517,6 +518,7 @@ def load_archive_state(
     tree = cast(NormalizedStateTree, getattr(episode, state_key))
     return LoadedArchiveState(
         episode_id=episode.episode_id,
+        source_reset_seed=episode.seed,
         state_key=state_key,
         tree=tree,
         state_digest=compute_state_tree_digest(tree),

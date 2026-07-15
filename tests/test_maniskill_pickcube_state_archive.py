@@ -133,6 +133,11 @@ def _write_manifest(path: Path, manifest: dict[str, object]) -> None:
     )
 
 
+def test_reference_episode_seed_uses_the_uint32_source_contract() -> None:
+    with pytest.raises(ReferenceArchiveError, match=r"\[0, 2\*\*32\)"):
+        replace(_reference_episode(), seed=2**32)
+
+
 def test_state_tree_nested_round_trip_preserves_structure_dtype_and_shape() -> None:
     source = {
         "z": [np.array([[1, 2]], dtype=np.int16)],

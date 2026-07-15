@@ -809,6 +809,10 @@ def record_official_source_trajectory(
                 "official solver reported motion-planning failure"
             )
         recorder.verify_interception_complete()
+        if recorder.reset_seed != seed:
+            raise PickCubeSourceGenerationError(
+                "official solver reset seed differs from the requested source seed"
+            )
         terminal_task = environment_factory.capture_task_snapshot(
             environment, key_contract
         )

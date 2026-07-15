@@ -187,6 +187,32 @@ manual relabeling, or general robot-safety claims are included.
   `physx_cuda`, the solver/task/controller/state identities, and compatibility
   identity `sha256:05a560fd89e0989b6d94017c6456efc535de4a0bf87ededaf468f5e2d9ef71f7`.
   Its sanitized schema-1.1 report was retrieved and reviewed locally.
-- Remote acceptance remains pending. The resolved post-discovery contract is
-  locally bound but not yet committed or pushed. The second trusted probe,
-  source collection, paired replay, and result commit have not occurred.
+- The resolved post-discovery contract, dependency pins, action layout, and
+  three-transform M1 plan were validated locally (`874 passed, 3 skipped`),
+  committed as `d2d918259046a65447a87c4eb4c4a485b0eccecc`, pushed, and synchronized
+  exactly to the clean remote checkout.
+- Trusted probe `20260715T074810Z_m2c-pickcube-trusted_d2d9182_seed0` passed
+  with `trusted_replay_ready=true`. One-source gate
+  `20260715T074954Z_m2c-pickcube-collect-gate_d2d9182_seed0` accepted its first
+  attempt and independently replayed the baseline successfully. Formal
+  collection `20260715T075040Z_m2c-pickcube-collect6_d2d9182_seed0` accepted
+  six of six attempts with six successful independent baselines. M1 run
+  `20260715T075148Z_m2c-pickcube-corrupt18_d2d9182_seed314159` generated 18
+  immutable unlabeled proposals, six per checked-in transform, with no
+  applicability skips.
+- Paired-replay run
+  `20260715T075300Z_m2c-pickcube-replay12_d2d9182_seed271828` was rejected:
+  all 12 attempts preserved complete 70-component restoration with maximum
+  error `1.1920928955078125e-07`, then raised Gymnasium `ResetNeeded` at
+  baseline action step zero. No task failure was fabricated. The cause was an
+  uninitialized public Gym wrapper: the replay session restored through the
+  unwrapped state API without first calling the wrapper's public `reset`.
+- The local adapter-only correction upgrades PickCube to `1.1.1`, binds the
+  actual official source reset seed into archive-backed replay identity, and
+  requires each fresh baseline/corrupted wrapper to execute
+  `reset(bound_source_seed) -> set_state_dict -> get_state_dict` before task
+  evaluation or stepping. Missing, out-of-range, or archive-drifted seeds fail
+  closed, and source recording now proves the solver used the requested seed.
+  Other adapters are unchanged. This correction must be committed, pushed,
+  synchronized exactly, and rerun under a new replay identity before M2C can be
+  accepted.

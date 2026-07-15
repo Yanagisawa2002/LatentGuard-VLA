@@ -17,11 +17,15 @@ records official Panda motion-planning sources, independently replays every
 accepted source, and keeps exact runtime state archives outside Git. It does not
 use LangMani or train a model.
 
-The current M2C checkout has completed its first real-runtime discovery and
-locally binds the probe-verified dependency, compatibility, and action
-contracts. No real ManiSkill source trajectory or strong task-outcome evidence
-has been accepted yet: a second trusted probe must match the committed contract
-before collection or paired replay begins.
+The current M2C checkout has passed a trusted real-runtime probe and accepted
+six official ManiSkill source trajectories with six independent successful
+baseline replays. The first 12-proposal paired-replay smoke was rejected because
+the public Gym wrapper had not been initialized before stepping; its 12 runtime
+errors were preserved without fabricating task failures. The adapter-local
+`1.1.1` correction binds the archived source seed and initializes each fresh
+wrapper before exact state restoration. Strong paired-replay evidence for the
+corrupted proposals remains pending a clean rerun from the pushed correction;
+no training is included.
 
 Tracked source is developed and validated in the local repository, which is
 authoritative. Remote servers only pull committed revisions and execute them;
@@ -140,11 +144,11 @@ latentguard collect-maniskill-pickcube --help
 latentguard replay-maniskill-pickcube --help
 ```
 
-The successful schema-1.1 discovery probe resolved the dependency,
-compatibility, and action contracts without guessing them. Trusted source
-collection and paired replay begin only after a second remote probe agrees with
-the locally committed contract. Key-only access is verified; trusted probe,
-collection, replay, and remote acceptance remain pending. See the
+The successful schema-1.1 discovery and trusted probes resolved and confirmed
+the dependency, compatibility, and action contracts without guessing them.
+Key-only access and six-source collection are verified. The first paired replay
+correctly exposed a wrapper-initialization runtime error; remote acceptance
+remains pending a rerun from the pushed `1.1.1` correction. See the
 [PickCube reference integration](docs/maniskill_pickcube_reference.md).
 
 Preview an exact-revision remote synchronization without network access:
