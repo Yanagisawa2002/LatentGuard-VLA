@@ -1,0 +1,164 @@
+# ManiSkill PickCube reference integration
+
+## Scope and role
+
+M2C uses ManiSkill `3.0.1` `PickCube-v1` with the Panda robot as the first real
+simulator implementation of the generic M2B-Core exact-replay protocols. It is
+a narrow reference because the task has an official packaged Panda
+motion-planning solution and a compact terminal evaluator. It is not a general
+ManiSkill adapter and does not depend on LangMani.
+
+The required runtime contract is one environment, GPU simulation,
+`control_mode="pd_joint_pos"`, a minimal state-free observation mode whose exact
+installed spelling must be probe-verified, no camera observations, and no
+video. M2C does not train a model.
+
+## Compatibility before trust
+
+`latentguard probe-maniskill-pickcube` inspects the real installed runtime and
+writes a sanitized, versioned report. The report binds the task and official
+solver source digests, controller and action contract, public state/evaluator
+APIs, reset-state structure, and state round-trip behavior. Operational Python,
+PyTorch, CUDA, GPU, SAPIEN, and mplib versions are retained for diagnosis, but
+hostnames and installation paths do not enter semantic compatibility identity.
+
+ManiSkill must be exactly `3.0.1`. The compatible mplib package and action
+layout are deliberately left unresolved until the first remote probe; neither
+is guessed from memory or from vector dimension. The verified dependency set
+and `configs/integrations/maniskill_pickcube/action-layout-v1.json` are then
+changed locally, committed, pushed, and checked by a second probe. Trusted
+collection cannot begin while the checked-in contract is unresolved or differs
+from the remote report. The template's `1e-6` state tolerance is provisional,
+must be checked against the observed round trip, and cannot be loosened on the
+remote machine.
+
+## Official source boundary
+
+Source actions are expected from the installed official module
+`mani_skill.examples.motionplanning.panda.solutions.pick_cube` and its `solve`
+entry point, the pinned-package equivalent of the official PickCube solution.
+The compatibility probe must confirm and content-bind that installed source;
+the project neither copies nor modifies it. A narrow environment proxy records
+every action passed to `step`, copies it before storage, checks that the solver
+did not mutate it, and compares the intercepted count with the environment's
+elapsed-step evidence. The proxy records the exact reset-boundary state,
+terminal state, task evidence, seed, and action contract without using a private
+HDF5 handle or requiring ManiSkill's `RecordEpisode` parser.
+
+A solver-reported success is only generation evidence. A second fresh
+environment must restore the recorded state, verify the full round trip, replay
+every recorded source action, and independently establish terminal success.
+Only then is the trajectory admitted to the runtime archive and M0 dataset.
+
+## State archive
+
+Runtime archives live outside Git. Each state tree is flattened with canonical
+typed key paths. A strict JSON manifest records mapping/list/tuple structure
+plus the dtype, shape, and file reference of every numeric leaf; leaves use
+non-pickle NPY files. Loading rejects traversal, links, unknown versions, object
+arrays, non-finite data, missing or extra files, dtype/shape changes, and digest
+tampering before reconstructing the tree.
+
+The `maniskill_state_tree_v1` digest binds structure, canonical leaf paths,
+dtype, shape, and exact C-order bytes. Converting leaves back to runtime tensors
+and devices occurs only inside the integration. A configured numerical
+tolerance is diagnostic and fail-closed; verified strong M2B evidence still
+requires the exact-digest restoration gate for both sessions.
+
+## M0 import and action corruption
+
+Every accepted source becomes one M0 episode with a single observation at
+timestamp zero, no cameras, and one complete official-source action candidate.
+The Panda robot-state vector is the concatenation of joint positions followed
+by joint velocities in the exact public active-joint name order recorded by the
+archive. Joint names and the robot-state semantic version are content-bound;
+array position alone is never treated as a name.
+
+The source candidate receives a strong simulator label only after independent
+baseline success: success `true`, binary progress `1.0`, and unsafe `false`
+under the narrow cube-below-world-zero proxy. M1 then creates unlabeled
+proposals using only the verified action layout. Transformations are not
+clipped; actions outside the probed action bounds are invalid context and are
+not task failures.
+
+## Paired replay and evidence
+
+The explicit adapter ID is `maniskill_pickcube_v1`. Runtime archive and dataset
+paths are supplied separately and never enter adapter, replay-case, or evidence
+identity. Each replay case uses the standard M2B models and references one
+content-bound archived reset state.
+
+Baseline and corrupted actions execute in separate freshly created GPU
+environments. Both restore and read back the same archived state. The original
+source action must execute completely and succeed before the transformed action
+is interpreted. Simulator exceptions remain execution errors; restoration or
+action-contract mismatches are invalid context; a complete corrupted task
+failure remains conclusive evidence.
+
+Terminal task evidence uses the official `success`, object-placed,
+robot-static, and grasp-status values. Missing, non-scalar, non-boolean, or
+non-finite values are never replaced with failure defaults. Progress uses
+`pickcube_binary_completion_v0`: `1.0` for official success and `0.0` for a
+complete official failure. No fractional progress is claimed.
+
+Unsafe uses `pickcube_cube_center_below_world_zero_v0` and is true only when the
+cube center is verified below world `z=0`. It says nothing about collision or
+contact force, self-collision, humans, hardware, or general workspace safety.
+Still grasping, incomplete placement, and robot motion do not themselves imply
+unsafe.
+
+The adapter's exact-simulator/strong descriptor is a ceiling, not a result. A
+record becomes strong and simulator-verified only after compatibility binding,
+both exact restorations, complete successful baseline execution, complete
+corrupted execution, and complete terminal task evaluation pass.
+
+## Commands and remote lifecycle
+
+The integration exposes three commands:
+
+```text
+latentguard probe-maniskill-pickcube --help
+latentguard collect-maniskill-pickcube --help
+latentguard replay-maniskill-pickcube --help
+```
+
+Collection targets six independently successful trajectories with deterministic
+ordered seeds and an explicit attempt limit. Replay reuses the M2A ledger and
+supports bounded selection, dry run, resume, execution-error retry, and
+fail-fast behavior. Dry run validates static artifacts and deterministic
+identities without importing the simulator runtime, creating a session,
+stepping an environment, or creating an output directory.
+
+Collection writes the immutable state archive, finalized M0 bundle, and a
+compact content-bound reference summary. The standard M2B `ReplayBundle` is
+materialized by replay only after the M1 proposal dataset exists; collection
+does not invent an alternate proposal-free bundle format.
+
+Every remote gate runs from an exact pushed SHA via a key-authenticated SSH host
+alias. Large archives and logs remain under the remote run root outside the
+checkout. Only reviewed, sanitized compatibility, collection, replay, evidence,
+state-statistic, environment, and resume summaries return under
+`reports/m2c/<run-id>/`.
+
+## First-stage status
+
+The local integration, strict unresolved expected-contract template, safe
+archive, M0 import, adapter boundaries, three CLIs, and CPU fake tests are
+implemented. The probe requirement currently pins only `mani_skill==3.0.1`.
+No mplib version, action dimension, action indices, gripper field, observation
+spelling, compatibility identity, remote state behavior, source trajectory, or
+simulator result is claimed as verified.
+
+No remote M2C execution has been performed or accepted. It remains blocked
+until rotation of the previously exposed credential is confirmed and a
+configured SSH alias passes key-only `BatchMode=yes` authentication. The first
+probe, locally committed resolved dependency/action contract, second trusted
+probe, source collection, paired replay, compact report retrieval, and final
+result commit are all still pending.
+
+## Known limitations
+
+M2C covers one task, robot, controller, backend, reset boundary, and complete
+trajectory replay. It has no images, video, subtrajectory replay, vectorized
+environments, fractional progress, general safety judgment, policy checkpoint,
+or training path.

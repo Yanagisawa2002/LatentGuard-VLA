@@ -81,6 +81,11 @@ Before a full remote run, pass these gates in order: configuration validation; C
 - Baseline and corrupted actions require independently created or independently reset sessions, both restored from the same content-bound state reference with verified state round trips.
 - Replay adapter exceptions remain execution errors. Restoration mismatch and action-contract mismatch remain invalid context rather than task failure.
 - Replay fixture adapters are non-physical infrastructure tests. Only an explicitly trusted real simulator adapter may emit strong, simulator-verified evidence after every exact-replay gate passes.
+- Real simulator adapters must pin and verify dependency versions and record a compatibility probe before trusted replay; a package version alone is insufficient when task, controller, solver source, or public behavior can drift.
+- Content-bind the source solver, task implementation, action contract, and state contract for real simulator replay. Runtime paths, package installation paths, hosts, and probe timestamps must not enter semantic identity.
+- Accept a real simulator source trajectory only after an independent baseline replay from its verified initial state succeeds. Store integration runtime state archives outside Git.
+- Permit exact simulator evidence only after both state restorations, baseline success, complete corrupted execution, and terminal evaluation pass for that attempt.
+- Commit and push real simulator configuration changes locally before using them remotely, and sanitize runtime probe output before retrieval.
 - Preserve complete single-source provenance for every corruption. Multi-source corruption is prohibited until the schema can represent every parent completely.
 - A transformation must never silently clip, normalize, reshape, repair, retarget, or otherwise change its configured meaning. Applicability failures must be explicit skips or descriptive errors.
 - Do not commit machine-specific absolute paths or credentials. Copy training configurations into run outputs.

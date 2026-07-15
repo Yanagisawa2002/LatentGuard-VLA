@@ -6,6 +6,8 @@ from collections.abc import Mapping, Sequence
 from dataclasses import dataclass
 from types import MappingProxyType
 
+import numpy as np
+
 from latentguard.corruptions.models import CorruptedActionProposal
 from latentguard.evaluation.base import ApplicabilityDecision
 from latentguard.evaluation.models import (
@@ -292,9 +294,61 @@ class ExactStatePairedReplayEvaluator:
         )
         metrics: dict[str, JsonScalar] = {
             "replay_case_id": replay_case.case_id,
+            "replay_baseline_requested_steps": (
+                0
+                if result.baseline_execution is None
+                else result.baseline_execution.requested_step_count
+            ),
             "replay_baseline_steps": baseline_steps,
+            "replay_corrupted_requested_steps": (
+                0
+                if result.corrupted_execution is None
+                else result.corrupted_execution.requested_step_count
+            ),
             "replay_corrupted_steps": corrupted_steps,
         }
+        for name, restoration in (
+            (
+                "replay_baseline_restoration_maximum_absolute_error",
+                result.baseline_restoration,
+            ),
+            (
+                "replay_corrupted_restoration_maximum_absolute_error",
+                result.corrupted_restoration,
+            ),
+        ):
+            if (
+                restoration is not None
+                and restoration.maximum_absolute_error is not None
+            ):
+                metrics[name] = restoration.maximum_absolute_error
+        source = np.asarray(replay_case.original_action.actions, dtype=np.float64)
+        corrupted = np.asarray(replay_case.transformed_action.actions, dtype=np.float64)
+        difference = np.abs(source - corrupted)
+        metrics["source_corrupted_action_mean_absolute_difference"] = float(
+            np.mean(difference)
+        )
+        metrics["source_corrupted_action_maximum_absolute_difference"] = float(
+            np.max(difference)
+        )
+        if initial is not None:
+            initial_distance = initial.diagnostics.get("pickcube_cube_to_goal_distance")
+            if initial_distance is not None:
+                metrics["initial_cube_to_goal_distance"] = initial_distance
+        if terminal is not None:
+            for source_name, metric_name in (
+                (
+                    "pickcube_cube_to_goal_distance",
+                    "final_cube_to_goal_distance",
+                ),
+                ("pickcube_cube_center_z", "final_cube_center_z"),
+                ("pickcube_object_placed", "object_placed"),
+                ("pickcube_robot_static", "robot_static"),
+                ("pickcube_grasped", "grasped"),
+            ):
+                metric = terminal.diagnostics.get(source_name)
+                if metric is not None:
+                    metrics[metric_name] = metric
         metrics.update(result.diagnostics)
         notes = (
             "deterministic non-physical replay fixture; infrastructure evidence only"

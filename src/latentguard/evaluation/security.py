@@ -40,7 +40,17 @@ _SSH_EXECUTABLE_RE = re.compile(
 )
 _TRACEBACK_RE = re.compile(r"(?i)traceback\s*\(most recent call last\)")
 _PATH_OPTIONS = frozenset(
-    {"--source-dir", "--corruption-dir", "--output-dir", "--config"}
+    {
+        "--action-layout",
+        "--compatibility-report",
+        "--config",
+        "--corruption-dir",
+        "--expected-contract",
+        "--output-dir",
+        "--runtime-archive-dir",
+        "--source-dir",
+        "--summary-output",
+    }
 )
 _SECRET_OPTIONS = frozenset(
     {

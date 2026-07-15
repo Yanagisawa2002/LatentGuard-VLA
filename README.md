@@ -10,7 +10,17 @@ Milestone M2A adds a simulator-independent evidence contract, a typed evaluator
 boundary, and an incrementally persisted evaluation runner that can resume
 without duplicating completed attempts. Milestone M2B-Core adds a generic,
 exact-state paired-replay boundary that content-binds M0 and M1 data and reuses
-the M2A runner for baseline-gated original/corrupted comparisons.
+the M2A runner for baseline-gated original/corrupted comparisons. Milestone M2C
+adds a version-locked ManiSkill `3.0.1` `PickCube-v1` reference adapter behind
+those same contracts. It probes the installed simulator before trusting it,
+records official Panda motion-planning sources, independently replays every
+accepted source, and keeps exact runtime state archives outside Git. It does not
+use LangMani or train a model.
+
+The current M2C checkout is the locally implemented, CPU-fake-tested first
+stage. No real ManiSkill trajectory or simulator evidence has been accepted
+yet: the remote mplib version, observation spelling, action layout, and action
+semantics remain probe-required rather than guessed.
 
 Tracked source is developed and validated in the local repository, which is
 authoritative. Remote servers only pull committed revisions and execute them;
@@ -115,6 +125,27 @@ creating a session or output. Fixture evidence is weak,
 `deterministic_evaluator` evidence: it is not a simulator, is not physically
 meaningful, is unsuitable for research or training claims, and can never set
 simulator verification. See [the exact-replay contract](docs/exact_replay.md).
+
+## Probe the optional ManiSkill PickCube integration
+
+The ordinary core install does not include or import ManiSkill, SAPIEN, mplib,
+Vulkan, or CUDA. The first M2C remote stage is designed to use the separate
+probe requirement file, which currently pins only `mani_skill==3.0.1`, and then
+runs:
+
+```text
+latentguard probe-maniskill-pickcube --help
+latentguard collect-maniskill-pickcube --help
+latentguard replay-maniskill-pickcube --help
+```
+
+The first probe is intentionally required before the exact mplib package and
+action layout can be checked in; those values are never guessed. Trusted source
+collection and paired replay begin only after a second remote probe agrees with
+the locally committed contract. Remote execution and acceptance are currently
+pending the key-only authentication prerequisite described in the remote
+workflow. See the
+[PickCube reference integration](docs/maniskill_pickcube_reference.md).
 
 Preview an exact-revision remote synchronization without network access:
 

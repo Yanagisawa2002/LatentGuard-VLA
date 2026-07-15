@@ -13,6 +13,9 @@ from latentguard.corruptions.generation import generate_corruption_proposals
 from latentguard.corruptions.models import CorruptedActionProposal
 from latentguard.corruptions.serialization import CorruptionDataset
 from latentguard.evaluation.models import compute_configuration_digest
+from latentguard.integrations.maniskill_pickcube.adapter import (
+    MANISKILL_PICKCUBE_ADAPTER_ID,
+)
 from latentguard.replay.base import ReplayEnvironmentSession
 from latentguard.replay.fixture import (
     FIXTURE_ADAPTER_ID,
@@ -187,14 +190,14 @@ def test_fixture_adapter_rejects_selectors_outside_bound_dataset() -> None:
         )
 
 
-def test_default_registry_contains_only_fixture_and_creates_evaluator() -> None:
+def test_default_registry_contains_explicit_fixture_and_pickcube_adapters() -> None:
     binding = _binding()
     registry = default_replay_adapter_registry()
 
     adapter = registry.create(FIXTURE_ADAPTER_ID, _configuration(), binding)
     evaluator = create_replay_evaluator(FIXTURE_ADAPTER_ID, _configuration(), binding)
 
-    assert registry.names == (FIXTURE_ADAPTER_ID,)
+    assert registry.names == (FIXTURE_ADAPTER_ID, MANISKILL_PICKCUBE_ADAPTER_ID)
     assert isinstance(adapter, DeterministicReplayFixtureAdapter)
     assert evaluator.adapter.adapter_id == FIXTURE_ADAPTER_ID
     assert (

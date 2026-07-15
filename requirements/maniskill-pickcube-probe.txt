@@ -1,0 +1,4 @@
+# Initial isolated-environment probe dependency.
+# The installer may resolve an mplib candidate, but that version is not trusted
+# or pinned here until the remote compatibility probe verifies it.
+mani_skill==3.0.1

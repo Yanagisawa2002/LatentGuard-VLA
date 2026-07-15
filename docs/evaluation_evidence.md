@@ -157,3 +157,26 @@ inputs. M2C may add a typed ManiSkill reference adapter; a later LangMani adapte
 can implement the same generic protocols. Only a real, explicitly trusted
 adapter that passes every exact restoration and paired-replay gate may set
 simulator verification.
+
+## PickCube evidence semantics
+
+The M2C adapter maps the official PickCube evaluator only when `success`,
+object-placed, robot-static, and grasped values are complete scalar booleans.
+Incomplete or malformed values remain indeterminate or become execution errors
+at the relevant boundary; they are never filled with `false`.
+
+`pickcube_binary_completion_v0` reports progress `1.0` for official success and
+`0.0` for complete official failure. The narrow
+`pickcube_cube_center_below_world_zero_v0` unsafe proxy is true only for a
+verified cube center below world `z=0`; it is not a general safety assessment.
+Relevant complete-failure events distinguish task not completed, cube not at
+goal, robot not static, and cube below zero. Grasping or motion alone does not
+become an unsafe event.
+
+Evidence metrics contain scalar step counts, restoration errors, cube/goal
+distances, cube height, official flags, and source/transformed action
+differences. Raw simulator state is never stored in `EvaluationEvidence`.
+
+These semantics define what a future accepted remote record may claim. The
+first-stage local fake suite produces no physical PickCube evidence and cannot
+establish simulator verification.

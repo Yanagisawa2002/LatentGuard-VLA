@@ -114,3 +114,26 @@ Use `--resume` for an idempotent completed-run check and `--dry-run` with a
 separate absent output path to validate source binding, cases, configuration,
 bundle identity, and planned M2A evidence IDs without creating a session or
 output. This workflow is local, CPU-only, deterministic, and network-free.
+
+## M2C real PickCube adapter
+
+`maniskill_pickcube_v1` implements the same protocols without changing the
+generic executor or M2A ledger. Its state reference names one archived official
+source trajectory and reset-state key and binds the `maniskill_state_tree_v1`
+digest; the archive root itself is runtime-only. The adapter refuses to resolve
+a case unless compatibility, source/corruption content, action layout and
+bounds, solver identity, task identity, and archive digests agree.
+
+Each session lazily creates a fresh one-environment GPU `PickCube-v1` runtime,
+converts safe archive leaves to runtime tensors, calls `set_state_dict`, reads
+the complete state back, and emits restoration evidence. Tolerance-only matches
+cannot support M2C's verified strong claim: both sessions must satisfy the exact
+digest gate already enforced by M2B-Core. A complete official task failure after
+a successful independent source baseline is conclusive strong evidence; a
+runtime exception is still an execution error, and an action/bounds or restore
+mismatch is invalid context.
+
+This is the implemented fail-closed adapter path, not a completed simulator
+claim. At the first-stage checkpoint its real compatibility, action, state, and
+solver contracts have not yet passed the required remote probes, so no strong
+PickCube evidence or remote acceptance is reported.

@@ -110,3 +110,30 @@ lifecycle. Simulator verification is permitted only after an explicitly trusted
 real adapter restores and verifies the exact source state twice, passes the
 original-action baseline, and completes the corrupted replay. The M0 and M1
 bundles alone cannot make that claim.
+
+## M2C remote exact-replay smoke
+
+The PickCube smoke is execution rather than training. It uses one compatible
+GPU and a runtime environment outside the Git checkout. Before every gate, the
+local tree must be clean and equal to upstream; the remote checkout must then be
+clean, fast-forwarded, and equal to the requested full SHA.
+
+Authentication is key-only through a configured SSH host alias with
+`BatchMode=yes`. Password authentication, `sshpass`, embedded credentials, and
+credential files are prohibited. At the current first-stage checkpoint, remote
+execution is blocked until rotation of the previously exposed credential is
+confirmed and the configured alias succeeds non-interactively; no remote
+acceptance is claimed.
+
+Gates run in order: dependency/CUDA/Vulkan smoke, compatibility probe, state
+round trip, one bounded action, one official solver source, independent
+baseline replay, six-source collection, M1 generation, bounded paired replay,
+reload, and zero-duplicate resume. Failure stops the sequence. Contract changes
+found by a probe are made locally and pushed as a new exact revision; tracked
+files are never patched remotely.
+
+Runtime state, NPY leaves, trajectories, HDF5, video, caches, and full logs stay
+under `LATENTGUARD_REMOTE_RUN_ROOT`. Only reviewed sanitized manifests,
+compatibility/action/collection/replay summaries, compact evidence, failure
+counts, state statistics, resume results, and a final report return under
+`reports/m2c/<run-id>/`.

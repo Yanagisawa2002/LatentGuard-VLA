@@ -167,3 +167,32 @@ is likewise developed and validated locally, on CPU and without network, SSH,
 simulator, LangMani, ManiSkill, or GPU access. M2B-Core follows the same local
 boundary: its fixture executes only a deterministic numeric state machine and
 does not contact a remote machine or claim physical validation.
+
+## ManiSkill PickCube reference adapter (M2C)
+
+M2C adds an optional outer integration package; no ManiSkill-native value enters
+M0, M1, M2A, or M2B-Core. Availability checks and runtime imports are lazy, so
+the core dependency graph remains unchanged and the default suite stays
+CPU-only and network-free. The integration maps strict compatibility and state
+archives into standard
+`ReplayStateReference`, `ReplayCase`, `ReplayBundle`,
+`ReplayEnvironmentSession`, and `TerminalTaskEvidence` values.
+
+The package separates semantic configuration from runtime paths. Compatibility,
+solver/task source, controller/action layout, state semantic, task semantic,
+and narrow progress/unsafe semantics participate in deterministic identity.
+Archive roots, dataset directories, hostnames, device allocation, and timestamps
+do not. A project-owned recording proxy is the only source-action capture
+boundary; a separate fresh environment performs mandatory source baseline
+validation before M0 import.
+
+The remote simulator is used only after an exact local revision has been pushed
+and synchronized. Its state archives and trajectories stay outside the checkout;
+only sanitized compact reports return to the local authority.
+
+The first-stage checked-in expected contract is intentionally unresolved for
+mplib, observation spelling, controller/action semantics, action dimension, and
+compatibility identity. The adapter fails closed for trusted collection or
+replay until a remote probe is reviewed and those values are committed locally;
+the local fake tests are structural infrastructure checks, not remote simulator
+acceptance.

@@ -236,3 +236,26 @@ Loading rejects links, traversal, unsupported versions, unknown or duplicate
 fields and IDs, digest or identity tampering, missing source/proposal references,
 and any changed source or corruption content. The caller must supply the current
 content binding when reloading; a stored digest is never trusted by itself.
+
+## M2C integration archive boundary
+
+The ManiSkill PickCube runtime archive is not a new core replay format. It is an
+adapter-owned, versioned store that supplies opaque state references to M2B.
+Its semantic identity binds compatibility, official solver source, environment
+contract, source actions, state-tree structure and bytes, seed, and task
+evidence while excluding runtime paths.
+
+State dictionaries use canonical structural paths, preserve mapping/list/tuple
+structure, and store numeric leaves as non-pickle NPY files. The loader validates
+the complete inventory, dtype, shape, finite data, structure, and digest before
+reconstructing a value. Object arrays, traversal, links, arbitrary Python
+objects, and silent conversions are rejected. Runtime tensor/device conversion
+happens only inside the adapter.
+
+An M2C M0 source episode exists only after an independent fresh-session replay
+has restored the recorded state, replayed every official-source action, and
+established official task success. Its robot-state vector is bound to recorded
+Panda active-joint names and a versioned qpos-then-qvel semantic: N real joint
+names bind a length-2N vector of ordered qpos followed by ordered qvel. Subsequent
+M1 corruptions remain unlabeled until the standard M2A/M2B pipeline evaluates
+them.

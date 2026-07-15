@@ -216,9 +216,22 @@ class ReplayAdapterRegistry:
 
 
 def default_replay_adapter_registry() -> ReplayAdapterRegistry:
-    """Return a fresh registry containing only the non-physical fixture adapter."""
+    """Return a fresh registry containing the explicit built-in adapters."""
+    from latentguard.integrations.maniskill_pickcube.adapter import (
+        MANISKILL_PICKCUBE_ADAPTER_ID,
+    )
+    from latentguard.integrations.maniskill_pickcube.factory import (
+        create_maniskill_pickcube_registry_adapter,
+    )
+
     return ReplayAdapterRegistry(
-        ((FIXTURE_ADAPTER_ID, create_deterministic_replay_fixture_adapter),)
+        (
+            (FIXTURE_ADAPTER_ID, create_deterministic_replay_fixture_adapter),
+            (
+                MANISKILL_PICKCUBE_ADAPTER_ID,
+                create_maniskill_pickcube_registry_adapter,
+            ),
+        )
     )
 
 
