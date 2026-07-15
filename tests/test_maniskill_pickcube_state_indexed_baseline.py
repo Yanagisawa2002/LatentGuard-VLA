@@ -468,6 +468,7 @@ def test_runtime_step_error_is_distinct_and_environment_is_closed() -> None:
     "purpose",
     [
         "official_state_indexed_source_generation",
+        "indexed_state_restored_projection_binding",
         "indexed_state_fresh_validation",
         ANCHOR_BASELINE_PURPOSE,
     ],

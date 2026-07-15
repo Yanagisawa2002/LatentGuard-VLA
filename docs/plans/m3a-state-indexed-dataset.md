@@ -119,7 +119,7 @@ was run with its repository virtual environment on CPython 3.12.10. This is a
 temporary environment exception, not a compatibility claim. The exact pushed
 revision must repeat the complete suite and static checks with the configured
 remote CPython 3.11 interpreter before any simulator smoke. The post-fix local
-result is `1031 passed, 3 skipped`; the three skips are Windows tests that
+result is `1032 passed, 3 skipped`; the three skips are Windows tests that
 require the unavailable directory-symlink privilege. Ruff lint, Ruff format
 checking, mypy over `src`, all five CLI dry runs, and `git diff --check` pass.
 
@@ -165,5 +165,14 @@ or real-robot execution is included.
   ManiSkill's official geometry helper. The local fix now closes the file and
   filters only that exact message, category, and upstream module during the
   official solver call; all other warnings retain the caller's error policy.
-  The next fix revision, smoke/full acceptance, compact report retrieval, and
-  the final result revision remain pending.
+  Revision `b57c287e95a68d64c05272bb81ec6905ec6f0d98` then passed the
+  remote Python 3.11 suite (`1034 passed`) and static checks. Strict-warning run
+  `20260715T122701Z_m3a-smoke_b57c287_seed0` again published no archive; its
+  improved summary recorded 48 `PickCubeSourceGenerationError` attempts.
+  Single-seed diagnostic
+  `20260715T123200Z_m3a-stage-probe_b57c287_seed0` proved that the 82-action
+  source and independent baseline passed and isolated the rejection to a
+  missing production-factory purpose allowlist entry for restored projection
+  binding. That exact purpose and a production-factory regression are now
+  added locally. The next fix revision, smoke/full acceptance, compact report
+  retrieval, and the final result revision remain pending.

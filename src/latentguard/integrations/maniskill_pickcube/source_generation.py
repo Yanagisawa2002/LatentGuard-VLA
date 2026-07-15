@@ -461,6 +461,7 @@ class LazyManiSkillSourceEnvironmentFactory:
             "official_source_generation",
             "independent_source_baseline",
             "official_state_indexed_source_generation",
+            "indexed_state_restored_projection_binding",
             "indexed_state_fresh_validation",
             "state_indexed_anchor_baseline",
         }:
