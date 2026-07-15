@@ -1,0 +1,212 @@
+{
+  "artifact_references": [],
+  "base_seed": 271828,
+  "dataset_schema_version": "1.0",
+  "evaluator_configuration_digest": "cfg-sha256-0a75947b82f4399896d6c21e3cb75f1a6626e8a825f908d204608bf4bf5381d3",
+  "evaluator_id": "exact_state_paired_replay",
+  "evaluator_version": "1.0.0",
+  "evidence": [
+    {
+      "artifact_references": [],
+      "attempt_ordinal": 0,
+      "evaluation_seed": 7288855914763407822,
+      "evaluator_configuration_digest": "cfg-sha256-0a75947b82f4399896d6c21e3cb75f1a6626e8a825f908d204608bf4bf5381d3",
+      "evaluator_id": "exact_state_paired_replay",
+      "evaluator_version": "1.0.0",
+      "evidence_id": "evd-sha256-82e0a22940f70686df525bbddb43397848e6e61cf0ad50fdb6d453b0e51527e0",
+      "failure_events": [],
+      "label_source": "simulator",
+      "label_strength": "strong",
+      "metrics": {
+        "final_cube_center_z": 0.24531666934490204,
+        "final_cube_to_goal_distance": 0.014215023256838322,
+        "grasped": true,
+        "initial_cube_to_goal_distance": 0.25336578488349915,
+        "object_placed": true,
+        "replay_baseline_requested_steps": 82,
+        "replay_baseline_restoration_compared_component_count": 70,
+        "replay_baseline_restoration_complete_state_comparison": true,
+        "replay_baseline_restoration_maximum_absolute_error": 1.1920928955078125e-07,
+        "replay_baseline_steps": 82,
+        "replay_baseline_valid": true,
+        "replay_case_id": "rpc-sha256-ed16f4c4670888b1ee246552e734a9eb8a91194b257bb6557aa24a0f6635443d",
+        "replay_corrupted_requested_steps": 82,
+        "replay_corrupted_restoration_compared_component_count": 70,
+        "replay_corrupted_restoration_complete_state_comparison": true,
+        "replay_corrupted_restoration_maximum_absolute_error": 1.1920928955078125e-07,
+        "replay_corrupted_steps": 82,
+        "robot_static": true,
+        "source_corrupted_action_maximum_absolute_difference": 0.016669173575288188,
+        "source_corrupted_action_mean_absolute_difference": 0.003526269244941745
+      },
+      "notes": "generic exact-state paired replay evidence",
+      "progress_after": 1.0,
+      "progress_before": 0.0,
+      "progress_delta": 1.0,
+      "proposal_id": "cap-sha256-a58bbb9e8abf4e2432ed1d88eea5cdcea748bcd2686ee6d63bea9be793078474",
+      "replayed_control_steps": 164,
+      "schema_version": "1.0",
+      "simulator_replay_verified": true,
+      "source_candidate_id": "mspc-source-candidate-25f9a97764b1d0c9b0ac4a2d0a257fb9ba61558cb11f167dea79212edbc2aafa",
+      "source_dataset_id": "sha256:692573599bd64c6b417ee7ef4360507c39d1a1ea75626489923a16bfeb647db5",
+      "source_episode_id": "mspc-episode-b3696ccab9f6ade9385be8d8b2527e51068fc72acb5f001e8d7fa3bb16c1ef1e",
+      "split_group_id": "mspc-split-b3696ccab9f6ade9385be8d8b2527e51068fc72acb5f001e8d7fa3bb16c1ef1e",
+      "status": "conclusive",
+      "success": true,
+      "termination_reason": "paired_replay_complete",
+      "unsafe": false
+    }
+  ],
+  "format": "latentguard-evaluation-dataset",
+  "ledger": [
+    {
+      "attempt_ordinal": 0,
+      "error_message": null,
+      "error_type": null,
+      "evaluation_seed": 7288855914763407822,
+      "evaluator_configuration_digest": "cfg-sha256-0a75947b82f4399896d6c21e3cb75f1a6626e8a825f908d204608bf4bf5381d3",
+      "evaluator_id": "exact_state_paired_replay",
+      "evaluator_version": "1.0.0",
+      "evidence_id": "evd-sha256-82e0a22940f70686df525bbddb43397848e6e61cf0ad50fdb6d453b0e51527e0",
+      "finished_at": "2026-07-15T08:08:40Z",
+      "proposal_id": "cap-sha256-a58bbb9e8abf4e2432ed1d88eea5cdcea748bcd2686ee6d63bea9be793078474",
+      "retry_eligible": false,
+      "schema_version": "1.0",
+      "started_at": "2026-07-15T08:08:32Z",
+      "state": "completed"
+    }
+  ],
+  "max_proposals": 1,
+  "resolved_evaluator_configuration": {
+    "adapter_configuration": {
+      "action_contract": {
+        "control_period_s": 0.05,
+        "coordinate_frame": "unspecified",
+        "environment_numpy_dtype": "<f4",
+        "environment_shape": [
+          8
+        ],
+        "lower_bounds": [
+          -2.8973000049591064,
+          -1.7627999782562256,
+          -2.8973000049591064,
+          -3.0717999935150146,
+          -2.8973000049591064,
+          -0.017500000074505806,
+          -2.8973000049591064,
+          -1.0
+        ],
+        "schema_version": "1.0",
+        "total_dimension": 8,
+        "upper_bounds": [
+          2.8973000049591064,
+          1.7627999782562256,
+          2.8973000049591064,
+          -0.0697999969124794,
+          2.8973000049591064,
+          3.752500057220459,
+          2.8973000049591064,
+          1.0
+        ]
+      },
+      "adapter_id": "maniskill_pickcube_v1",
+      "adapter_version": "1.1.1",
+      "environment": {
+        "control_mode": "pd_joint_pos",
+        "environment_id": "PickCube-v1",
+        "num_envs": 1,
+        "obs_mode": "none",
+        "robot_uid": "panda",
+        "schema_version": "1.0",
+        "sim_backend": "gpu",
+        "state_tolerance": 1e-06,
+        "state_verification_semantic": "tolerance_verified_full_state_v1"
+      },
+      "identity": {
+        "action_layout_digest": "sha256:4731a55d66a3effadc03a97026b377667c385dad46397df6d9769a48282547d0",
+        "compatibility_identity": "sha256:05a560fd89e0989b6d94017c6456efc535de4a0bf87ededaf468f5e2d9ef71f7",
+        "controller_configuration_identity": "sha256:aed1daebe14982021776aaec5dead168fd999d841b6398be01612999383a9072",
+        "mani_skill_version": "3.0.1",
+        "schema_version": "1.0",
+        "solver_identity": "sha256:75f6e26118a66b055927e368a7cd73b28d9974c6cf0181069ca55f8fcb1505ed",
+        "state_semantic_version": "maniskill_state_tree_v1",
+        "state_verification_maximum_absolute_tolerance": 1e-06,
+        "state_verification_semantic": "tolerance_verified_full_state_v1",
+        "task_implementation_identity": "sha256:6f881f11151bd124a4ec6d1189e86e20b17d366aa1cbcc6e2f751f1f5bb03ed1"
+      },
+      "progress_semantic": "pickcube_binary_completion_v0",
+      "state_verification": {
+        "comparison_semantic": "numeric_tolerance",
+        "maximum_absolute_tolerance": 1e-06,
+        "runtime_semantic": "tolerance_verified_full_state_v1"
+      },
+      "task_contract_version": "1.0.0",
+      "task_evaluator_keys": {
+        "grasped": "is_grasped",
+        "object_placed": "is_obj_placed",
+        "robot_static": "is_robot_static",
+        "schema_version": "1.0",
+        "success": "success"
+      },
+      "task_id": "maniskill/PickCube-v1",
+      "unsafe_semantic": "pickcube_cube_center_below_world_zero_v0"
+    },
+    "adapter_configuration_digest": "cfg-sha256-e0d17c681e826e9093c291198a30fc337ab9d2f61d92864534fe80b555dbddec",
+    "adapter_id": "maniskill_pickcube_v1",
+    "adapter_version": "1.1.1",
+    "baseline_validity_semantic_version": "1.0.0",
+    "corruption_dataset_digest": "sha256:9a45c1fa0661e753b19ac5f96c9e967d5429863a3cce10d2d4701d71321a4954",
+    "exact_state_verification_required": true,
+    "label_source": "simulator",
+    "maximum_label_strength": "strong",
+    "paired_replay_semantic_version": "1.0.0",
+    "progress_semantic": "pickcube_binary_completion_v0",
+    "replay_bundle_digest": "rpb-sha256-4bf806314f73a563f70e652c4c9926a4d4cf763e5cecafba848ef5d2b07b1cc6",
+    "simulator_verification_allowed": true,
+    "source_dataset_digest": "sha256:58fa4e3b21ff8521470751e1688e046c108550297ed5d5f833fe976b3f99285c",
+    "source_dataset_id": "sha256:692573599bd64c6b417ee7ef4360507c39d1a1ea75626489923a16bfeb647db5",
+    "state_verification_semantic": "numeric_tolerance",
+    "state_verification_tolerance": 1e-06,
+    "trust_contract_version": "1.1",
+    "trust_tier": "exact_simulator",
+    "unsafe_semantic": "pickcube_cube_center_below_world_zero_v0"
+  },
+  "run_id": "evr-sha256-8eb5072c5290ec761dfafefef953cc7c9b9bd45e109e96324a6cb683183d88e6",
+  "run_manifest": {
+    "environment": {
+      "git_branch": "codex/m2c-maniskill-pickcube",
+      "git_commit_sha": "aafe83806515662937f6ec6c5d695aa44d1da537",
+      "launch_command": "latentguard replay-maniskill-pickcube --source-dir '<path>' --corruption-dir '<path>' --runtime-archive-dir '<path>' --output-dir '<path>' --compatibility-report '<path>' --expected-contract '<path>' --action-layout '<path>' --seed 271828 --max-proposals 1 --audit",
+      "numpy_version": "1.26.4",
+      "platform": "Linux-5.15.0-119-generic-x86_64-with-glibc2.35",
+      "python_version": "3.11.15"
+    },
+    "evaluator_configuration_digest": "cfg-sha256-0a75947b82f4399896d6c21e3cb75f1a6626e8a825f908d204608bf4bf5381d3",
+    "evaluator_id": "exact_state_paired_replay",
+    "evaluator_version": "1.0.0",
+    "final_state": "complete",
+    "finished_at": "2026-07-15T08:08:40Z",
+    "schema_version": "1.0",
+    "seed": 271828,
+    "source_corruption_dataset_digest": "sha256:9a45c1fa0661e753b19ac5f96c9e967d5429863a3cce10d2d4701d71321a4954",
+    "source_dataset_id": "sha256:692573599bd64c6b417ee7ef4360507c39d1a1ea75626489923a16bfeb647db5",
+    "started_at": "2026-07-15T08:08:32Z"
+  },
+  "run_state": "complete",
+  "selected_proposal_ids": [
+    "cap-sha256-a58bbb9e8abf4e2432ed1d88eea5cdcea748bcd2686ee6d63bea9be793078474"
+  ],
+  "serialization_version": 1,
+  "source_corruption_dataset_digest": "sha256:9a45c1fa0661e753b19ac5f96c9e967d5429863a3cce10d2d4701d71321a4954",
+  "source_dataset_id": "sha256:692573599bd64c6b417ee7ef4360507c39d1a1ea75626489923a16bfeb647db5",
+  "summary": {
+    "conclusive": 1,
+    "execution_error": 0,
+    "indeterminate": 0,
+    "invalid": 0,
+    "projected_outcome_labels": 1,
+    "retried_attempts": 0,
+    "skipped": 0,
+    "total_attempts": 1
+  }
+}

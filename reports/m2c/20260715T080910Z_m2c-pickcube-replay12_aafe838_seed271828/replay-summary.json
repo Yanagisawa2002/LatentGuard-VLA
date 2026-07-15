@@ -1,0 +1,67 @@
+{
+  "acceptance": {
+    "class_balance_passed": true,
+    "resume_idempotence_passed": true,
+    "zero_execution_errors_passed": true
+  },
+  "adapter_configuration_digest": "cfg-sha256-e0d17c681e826e9093c291198a30fc337ab9d2f61d92864534fe80b555dbddec",
+  "adapter_id": "maniskill_pickcube_v1",
+  "adapter_version": "1.1.1",
+  "baseline_restoration_compared_component_counts": [
+    70
+  ],
+  "baseline_restoration_complete_count": 12,
+  "baseline_restoration_maximum_absolute_error": 1.1920928955078125e-07,
+  "branch": "codex/m2c-maniskill-pickcube",
+  "commit_sha": "aafe83806515662937f6ec6c5d695aa44d1da537",
+  "compatibility_identity": "sha256:05a560fd89e0989b6d94017c6456efc535de4a0bf87ededaf468f5e2d9ef71f7",
+  "conclusive_success_count": 8,
+  "conclusive_task_failure_count": 4,
+  "corrupted_restoration_compared_component_counts": [
+    70
+  ],
+  "corrupted_restoration_complete_count": 12,
+  "corrupted_restoration_maximum_absolute_error": 1.1920928955078125e-07,
+  "corruption_dataset_digest": "sha256:9a45c1fa0661e753b19ac5f96c9e967d5429863a3cce10d2d4701d71321a4954",
+  "execution_error_count": 0,
+  "indeterminate_count": 0,
+  "invalid_baseline_count": 0,
+  "invalid_count": 0,
+  "per_corruption": {
+    "additive_gaussian_noise": {
+      "conclusive_success": 4,
+      "conclusive_task_failure": 0,
+      "execution_error": 0,
+      "other": 0,
+      "selected": 4
+    },
+    "segment_hold": {
+      "conclusive_success": 0,
+      "conclusive_task_failure": 4,
+      "execution_error": 0,
+      "other": 0,
+      "selected": 4
+    },
+    "temporal_field_shift": {
+      "conclusive_success": 4,
+      "conclusive_task_failure": 0,
+      "execution_error": 0,
+      "other": 0,
+      "selected": 4
+    }
+  },
+  "projected_outcome_count": 12,
+  "resume_validation": {
+    "evaluation_manifest_sha256": "sha256:7b50220704f43f02c5876a73bb88b9fef50a94d33a79d7ea0890f746db3b8caa",
+    "manifest_unchanged": true,
+    "resumed_without_rerun_count": 12
+  },
+  "run_id": "20260715T080910Z_m2c-pickcube-replay12_aafe838_seed271828",
+  "schema_version": "1.0",
+  "selected_proposal_count": 12,
+  "skipped_count": 0,
+  "source_dataset_id": "sha256:692573599bd64c6b417ee7ef4360507c39d1a1ea75626489923a16bfeb647db5",
+  "strong_simulator_verified_count": 12,
+  "trust_tier": "exact_simulator",
+  "valid_baseline_count": 12
+}

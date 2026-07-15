@@ -178,8 +178,14 @@ The first 12-proposal paired replay preserved complete restoration but produced
 12 `ResetNeeded` execution errors at baseline action step zero because the
 public Gym wrapper had not been initialized. No task failure was fabricated.
 Adapter version `1.1.1` now binds the archived source seed and requires public
-wrapper initialization before state restoration; a clean remote rerun and final
-result retrieval remain pending. No remote M2C acceptance or training is
+wrapper initialization before state restoration. Trusted rerun
+`20260715T080910Z_m2c-pickcube-replay12_aafe838_seed271828` produced 12 valid
+baselines, eight conclusive successes, four conclusive task failures, 12 strong
+simulator-verified evidence records, and zero invalid, indeterminate, or
+execution-error results. Both baseline and corrupted restorations compared all
+70 components with maximum absolute error `1.1920929e-7`. Resume reused all 12
+completed attempts and left the evaluation manifest byte-for-byte unchanged.
+M2C is accepted for this narrow reference scope; no training was performed or
 claimed.
 
 ## Known limitations

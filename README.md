@@ -23,9 +23,11 @@ baseline replays. The first 12-proposal paired-replay smoke was rejected because
 the public Gym wrapper had not been initialized before stepping; its 12 runtime
 errors were preserved without fabricating task failures. The adapter-local
 `1.1.1` correction binds the archived source seed and initializes each fresh
-wrapper before exact state restoration. Strong paired-replay evidence for the
-corrupted proposals remains pending a clean rerun from the pushed correction;
-no training is included.
+wrapper before exact state restoration. The corrected 12-proposal rerun produced
+eight conclusive successes and four conclusive task failures, with 12 valid
+baselines, 12 strong simulator-verified evidence records, and zero execution
+errors. Resume reused all 12 records without rerunning them. No training is
+included.
 
 Tracked source is developed and validated in the local repository, which is
 authoritative. Remote servers only pull committed revisions and execute them;
@@ -147,8 +149,9 @@ latentguard replay-maniskill-pickcube --help
 The successful schema-1.1 discovery and trusted probes resolved and confirmed
 the dependency, compatibility, and action contracts without guessing them.
 Key-only access and six-source collection are verified. The first paired replay
-correctly exposed a wrapper-initialization runtime error; remote acceptance
-remains pending a rerun from the pushed `1.1.1` correction. See the
+correctly exposed a wrapper-initialization runtime error; the pushed `1.1.1`
+correction then passed the one-proposal gate, the 12-proposal class-balance
+smoke, and idempotent resume. See the
 [PickCube reference integration](docs/maniskill_pickcube_reference.md).
 
 Preview an exact-revision remote synchronization without network access:

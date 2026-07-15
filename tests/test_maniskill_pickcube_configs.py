@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import hashlib
 import json
 from pathlib import Path
 from typing import cast
@@ -8,6 +9,14 @@ import numpy as np
 import pytest
 
 from latentguard.corruptions.config import load_corruption_plan
+from latentguard.evaluation.models import EvaluationStatus
+from latentguard.evaluation.serialization import (
+    MANIFEST_NAME as EVALUATION_MANIFEST_NAME,
+)
+from latentguard.evaluation.serialization import (
+    EvaluationDataset,
+    load_evaluation_dataset,
+)
 from latentguard.integrations.maniskill_pickcube.compatibility import (
     load_compatibility_report,
     validate_compatibility_report,
@@ -17,19 +26,33 @@ from latentguard.integrations.maniskill_pickcube.configuration import (
     load_maniskill_pickcube_action_layout,
     validate_maniskill_pickcube_action_layout_binding,
 )
-from latentguard.models import ActionChunk
+from latentguard.models import ActionChunk, LabelSource, LabelStrength
 
 _ROOT = Path(__file__).resolve().parents[1]
 _CONFIG_DIRECTORY = _ROOT / "configs" / "integrations" / "maniskill_pickcube"
 _ACTION_LAYOUT = _CONFIG_DIRECTORY / "action-layout-v1.json"
 _CORRUPTION_PLAN = _CONFIG_DIRECTORY / "corruptions-v1.json"
 _EXPECTED_CONTRACT = _CONFIG_DIRECTORY / "expected-contract-v1.json"
+_REPORT_ROOT = _ROOT / "reports" / "m2c"
 _COMPATIBILITY_REPORT = (
-    _ROOT
-    / "reports"
-    / "m2c"
-    / "20260715T073250Z_m2c-pickcube-compat_bb2c35c_seed0_numeric-v1"
-    / "compatibility-discovery.json"
+    _REPORT_ROOT
+    / "20260715T080753Z_m2c-pickcube-trusted_aafe838_seed0"
+    / "compatibility-trusted.json"
+)
+_GATE_EVALUATION_MANIFEST = (
+    _REPORT_ROOT
+    / "20260715T080829Z_m2c-pickcube-replay1-gate_aafe838_seed271828"
+    / "evaluation-manifest.json"
+)
+_FINAL_EVALUATION_MANIFEST = (
+    _REPORT_ROOT
+    / "20260715T080910Z_m2c-pickcube-replay12_aafe838_seed271828"
+    / "evaluation-manifest.json"
+)
+_FINAL_REPLAY_SUMMARY = (
+    _REPORT_ROOT
+    / "20260715T080910Z_m2c-pickcube-replay12_aafe838_seed271828"
+    / "replay-summary.json"
 )
 
 
@@ -43,11 +66,22 @@ def _all_mapping_keys(value: object) -> set[str]:
     return set()
 
 
+def _load_retrieved_evaluation_manifest(
+    manifest_path: Path, tmp_path: Path
+) -> EvaluationDataset:
+    """Load a retrieved, renamed manifest through the strict bundle loader."""
+    bundle_root = tmp_path / manifest_path.parent.name
+    bundle_root.mkdir()
+    (bundle_root / EVALUATION_MANIFEST_NAME).write_bytes(manifest_path.read_bytes())
+    return load_evaluation_dataset(bundle_root)
+
+
 def test_real_configs_bind_exactly_to_retrieved_compatibility_report() -> None:
     report = load_compatibility_report(_COMPATIBILITY_REPORT)
     expected = load_expected_contract(_EXPECTED_CONTRACT)
     assert expected.trusted_replay_ready
     binding = validate_compatibility_report(report, expected, require_trusted=True)
+    assert binding.trusted_replay_ready
     layout = load_maniskill_pickcube_action_layout(_ACTION_LAYOUT)
     plan = load_corruption_plan(_CORRUPTION_PLAN)
 
@@ -155,3 +189,102 @@ def test_real_corruption_plan_has_three_unrepaired_m1_transformations() -> None:
         np.repeat(source.actions[[0]], source.actions.shape[0] - 1, axis=0),
     )
     assert source.actions.tobytes(order="C") == source_snapshot
+
+
+def test_retrieved_replay_gate_is_conclusive_without_execution_errors(
+    tmp_path: Path,
+) -> None:
+    dataset = _load_retrieved_evaluation_manifest(
+        _GATE_EVALUATION_MANIFEST,
+        tmp_path,
+    )
+
+    assert dataset.summary.conclusive == 1
+    assert dataset.summary.execution_error == 0
+    assert dataset.summary.total_attempts == 1
+
+
+def test_retrieved_final_replay_evidence_and_summary_are_consistent(
+    tmp_path: Path,
+) -> None:
+    dataset = _load_retrieved_evaluation_manifest(
+        _FINAL_EVALUATION_MANIFEST,
+        tmp_path,
+    )
+    configuration = dataset.resolved_evaluator_configuration
+
+    assert dataset.summary.conclusive == 12
+    assert dataset.summary.execution_error == 0
+    assert dataset.summary.total_attempts == 12
+    assert sum(evidence.success is True for evidence in dataset.evidence) == 8
+    assert sum(evidence.success is False for evidence in dataset.evidence) == 4
+    assert configuration["adapter_version"] == "1.1.1"
+    assert all(
+        evidence.status is EvaluationStatus.CONCLUSIVE
+        and evidence.label_source is LabelSource.SIMULATOR
+        and evidence.label_strength is LabelStrength.STRONG
+        and evidence.simulator_replay_verified
+        and evidence.metrics["replay_baseline_valid"] is True
+        and evidence.metrics["replay_baseline_restoration_complete_state_comparison"]
+        is True
+        and evidence.metrics["replay_corrupted_restoration_complete_state_comparison"]
+        is True
+        and evidence.metrics["replay_baseline_restoration_compared_component_count"]
+        == 70
+        and evidence.metrics["replay_corrupted_restoration_compared_component_count"]
+        == 70
+        and cast(
+            float,
+            evidence.metrics["replay_baseline_restoration_maximum_absolute_error"],
+        )
+        <= 1e-6
+        and cast(
+            float,
+            evidence.metrics["replay_corrupted_restoration_maximum_absolute_error"],
+        )
+        <= 1e-6
+        for evidence in dataset.evidence
+    )
+
+    summary = cast(
+        dict[str, object],
+        json.loads(_FINAL_REPLAY_SUMMARY.read_text(encoding="utf-8")),
+    )
+    assert summary["adapter_version"] == "1.1.1"
+    assert summary["selected_proposal_count"] == dataset.summary.total_attempts
+    assert summary["conclusive_success_count"] == 8
+    assert summary["conclusive_task_failure_count"] == 4
+    assert summary["execution_error_count"] == dataset.summary.execution_error
+    assert summary["strong_simulator_verified_count"] == len(dataset.evidence)
+    assert summary["valid_baseline_count"] == len(dataset.evidence)
+    assert summary["per_corruption"] == {
+        "additive_gaussian_noise": {
+            "conclusive_success": 4,
+            "conclusive_task_failure": 0,
+            "execution_error": 0,
+            "other": 0,
+            "selected": 4,
+        },
+        "segment_hold": {
+            "conclusive_success": 0,
+            "conclusive_task_failure": 4,
+            "execution_error": 0,
+            "other": 0,
+            "selected": 4,
+        },
+        "temporal_field_shift": {
+            "conclusive_success": 4,
+            "conclusive_task_failure": 0,
+            "execution_error": 0,
+            "other": 0,
+            "selected": 4,
+        },
+    }
+    manifest_sha256 = (
+        "sha256:" + hashlib.sha256(_FINAL_EVALUATION_MANIFEST.read_bytes()).hexdigest()
+    )
+    assert summary["resume_validation"] == {
+        "evaluation_manifest_sha256": manifest_sha256,
+        "manifest_unchanged": True,
+        "resumed_without_rerun_count": 12,
+    }

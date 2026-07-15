@@ -213,6 +213,24 @@ manual relabeling, or general robot-safety claims are included.
   `reset(bound_source_seed) -> set_state_dict -> get_state_dict` before task
   evaluation or stepping. Missing, out-of-range, or archive-drifted seeds fail
   closed, and source recording now proves the solver used the requested seed.
-  Other adapters are unchanged. This correction must be committed, pushed,
-  synchronized exactly, and rerun under a new replay identity before M2C can be
-  accepted.
+  Other adapters are unchanged. The correction passed full local validation
+  (`879 passed, 3 skipped`, Ruff lint/format, mypy across 61 source files, all
+  three M2C CLI help smokes, and `git diff --check`), was committed as
+  `aafe83806515662937f6ec6c5d695aa44d1da537`, pushed, and synchronized exactly.
+- Trusted probe `20260715T080753Z_m2c-pickcube-trusted_aafe838_seed0` passed on
+  the corrected revision. One-proposal replay gate
+  `20260715T080829Z_m2c-pickcube-replay1-gate_aafe838_seed271828` then completed
+  one valid baseline and one conclusive strong simulator success with zero
+  execution errors.
+- Final smoke `20260715T080910Z_m2c-pickcube-replay12_aafe838_seed271828`
+  completed 12 valid baselines, eight conclusive successes, four conclusive
+  task failures, 12 projected strong simulator outcomes, and zero invalid,
+  indeterminate, skipped, or execution-error attempts. All baseline and
+  corrupted restorations compared the full 70-component state with maximum
+  absolute error `1.1920928955078125e-07`. The class-balance and zero-error
+  gates passed.
+- An immediate `--resume` reused all 12 completed attempts with zero duplicate
+  execution. The evaluation manifest SHA-256 remained
+  `7b50220704f43f02c5876a73bb88b9fef50a94d33a79d7ea0890f746db3b8caa`
+  before and after resume. M2C is accepted only for the documented single-task,
+  single-robot, single-backend reference scope. No training was performed.
