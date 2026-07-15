@@ -19,7 +19,7 @@ from latentguard.models import (
 REPLAY_SCHEMA_VERSION = "1.0"
 """Schema version shared by the M2B-Core replay models."""
 
-REPLAY_TRUST_CONTRACT_VERSION = "1.0"
+REPLAY_TRUST_CONTRACT_VERSION = "1.1"
 """Trust-contract version implemented by M2B-Core."""
 
 
@@ -181,6 +181,7 @@ class StateRestorationEvidence:
         default_factory=lambda: MappingProxyType({})
     )
     schema_version: str = REPLAY_SCHEMA_VERSION
+    complete_state_comparison: bool = False
 
     def __post_init__(self) -> None:
         """Detach diagnostics and validate restoration semantics."""
@@ -257,6 +258,10 @@ class ReplayTrustDescriptor:
     exact_state_verification_required: bool
     trust_contract_version: str = REPLAY_TRUST_CONTRACT_VERSION
     schema_version: str = REPLAY_SCHEMA_VERSION
+    state_verification_semantic: StateComparisonSemantic = (
+        StateComparisonSemantic.EXACT_DIGEST
+    )
+    state_verification_tolerance: float = 0.0
 
     def __post_init__(self) -> None:
         """Validate the trust boundary without granting physical authority."""

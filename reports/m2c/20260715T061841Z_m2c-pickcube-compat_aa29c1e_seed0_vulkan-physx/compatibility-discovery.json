@@ -1,0 +1,119 @@
+{
+  "action_contract_digest": "sha256:028d8c2cbb10e867d709f1c5d4c31e07ef1e084f1a8ad8370f96185ba892f0eb",
+  "action_space": {
+    "batched_shape": [
+      8
+    ],
+    "dtype": "float32",
+    "lower_bounds": [
+      -2.8973000049591064,
+      -1.7627999782562256,
+      -2.8973000049591064,
+      -3.0717999935150146,
+      -2.8973000049591064,
+      -0.017500000074505806,
+      -2.8973000049591064,
+      -1.0
+    ],
+    "single_shape": [
+      8
+    ],
+    "space_digest": "sha256:0eca03e79f9db3907da5d4a983ddc3b4bbae9917428a93a9609bd64078aca73c",
+    "upper_bounds": [
+      2.8973000049591064,
+      1.7627999782562256,
+      2.8973000049591064,
+      -0.0697999969124794,
+      2.8973000049591064,
+      3.752500057220459,
+      2.8973000049591064,
+      1.0
+    ]
+  },
+  "bounded_action_step": {
+    "detail": "bounded midpoint action executed once",
+    "passed": true
+  },
+  "compatibility_identity": "sha256:75f5b27714017229e703b19d588ed21208a11f15c950783d12967df8fd0b6dd2",
+  "control_frequency_hz": 20.0,
+  "control_mode": "pd_joint_pos",
+  "controller": {
+    "components": [
+      {
+        "configuration_identity": "sha256:cb355ab8727b9c1239bec33a56943858916b8631cfb35706b430ba62e5f96dc4",
+        "controller_type": "mani_skill.agents.controllers.pd_joint_pos.PDJointPosController",
+        "indices": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6
+        ],
+        "name": "arm"
+      },
+      {
+        "configuration_identity": "sha256:820a62d8d213b40ef360ff41eb68b9d11d91cd59feffa339ee842c17c5a25d5c",
+        "controller_type": "mani_skill.agents.controllers.pd_joint_pos.PDJointPosMimicController",
+        "indices": [
+          7
+        ],
+        "name": "gripper"
+      }
+    ],
+    "configuration_identity": "sha256:aed1daebe14982021776aaec5dead168fd999d841b6398be01612999383a9072"
+  },
+  "environment_close": {
+    "detail": "environment closed cleanly",
+    "passed": true
+  },
+  "environment_id": "PickCube-v1",
+  "gpu_simulation": true,
+  "mani_skill_version": "3.0.1",
+  "mplib_version": "0.1.1",
+  "num_envs": 1,
+  "observation_mode": "none",
+  "operational": {
+    "cuda_runtime_version": "12.8",
+    "gpu_capability": "12.0",
+    "gpu_model": "NVIDIA GeForce RTX 5090",
+    "python_version": "3.11.15",
+    "torch_version": "2.8.0+cu128"
+  },
+  "reset_seed": 0,
+  "resolved_sim_backend": "physx_cuda",
+  "robot_uid": "panda",
+  "runtime_apis": {
+    "evaluate_callable": true,
+    "get_state_dict_callable": true,
+    "set_state_dict_callable": true
+  },
+  "sapien_version": "3.0.3",
+  "schema_version": "1.0",
+  "sim_backend_request": "gpu",
+  "simulation_frequency_hz": 100.0,
+  "source_solver": {
+    "module_name": "mani_skill.examples.motionplanning.panda.solutions.pick_cube",
+    "source_sha256": "sha256:75f6e26118a66b055927e368a7cd73b28d9974c6cf0181069ca55f8fcb1505ed"
+  },
+  "state_round_trip": {
+    "compared_leaf_count": 4,
+    "expected_state_digest": "sha256:9cc12bd4ed9ef3f90e9b13f4dceb25fe3071def98d144fd1c325efc41b52da70",
+    "maximum_absolute_error": 1.1920928955078125e-07,
+    "observed_state_digest": "sha256:316dca5e89a0d61690e8bfea9aeb8e3b0d5f1bf73be9a852a8d5c0ad002a207d",
+    "passed": false,
+    "tolerance": 1e-06
+  },
+  "state_tree_structure_digest": "sha256:6f7ab9a632dfa7f34305ce5058e41da5c08c0e5926ff7f9ff90f42274a277ca0",
+  "task_evaluator_keys": [
+    "is_grasped",
+    "is_obj_placed",
+    "is_robot_static",
+    "success"
+  ],
+  "task_implementation": {
+    "module_name": "mani_skill.envs.tasks.tabletop.pick_cube",
+    "source_sha256": "sha256:6f881f11151bd124a4ec6d1189e86e20b17d366aa1cbcc6e2f751f1f5bb03ed1"
+  }
+}

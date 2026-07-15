@@ -45,6 +45,7 @@ from latentguard.replay.models import (
     ReplayExecutionRole,
     ReplayTrustDescriptor,
     ReplayTrustTier,
+    StateComparisonSemantic,
 )
 from latentguard.replay.reporting import (
     build_replay_summary,
@@ -408,8 +409,18 @@ def test_adapter_trust_drift_is_rejected_before_execution(
 
 
 class _ExactSimulatorTrustProxy:
-    def __init__(self, delegate: DeterministicReplayFixtureAdapter) -> None:
+    def __init__(
+        self,
+        delegate: DeterministicReplayFixtureAdapter,
+        *,
+        state_verification_semantic: StateComparisonSemantic = (
+            StateComparisonSemantic.EXACT_DIGEST
+        ),
+        state_verification_tolerance: float = 0.0,
+    ) -> None:
         self.delegate = delegate
+        self.state_verification_semantic = state_verification_semantic
+        self.state_verification_tolerance = state_verification_tolerance
 
     @property
     def adapter_id(self) -> str:
@@ -430,6 +441,8 @@ class _ExactSimulatorTrustProxy:
             maximum_label_strength=LabelStrength.STRONG,
             simulator_verification_allowed=True,
             exact_state_verification_required=True,
+            state_verification_semantic=self.state_verification_semantic,
+            state_verification_tolerance=self.state_verification_tolerance,
         )
 
     def resolved_configuration(self) -> Mapping[str, object]:
@@ -463,6 +476,50 @@ def test_fake_exact_simulator_protocol_allows_strong_conclusive_task_failure() -
     assert evidence.simulator_replay_verified is True
 
 
+def test_trust_comparison_mode_and_tolerance_change_evaluator_identity() -> None:
+    _, _, adapter, _ = _stack()
+    exact = create_exact_state_paired_replay_evaluator(
+        _ExactSimulatorTrustProxy(
+            adapter,
+            state_verification_semantic=StateComparisonSemantic.EXACT_DIGEST,
+        ),
+        adapter.replay_bundle,
+    )
+    numeric_small = create_exact_state_paired_replay_evaluator(
+        _ExactSimulatorTrustProxy(
+            adapter,
+            state_verification_semantic=StateComparisonSemantic.NUMERIC_TOLERANCE,
+            state_verification_tolerance=1e-7,
+        ),
+        adapter.replay_bundle,
+    )
+    numeric_bounded = create_exact_state_paired_replay_evaluator(
+        _ExactSimulatorTrustProxy(
+            adapter,
+            state_verification_semantic=StateComparisonSemantic.NUMERIC_TOLERANCE,
+            state_verification_tolerance=1e-6,
+        ),
+        adapter.replay_bundle,
+    )
+
+    assert (
+        len(
+            {
+                exact.configuration_digest,
+                numeric_small.configuration_digest,
+                numeric_bounded.configuration_digest,
+            }
+        )
+        == 3
+    )
+    assert exact.resolved_configuration()["state_verification_semantic"] == (
+        StateComparisonSemantic.EXACT_DIGEST.value
+    )
+    assert numeric_bounded.resolved_configuration()[
+        "state_verification_tolerance"
+    ] == pytest.approx(1e-6)
+
+
 def test_fixture_trust_rejects_forged_strong_or_verified_claims() -> None:
     _, _, adapter, _ = _stack()
     descriptor = adapter.trust_descriptor()
@@ -488,6 +545,8 @@ def test_evaluator_configuration_binds_all_content_and_trust_identities() -> Non
     assert resolved["replay_bundle_digest"] == adapter.replay_bundle.bundle_digest
     assert resolved["adapter_configuration_digest"] == adapter.configuration_digest
     assert resolved["trust_tier"] == "fixture"
+    assert resolved["state_verification_semantic"] == "exact_digest"
+    assert resolved["state_verification_tolerance"] == 0.0
     serialized = repr(dict(resolved)).lower()
     assert "output_dir" not in serialized
     assert "hostname" not in serialized

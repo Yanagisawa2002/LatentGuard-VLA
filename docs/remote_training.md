@@ -107,9 +107,12 @@ It is not a simulator and its weak evidence is not physically meaningful. M2C
 may add a real ManiSkill reference adapter, and a later LangMani adapter may use
 the same generic core; any remote execution must still follow the exact-revision
 lifecycle. Simulator verification is permitted only after an explicitly trusted
-real adapter restores and verifies the exact source state twice, passes the
-original-action baseline, and completes the corrupted replay. The M0 and M1
-bundles alone cannot make that claim.
+real adapter validates the exact archived source state, independently restores
+it twice under its compatibility-bound full-state comparison contract, passes
+the original-action baseline, and completes the corrupted replay. The M0 and M1
+bundles alone cannot make that claim. Numeric runtime restoration is authorized
+only for an adapter with an explicit versioned contract; it never weakens exact
+archive content and inventory validation.
 
 ## M2C remote exact-replay smoke
 
@@ -118,12 +121,11 @@ GPU and a runtime environment outside the Git checkout. Before every gate, the
 local tree must be clean and equal to upstream; the remote checkout must then be
 clean, fast-forwarded, and equal to the requested full SHA.
 
-Authentication is key-only through a configured SSH host alias with
-`BatchMode=yes`. Password authentication, `sshpass`, embedded credentials, and
-credential files are prohibited. At the current first-stage checkpoint, remote
-execution is blocked until rotation of the previously exposed credential is
-confirmed and the configured alias succeeds non-interactively; no remote
-acceptance is claimed.
+Authentication is through a dedicated key with `BatchMode=yes`; connection
+details remain outside Git. Password automation, `sshpass`, embedded
+credentials, and committed credential files are prohibited. The M2C key-only
+path and repository-scoped read-only deploy key have been verified, but no
+remote acceptance is claimed until all simulator gates pass.
 
 Gates run in order: dependency/CUDA/Vulkan smoke, compatibility probe, state
 round trip, one bounded action, one official solver source, independent

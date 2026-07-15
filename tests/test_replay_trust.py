@@ -11,6 +11,8 @@ from latentguard.evaluation.models import EvaluationStatus
 from latentguard.models import LabelSource, LabelStrength
 from latentguard.replay.base import ReplayEnvironmentSession, ReplayValidationError
 from latentguard.replay.models import (
+    REPLAY_SCHEMA_VERSION,
+    REPLAY_TRUST_CONTRACT_VERSION,
     ActionExecutionEvidence,
     PairedReplayResult,
     ReplayStateReference,
@@ -37,16 +39,20 @@ def _restoration(
     maximum_error: float | None = None,
     match_kind: StateMatchKind = StateMatchKind.EXACT,
     verified: bool = True,
+    complete: bool | None = None,
+    component_count: int = 3,
 ) -> StateRestorationEvidence:
+    complete_comparison = verified if complete is None else complete
     return StateRestorationEvidence(
         expected_state_digest=expected,
         observed_state_digest=observed,
         comparison_semantic=semantic,
         comparison_tolerance=tolerance,
-        compared_component_count=3,
+        compared_component_count=component_count,
         maximum_absolute_error=maximum_error,
         match_kind=match_kind,
         restoration_verified=verified,
+        complete_state_comparison=complete_comparison,
     )
 
 
@@ -102,7 +108,12 @@ def _paired_result(
     )
 
 
-def _descriptor(tier: ReplayTrustTier) -> ReplayTrustDescriptor:
+def _descriptor(
+    tier: ReplayTrustTier,
+    *,
+    semantic: StateComparisonSemantic = StateComparisonSemantic.EXACT_DIGEST,
+    tolerance: float = 0.0,
+) -> ReplayTrustDescriptor:
     if tier is ReplayTrustTier.EXACT_SIMULATOR:
         return ReplayTrustDescriptor(
             trust_tier=tier,
@@ -110,6 +121,8 @@ def _descriptor(tier: ReplayTrustTier) -> ReplayTrustDescriptor:
             maximum_label_strength=LabelStrength.STRONG,
             simulator_verification_allowed=True,
             exact_state_verification_required=True,
+            state_verification_semantic=semantic,
+            state_verification_tolerance=tolerance,
         )
     return ReplayTrustDescriptor(
         trust_tier=tier,
@@ -117,6 +130,8 @@ def _descriptor(tier: ReplayTrustTier) -> ReplayTrustDescriptor:
         maximum_label_strength=LabelStrength.WEAK,
         simulator_verification_allowed=False,
         exact_state_verification_required=True,
+        state_verification_semantic=semantic,
+        state_verification_tolerance=tolerance,
     )
 
 
@@ -150,6 +165,93 @@ def test_exact_and_numeric_restoration_semantics_are_strict() -> None:
         )
     with pytest.raises(ReplayValidationError, match="must be true exactly"):
         _restoration(verified=False)
+    incomplete_match = _restoration(complete=False)
+    assert incomplete_match.restoration_verified
+    assert not incomplete_match.complete_state_comparison
+
+
+def test_legacy_restoration_constructor_is_position_stable_and_untrusted() -> None:
+    legacy = StateRestorationEvidence(
+        _DIGEST,
+        _DIGEST,
+        StateComparisonSemantic.EXACT_DIGEST,
+        0.0,
+        3,
+        None,
+        StateMatchKind.EXACT,
+        True,
+        {"legacy_constructor": True},
+        REPLAY_SCHEMA_VERSION,
+    )
+    assert legacy.diagnostics["legacy_constructor"] is True
+    assert legacy.schema_version == REPLAY_SCHEMA_VERSION
+    assert legacy.complete_state_comparison is False
+
+    result = replace(
+        _paired_result(),
+        baseline_restoration=legacy,
+        corrupted_restoration=legacy,
+    )
+    with pytest.raises(ReplayValidationError, match="complete verified"):
+        validate_replay_trust_claim(
+            _descriptor(ReplayTrustTier.EXACT_SIMULATOR),
+            label_source=LabelSource.SIMULATOR,
+            label_strength=LabelStrength.STRONG,
+            simulator_replay_verified=True,
+            replay_result=result,
+        )
+
+
+def test_legacy_trust_descriptor_constructor_is_position_stable() -> None:
+    legacy = ReplayTrustDescriptor(
+        ReplayTrustTier.FIXTURE,
+        LabelSource.DETERMINISTIC_EVALUATOR,
+        LabelStrength.WEAK,
+        False,
+        True,
+        REPLAY_TRUST_CONTRACT_VERSION,
+        REPLAY_SCHEMA_VERSION,
+    )
+
+    assert legacy.trust_contract_version == REPLAY_TRUST_CONTRACT_VERSION
+    assert legacy.schema_version == REPLAY_SCHEMA_VERSION
+    assert legacy.state_verification_semantic is StateComparisonSemantic.EXACT_DIGEST
+    assert legacy.state_verification_tolerance == 0.0
+
+
+def test_paired_result_rejects_different_restoration_component_inventories() -> None:
+    with pytest.raises(
+        ReplayValidationError, match="same complete component inventory"
+    ):
+        replace(
+            _paired_result(),
+            corrupted_restoration=_restoration(component_count=4),
+        )
+
+
+def test_invalid_incomplete_restoration_preserves_observed_component_count() -> None:
+    mismatch = _restoration(
+        observed="sha256:" + "b" * 64,
+        match_kind=StateMatchKind.MISMATCH,
+        verified=False,
+        complete=False,
+        component_count=4,
+    )
+
+    result = replace(
+        _paired_result(),
+        status=EvaluationStatus.INVALID,
+        termination_reason="corrupted state structure mismatch",
+        corrupted_restoration=mismatch,
+        corrupted_initial_task=None,
+        corrupted_execution=None,
+        corrupted_terminal_task=None,
+        replayed_control_steps=2,
+    )
+
+    assert result.corrupted_restoration is mismatch
+    assert result.corrupted_restoration.compared_component_count == 4
+    assert not result.corrupted_restoration.complete_state_comparison
 
 
 @pytest.mark.parametrize(
@@ -314,9 +416,10 @@ def test_exact_simulator_trust_still_requires_all_replay_gates() -> None:
         )
 
 
-def test_exact_simulator_trust_rejects_tolerance_state_matches() -> None:
+def test_exact_simulator_default_rejects_tolerance_state_matches() -> None:
     descriptor = _descriptor(ReplayTrustTier.EXACT_SIMULATOR)
     tolerance_match = _restoration(
+        observed="sha256:" + "b" * 64,
         semantic=StateComparisonSemantic.NUMERIC_TOLERANCE,
         tolerance=1e-3,
         maximum_error=1e-4,
@@ -328,7 +431,7 @@ def test_exact_simulator_trust_rejects_tolerance_state_matches() -> None:
         corrupted_restoration=tolerance_match,
     )
 
-    with pytest.raises(ReplayValidationError, match="exact state restorations"):
+    with pytest.raises(ReplayValidationError, match="comparison contract"):
         validate_replay_trust_claim(
             descriptor,
             label_source=LabelSource.SIMULATOR,
@@ -336,6 +439,89 @@ def test_exact_simulator_trust_rejects_tolerance_state_matches() -> None:
             simulator_replay_verified=True,
             replay_result=result,
         )
+
+
+def test_exact_simulator_explicit_numeric_contract_accepts_tolerance_matches() -> None:
+    descriptor = _descriptor(
+        ReplayTrustTier.EXACT_SIMULATOR,
+        semantic=StateComparisonSemantic.NUMERIC_TOLERANCE,
+        tolerance=1e-3,
+    )
+    tolerance_match = _restoration(
+        observed="sha256:" + "b" * 64,
+        semantic=StateComparisonSemantic.NUMERIC_TOLERANCE,
+        tolerance=1e-3,
+        maximum_error=1e-4,
+        match_kind=StateMatchKind.WITHIN_TOLERANCE,
+    )
+    result = replace(
+        _paired_result(),
+        baseline_restoration=tolerance_match,
+        corrupted_restoration=tolerance_match,
+    )
+
+    validate_replay_trust_claim(
+        descriptor,
+        label_source=LabelSource.SIMULATOR,
+        label_strength=LabelStrength.STRONG,
+        simulator_replay_verified=True,
+        replay_result=result,
+    )
+
+
+def test_numeric_trust_requires_exact_descriptor_tolerance() -> None:
+    descriptor = _descriptor(
+        ReplayTrustTier.EXACT_SIMULATOR,
+        semantic=StateComparisonSemantic.NUMERIC_TOLERANCE,
+        tolerance=5e-4,
+    )
+    tolerance_match = _restoration(
+        observed="sha256:" + "b" * 64,
+        semantic=StateComparisonSemantic.NUMERIC_TOLERANCE,
+        tolerance=1e-3,
+        maximum_error=1e-4,
+        match_kind=StateMatchKind.WITHIN_TOLERANCE,
+    )
+    result = replace(
+        _paired_result(),
+        baseline_restoration=tolerance_match,
+        corrupted_restoration=tolerance_match,
+    )
+
+    with pytest.raises(ReplayValidationError, match="comparison contract"):
+        validate_replay_trust_claim(
+            descriptor,
+            label_source=LabelSource.SIMULATOR,
+            label_strength=LabelStrength.STRONG,
+            simulator_replay_verified=True,
+            replay_result=result,
+        )
+
+
+def test_non_simulator_trust_cannot_select_numeric_verification() -> None:
+    with pytest.raises(ReplayValidationError, match="restricted"):
+        _descriptor(
+            ReplayTrustTier.FIXTURE,
+            semantic=StateComparisonSemantic.NUMERIC_TOLERANCE,
+            tolerance=1e-3,
+        )
+
+
+@pytest.mark.parametrize("tolerance", [0.0, -1e-6, float("nan"), float("inf")])
+def test_numeric_descriptor_requires_strictly_positive_finite_tolerance(
+    tolerance: float,
+) -> None:
+    with pytest.raises(ReplayValidationError):
+        _descriptor(
+            ReplayTrustTier.EXACT_SIMULATOR,
+            semantic=StateComparisonSemantic.NUMERIC_TOLERANCE,
+            tolerance=tolerance,
+        )
+
+
+def test_exact_descriptor_cannot_carry_nonzero_tolerance() -> None:
+    with pytest.raises(ReplayValidationError, match="requires zero"):
+        _descriptor(ReplayTrustTier.EXACT_SIMULATOR, tolerance=1e-6)
 
 
 def test_paired_result_rejects_mixed_restoration_comparison_contracts() -> None:

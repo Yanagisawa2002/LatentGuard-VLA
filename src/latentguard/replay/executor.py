@@ -222,14 +222,21 @@ def _detached_row(row: NDArray[Any]) -> NDArray[Any]:
 
 
 def _restoration_matches(evidence: StateRestorationEvidence) -> bool:
-    return evidence.restoration_verified and evidence.match_kind in {
+    matched_kind = evidence.match_kind in {
         StateMatchKind.EXACT,
         StateMatchKind.WITHIN_TOLERANCE,
     }
+    return (
+        evidence.restoration_verified
+        and evidence.complete_state_comparison
+        and matched_kind
+    )
 
 
 def _check_restoration_contract(
-    replay_case: ReplayCase, evidence: object
+    replay_case: ReplayCase,
+    evidence: object,
+    trust_descriptor: ReplayTrustDescriptor,
 ) -> StateRestorationEvidence:
     if not isinstance(evidence, StateRestorationEvidence):
         raise PairedReplayExecutionError(
@@ -248,6 +255,14 @@ def _check_restoration_contract(
     ):
         raise PairedReplayExecutionError(
             "restoration evidence comparison semantic does not match replay case"
+        )
+    if (
+        evidence.comparison_semantic is not trust_descriptor.state_verification_semantic
+        or evidence.comparison_tolerance
+        != trust_descriptor.state_verification_tolerance
+    ):
+        raise PairedReplayExecutionError(
+            "restoration evidence does not match adapter trust comparison contract"
         )
     return evidence
 
@@ -289,6 +304,7 @@ def _run_session(
     role: ReplayExecutionRole,
     action: ActionChunk,
     forbidden_session: ReplayEnvironmentSession | None,
+    trust_descriptor: ReplayTrustDescriptor,
 ) -> _SessionRecord:
     session: ReplayEnvironmentSession | None = None
     record = _SessionRecord()
@@ -308,7 +324,9 @@ def _run_session(
 
         phase = f"{role.value}_restore_state"
         restoration = _check_restoration_contract(
-            replay_case, session.restore_state(replay_case.state_reference)
+            replay_case,
+            session.restore_state(replay_case.state_reference),
+            trust_descriptor,
         )
         record = replace(record, restoration=restoration)
         if _restoration_matches(restoration):
@@ -486,6 +504,7 @@ def _execute_replay_case(
             role=ReplayExecutionRole.BASELINE,
             action=replay_case.original_action,
             forbidden_session=None,
+            trust_descriptor=adapter_contract.trust_descriptor,
         )
     except _SessionFailure as failure:
         _validate_adapter_execution_contract(
@@ -538,6 +557,7 @@ def _execute_replay_case(
                 role=ReplayExecutionRole.CORRUPTED,
                 action=replay_case.transformed_action,
                 forbidden_session=baseline.session,
+                trust_descriptor=adapter_contract.trust_descriptor,
             )
         except _SessionFailure as failure:
             result = _execution_error_result(replay_case, failure, baseline=baseline)

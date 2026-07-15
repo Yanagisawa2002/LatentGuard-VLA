@@ -23,6 +23,9 @@ from latentguard.integrations.maniskill_pickcube.source_generation import (
     record_official_source_trajectory,
     validate_independent_source_baseline,
 )
+from latentguard.integrations.maniskill_pickcube.state_tree import (
+    compute_state_tree_digest,
+)
 from latentguard.integrations.maniskill_pickcube.task_evidence import (
     PickCubeTaskKeyContract,
     RawPickCubeTaskSnapshot,
@@ -91,12 +94,18 @@ class _Environment:
         terminal_success: bool = True,
         mutate_action: bool = False,
         elapsed_offset: int = 0,
+        restore_offset: float = 0.0,
+        restore_structure_mismatch: bool = False,
     ) -> None:
         self.state = {"robot": np.zeros(2, dtype=np.float32)}
         self.elapsed = 0
         self.terminal_success = terminal_success
         self.mutate_action = mutate_action
         self.elapsed_offset = elapsed_offset
+        self.restore_offset = restore_offset
+        self.restore_structure_mismatch = restore_structure_mismatch
+        self.state_was_restored = False
+        self.last_restored_state: dict[str, np.ndarray[Any, Any]] | None = None
         self.agent = type("Agent", (), {})()
         self.agent.robot = _Robot(self)
         self.closed = False
@@ -108,13 +117,22 @@ class _Environment:
     def reset(self, *, seed: int) -> tuple[None, dict[str, object]]:
         self.state = {"robot": np.array([seed % 3, -(seed % 3)], dtype=np.float32)}
         self.elapsed = 0
+        self.state_was_restored = False
+        self.last_restored_state = None
         return None, {}
 
     def get_state_dict(self) -> dict[str, np.ndarray[Any, Any]]:
-        return {"robot": np.array(self.state["robot"], copy=True)}
+        state = {"robot": np.array(self.state["robot"], copy=True)}
+        if self.state_was_restored and self.restore_structure_mismatch:
+            state["unexpected"] = np.zeros(1, dtype=np.float32)
+        return state
 
     def set_state_dict(self, state: dict[str, np.ndarray[Any, Any]]) -> None:
-        self.state = {"robot": np.array(state["robot"], copy=True)}
+        restored = np.array(state["robot"], copy=True)
+        restored[0] += np.float32(self.restore_offset)
+        self.state = {"robot": restored}
+        self.state_was_restored = True
+        self.last_restored_state = self.get_state_dict()
 
     def step(
         self, action: np.ndarray[Any, Any]
@@ -147,11 +165,15 @@ class _Factory:
         mutate_action: bool = False,
         elapsed_offset: int = 0,
         missing_close: bool = False,
+        restore_offset: float = 0.0,
+        restore_structure_mismatch: bool = False,
     ) -> None:
         self.terminal_success = terminal_success
         self.mutate_action = mutate_action
         self.elapsed_offset = elapsed_offset
         self.missing_close = missing_close
+        self.restore_offset = restore_offset
+        self.restore_structure_mismatch = restore_structure_mismatch
         self.created: list[_Environment] = []
 
     def create_environment(
@@ -171,6 +193,8 @@ class _Factory:
             terminal_success=self.terminal_success,
             mutate_action=self.mutate_action,
             elapsed_offset=self.elapsed_offset,
+            restore_offset=self.restore_offset,
+            restore_structure_mismatch=self.restore_structure_mismatch,
         )
         if self.missing_close:
             environment.close = None  # type: ignore[assignment, method-assign]
@@ -271,6 +295,35 @@ def test_recording_captures_actions_state_and_named_initial_robot_state() -> Non
         == hashlib.sha256(trajectory.source_actions.tobytes(order="C")).hexdigest()
     )
     assert factory.created[0].closed
+
+
+def test_recording_accepts_subtolerance_raw_state_drift() -> None:
+    factory = _Factory(restore_offset=float(np.finfo(np.float32).eps))
+
+    trajectory = _record(factory)
+
+    restored = factory.created[0].last_restored_state
+    assert restored is not None
+    assert trajectory.initial_state_digest == compute_state_tree_digest(
+        trajectory.initial_state
+    )
+    assert compute_state_tree_digest(restored) != trajectory.initial_state_digest
+
+
+@pytest.mark.parametrize(
+    "factory",
+    (
+        _Factory(restore_offset=2e-6),
+        _Factory(restore_structure_mismatch=True),
+    ),
+    ids=("over-tolerance", "structure-mismatch"),
+)
+def test_recording_rejects_invalid_state_round_trip(factory: _Factory) -> None:
+    with pytest.raises(
+        PickCubeSourceGenerationError,
+        match="complete structure within tolerance",
+    ):
+        _record(factory)
 
 
 def test_recording_preserves_solver_dtype_distinct_from_environment_space() -> None:
@@ -379,6 +432,52 @@ def test_independent_baseline_uses_fresh_environment_and_preserves_source() -> N
     assert baseline_factory.created[0] is not generation_factory.created[0]
     assert baseline_factory.created[0].closed
     assert trajectory.source_actions.tobytes(order="C") == action_snapshot
+
+
+def test_independent_baseline_accepts_subtolerance_raw_state_drift() -> None:
+    trajectory = _record(_Factory())
+    state_digest = compute_state_tree_digest(trajectory.initial_state)
+    baseline_factory = _Factory(restore_offset=float(np.finfo(np.float32).eps))
+
+    terminal = validate_independent_source_baseline(
+        trajectory,
+        environment_factory=baseline_factory,
+        settings=_settings(),
+        action_contract=_contract(),
+        key_contract=_keys(),
+    )
+
+    restored = baseline_factory.created[0].last_restored_state
+    assert restored is not None
+    assert terminal.evaluator_values["success"].item() is True
+    assert compute_state_tree_digest(restored) != state_digest
+    assert compute_state_tree_digest(trajectory.initial_state) == state_digest
+
+
+@pytest.mark.parametrize(
+    "baseline_factory",
+    (
+        _Factory(restore_offset=2e-6),
+        _Factory(restore_structure_mismatch=True),
+    ),
+    ids=("over-tolerance", "structure-mismatch"),
+)
+def test_independent_baseline_rejects_invalid_state_round_trip(
+    baseline_factory: _Factory,
+) -> None:
+    trajectory = _record(_Factory())
+
+    with pytest.raises(
+        PickCubeSourceGenerationError,
+        match="complete structure within tolerance",
+    ):
+        validate_independent_source_baseline(
+            trajectory,
+            environment_factory=baseline_factory,
+            settings=_settings(),
+            action_contract=_contract(),
+            key_contract=_keys(),
+        )
 
 
 def test_failed_independent_baseline_is_rejected() -> None:

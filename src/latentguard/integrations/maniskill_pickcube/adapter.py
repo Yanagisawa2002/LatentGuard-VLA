@@ -28,6 +28,7 @@ from latentguard.replay.models import (
     ReplayStateReference,
     ReplayTrustDescriptor,
     ReplayTrustTier,
+    StateComparisonSemantic,
 )
 from latentguard.replay.validation import (
     validate_replay_bundle,
@@ -35,6 +36,8 @@ from latentguard.replay.validation import (
 )
 
 from .session import (
+    PICKCUBE_STATE_VERIFICATION_MAX_ABSOLUTE_TOLERANCE,
+    PICKCUBE_STATE_VERIFICATION_SEMANTIC,
     ManiSkillPickCubeEnvironmentSettings,
     PickCubeReplayActionContract,
 )
@@ -47,7 +50,7 @@ from .task_evidence import (
 )
 
 MANISKILL_PICKCUBE_ADAPTER_ID = "maniskill_pickcube_v1"
-MANISKILL_PICKCUBE_ADAPTER_VERSION = "1.0.0"
+MANISKILL_PICKCUBE_ADAPTER_VERSION = "1.1.0"
 MANISKILL_REQUIRED_VERSION = "3.0.1"
 MANISKILL_STATE_SEMANTIC_VERSION = "maniskill_state_tree_v1"
 
@@ -67,6 +70,10 @@ class ManiSkillPickCubeSemanticIdentity:
     action_layout_digest: str
     mani_skill_version: str = MANISKILL_REQUIRED_VERSION
     state_semantic_version: str = MANISKILL_STATE_SEMANTIC_VERSION
+    state_verification_semantic: str = PICKCUBE_STATE_VERIFICATION_SEMANTIC
+    state_verification_maximum_absolute_tolerance: float = (
+        PICKCUBE_STATE_VERIFICATION_MAX_ABSOLUTE_TOLERANCE
+    )
     schema_version: str = "1.0"
 
     def __post_init__(self) -> None:
@@ -78,6 +85,15 @@ class ManiSkillPickCubeSemanticIdentity:
         if self.state_semantic_version != MANISKILL_STATE_SEMANTIC_VERSION:
             raise ManiSkillPickCubeAdapterConfigurationError(
                 "ManiSkill PickCube adapter state semantic mismatch"
+            )
+        if (
+            self.state_verification_semantic != PICKCUBE_STATE_VERIFICATION_SEMANTIC
+            or type(self.state_verification_maximum_absolute_tolerance) is not float
+            or self.state_verification_maximum_absolute_tolerance
+            != PICKCUBE_STATE_VERIFICATION_MAX_ABSOLUTE_TOLERANCE
+        ):
+            raise ManiSkillPickCubeAdapterConfigurationError(
+                "ManiSkill PickCube adapter state verification contract mismatch"
             )
         if self.schema_version != "1.0":
             raise ManiSkillPickCubeAdapterConfigurationError(
@@ -116,6 +132,10 @@ class ManiSkillPickCubeSemanticIdentity:
                 "schema_version": self.schema_version,
                 "solver_identity": self.solver_identity,
                 "state_semantic_version": self.state_semantic_version,
+                "state_verification_maximum_absolute_tolerance": (
+                    self.state_verification_maximum_absolute_tolerance
+                ),
+                "state_verification_semantic": self.state_verification_semantic,
                 "task_implementation_identity": self.task_implementation_identity,
             }
         )
@@ -291,6 +311,17 @@ def resolve_maniskill_pickcube_configuration(
             "environment": settings.as_mapping(),
             "identity": identity.as_mapping(),
             "progress_semantic": PICKCUBE_PROGRESS_SEMANTIC,
+            "state_verification": MappingProxyType(
+                {
+                    "comparison_semantic": (
+                        StateComparisonSemantic.NUMERIC_TOLERANCE.value
+                    ),
+                    "maximum_absolute_tolerance": (
+                        PICKCUBE_STATE_VERIFICATION_MAX_ABSOLUTE_TOLERANCE
+                    ),
+                    "runtime_semantic": PICKCUBE_STATE_VERIFICATION_SEMANTIC,
+                }
+            ),
             "task_contract_version": PICKCUBE_TASK_CONTRACT_VERSION,
             "task_evaluator_keys": task_keys.as_mapping(),
             "task_id": PICKCUBE_TASK_ID,
@@ -392,6 +423,10 @@ class ManiSkillPickCubeAdapter:
             maximum_label_strength=LabelStrength.STRONG,
             simulator_verification_allowed=True,
             exact_state_verification_required=True,
+            state_verification_semantic=(StateComparisonSemantic.NUMERIC_TOLERANCE),
+            state_verification_tolerance=(
+                PICKCUBE_STATE_VERIFICATION_MAX_ABSOLUTE_TOLERANCE
+            ),
         )
 
     @property
@@ -525,6 +560,25 @@ class ManiSkillPickCubeAdapter:
                     replay_case.state_reference.adapter_version,
                     MANISKILL_PICKCUBE_ADAPTER_VERSION,
                 ),
+                (
+                    "state_comparison_semantic",
+                    replay_case.state_reference.comparison_semantic,
+                    StateComparisonSemantic.NUMERIC_TOLERANCE,
+                ),
+                (
+                    "state_verification_semantic",
+                    replay_case.state_reference.metadata.get(
+                        "state_verification_semantic"
+                    ),
+                    PICKCUBE_STATE_VERIFICATION_SEMANTIC,
+                ),
+                (
+                    "state_verification_maximum_absolute_tolerance",
+                    replay_case.state_reference.metadata.get(
+                        "state_verification_maximum_absolute_tolerance"
+                    ),
+                    PICKCUBE_STATE_VERIFICATION_MAX_ABSOLUTE_TOLERANCE,
+                ),
             )
             if actual != expected
         )
@@ -596,6 +650,8 @@ __all__ = [
     "MANISKILL_PICKCUBE_ADAPTER_VERSION",
     "MANISKILL_REQUIRED_VERSION",
     "MANISKILL_STATE_SEMANTIC_VERSION",
+    "PICKCUBE_STATE_VERIFICATION_MAX_ABSOLUTE_TOLERANCE",
+    "PICKCUBE_STATE_VERIFICATION_SEMANTIC",
     "ManiSkillPickCubeAdapter",
     "ManiSkillPickCubeAdapterConfigurationError",
     "ManiSkillPickCubeSemanticIdentity",

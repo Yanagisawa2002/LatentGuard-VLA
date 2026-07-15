@@ -288,6 +288,8 @@ def validate_state_restoration_evidence(evidence: StateRestorationEvidence) -> N
         _fail(context, "match_kind", "unsupported state match kind")
     if type(evidence.restoration_verified) is not bool:
         _fail(context, "restoration_verified", "must be a boolean")
+    if type(evidence.complete_state_comparison) is not bool:
+        _fail(context, "complete_state_comparison", "must be a boolean")
     if evidence.comparison_semantic is StateComparisonSemantic.EXACT_DIGEST:
         if tolerance != 0.0:
             _fail(
@@ -442,6 +444,47 @@ def validate_replay_trust_descriptor(descriptor: ReplayTrustDescriptor) -> None:
         )
     if not isinstance(descriptor.trust_tier, ReplayTrustTier):
         _fail(context, "trust_tier", "unsupported replay trust tier")
+    if not isinstance(descriptor.state_verification_semantic, StateComparisonSemantic):
+        _fail(
+            context,
+            "state_verification_semantic",
+            "unsupported state comparison semantic",
+        )
+    verification_tolerance = _finite_number(
+        descriptor.state_verification_tolerance,
+        context,
+        "state_verification_tolerance",
+        nonnegative=True,
+    )
+    if (
+        descriptor.state_verification_semantic is StateComparisonSemantic.EXACT_DIGEST
+        and verification_tolerance != 0.0
+    ):
+        _fail(
+            context,
+            "state_verification_tolerance",
+            "exact digest verification requires zero tolerance",
+        )
+    if (
+        descriptor.state_verification_semantic
+        is StateComparisonSemantic.NUMERIC_TOLERANCE
+        and verification_tolerance <= 0.0
+    ):
+        _fail(
+            context,
+            "state_verification_tolerance",
+            "numeric verification requires a strictly positive tolerance",
+        )
+    if (
+        descriptor.state_verification_semantic
+        is StateComparisonSemantic.NUMERIC_TOLERANCE
+        and descriptor.trust_tier is not ReplayTrustTier.EXACT_SIMULATOR
+    ):
+        _fail(
+            context,
+            "state_verification_semantic",
+            "numeric verification is restricted to exact simulator trust",
+        )
     if not isinstance(descriptor.label_source, LabelSource):
         _fail(context, "label_source", "unsupported label source")
     if not isinstance(descriptor.maximum_label_strength, LabelStrength):
@@ -584,6 +627,17 @@ def validate_paired_replay_result(result: PairedReplayResult) -> None:
                 "corrupted_restoration",
                 "both sessions must use the same state comparison contract",
             )
+        if (
+            result.baseline_restoration.complete_state_comparison
+            and result.corrupted_restoration.complete_state_comparison
+            and result.baseline_restoration.compared_component_count
+            != result.corrupted_restoration.compared_component_count
+        ):
+            _fail(
+                context,
+                "corrupted_restoration",
+                "both sessions must compare the same complete component inventory",
+            )
     baseline_valid = _baseline_valid(result)
     if result.status in {EvaluationStatus.CONCLUSIVE, EvaluationStatus.INDETERMINATE}:
         if not baseline_valid:
@@ -710,23 +764,11 @@ def validate_replay_trust_claim(
                 "replay_result",
                 "verified simulator claims require baseline success",
             )
-        exact_restorations = (
+        restorations = (
             replay_result.baseline_restoration,
             replay_result.corrupted_restoration,
         )
-        if any(
-            restoration is None
-            or restoration.match_kind is not StateMatchKind.EXACT
-            or restoration.expected_state_digest != restoration.observed_state_digest
-            or restoration.maximum_absolute_error not in (None, 0.0)
-            for restoration in exact_restorations
-        ):
-            _fail(
-                context,
-                "replay_result",
-                "verified simulator claims require two exact state restorations; "
-                "tolerance matches are not verification",
-            )
+        _validate_trusted_restorations(descriptor, restorations, context=context)
         if (
             replay_result.corrupted_restoration is None
             or not replay_result.corrupted_restoration.restoration_verified
@@ -742,6 +784,83 @@ def validate_replay_trust_claim(
                 "verified simulator claims require both restorations and completed "
                 "corrupted execution",
             )
+
+
+def _validate_trusted_restorations(
+    descriptor: ReplayTrustDescriptor,
+    restorations: tuple[
+        StateRestorationEvidence | None,
+        StateRestorationEvidence | None,
+    ],
+    *,
+    context: str,
+) -> None:
+    """Bind both verified restorations to the adapter-owned trust contract."""
+    for role, restoration in zip(("baseline", "corrupted"), restorations, strict=True):
+        if restoration is None:
+            _fail(
+                context,
+                "replay_result",
+                f"verified simulator claim lacks {role} restoration",
+            )
+        validate_state_restoration_evidence(restoration)
+        if (
+            restoration.comparison_semantic
+            is not descriptor.state_verification_semantic
+            or restoration.comparison_tolerance
+            != descriptor.state_verification_tolerance
+        ):
+            _fail(
+                context,
+                "replay_result",
+                f"{role} restoration differs from the descriptor comparison contract",
+            )
+        if (
+            not restoration.restoration_verified
+            or not restoration.complete_state_comparison
+        ):
+            _fail(
+                context,
+                "replay_result",
+                f"{role} restoration is not a complete verified state comparison",
+            )
+        if (
+            descriptor.state_verification_semantic
+            is StateComparisonSemantic.EXACT_DIGEST
+        ):
+            if (
+                restoration.match_kind is not StateMatchKind.EXACT
+                or restoration.expected_state_digest
+                != restoration.observed_state_digest
+                or restoration.maximum_absolute_error not in (None, 0.0)
+            ):
+                _fail(
+                    context,
+                    "replay_result",
+                    f"{role} restoration does not satisfy exact digest verification",
+                )
+            continue
+        if (
+            restoration.match_kind
+            not in {StateMatchKind.EXACT, StateMatchKind.WITHIN_TOLERANCE}
+            or restoration.maximum_absolute_error is None
+            or restoration.maximum_absolute_error
+            > descriptor.state_verification_tolerance
+        ):
+            _fail(
+                context,
+                "replay_result",
+                f"{role} restoration exceeds numeric verification bounds",
+            )
+    baseline, corrupted = restorations
+    if baseline is None or corrupted is None:
+        raise AssertionError("trusted restoration validation lost required evidence")
+    if baseline.compared_component_count != corrupted.compared_component_count:
+        _fail(
+            context,
+            "replay_result",
+            "verified restorations must compare the same complete component inventory",
+        )
 
 
 def validate_replay_bundle(bundle: ReplayBundle) -> None:

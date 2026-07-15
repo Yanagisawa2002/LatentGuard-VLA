@@ -76,7 +76,15 @@ Fixture and deterministic non-simulator tiers cannot emit simulator label
 source, strong simulator evidence, or verified simulator replay. An exact
 simulator tier merely makes those values eligible: both restorations, the
 successful baseline, complete corrupted execution, complete terminal evidence,
-and the descriptor's explicit permission must still pass.
+and the descriptor's explicit permission must still pass. A verified
+restoration uses exact-digest semantics with zero tolerance by default. Only an
+exact-simulator descriptor may explicitly bind numeric-tolerance semantics and
+a finite positive bound. Both sessions must match that descriptor exactly,
+report a complete state comparison, and bind the same expected state digest.
+The mode and tolerance are part of the evaluator's resolved configuration and
+therefore its identity. An adapter-specific versioned comparison semantic and
+tolerance must also be bound into that adapter's semantic configuration and
+each replay-case identity; generic numeric-tolerance mode alone is insufficient.
 
 The built-in `deterministic_replay_fixture` is permanently mapped to
 `LabelSource.DETERMINISTIC_EVALUATOR`, `LabelStrength.WEAK`, and
@@ -126,14 +134,28 @@ bounds, solver identity, task identity, and archive digests agree.
 
 Each session lazily creates a fresh one-environment GPU `PickCube-v1` runtime,
 converts safe archive leaves to runtime tensors, calls `set_state_dict`, reads
-the complete state back, and emits restoration evidence. Tolerance-only matches
-cannot support M2C's verified strong claim: both sessions must satisfy the exact
-digest gate already enforced by M2B-Core. A complete official task failure after
-a successful independent source baseline is conclusive strong evidence; a
-runtime exception is still an execution error, and an action/bounds or restore
-mismatch is invalid context.
+the complete state back, and emits restoration evidence. The archive reference
+remains bound to the exact source-state digest. Live restoration may use the
+checked-in numeric tolerance only when the complete structure matches; both
+fresh sessions must verify against that same descriptor-bound comparison
+contract. Archive, component-inventory, or structural failures leave the typed
+complete-comparison flag false. A full finite comparison that exceeds its bound
+may record comparison completeness, but restoration remains unverified and no
+action may execute. A complete official task failure after a successful
+independent source baseline is conclusive strong evidence; a runtime exception
+is still an execution error, and an action/bounds or restore mismatch is invalid
+context.
 
-This is the implemented fail-closed adapter path, not a completed simulator
-claim. At the first-stage checkpoint its real compatibility, action, state, and
-solver contracts have not yet passed the required remote probes, so no strong
-PickCube evidence or remote acceptance is reported.
+For `maniskill_pickcube_v1` only, the authorized runtime comparison semantic is
+`tolerance_verified_full_state_v1` with fixed maximum absolute tolerance
+`1e-6`. The expected archive manifest, inventory, dtype, shape, leaf bytes, and
+digest remain exact. Every baseline and corrupted restoration must independently
+cover the same complete leaf and numeric-component inventory, contain only
+finite values, and report its observed maximum error and compared component
+count. Other adapters retain exact-digest/zero-tolerance behavior unless they
+receive a separately versioned and compatibility-bound authorization.
+
+This is the implemented fail-closed adapter path, not by itself a simulator
+claim. Discovery observed complete 70-component restoration with maximum error
+`1.1920929e-7`; trusted collection and strong PickCube evidence still require a
+passing compatibility-bound probe and every subsequent remote gate.

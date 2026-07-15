@@ -78,7 +78,9 @@ M2B-Core adds:
 
 - `ReplayStateReference`, an opaque adapter/version/source reference plus one
   stable state key or index, expected state digest, comparison semantic, and
-  canonical JSON metadata. It never contains raw state, arrays, or paths.
+  canonical JSON metadata. Adapter-specific comparison semantic and tolerance
+  bindings live in this canonical identity metadata when required. It never
+  contains raw state, arrays, or paths.
 - `ReplayTaskReference`, a task ID and contract version with uninterpreted
   canonical JSON metadata.
 - `ReplayCase`, which binds one M1 proposal to the matching M0 original action,

@@ -58,6 +58,56 @@ Every training entry point must support `--dry-run`, `--max-steps`, `--limit-sam
 
 Before a full remote run, pass these gates in order: configuration validation; CPU data-loading smoke test; one-batch GPU forward pass; one-batch forward/backward pass; short overfit or max-steps run; checkpoint save/resume test; then full training. Do not start an expensive run if an earlier gate fails. Never silently shrink model/data settings to make a run succeed; record and justify changes.
 
+Runtime state-restoration verification
+
+Serialized and archived simulator state remains subject to exact structural and
+content-integrity validation. Stored manifests, paths, dtypes, shapes, array
+bytes, leaf inventories, and archive digests must match exactly. Archive
+tampering or content drift is never tolerated.
+
+Runtime state restoration is verified according to the state-comparison
+contract explicitly bound by the adapter and its compatibility identity.
+
+For an adapter that declares tolerance-based numeric restoration, restored state
+may be treated as verified only when all of the following hold:
+
+the archived source state passes exact digest and inventory validation;
+the restored state has exactly the same complete tree structure and leaf paths;
+every leaf has the expected dtype and shape;
+the compared component count exactly matches the archived state;
+all compared numeric values are finite;
+no expected or observed component is missing, added, reordered, clipped,
+normalized, or otherwise repaired;
+the maximum absolute error does not exceed the fixed tolerance recorded in
+both the compatibility report and the adapter’s semantic configuration;
+the comparison semantic and tolerance participate in the adapter
+configuration digest, replay-case identity, and evidence;
+baseline and corrupted sessions independently restore and verify the same
+content-bound state reference under the same comparison contract;
+the observed maximum error and compared component count are recorded in replay
+evidence.
+
+For maniskill_pickcube_v1, the authorized runtime comparison semantic is
+tolerance_verified_full_state_v1 with a maximum absolute tolerance of 1e-6,
+subject to successful compatibility probing. The currently observed maximum
+round-trip error is 1.1920929e-7 across repeated restoration and fresh
+environment instances.
+
+Passing this contract permits the restoration gate to support strong,
+simulator-verified evidence, provided every other exact-replay gate also passes:
+source identity validation, successful baseline replay, independent corrupted
+session restoration, complete corrupted execution, and complete terminal task
+evaluation.
+
+This authorization does not apply automatically to other adapters. Other
+adapters remain byte-exact unless their own versioned, compatibility-bound
+comparison contract is explicitly reviewed and authorized.
+
+Approximate scene reconstruction, partial-state comparison, omitted leaves,
+schema coercion, inferred defaults, and unbound or dynamically relaxed
+tolerances remain invalid and must never be described as verified simulator
+restoration.
+
 ## Engineering and data rules
 
 - Use Python 3.11 and a `src`-layout package.

@@ -18,6 +18,9 @@ from latentguard.corruptions.serialization import (
 from latentguard.corruptions.transforms import ConstantBias
 from latentguard.evaluation.models import compute_configuration_digest
 from latentguard.integrations.maniskill_pickcube.adapter import (
+    MANISKILL_PICKCUBE_ADAPTER_VERSION,
+    PICKCUBE_STATE_VERIFICATION_MAX_ABSOLUTE_TOLERANCE,
+    PICKCUBE_STATE_VERIFICATION_SEMANTIC,
     ManiSkillPickCubeSemanticIdentity,
     resolve_maniskill_pickcube_configuration,
 )
@@ -150,9 +153,17 @@ def _compatibility_report() -> CompatibilityReport:
         state_tree_structure_digest=_sha("6"),
         state_round_trip=StateRoundTripResult(
             passed=True,
+            complete_state_comparison=True,
+            comparison_semantic=PICKCUBE_STATE_VERIFICATION_SEMANTIC,
             expected_state_digest=_sha("7"),
             observed_state_digest=_sha("7"),
-            compared_leaf_count=3,
+            expected_structure_digest=_sha("6"),
+            observed_structure_digest=_sha("6"),
+            expected_leaf_count=3,
+            observed_leaf_count=3,
+            expected_numeric_component_count=6,
+            observed_numeric_component_count=6,
+            compared_numeric_component_count=6,
             maximum_absolute_error=0.0,
             tolerance=1e-6,
         ),
@@ -406,7 +417,22 @@ def test_replay_case_and_bundle_bind_archive_without_runtime_paths() -> None:
     )
     assert (
         replay_case.state_reference.comparison_semantic
-        is StateComparisonSemantic.EXACT_DIGEST
+        is StateComparisonSemantic.NUMERIC_TOLERANCE
+    )
+    assert artifacts.settings.state_tolerance == pytest.approx(
+        artifacts.compatibility.expected_contract.state_round_trip_tolerance
+    )
+    assert replay_case.adapter_version == "1.1.0"
+    assert replay_case.adapter_version == MANISKILL_PICKCUBE_ADAPTER_VERSION
+    assert (
+        replay_case.state_reference.metadata["state_verification_semantic"]
+        == PICKCUBE_STATE_VERIFICATION_SEMANTIC
+    )
+    assert (
+        replay_case.state_reference.metadata[
+            "state_verification_maximum_absolute_tolerance"
+        ]
+        == PICKCUBE_STATE_VERIFICATION_MAX_ABSOLUTE_TOLERANCE
     )
     assert (
         replay_case.state_reference.metadata["reference_archive_content_digest"]

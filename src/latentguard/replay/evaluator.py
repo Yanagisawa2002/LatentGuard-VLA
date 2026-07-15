@@ -307,21 +307,22 @@ class ExactStatePairedReplayEvaluator:
             ),
             "replay_corrupted_steps": corrupted_steps,
         }
-        for name, restoration in (
-            (
-                "replay_baseline_restoration_maximum_absolute_error",
-                result.baseline_restoration,
-            ),
-            (
-                "replay_corrupted_restoration_maximum_absolute_error",
-                result.corrupted_restoration,
-            ),
+        for role, restoration in (
+            ("baseline", result.baseline_restoration),
+            ("corrupted", result.corrupted_restoration),
         ):
-            if (
-                restoration is not None
-                and restoration.maximum_absolute_error is not None
-            ):
-                metrics[name] = restoration.maximum_absolute_error
+            if restoration is None:
+                continue
+            metrics[f"replay_{role}_restoration_compared_component_count"] = (
+                restoration.compared_component_count
+            )
+            metrics[f"replay_{role}_restoration_complete_state_comparison"] = (
+                restoration.complete_state_comparison
+            )
+            if restoration.maximum_absolute_error is not None:
+                metrics[f"replay_{role}_restoration_maximum_absolute_error"] = (
+                    restoration.maximum_absolute_error
+                )
         source = np.asarray(replay_case.original_action.actions, dtype=np.float64)
         corrupted = np.asarray(replay_case.transformed_action.actions, dtype=np.float64)
         difference = np.abs(source - corrupted)
@@ -471,6 +472,8 @@ def create_exact_state_paired_replay_evaluator(
             "simulator_verification_allowed": trust.simulator_verification_allowed,
             "source_dataset_digest": replay_bundle.source_dataset_digest,
             "source_dataset_id": replay_bundle.source_dataset_id,
+            "state_verification_semantic": (trust.state_verification_semantic.value),
+            "state_verification_tolerance": trust.state_verification_tolerance,
             "trust_contract_version": REPLAY_TRUST_CONTRACT_VERSION,
             "trust_tier": trust.trust_tier.value,
             "unsafe_semantic": unsafe_semantic,

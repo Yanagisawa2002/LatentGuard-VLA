@@ -37,7 +37,9 @@ TASK_CONTRACT_VERSION = "1.0.0"
 TASK_CONTRACT_SEMANTIC = "maniskill_pickcube_task_v1"
 PROGRESS_SEMANTIC = "pickcube_binary_completion_v0"
 UNSAFE_SEMANTIC = "pickcube_cube_center_below_world_zero_v0"
-DEFAULT_STATE_TOLERANCE = 1e-6
+PICKCUBE_STATE_VERIFICATION_SEMANTIC = "tolerance_verified_full_state_v1"
+PICKCUBE_STATE_VERIFICATION_MAX_ABSOLUTE_TOLERANCE = 1e-6
+DEFAULT_STATE_TOLERANCE = PICKCUBE_STATE_VERIFICATION_MAX_ABSOLUTE_TOLERANCE
 
 _CONTRACT_STATUSES = frozenset({"probe_required", "verified"})
 _EXPECTED_FIELDS = frozenset(
@@ -359,11 +361,13 @@ def _validate_expected_contract(contract: ExpectedManiSkillPickCubeContract) -> 
     if (
         type(contract.state_round_trip_tolerance) not in (int, float)
         or not math.isfinite(float(contract.state_round_trip_tolerance))
-        or float(contract.state_round_trip_tolerance) < 0.0
+        or float(contract.state_round_trip_tolerance)
+        != PICKCUBE_STATE_VERIFICATION_MAX_ABSOLUTE_TOLERANCE
     ):
         raise ManiSkillConfigurationError(
-            "ManiSkillPickCubeContract.state_round_trip_tolerance: expected a "
-            "non-negative finite number"
+            "ManiSkillPickCubeContract.state_round_trip_tolerance: must equal the "
+            "authorized fixed maximum absolute tolerance "
+            f"{PICKCUBE_STATE_VERIFICATION_MAX_ABSOLUTE_TOLERANCE!r}"
         )
     for name in (
         "action_contract_digest",
@@ -876,6 +880,8 @@ __all__ = [
     "ExpectedManiSkillPickCubeContract",
     "ManiSkillPickCubeActionLayout",
     "ManiSkillConfigurationError",
+    "PICKCUBE_STATE_VERIFICATION_MAX_ABSOLUTE_TOLERANCE",
+    "PICKCUBE_STATE_VERIFICATION_SEMANTIC",
     "PROGRESS_SEMANTIC",
     "REQUIRED_CONTROL_MODE",
     "REQUIRED_ENVIRONMENT_ID",

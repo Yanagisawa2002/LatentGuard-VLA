@@ -356,6 +356,7 @@ class DeterministicReplayFixtureSession:
             maximum_absolute_error=maximum_error,
             match_kind=(StateMatchKind.MISMATCH if mismatch else StateMatchKind.EXACT),
             restoration_verified=not mismatch,
+            complete_state_comparison=True,
             diagnostics={"fixture_non_physical": True},
         )
 
@@ -587,6 +588,8 @@ class DeterministicReplayFixtureAdapter:
             maximum_label_strength=LabelStrength.WEAK,
             simulator_verification_allowed=False,
             exact_state_verification_required=True,
+            state_verification_semantic=StateComparisonSemantic.EXACT_DIGEST,
+            state_verification_tolerance=0.0,
         )
 
     @property
@@ -662,7 +665,7 @@ class DeterministicReplayFixtureAdapter:
             adapter_version=self.adapter_version,
             source_reference_id=pair.source_episode_id,
             expected_state_digest=_fixture_state_digest(initial_state),
-            comparison_semantic=StateComparisonSemantic.NUMERIC_TOLERANCE,
+            comparison_semantic=StateComparisonSemantic.EXACT_DIGEST,
             state_index=0,
             metadata={
                 "fixture_non_physical": True,

@@ -28,9 +28,9 @@ is guessed from memory or from vector dimension. The verified dependency set
 and `configs/integrations/maniskill_pickcube/action-layout-v1.json` are then
 changed locally, committed, pushed, and checked by a second probe. Trusted
 collection cannot begin while the checked-in contract is unresolved or differs
-from the remote report. The template's `1e-6` state tolerance is provisional,
-must be checked against the observed round trip, and cannot be loosened on the
-remote machine.
+from the remote report. Remote discovery observed maximum full-state round-trip
+error `1.1920929e-7` across 70 numeric components. The authorized adapter-bound
+maximum remains fixed at `1e-6` and cannot be loosened on the remote machine.
 
 ## Official source boundary
 
@@ -60,10 +60,24 @@ arrays, non-finite data, missing or extra files, dtype/shape changes, and digest
 tampering before reconstructing the tree.
 
 The `maniskill_state_tree_v1` digest binds structure, canonical leaf paths,
-dtype, shape, and exact C-order bytes. Converting leaves back to runtime tensors
-and devices occurs only inside the integration. A configured numerical
-tolerance is diagnostic and fail-closed; verified strong M2B evidence still
-requires the exact-digest restoration gate for both sessions.
+dtype, shape, and exact C-order bytes. This digest is the archive-integrity
+boundary: loading and replay references still require the archived source state
+to match it exactly. Converting leaves back to runtime tensors and devices
+occurs only inside the integration. Live `set_state_dict`/`get_state_dict`
+verification is a separate numerical gate: the complete structure, paths,
+dtypes, and shapes must match, and every value must remain within the checked-in
+tolerance. Both raw state digests remain recorded, so tolerated runtime byte
+drift is visible without being misclassified as archive-content mutation.
+Baseline and corrupted replay references use this same numerical comparison
+contract independently. Its versioned name is
+`tolerance_verified_full_state_v1`, and its maximum absolute tolerance is
+`1e-6`. The compatibility report serializes that exact named semantic and
+tolerance in its deterministic identity. The same values and the compatibility
+identity are jointly bound into adapter configuration, replay-case identity,
+and evidence. Evidence also records the observed maximum error and complete
+compared-component count. Structural, inventory, non-finite, or over-tolerance
+drift remains unverified. A completed comparison that exceeds the bound does not
+authorize action execution.
 
 ## M0 import and action corruption
 
@@ -109,8 +123,9 @@ unsafe.
 
 The adapter's exact-simulator/strong descriptor is a ceiling, not a result. A
 record becomes strong and simulator-verified only after compatibility binding,
-both exact restorations, complete successful baseline execution, complete
-corrupted execution, and complete terminal task evaluation pass.
+both complete descriptor-bound restorations, complete successful baseline
+execution, complete corrupted execution, and complete terminal task evaluation
+pass.
 
 ## Commands and remote lifecycle
 
@@ -134,27 +149,29 @@ compact content-bound reference summary. The standard M2B `ReplayBundle` is
 materialized by replay only after the M1 proposal dataset exists; collection
 does not invent an alternate proposal-free bundle format.
 
-Every remote gate runs from an exact pushed SHA via a key-authenticated SSH host
-alias. Large archives and logs remain under the remote run root outside the
-checkout. Only reviewed, sanitized compatibility, collection, replay, evidence,
-state-statistic, environment, and resume summaries return under
-`reports/m2c/<run-id>/`.
+Every remote gate runs from an exact pushed SHA via a dedicated key-authenticated
+`BatchMode=yes` connection whose endpoint details remain outside Git. Large
+archives and logs remain under the remote run root outside the checkout. Only
+reviewed, sanitized compatibility, collection, replay, evidence, state-statistic,
+environment, and resume summaries return under `reports/m2c/<run-id>/`.
 
-## First-stage status
+## Current status
 
 The local integration, strict unresolved expected-contract template, safe
 archive, M0 import, adapter boundaries, three CLIs, and CPU fake tests are
-implemented. The probe requirement currently pins only `mani_skill==3.0.1`.
-No mplib version, action dimension, action indices, gripper field, observation
-spelling, compatibility identity, remote state behavior, source trajectory, or
-simulator result is claimed as verified.
+implemented. Dedicated key-only access, the remote read-only Git deploy key,
+Python 3.11, one RTX 5090, CUDA/Vulkan/PhysX, ManiSkill `3.0.1`, SAPIEN `3.0.3`,
+and resolver-selected mplib `0.1.1` have been operationally verified.
 
-No remote M2C execution has been performed or accepted. It remains blocked
-until rotation of the previously exposed credential is confirmed and a
-configured SSH alias passes key-only `BatchMode=yes` authentication. The first
-probe, locally committed resolved dependency/action contract, second trusted
-probe, source collection, paired replay, compact report retrieval, and final
-result commit are all still pending.
+Remote discovery established observation mode `none`, eight float32 action
+components (seven arm and one gripper), and complete 4-leaf/70-component state
+round trips with maximum error `1.1920929e-7`. The historical schema-1.0 probe
+failed only because it also required byte-identical runtime readback; it is
+retained as sanitized diagnostic evidence and cannot authorize trust. The
+adapter-specific schema-1.1 correction must still be pushed and pass a fresh
+probe before the dependency/action contract is committed locally. The second
+trusted probe, source collection, paired replay, compact final retrieval, and
+result commit remain pending; no remote M2C acceptance or training is claimed.
 
 ## Known limitations
 

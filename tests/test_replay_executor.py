@@ -17,7 +17,7 @@ from latentguard.corruptions.generation import generate_corruption_proposals
 from latentguard.corruptions.models import CorruptedActionProposal
 from latentguard.corruptions.serialization import CorruptionDataset
 from latentguard.evaluation.models import EvaluationStatus
-from latentguard.models import ActionChunk
+from latentguard.models import ActionChunk, LabelSource, LabelStrength
 from latentguard.replay.base import ReplayEnvironmentSession
 from latentguard.replay.executor import (
     PairedReplayExecutionError,
@@ -34,6 +34,9 @@ from latentguard.replay.models import (
     ReplayExecutionRole,
     ReplayStateReference,
     ReplayTaskReference,
+    ReplayTrustDescriptor,
+    ReplayTrustTier,
+    StateComparisonSemantic,
     StateMatchKind,
     StateRestorationEvidence,
     TerminalTaskEvidence,
@@ -132,6 +135,10 @@ class _SessionWrapper:
         ):
             return object()  # type: ignore[return-value]
         evidence = self.delegate.restore_state(reference)
+        if self.owner.incomplete_restoration and (
+            self.role is ReplayExecutionRole.BASELINE
+        ):
+            return replace(evidence, complete_state_comparison=False)
         if self.owner.corrupted_restoration_mismatch and (
             self.role is ReplayExecutionRole.CORRUPTED
         ):
@@ -144,6 +151,7 @@ class _SessionWrapper:
                 maximum_absolute_error=1.0,
                 match_kind=StateMatchKind.MISMATCH,
                 restoration_verified=False,
+                complete_state_comparison=False,
             )
         return evidence
 
@@ -178,6 +186,7 @@ class _AdapterWrapper:
             ReplayExecutionRole.CORRUPTED: 0,
         }
         self.same_session = False
+        self.incomplete_restoration = False
         self.corrupted_restoration_mismatch = False
         self.malformed_restoration = False
         self.keyboard_interrupt = False
@@ -187,6 +196,7 @@ class _AdapterWrapper:
         self.configuration_drift_on_create = False
         self.resolved_case_override: ReplayCase | None = None
         self.ignore_proposal_content = False
+        self.trust_descriptor_override: ReplayTrustDescriptor | None = None
 
     @property
     def adapter_id(self) -> str:
@@ -204,8 +214,8 @@ class _AdapterWrapper:
             return "cfg-sha256-" + "0" * 64
         return self.delegate.configuration_digest
 
-    def trust_descriptor(self):  # type: ignore[no-untyped-def]
-        return self.delegate.trust_descriptor()
+    def trust_descriptor(self) -> ReplayTrustDescriptor:
+        return self.trust_descriptor_override or self.delegate.trust_descriptor()
 
     def resolved_configuration(self) -> Mapping[str, object]:
         return self.delegate.resolved_configuration()
@@ -272,6 +282,46 @@ def test_restoration_mismatch_is_invalid_and_session_closes_once() -> None:
     assert result.status is EvaluationStatus.INVALID
     assert result.baseline_restoration is not None
     assert result.baseline_restoration.restoration_verified is False
+    assert result.baseline_restoration.complete_state_comparison is True
+    assert adapter.close_counts[ReplayExecutionRole.BASELINE] == 1
+    assert adapter.close_counts[ReplayExecutionRole.CORRUPTED] == 0
+
+
+def test_incomplete_legacy_restoration_is_rejected_before_any_action() -> None:
+    _, _, delegate = _stack()
+    adapter = _AdapterWrapper(delegate)
+    adapter.incomplete_restoration = True
+
+    result = _execute(adapter, _case(delegate, 0))
+
+    assert result.status is EvaluationStatus.INVALID
+    assert result.termination_reason == "baseline_state_restoration_mismatch"
+    assert result.baseline_restoration is not None
+    assert result.baseline_restoration.restoration_verified is True
+    assert result.baseline_restoration.complete_state_comparison is False
+    assert adapter.rows == []
+    assert adapter.close_counts[ReplayExecutionRole.BASELINE] == 1
+    assert adapter.close_counts[ReplayExecutionRole.CORRUPTED] == 0
+
+
+def test_trust_comparison_drift_is_rejected_before_any_action() -> None:
+    _, _, delegate = _stack()
+    adapter = _AdapterWrapper(delegate)
+    adapter.trust_descriptor_override = ReplayTrustDescriptor(
+        trust_tier=ReplayTrustTier.EXACT_SIMULATOR,
+        label_source=LabelSource.SIMULATOR,
+        maximum_label_strength=LabelStrength.STRONG,
+        simulator_verification_allowed=True,
+        exact_state_verification_required=True,
+        state_verification_semantic=StateComparisonSemantic.NUMERIC_TOLERANCE,
+        state_verification_tolerance=1e-6,
+    )
+
+    result = _execute(adapter, _case(delegate, 0))
+
+    assert result.status is EvaluationStatus.EXECUTION_ERROR
+    assert "baseline_restore_state" in result.termination_reason
+    assert adapter.rows == []
     assert adapter.close_counts[ReplayExecutionRole.BASELINE] == 1
     assert adapter.close_counts[ReplayExecutionRole.CORRUPTED] == 0
 

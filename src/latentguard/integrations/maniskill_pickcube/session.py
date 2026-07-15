@@ -30,6 +30,10 @@ from latentguard.replay.models import (
     TerminalTaskEvidence,
 )
 
+from .configuration import (
+    PICKCUBE_STATE_VERIFICATION_MAX_ABSOLUTE_TOLERANCE,
+    PICKCUBE_STATE_VERIFICATION_SEMANTIC,
+)
 from .task_evidence import (
     PICKCUBE_PROGRESS_SEMANTIC,
     PICKCUBE_TASK_CONTRACT_VERSION,
@@ -55,6 +59,7 @@ class ManiSkillPickCubeEnvironmentSettings:
 
     obs_mode: str
     state_tolerance: float
+    state_verification_semantic: str = PICKCUBE_STATE_VERIFICATION_SEMANTIC
     environment_id: str = "PickCube-v1"
     robot_uid: str = "panda"
     num_envs: int = 1
@@ -91,9 +96,14 @@ class ManiSkillPickCubeEnvironmentSettings:
             raise ReplayInvalidContextError(
                 "PickCube state tolerance must be an explicit finite float"
             )
-        if self.state_tolerance < 0.0:
+        if self.state_tolerance != PICKCUBE_STATE_VERIFICATION_MAX_ABSOLUTE_TOLERANCE:
             raise ReplayInvalidContextError(
-                "PickCube state tolerance must be non-negative"
+                "PickCube state tolerance must equal the fixed maximum absolute "
+                f"tolerance {PICKCUBE_STATE_VERIFICATION_MAX_ABSOLUTE_TOLERANCE!r}"
+            )
+        if self.state_verification_semantic != PICKCUBE_STATE_VERIFICATION_SEMANTIC:
+            raise ReplayInvalidContextError(
+                "PickCube state verification semantic mismatch"
             )
 
     def as_mapping(self) -> Mapping[str, object]:
@@ -108,6 +118,7 @@ class ManiSkillPickCubeEnvironmentSettings:
                 "schema_version": self.schema_version,
                 "sim_backend": self.sim_backend,
                 "state_tolerance": self.state_tolerance,
+                "state_verification_semantic": self.state_verification_semantic,
             }
         )
 
@@ -790,6 +801,20 @@ class ManiSkillPickCubeReplaySession:
             raise ReplayInvalidContextError("PickCube progress semantic mismatch")
         if replay_case.unsafe_semantic != PICKCUBE_UNSAFE_SEMANTIC:
             raise ReplayInvalidContextError("PickCube unsafe semantic mismatch")
+        state_reference = replay_case.state_reference
+        if (
+            state_reference.comparison_semantic
+            is not StateComparisonSemantic.NUMERIC_TOLERANCE
+            or state_reference.metadata.get("state_verification_semantic")
+            != PICKCUBE_STATE_VERIFICATION_SEMANTIC
+            or state_reference.metadata.get(
+                "state_verification_maximum_absolute_tolerance"
+            )
+            != PICKCUBE_STATE_VERIFICATION_MAX_ABSOLUTE_TOLERANCE
+        ):
+            raise ReplayInvalidContextError(
+                "PickCube replay state verification contract mismatch"
+            )
         action = (
             replay_case.original_action
             if execution_role is ReplayExecutionRole.BASELINE
@@ -853,9 +878,16 @@ class ManiSkillPickCubeReplaySession:
                 maximum_absolute_error=tolerance + 1.0,
                 match_kind=StateMatchKind.MISMATCH,
                 restoration_verified=False,
+                complete_state_comparison=False,
                 diagnostics={
                     "pickcube_archive_reference_mismatch": True,
                     "pickcube_state_structure_matches": False,
+                    "pickcube_state_verification_maximum_absolute_tolerance": (
+                        PICKCUBE_STATE_VERIFICATION_MAX_ABSOLUTE_TOLERANCE
+                    ),
+                    "pickcube_state_verification_semantic": (
+                        PICKCUBE_STATE_VERIFICATION_SEMANTIC
+                    ),
                 },
             )
         runtime_state = self._runtime.prepare_state_tree(
@@ -902,9 +934,16 @@ class ManiSkillPickCubeReplaySession:
             maximum_absolute_error=comparison.maximum_absolute_error,
             match_kind=match_kind,
             restoration_verified=self._restored,
+            complete_state_comparison=comparison.structure_matches,
             diagnostics={
                 "pickcube_state_exact_digest_match": exact,
                 "pickcube_state_structure_matches": comparison.structure_matches,
+                "pickcube_state_verification_maximum_absolute_tolerance": (
+                    PICKCUBE_STATE_VERIFICATION_MAX_ABSOLUTE_TOLERANCE
+                ),
+                "pickcube_state_verification_semantic": (
+                    PICKCUBE_STATE_VERIFICATION_SEMANTIC
+                ),
             },
         )
 
@@ -1013,6 +1052,8 @@ __all__ = [
     "PickCubeReferenceStateLoader",
     "PickCubeReplayActionContract",
     "PickCubeRuntime",
+    "PICKCUBE_STATE_VERIFICATION_MAX_ABSOLUTE_TOLERANCE",
+    "PICKCUBE_STATE_VERIFICATION_SEMANTIC",
     "PickCubeStateTreeComparator",
     "StateTreeComparison",
 ]

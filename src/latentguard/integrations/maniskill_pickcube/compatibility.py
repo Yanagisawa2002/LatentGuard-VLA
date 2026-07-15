@@ -14,6 +14,7 @@ from typing import NoReturn, cast
 
 from latentguard.evaluation.security import is_sanitized_operational_text
 from latentguard.integrations.maniskill_pickcube.configuration import (
+    PICKCUBE_STATE_VERIFICATION_SEMANTIC,
     PROGRESS_SEMANTIC,
     REQUIRED_CONTROL_MODE,
     REQUIRED_ENVIRONMENT_ID,
@@ -29,7 +30,7 @@ from latentguard.integrations.maniskill_pickcube.configuration import (
 )
 from latentguard.replay.identity import canonical_json_bytes, canonical_json_value
 
-COMPATIBILITY_REPORT_SCHEMA_VERSION = "1.0"
+COMPATIBILITY_REPORT_SCHEMA_VERSION = "1.1"
 REQUIRED_SOURCE_SOLVER_MODULE = (
     "mani_skill.examples.motionplanning.panda.solutions.pick_cube"
 )
@@ -313,29 +314,60 @@ class StateRoundTripResult:
     """Complete reset-boundary state restoration comparison result."""
 
     passed: bool
+    complete_state_comparison: bool
+    comparison_semantic: str
     expected_state_digest: str
     observed_state_digest: str
-    compared_leaf_count: int
+    expected_structure_digest: str
+    observed_structure_digest: str
+    expected_leaf_count: int
+    observed_leaf_count: int
+    expected_numeric_component_count: int
+    observed_numeric_component_count: int
+    compared_numeric_component_count: int
     maximum_absolute_error: float | None
     tolerance: float
 
     def __post_init__(self) -> None:
-        """Validate finite error, digest, and comparison-count fields."""
+        """Validate complete structural coverage and numeric comparison evidence."""
         if type(self.passed) is not bool:
             raise ManiSkillCompatibilityError(
                 "StateRoundTripResult.passed: expected a boolean"
             )
-        _require_sha256(
-            self.expected_state_digest,
-            "StateRoundTripResult.expected_state_digest",
-        )
-        _require_sha256(
-            self.observed_state_digest,
-            "StateRoundTripResult.observed_state_digest",
-        )
-        if type(self.compared_leaf_count) is not int or self.compared_leaf_count <= 0:
+        if type(self.complete_state_comparison) is not bool:
             raise ManiSkillCompatibilityError(
-                "StateRoundTripResult.compared_leaf_count: expected a positive integer"
+                "StateRoundTripResult.complete_state_comparison: expected a boolean"
+            )
+        if self.comparison_semantic != PICKCUBE_STATE_VERIFICATION_SEMANTIC:
+            raise ManiSkillCompatibilityError(
+                "StateRoundTripResult.comparison_semantic: unsupported PickCube "
+                "runtime state-verification semantic"
+            )
+        for name in (
+            "expected_state_digest",
+            "observed_state_digest",
+            "expected_structure_digest",
+            "observed_structure_digest",
+        ):
+            _require_sha256(getattr(self, name), f"StateRoundTripResult.{name}")
+        for name in (
+            "expected_leaf_count",
+            "observed_leaf_count",
+            "expected_numeric_component_count",
+            "observed_numeric_component_count",
+        ):
+            value = getattr(self, name)
+            if type(value) is not int or value <= 0:
+                raise ManiSkillCompatibilityError(
+                    f"StateRoundTripResult.{name}: expected a positive integer"
+                )
+        if (
+            type(self.compared_numeric_component_count) is not int
+            or self.compared_numeric_component_count < 0
+        ):
+            raise ManiSkillCompatibilityError(
+                "StateRoundTripResult.compared_numeric_component_count: expected "
+                "a non-negative integer"
             )
         if self.maximum_absolute_error is not None and (
             type(self.maximum_absolute_error) not in (int, float)
@@ -354,19 +386,59 @@ class StateRoundTripResult:
             raise ManiSkillCompatibilityError(
                 "StateRoundTripResult.tolerance: expected a non-negative finite number"
             )
-        if self.passed and self.maximum_absolute_error is None:
+        structurally_complete = bool(
+            self.expected_structure_digest == self.observed_structure_digest
+            and self.expected_leaf_count == self.observed_leaf_count
+            and self.expected_numeric_component_count
+            == self.observed_numeric_component_count
+            and self.compared_numeric_component_count
+            == self.expected_numeric_component_count
+        )
+        if self.complete_state_comparison != structurally_complete:
             raise ManiSkillCompatibilityError(
-                "StateRoundTripResult.maximum_absolute_error: passed comparisons "
-                "require a finite error"
+                "StateRoundTripResult.complete_state_comparison: must exactly reflect "
+                "structure digests and complete leaf/component coverage"
+            )
+        if self.complete_state_comparison:
+            if self.maximum_absolute_error is None:
+                raise ManiSkillCompatibilityError(
+                    "StateRoundTripResult.maximum_absolute_error: complete "
+                    "comparisons require a finite error"
+                )
+        elif (
+            self.compared_numeric_component_count != 0
+            or self.maximum_absolute_error is not None
+        ):
+            raise ManiSkillCompatibilityError(
+                "StateRoundTripResult.complete_state_comparison: incomplete "
+                "structure cannot report compared components or numeric error"
+            )
+        numeric_passed = bool(
+            self.complete_state_comparison
+            and self.maximum_absolute_error is not None
+            and float(self.maximum_absolute_error) <= float(self.tolerance)
+        )
+        if self.passed != numeric_passed:
+            raise ManiSkillCompatibilityError(
+                "StateRoundTripResult.passed: must exactly reflect complete "
+                "coverage within tolerance"
             )
 
     def to_dict(self) -> dict[str, object]:
         """Return the canonical JSON representation."""
         return {
-            "compared_leaf_count": self.compared_leaf_count,
+            "compared_numeric_component_count": (self.compared_numeric_component_count),
+            "comparison_semantic": self.comparison_semantic,
+            "complete_state_comparison": self.complete_state_comparison,
+            "expected_leaf_count": self.expected_leaf_count,
+            "expected_numeric_component_count": (self.expected_numeric_component_count),
             "expected_state_digest": self.expected_state_digest,
+            "expected_structure_digest": self.expected_structure_digest,
             "maximum_absolute_error": self.maximum_absolute_error,
+            "observed_leaf_count": self.observed_leaf_count,
+            "observed_numeric_component_count": (self.observed_numeric_component_count),
             "observed_state_digest": self.observed_state_digest,
+            "observed_structure_digest": self.observed_structure_digest,
             "passed": self.passed,
             "tolerance": self.tolerance,
         }
@@ -520,6 +592,14 @@ class CompatibilityReport:
             self.state_tree_structure_digest,
             "CompatibilityReport.state_tree_structure_digest",
         )
+        if (
+            self.state_tree_structure_digest
+            != self.state_round_trip.expected_structure_digest
+        ):
+            raise ManiSkillCompatibilityError(
+                "CompatibilityReport.state_tree_structure_digest: must match the "
+                "round-trip expected structure digest"
+            )
         action_indices = tuple(
             index
             for component in self.controller.components
@@ -595,6 +675,8 @@ class CompatibilityReport:
             "sim_backend_requirement": REQUIRED_SIM_BACKEND_REQUEST,
             "solver_identity": self.source_solver.source_sha256,
             "state_semantic": STATE_TREE_SEMANTIC,
+            "state_verification_semantic": self.state_round_trip.comparison_semantic,
+            "state_verification_tolerance": self.state_round_trip.tolerance,
             "task_contract_version": TASK_CONTRACT_VERSION,
             "unsafe_semantic": UNSAFE_SEMANTIC,
         }
@@ -731,16 +813,8 @@ def validate_compatibility_report(
         )
     if not report.state_round_trip.passed:
         raise ManiSkillCompatibilityError(
-            "CompatibilityReport.state_round_trip: exact reset-boundary round "
-            "trip failed"
-        )
-    if (
-        report.state_round_trip.expected_state_digest
-        != report.state_round_trip.observed_state_digest
-    ):
-        raise ManiSkillCompatibilityError(
-            "CompatibilityReport.state_round_trip: expected and observed state "
-            "digests must match exactly"
+            "CompatibilityReport.state_round_trip: complete tolerance-bound "
+            "reset-boundary round trip failed"
         )
     if report.state_round_trip.maximum_absolute_error is None:
         raise ManiSkillCompatibilityError(
@@ -997,9 +1071,17 @@ def _report_from_mapping(item: Mapping[str, object]) -> CompatibilityReport:
         state_item,
         {
             "passed",
+            "complete_state_comparison",
+            "comparison_semantic",
             "expected_state_digest",
             "observed_state_digest",
-            "compared_leaf_count",
+            "expected_structure_digest",
+            "observed_structure_digest",
+            "expected_leaf_count",
+            "observed_leaf_count",
+            "expected_numeric_component_count",
+            "observed_numeric_component_count",
+            "compared_numeric_component_count",
             "maximum_absolute_error",
             "tolerance",
         },
@@ -1084,6 +1166,16 @@ def _report_from_mapping(item: Mapping[str, object]) -> CompatibilityReport:
             passed=_boolean(
                 state_item, "passed", "CompatibilityReport.state_round_trip"
             ),
+            complete_state_comparison=_boolean(
+                state_item,
+                "complete_state_comparison",
+                "CompatibilityReport.state_round_trip",
+            ),
+            comparison_semantic=_string(
+                state_item,
+                "comparison_semantic",
+                "CompatibilityReport.state_round_trip",
+            ),
             expected_state_digest=_string(
                 state_item,
                 "expected_state_digest",
@@ -1094,9 +1186,39 @@ def _report_from_mapping(item: Mapping[str, object]) -> CompatibilityReport:
                 "observed_state_digest",
                 "CompatibilityReport.state_round_trip",
             ),
-            compared_leaf_count=_integer(
+            expected_structure_digest=_string(
                 state_item,
-                "compared_leaf_count",
+                "expected_structure_digest",
+                "CompatibilityReport.state_round_trip",
+            ),
+            observed_structure_digest=_string(
+                state_item,
+                "observed_structure_digest",
+                "CompatibilityReport.state_round_trip",
+            ),
+            expected_leaf_count=_integer(
+                state_item,
+                "expected_leaf_count",
+                "CompatibilityReport.state_round_trip",
+            ),
+            observed_leaf_count=_integer(
+                state_item,
+                "observed_leaf_count",
+                "CompatibilityReport.state_round_trip",
+            ),
+            expected_numeric_component_count=_integer(
+                state_item,
+                "expected_numeric_component_count",
+                "CompatibilityReport.state_round_trip",
+            ),
+            observed_numeric_component_count=_integer(
+                state_item,
+                "observed_numeric_component_count",
+                "CompatibilityReport.state_round_trip",
+            ),
+            compared_numeric_component_count=_integer(
+                state_item,
+                "compared_numeric_component_count",
                 "CompatibilityReport.state_round_trip",
             ),
             maximum_absolute_error=_optional_number_value(

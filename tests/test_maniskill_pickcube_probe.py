@@ -8,6 +8,7 @@ from dataclasses import dataclass, replace
 from pathlib import Path
 from types import ModuleType
 
+import numpy as np
 import pytest
 
 from latentguard.corruptions.layout import ActionLayout, ActionSemantic
@@ -33,6 +34,7 @@ from latentguard.integrations.maniskill_pickcube.compatibility import (
     write_compatibility_report,
 )
 from latentguard.integrations.maniskill_pickcube.configuration import (
+    PICKCUBE_STATE_VERIFICATION_SEMANTIC,
     ExpectedManiSkillPickCubeContract,
     ManiSkillConfigurationError,
     compute_maniskill_pickcube_action_layout_digest,
@@ -41,6 +43,7 @@ from latentguard.integrations.maniskill_pickcube.configuration import (
     validate_maniskill_pickcube_action_layout_binding,
 )
 from latentguard.integrations.maniskill_pickcube.probe import (
+    _state_round_trip_result,
     probe_maniskill_pickcube,
 )
 
@@ -141,9 +144,17 @@ def _report(
         state_tree_structure_digest=_sha("6"),
         state_round_trip=StateRoundTripResult(
             passed=True,
+            complete_state_comparison=True,
+            comparison_semantic=PICKCUBE_STATE_VERIFICATION_SEMANTIC,
             expected_state_digest=_sha("7"),
             observed_state_digest=_sha("7"),
-            compared_leaf_count=5,
+            expected_structure_digest=_sha("6"),
+            observed_structure_digest=_sha("6"),
+            expected_leaf_count=5,
+            observed_leaf_count=5,
+            expected_numeric_component_count=11,
+            observed_numeric_component_count=11,
+            compared_numeric_component_count=11,
             maximum_absolute_error=0.0,
             tolerance=1e-6,
         ),
@@ -289,6 +300,80 @@ def test_fully_bound_report_can_authorize_trusted_replay() -> None:
     assert semantic["compatibility_identity"] == report.compatibility_identity
     assert semantic["action_contract_digest"] == report.action_contract_digest
     assert not any("path" in key for key in semantic)
+    assert semantic["state_verification_semantic"] == (
+        PICKCUBE_STATE_VERIFICATION_SEMANTIC
+    )
+    assert semantic["state_verification_tolerance"] == pytest.approx(1e-6)
+
+
+def test_round_trip_accepts_non_equal_raw_digests_within_tolerance() -> None:
+    expected_state = {"robot": np.array([1.0, -1.0], dtype=np.float32)}
+    observed_state = {
+        "robot": np.array(
+            [np.nextafter(np.float32(1.0), np.float32(2.0)), -1.0],
+            dtype=np.float32,
+        )
+    }
+
+    round_trip = _state_round_trip_result(
+        expected_state,
+        observed_state,
+        state_tolerance=1e-6,
+    )
+    report = replace(
+        _report(),
+        state_round_trip=round_trip,
+        state_tree_structure_digest=round_trip.expected_structure_digest,
+    )
+    binding = validate_compatibility_report(
+        report,
+        load_expected_contract(_EXPECTED_CONTRACT),
+    )
+
+    assert round_trip.passed
+    assert round_trip.complete_state_comparison
+    assert round_trip.expected_structure_digest == round_trip.observed_structure_digest
+    assert round_trip.compared_numeric_component_count == 2
+    assert round_trip.expected_state_digest != round_trip.observed_state_digest
+    assert round_trip.maximum_absolute_error == pytest.approx(1.1920929e-7)
+    assert binding.report.state_round_trip == round_trip
+
+
+def test_round_trip_rejects_over_tolerance_and_incomplete_structure() -> None:
+    expected_state = {"robot": np.array([1.0, -1.0], dtype=np.float32)}
+    over_tolerance = _state_round_trip_result(
+        expected_state,
+        {"robot": np.array([1.0 + 2e-6, -1.0], dtype=np.float32)},
+        state_tolerance=1e-6,
+    )
+    wrong_structure = _state_round_trip_result(
+        expected_state,
+        {"robot": np.array([[1.0, -1.0]], dtype=np.float32)},
+        state_tolerance=1e-6,
+    )
+
+    for round_trip in (over_tolerance, wrong_structure):
+        assert not round_trip.passed
+        with pytest.raises(ManiSkillCompatibilityError, match="round trip failed"):
+            validate_compatibility_report(
+                replace(
+                    _report(),
+                    state_round_trip=round_trip,
+                    state_tree_structure_digest=(round_trip.expected_structure_digest),
+                ),
+                load_expected_contract(_EXPECTED_CONTRACT),
+            )
+
+
+def test_compatibility_rejects_claimed_pass_above_checked_in_tolerance() -> None:
+    report = _report()
+
+    with pytest.raises(ManiSkillCompatibilityError, match="must exactly reflect"):
+        replace(
+            report.state_round_trip,
+            observed_state_digest=_sha("8"),
+            maximum_absolute_error=2e-6,
+        )
 
 
 @pytest.mark.parametrize(
@@ -322,6 +407,14 @@ def test_python_311_is_required_for_the_real_integration_contract() -> None:
         validate_compatibility_report(
             changed,
             load_expected_contract(_EXPECTED_CONTRACT),
+        )
+
+
+def test_expected_contract_rejects_state_tolerance_drift() -> None:
+    with pytest.raises(ManiSkillConfigurationError, match="authorized fixed"):
+        replace(
+            load_expected_contract(_EXPECTED_CONTRACT),
+            state_round_trip_tolerance=5e-7,
         )
 
 
@@ -472,10 +565,38 @@ def test_report_round_trip_recomputes_identities_and_rejects_tampering(
 
     reloaded = load_compatibility_report(output)
     assert reloaded == report
+    assert reloaded.schema_version == "1.1"
     manifest = json.loads(output.read_text(encoding="utf-8"))
     manifest["source_solver"]["source_sha256"] = _sha("f")
     output.write_text(json.dumps(manifest), encoding="utf-8")
     with pytest.raises(ManiSkillCompatibilityError, match="identity"):
+        load_compatibility_report(output)
+
+
+@pytest.mark.parametrize(
+    ("field", "value"),
+    [
+        ("comparison_semantic", "other_state_comparison"),
+        ("observed_structure_digest", _sha("f")),
+        ("compared_numeric_component_count", 10),
+        ("observed_numeric_component_count", 12),
+    ],
+)
+def test_report_loader_rejects_tampered_round_trip_coverage(
+    tmp_path: Path,
+    field: str,
+    value: object,
+) -> None:
+    output = tmp_path / f"tampered-{field}.json"
+    write_compatibility_report(_report(), output)
+    manifest = json.loads(output.read_text(encoding="utf-8"))
+    manifest["state_round_trip"][field] = value
+    output.write_text(json.dumps(manifest), encoding="utf-8")
+
+    with pytest.raises(
+        ManiSkillCompatibilityError,
+        match="must exactly reflect|unsupported PickCube runtime state-verification",
+    ):
         load_compatibility_report(output)
 
 

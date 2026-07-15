@@ -35,7 +35,10 @@ passwords or private keys.
   through a project-owned step recorder without vendoring or altering solver
   behavior; the remote probe must verify its installed source digest.
 - State: reset-boundary `get_state_dict()` content, serialized as a strict
-  structural JSON manifest plus non-pickle numeric NPY leaves.
+  structural JSON manifest plus non-pickle numeric NPY leaves. The archived
+  source bytes remain digest-bound; simulator set/get readback must preserve
+  the complete structure and every numeric component within the locally
+  committed tolerance.
 - Replay: complete source and transformed action sequences in independent fresh
   sessions restored from the same content-bound state reference.
 - Evidence: exact-simulator/strong is only a permission ceiling; every M2B gate
@@ -126,6 +129,54 @@ manual relabeling, or general robot-safety claims are included.
   no compatibility report and made no simulator claim. The local fix replaces
   that default with a factory and adds a regression test; the remote must pull
   the resulting pushed SHA and rerun the discovery probe.
+- Python 3.11 compatibility fix `aa29c1ef661fe554a427e7ee8be1ca38b78034a0`
+  passed the complete local suite (`832 passed, 3 skipped`), Ruff lint/format,
+  mypy, and diff checks, was pushed, and was synchronized exactly to the clean
+  remote checkout.
+- Discovery run `20260715T045027Z_m2c-pickcube-compat_aa29c1e_seed0` exposed a
+  missing PhysX GPU runtime. The official precompiled runtime asset was
+  downloaded outside the checkout, checked as a valid x86-64 ELF payload, and
+  installed under the user runtime cache; `sapien.physx.enable_gpu()` then
+  passed. No tracked source was changed remotely.
+- Discovery run `20260715T055628Z_m2c-pickcube-compat_aa29c1e_seed0_physx`
+  then stopped during environment creation because the headless server had no
+  usable Vulkan rendering device. The documented AutoDL headless Vulkan
+  runtime packages and NVIDIA EGL ICD were installed outside the checkout;
+  both `vulkaninfo` and SAPIEN subsequently identified the single RTX 5090 as
+  supported.
+- Discovery run
+  `20260715T061841Z_m2c-pickcube-compat_aa29c1e_seed0_vulkan-physx` completed
+  environment creation, controller inspection, one bounded action, and clean
+  close, but correctly stopped before collection. The complete state structure
+  matched and the maximum set/get readback error was
+  `1.1920928955078125e-07`, below the provisional `1e-6` tolerance, while the
+  raw value digests differed. The implementation had incorrectly required both
+  the configured numeric tolerance and byte-identical readback. Its sanitized
+  report was retrieved for diagnosis; the fix must be made, validated, pushed,
+  and rerun from a new exact SHA before resolving the trusted contract.
+- Bounded diagnostic run
+  `20260715T063126Z_m2c-state-convergence_aa29c1e_seed0` confirmed that repeated
+  set/get does not reach a byte-identical fixed point: all five same-session
+  iterations and a fresh-session restore preserved the full 4-leaf/70-component
+  structure and stayed within `1e-6`, but each retained a
+  `1.1920928955078125e-07` maximum error in the Panda articulation leaf and a
+  different raw digest. The correct local fix therefore keeps archive digests
+  exact while adding a narrowly authorized, configuration-bound complete-state
+  numeric restoration contract for M2C; exact-digest remains the default trust
+  mode for other adapters.
+- The adapter-specific correction is explicitly authorized as
+  `tolerance_verified_full_state_v1` with a fixed maximum absolute tolerance of
+  `1e-6`. Archive manifests, inventory, leaf bytes, and digests remain exact;
+  the runtime comparison must prove identical structure, paths, dtypes, shapes,
+  finite values, and complete component coverage. Its semantic, tolerance,
+  compatibility identity, observed maximum error, and compared component count
+  are identity/evidence inputs. No other adapter inherits this authorization.
+- The local correction upgrades the adapter to `1.1.0` and the compatibility
+  report to schema `1.1`. Its complete local validation passed with
+  `872 passed, 3 skipped` (the three existing Windows directory-symlink
+  privilege skips), Ruff lint/format, mypy across 61 source files, all three M2C
+  CLI help smokes, and `git diff --check`. Commit, push, exact remote sync, and a
+  fresh schema-1.1 discovery probe are the next gate.
 - Remote acceptance remains pending. The first successful probe, locally
   committed resolved contract, second trusted probe, source collection, paired
   replay, and result commit have not occurred.

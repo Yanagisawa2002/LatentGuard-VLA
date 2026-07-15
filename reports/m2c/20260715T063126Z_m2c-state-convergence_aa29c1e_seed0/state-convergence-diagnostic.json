@@ -1,0 +1,576 @@
+{
+  "configuration": {
+    "action_steps": 0,
+    "comparison_tolerance": 1e-06,
+    "control_mode": "pd_joint_pos",
+    "environment_id": "PickCube-v1",
+    "normalization_iterations": 5,
+    "num_envs": 1,
+    "observation_mode": "none",
+    "render_backend": "none",
+    "robot_uid": "panda",
+    "seed": 0,
+    "sim_backend": "gpu"
+  },
+  "finished_at_utc": "2026-07-15T06:31:43.258701Z",
+  "fresh_environment_restore": {
+    "compared_component_count": 70,
+    "exact_digest_equality": false,
+    "expected_full_digest": "sha256:316dca5e89a0d61690e8bfea9aeb8e3b0d5f1bf73be9a852a8d5c0ad002a207d",
+    "expected_leaf_count": 4,
+    "expected_structure_digest": "sha256:6f7ab9a632dfa7f34305ce5058e41da5c08c0e5926ff7f9ff90f42274a277ca0",
+    "fresh_reset_full_digest_before_set": "sha256:9cc12bd4ed9ef3f90e9b13f4dceb25fe3071def98d144fd1c325efc41b52da70",
+    "leaves": [
+      {
+        "dtype_match": true,
+        "expected_dtype": "<f4",
+        "expected_shape": [
+          1,
+          13
+        ],
+        "maximum_absolute_error": 0.0,
+        "observed_dtype": "<f4",
+        "observed_shape": [
+          1,
+          13
+        ],
+        "path": "$/actors/cube",
+        "shape_match": true
+      },
+      {
+        "dtype_match": true,
+        "expected_dtype": "<f4",
+        "expected_shape": [
+          1,
+          13
+        ],
+        "maximum_absolute_error": 0.0,
+        "observed_dtype": "<f4",
+        "observed_shape": [
+          1,
+          13
+        ],
+        "path": "$/actors/goal_site",
+        "shape_match": true
+      },
+      {
+        "dtype_match": true,
+        "expected_dtype": "<f4",
+        "expected_shape": [
+          1,
+          13
+        ],
+        "maximum_absolute_error": 0.0,
+        "observed_dtype": "<f4",
+        "observed_shape": [
+          1,
+          13
+        ],
+        "path": "$/actors/table-workspace",
+        "shape_match": true
+      },
+      {
+        "dtype_match": true,
+        "expected_dtype": "<f4",
+        "expected_shape": [
+          1,
+          31
+        ],
+        "maximum_absolute_error": 1.1920928955078125e-07,
+        "observed_dtype": "<f4",
+        "observed_shape": [
+          1,
+          31
+        ],
+        "path": "$/articulations/panda",
+        "shape_match": true
+      }
+    ],
+    "maximum_absolute_error": 1.1920928955078125e-07,
+    "observed_full_digest": "sha256:dec412958c73459bfb93503c698f9c612794915e4c5e9c4297844636d2c5be79",
+    "observed_leaf_count": 4,
+    "observed_structure_digest": "sha256:6f7ab9a632dfa7f34305ce5058e41da5c08c0e5926ff7f9ff90f42274a277ca0",
+    "state_b_full_digest": "sha256:316dca5e89a0d61690e8bfea9aeb8e3b0d5f1bf73be9a852a8d5c0ad002a207d",
+    "state_c_full_digest": "sha256:dec412958c73459bfb93503c698f9c612794915e4c5e9c4297844636d2c5be79",
+    "structure_matches": true,
+    "unexpected_observed_paths": [],
+    "within_1e_6": true
+  },
+  "git": {
+    "branch": "codex/m2c-maniskill-pickcube",
+    "commit_sha": "aa29c1ef661fe554a427e7ee8be1ca38b78034a0",
+    "tracked_tree_clean_preflight": true
+  },
+  "initial_reset": {
+    "full_digest": "sha256:9cc12bd4ed9ef3f90e9b13f4dceb25fe3071def98d144fd1c325efc41b52da70",
+    "leaves": [
+      {
+        "dtype": "<f4",
+        "path": "$/actors/cube",
+        "shape": [
+          1,
+          13
+        ]
+      },
+      {
+        "dtype": "<f4",
+        "path": "$/actors/goal_site",
+        "shape": [
+          1,
+          13
+        ]
+      },
+      {
+        "dtype": "<f4",
+        "path": "$/actors/table-workspace",
+        "shape": [
+          1,
+          13
+        ]
+      },
+      {
+        "dtype": "<f4",
+        "path": "$/articulations/panda",
+        "shape": [
+          1,
+          31
+        ]
+      }
+    ],
+    "structure_digest": "sha256:6f7ab9a632dfa7f34305ce5058e41da5c08c0e5926ff7f9ff90f42274a277ca0"
+  },
+  "launch_command": "CUDA_VISIBLE_DEVICES=0 VK_ICD_FILENAMES=<verified-nvidia-icd> PYTHONPATH=<clean-checkout>/src MS_SKIP_ASSET_DOWNLOAD_PROMPT=1 python <stdin-diagnostic>",
+  "run_id": "20260715T063126Z_m2c-state-convergence_aa29c1e_seed0",
+  "runtime": {
+    "gpu_count_visible": 1,
+    "gpu_model": "NVIDIA GeForce RTX 5090",
+    "gymnasium": "1.3.0",
+    "mani_skill": "3.0.1",
+    "mplib": "0.1.1",
+    "python": "3.11.15",
+    "sapien": "3.0.3",
+    "torch": "2.8.0+cu128",
+    "torch_cuda": "12.8"
+  },
+  "same_environment_iterations": [
+    {
+      "compared_component_count": 70,
+      "exact_digest_equality": false,
+      "expected_full_digest": "sha256:9cc12bd4ed9ef3f90e9b13f4dceb25fe3071def98d144fd1c325efc41b52da70",
+      "expected_leaf_count": 4,
+      "expected_structure_digest": "sha256:6f7ab9a632dfa7f34305ce5058e41da5c08c0e5926ff7f9ff90f42274a277ca0",
+      "iteration": 1,
+      "leaves": [
+        {
+          "dtype_match": true,
+          "expected_dtype": "<f4",
+          "expected_shape": [
+            1,
+            13
+          ],
+          "maximum_absolute_error": 0.0,
+          "observed_dtype": "<f4",
+          "observed_shape": [
+            1,
+            13
+          ],
+          "path": "$/actors/cube",
+          "shape_match": true
+        },
+        {
+          "dtype_match": true,
+          "expected_dtype": "<f4",
+          "expected_shape": [
+            1,
+            13
+          ],
+          "maximum_absolute_error": 0.0,
+          "observed_dtype": "<f4",
+          "observed_shape": [
+            1,
+            13
+          ],
+          "path": "$/actors/goal_site",
+          "shape_match": true
+        },
+        {
+          "dtype_match": true,
+          "expected_dtype": "<f4",
+          "expected_shape": [
+            1,
+            13
+          ],
+          "maximum_absolute_error": 0.0,
+          "observed_dtype": "<f4",
+          "observed_shape": [
+            1,
+            13
+          ],
+          "path": "$/actors/table-workspace",
+          "shape_match": true
+        },
+        {
+          "dtype_match": true,
+          "expected_dtype": "<f4",
+          "expected_shape": [
+            1,
+            31
+          ],
+          "maximum_absolute_error": 1.1920928955078125e-07,
+          "observed_dtype": "<f4",
+          "observed_shape": [
+            1,
+            31
+          ],
+          "path": "$/articulations/panda",
+          "shape_match": true
+        }
+      ],
+      "maximum_absolute_error": 1.1920928955078125e-07,
+      "observed_full_digest": "sha256:316dca5e89a0d61690e8bfea9aeb8e3b0d5f1bf73be9a852a8d5c0ad002a207d",
+      "observed_leaf_count": 4,
+      "observed_structure_digest": "sha256:6f7ab9a632dfa7f34305ce5058e41da5c08c0e5926ff7f9ff90f42274a277ca0",
+      "structure_matches": true,
+      "unexpected_observed_paths": [],
+      "within_1e_6": true
+    },
+    {
+      "compared_component_count": 70,
+      "exact_digest_equality": false,
+      "expected_full_digest": "sha256:316dca5e89a0d61690e8bfea9aeb8e3b0d5f1bf73be9a852a8d5c0ad002a207d",
+      "expected_leaf_count": 4,
+      "expected_structure_digest": "sha256:6f7ab9a632dfa7f34305ce5058e41da5c08c0e5926ff7f9ff90f42274a277ca0",
+      "iteration": 2,
+      "leaves": [
+        {
+          "dtype_match": true,
+          "expected_dtype": "<f4",
+          "expected_shape": [
+            1,
+            13
+          ],
+          "maximum_absolute_error": 0.0,
+          "observed_dtype": "<f4",
+          "observed_shape": [
+            1,
+            13
+          ],
+          "path": "$/actors/cube",
+          "shape_match": true
+        },
+        {
+          "dtype_match": true,
+          "expected_dtype": "<f4",
+          "expected_shape": [
+            1,
+            13
+          ],
+          "maximum_absolute_error": 0.0,
+          "observed_dtype": "<f4",
+          "observed_shape": [
+            1,
+            13
+          ],
+          "path": "$/actors/goal_site",
+          "shape_match": true
+        },
+        {
+          "dtype_match": true,
+          "expected_dtype": "<f4",
+          "expected_shape": [
+            1,
+            13
+          ],
+          "maximum_absolute_error": 0.0,
+          "observed_dtype": "<f4",
+          "observed_shape": [
+            1,
+            13
+          ],
+          "path": "$/actors/table-workspace",
+          "shape_match": true
+        },
+        {
+          "dtype_match": true,
+          "expected_dtype": "<f4",
+          "expected_shape": [
+            1,
+            31
+          ],
+          "maximum_absolute_error": 1.1920928955078125e-07,
+          "observed_dtype": "<f4",
+          "observed_shape": [
+            1,
+            31
+          ],
+          "path": "$/articulations/panda",
+          "shape_match": true
+        }
+      ],
+      "maximum_absolute_error": 1.1920928955078125e-07,
+      "observed_full_digest": "sha256:dec412958c73459bfb93503c698f9c612794915e4c5e9c4297844636d2c5be79",
+      "observed_leaf_count": 4,
+      "observed_structure_digest": "sha256:6f7ab9a632dfa7f34305ce5058e41da5c08c0e5926ff7f9ff90f42274a277ca0",
+      "structure_matches": true,
+      "unexpected_observed_paths": [],
+      "within_1e_6": true
+    },
+    {
+      "compared_component_count": 70,
+      "exact_digest_equality": false,
+      "expected_full_digest": "sha256:dec412958c73459bfb93503c698f9c612794915e4c5e9c4297844636d2c5be79",
+      "expected_leaf_count": 4,
+      "expected_structure_digest": "sha256:6f7ab9a632dfa7f34305ce5058e41da5c08c0e5926ff7f9ff90f42274a277ca0",
+      "iteration": 3,
+      "leaves": [
+        {
+          "dtype_match": true,
+          "expected_dtype": "<f4",
+          "expected_shape": [
+            1,
+            13
+          ],
+          "maximum_absolute_error": 0.0,
+          "observed_dtype": "<f4",
+          "observed_shape": [
+            1,
+            13
+          ],
+          "path": "$/actors/cube",
+          "shape_match": true
+        },
+        {
+          "dtype_match": true,
+          "expected_dtype": "<f4",
+          "expected_shape": [
+            1,
+            13
+          ],
+          "maximum_absolute_error": 0.0,
+          "observed_dtype": "<f4",
+          "observed_shape": [
+            1,
+            13
+          ],
+          "path": "$/actors/goal_site",
+          "shape_match": true
+        },
+        {
+          "dtype_match": true,
+          "expected_dtype": "<f4",
+          "expected_shape": [
+            1,
+            13
+          ],
+          "maximum_absolute_error": 0.0,
+          "observed_dtype": "<f4",
+          "observed_shape": [
+            1,
+            13
+          ],
+          "path": "$/actors/table-workspace",
+          "shape_match": true
+        },
+        {
+          "dtype_match": true,
+          "expected_dtype": "<f4",
+          "expected_shape": [
+            1,
+            31
+          ],
+          "maximum_absolute_error": 1.1920928955078125e-07,
+          "observed_dtype": "<f4",
+          "observed_shape": [
+            1,
+            31
+          ],
+          "path": "$/articulations/panda",
+          "shape_match": true
+        }
+      ],
+      "maximum_absolute_error": 1.1920928955078125e-07,
+      "observed_full_digest": "sha256:0c899b6fdb9df4e70d5a222cfc7bd4170845af7d9255a57b0cc0538335870ce0",
+      "observed_leaf_count": 4,
+      "observed_structure_digest": "sha256:6f7ab9a632dfa7f34305ce5058e41da5c08c0e5926ff7f9ff90f42274a277ca0",
+      "structure_matches": true,
+      "unexpected_observed_paths": [],
+      "within_1e_6": true
+    },
+    {
+      "compared_component_count": 70,
+      "exact_digest_equality": false,
+      "expected_full_digest": "sha256:0c899b6fdb9df4e70d5a222cfc7bd4170845af7d9255a57b0cc0538335870ce0",
+      "expected_leaf_count": 4,
+      "expected_structure_digest": "sha256:6f7ab9a632dfa7f34305ce5058e41da5c08c0e5926ff7f9ff90f42274a277ca0",
+      "iteration": 4,
+      "leaves": [
+        {
+          "dtype_match": true,
+          "expected_dtype": "<f4",
+          "expected_shape": [
+            1,
+            13
+          ],
+          "maximum_absolute_error": 0.0,
+          "observed_dtype": "<f4",
+          "observed_shape": [
+            1,
+            13
+          ],
+          "path": "$/actors/cube",
+          "shape_match": true
+        },
+        {
+          "dtype_match": true,
+          "expected_dtype": "<f4",
+          "expected_shape": [
+            1,
+            13
+          ],
+          "maximum_absolute_error": 0.0,
+          "observed_dtype": "<f4",
+          "observed_shape": [
+            1,
+            13
+          ],
+          "path": "$/actors/goal_site",
+          "shape_match": true
+        },
+        {
+          "dtype_match": true,
+          "expected_dtype": "<f4",
+          "expected_shape": [
+            1,
+            13
+          ],
+          "maximum_absolute_error": 0.0,
+          "observed_dtype": "<f4",
+          "observed_shape": [
+            1,
+            13
+          ],
+          "path": "$/actors/table-workspace",
+          "shape_match": true
+        },
+        {
+          "dtype_match": true,
+          "expected_dtype": "<f4",
+          "expected_shape": [
+            1,
+            31
+          ],
+          "maximum_absolute_error": 1.1920928955078125e-07,
+          "observed_dtype": "<f4",
+          "observed_shape": [
+            1,
+            31
+          ],
+          "path": "$/articulations/panda",
+          "shape_match": true
+        }
+      ],
+      "maximum_absolute_error": 1.1920928955078125e-07,
+      "observed_full_digest": "sha256:651c11d5b4e10253bb6141fd18afb1a3225b2941d4b339320e412a559d864f5a",
+      "observed_leaf_count": 4,
+      "observed_structure_digest": "sha256:6f7ab9a632dfa7f34305ce5058e41da5c08c0e5926ff7f9ff90f42274a277ca0",
+      "structure_matches": true,
+      "unexpected_observed_paths": [],
+      "within_1e_6": true
+    },
+    {
+      "compared_component_count": 70,
+      "exact_digest_equality": false,
+      "expected_full_digest": "sha256:651c11d5b4e10253bb6141fd18afb1a3225b2941d4b339320e412a559d864f5a",
+      "expected_leaf_count": 4,
+      "expected_structure_digest": "sha256:6f7ab9a632dfa7f34305ce5058e41da5c08c0e5926ff7f9ff90f42274a277ca0",
+      "iteration": 5,
+      "leaves": [
+        {
+          "dtype_match": true,
+          "expected_dtype": "<f4",
+          "expected_shape": [
+            1,
+            13
+          ],
+          "maximum_absolute_error": 0.0,
+          "observed_dtype": "<f4",
+          "observed_shape": [
+            1,
+            13
+          ],
+          "path": "$/actors/cube",
+          "shape_match": true
+        },
+        {
+          "dtype_match": true,
+          "expected_dtype": "<f4",
+          "expected_shape": [
+            1,
+            13
+          ],
+          "maximum_absolute_error": 0.0,
+          "observed_dtype": "<f4",
+          "observed_shape": [
+            1,
+            13
+          ],
+          "path": "$/actors/goal_site",
+          "shape_match": true
+        },
+        {
+          "dtype_match": true,
+          "expected_dtype": "<f4",
+          "expected_shape": [
+            1,
+            13
+          ],
+          "maximum_absolute_error": 0.0,
+          "observed_dtype": "<f4",
+          "observed_shape": [
+            1,
+            13
+          ],
+          "path": "$/actors/table-workspace",
+          "shape_match": true
+        },
+        {
+          "dtype_match": true,
+          "expected_dtype": "<f4",
+          "expected_shape": [
+            1,
+            31
+          ],
+          "maximum_absolute_error": 1.1920928955078125e-07,
+          "observed_dtype": "<f4",
+          "observed_shape": [
+            1,
+            31
+          ],
+          "path": "$/articulations/panda",
+          "shape_match": true
+        }
+      ],
+      "maximum_absolute_error": 1.1920928955078125e-07,
+      "observed_full_digest": "sha256:9e4c8c1c62200b294352ad5cbe451eb9476c4612ac5fdc5e85d7cf2d26782cde",
+      "observed_leaf_count": 4,
+      "observed_structure_digest": "sha256:6f7ab9a632dfa7f34305ce5058e41da5c08c0e5926ff7f9ff90f42274a277ca0",
+      "structure_matches": true,
+      "unexpected_observed_paths": [],
+      "within_1e_6": true
+    }
+  ],
+  "sanitized": true,
+  "schema_version": "m2c-state-convergence-diagnostic-v1",
+  "started_at_utc": "2026-07-15T06:31:38.284720Z",
+  "status": "passed",
+  "summary": {
+    "all_same_environment_exact_digest_equality": false,
+    "all_same_environment_structure_matches": true,
+    "all_same_environment_within_1e_6": true,
+    "fresh_environment_exact_digest_equality": false,
+    "fresh_environment_maximum_absolute_error": 1.1920928955078125e-07,
+    "fresh_environment_structure_matches": true,
+    "fresh_environment_within_1e_6": true,
+    "maximum_same_environment_absolute_error": 1.1920928955078125e-07
+  }
+}

@@ -189,7 +189,8 @@ archives into standard
 
 The package separates semantic configuration from runtime paths. Compatibility,
 solver/task source, controller/action layout, state semantic, task semantic,
-and narrow progress/unsafe semantics participate in deterministic identity.
+runtime state-comparison semantic and tolerance, and narrow progress/unsafe
+semantics participate in deterministic identity.
 Archive roots, dataset directories, hostnames, device allocation, and timestamps
 do not. A project-owned recording proxy is the only source-action capture
 boundary; a separate fresh environment performs mandatory source baseline

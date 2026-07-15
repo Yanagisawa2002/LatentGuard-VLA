@@ -45,6 +45,7 @@ from latentguard.integrations.maniskill_pickcube.compatibility import (
     write_compatibility_report,
 )
 from latentguard.integrations.maniskill_pickcube.configuration import (
+    PICKCUBE_STATE_VERIFICATION_SEMANTIC,
     REQUIRED_CONTROL_MODE,
     REQUIRED_ENVIRONMENT_ID,
     REQUIRED_NUM_ENVS,
@@ -55,8 +56,8 @@ from latentguard.integrations.maniskill_pickcube.configuration import (
 )
 from latentguard.integrations.maniskill_pickcube.state_tree import (
     compare_state_trees,
-    compute_state_tree_digest,
     compute_state_tree_structure_digest,
+    flatten_state_tree,
     normalize_state_tree,
 )
 from latentguard.replay.identity import canonical_json_bytes
@@ -359,26 +360,11 @@ def _inspect_environment(
     set_state = cast(Callable[[object], object], base.set_state_dict)
     initial_runtime_state = get_state()
     expected_tree = normalize_state_tree(initial_runtime_state)
-    expected_digest = compute_state_tree_digest(expected_tree)
     structure_digest = compute_state_tree_structure_digest(expected_tree)
     set_state(initial_runtime_state)
     observed_tree = normalize_state_tree(get_state())
-    comparison = compare_state_trees(
-        expected_tree,
-        observed_tree,
-        atol=state_tolerance,
-    )
-    round_trip = StateRoundTripResult(
-        passed=(
-            comparison.structure_matches
-            and comparison.within_tolerance
-            and comparison.exact_digest_match
-        ),
-        expected_state_digest=expected_digest,
-        observed_state_digest=comparison.observed_digest,
-        compared_leaf_count=comparison.expected_leaf_count,
-        maximum_absolute_error=comparison.maximum_absolute_error,
-        tolerance=comparison.comparison_tolerance,
+    round_trip = _state_round_trip_result(
+        expected_tree, observed_tree, state_tolerance=state_tolerance
     )
     action_step = _bounded_action_step(
         environment,
@@ -404,6 +390,42 @@ def _inspect_environment(
         state_tree_structure_digest=structure_digest,
         state_round_trip=round_trip,
         bounded_action_step=action_step,
+    )
+
+
+def _state_round_trip_result(
+    expected_tree: object,
+    observed_tree: object,
+    *,
+    state_tolerance: float,
+) -> StateRoundTripResult:
+    """Record raw digests while requiring complete tolerance-bound restoration."""
+    comparison = compare_state_trees(
+        expected_tree,
+        observed_tree,
+        atol=state_tolerance,
+    )
+    expected_component_count = sum(
+        int(leaf.value.size) for leaf in flatten_state_tree(expected_tree)
+    )
+    observed_component_count = sum(
+        int(leaf.value.size) for leaf in flatten_state_tree(observed_tree)
+    )
+    return StateRoundTripResult(
+        passed=comparison.structure_matches and comparison.within_tolerance,
+        complete_state_comparison=comparison.structure_matches,
+        comparison_semantic=PICKCUBE_STATE_VERIFICATION_SEMANTIC,
+        expected_state_digest=comparison.expected_digest,
+        observed_state_digest=comparison.observed_digest,
+        expected_structure_digest=comparison.expected_structure_digest,
+        observed_structure_digest=comparison.observed_structure_digest,
+        expected_leaf_count=comparison.expected_leaf_count,
+        observed_leaf_count=comparison.observed_leaf_count,
+        expected_numeric_component_count=expected_component_count,
+        observed_numeric_component_count=observed_component_count,
+        compared_numeric_component_count=comparison.compared_component_count,
+        maximum_absolute_error=comparison.maximum_absolute_error,
+        tolerance=comparison.comparison_tolerance,
     )
 
 

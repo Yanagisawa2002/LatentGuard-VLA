@@ -33,6 +33,8 @@ from latentguard.replay.source import (
 from .adapter import (
     MANISKILL_PICKCUBE_ADAPTER_ID,
     MANISKILL_PICKCUBE_ADAPTER_VERSION,
+    PICKCUBE_STATE_VERIFICATION_MAX_ABSOLUTE_TOLERANCE,
+    PICKCUBE_STATE_VERIFICATION_SEMANTIC,
     ManiSkillPickCubeAdapter,
     ManiSkillPickCubeSemanticIdentity,
     TrustedManiSkillRuntimeAttestation,
@@ -377,7 +379,7 @@ class ManiSkillPickCubeCaseProvider:
             adapter_version=MANISKILL_PICKCUBE_ADAPTER_VERSION,
             source_reference_id=episode.episode_id,
             expected_state_digest=episode.initial_state_digest,
-            comparison_semantic=StateComparisonSemantic.EXACT_DIGEST,
+            comparison_semantic=StateComparisonSemantic.NUMERIC_TOLERANCE,
             state_key="initial_state",
             metadata={
                 "compatibility_identity": episode.compatibility_identity,
@@ -385,6 +387,10 @@ class ManiSkillPickCubeCaseProvider:
                 "source_action_digest": episode.source_action_digest,
                 "source_trajectory_id": episode.source_trajectory_id,
                 "state_semantic": STATE_TREE_SEMANTIC,
+                "state_verification_maximum_absolute_tolerance": (
+                    PICKCUBE_STATE_VERIFICATION_MAX_ABSOLUTE_TOLERANCE
+                ),
+                "state_verification_semantic": (PICKCUBE_STATE_VERIFICATION_SEMANTIC),
             },
         )
         task_reference = ReplayTaskReference(

@@ -837,11 +837,12 @@ def record_official_source_trajectory(
             atol=settings.state_tolerance,
         )
         if (
-            not initial_comparison.within_tolerance
-            or initial_comparison.expected_digest != initial_comparison.observed_digest
+            not initial_comparison.structure_matches
+            or not initial_comparison.within_tolerance
         ):
             raise PickCubeSourceGenerationError(
-                "recorded source initial state did not round-trip exactly"
+                "recorded source initial state did not round-trip with complete "
+                "structure within tolerance"
             )
         joint_names, robot_state = environment_factory.extract_named_robot_state(
             environment
@@ -907,12 +908,10 @@ def validate_independent_source_baseline(
             observed,
             atol=settings.state_tolerance,
         )
-        if (
-            not comparison.within_tolerance
-            or comparison.expected_digest != comparison.observed_digest
-        ):
+        if not comparison.structure_matches or not comparison.within_tolerance:
             raise PickCubeSourceGenerationError(
-                "independent baseline state round trip was not exact"
+                "independent baseline state round trip did not preserve complete "
+                "structure within tolerance"
             )
         for row in trajectory.source_actions:
             action_contract.validate_row(row)

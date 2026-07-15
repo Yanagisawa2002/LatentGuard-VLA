@@ -60,9 +60,19 @@ evaluation bundle inventory. Artifact materialization and inventory validation
 belong to a later adapter contract.
 
 Verified simulator replay is legal only for simulator-sourced evidence. Strong
-simulator evidence additionally requires successful exact replay. Heuristic
+simulator evidence additionally requires successful paired replay with two
+complete verified restorations under the descriptor's state-comparison
+contract. Exact-digest with zero tolerance is the default; only an
+exact-simulator descriptor may opt into a bound numeric tolerance. Heuristic
 evidence is always weak. Skipped, invalid, and execution-error evidence has no
 task label metadata; indeterminate evidence is never silently completed.
+
+For `maniskill_pickcube_v1`, numeric restoration additionally binds the named
+adapter semantic `tolerance_verified_full_state_v1` and fixed `1e-6` tolerance
+into adapter configuration, replay-case identity, and restoration evidence.
+Evidence records the complete compared-component count and observed maximum
+absolute error. This does not relax exact archive digest and inventory checks or
+authorize any other adapter.
 
 ## Outcome projection
 
@@ -98,17 +108,19 @@ M2B-Core's `exact_state_paired_replay` evaluator also implements the same M2A
 protocol. It first resolves a content-bound replay case, then delegates generic
 session operations to an explicit replay adapter. Its resolved configuration
 binds the adapter identity and configuration digest, trust-contract version,
-both dataset content digests, progress/unsafe semantics, and paired-replay
-semantic versions. It still uses the M2A evidence identity, runner, ledger,
-incremental persistence, resume, retry, validation, and projection boundary.
+state-verification mode and tolerance, both dataset content digests,
+progress/unsafe semantics, and paired-replay semantic versions. It still uses
+the M2A evidence identity, runner, ledger, incremental persistence, resume,
+retry, validation, and projection boundary.
 
 The trust descriptor is an upper bound, not a claim. The built-in
 `deterministic_replay_fixture` is fixed to
 `LabelSource.DETERMINISTIC_EVALUATOR`, `LabelStrength.WEAK`, and
 `simulator_replay_verified=False`. Even an adapter declaring exact-simulator
-trust cannot emit verified strong simulator evidence unless both restorations,
-the successful baseline, corrupted execution, and complete terminal evaluation
-all pass. M2B-Core includes no real simulator adapter.
+trust cannot emit verified strong simulator evidence unless both restorations
+are verified under the same comparison contract and the successful baseline,
+corrupted execution, and complete terminal evaluation all pass. M2B-Core
+includes no real simulator adapter.
 
 ## Ledger, resume, and retry
 
@@ -155,7 +167,7 @@ source identities, seed, Python/NumPy/platform versions, a sanitized launch
 command, timestamps, and final state. Operational timestamps are never identity
 inputs. M2C may add a typed ManiSkill reference adapter; a later LangMani adapter
 can implement the same generic protocols. Only a real, explicitly trusted
-adapter that passes every exact restoration and paired-replay gate may set
+adapter that passes every verified restoration and paired-replay gate may set
 simulator verification.
 
 ## PickCube evidence semantics

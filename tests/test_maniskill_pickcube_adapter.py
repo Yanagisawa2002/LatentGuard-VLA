@@ -5,7 +5,7 @@ from __future__ import annotations
 import json
 import subprocess
 import sys
-from dataclasses import dataclass
+from dataclasses import dataclass, replace
 from pathlib import Path
 from types import MappingProxyType
 
@@ -23,6 +23,8 @@ from latentguard.evaluation.models import (
 from latentguard.integrations.maniskill_pickcube.adapter import (
     MANISKILL_PICKCUBE_ADAPTER_ID,
     MANISKILL_PICKCUBE_ADAPTER_VERSION,
+    PICKCUBE_STATE_VERIFICATION_MAX_ABSOLUTE_TOLERANCE,
+    PICKCUBE_STATE_VERIFICATION_SEMANTIC,
     ManiSkillPickCubeAdapter,
     ManiSkillPickCubeAdapterConfigurationError,
     ManiSkillPickCubeSemanticIdentity,
@@ -42,6 +44,7 @@ from latentguard.integrations.maniskill_pickcube.session import (
     ManiSkillPickCubeSessionError,
     ManiSkillPickCubeSessionFactory,
     PickCubeReplayActionContract,
+    PickCubeStateTreeComparator,
     StateTreeComparison,
 )
 from latentguard.integrations.maniskill_pickcube.task_evidence import (
@@ -149,7 +152,13 @@ def _proposal_and_case(
         expected_state_digest=_STATE_DIGEST,
         comparison_semantic=StateComparisonSemantic.NUMERIC_TOLERANCE,
         state_key="initial",
-        metadata={"state_semantic": "maniskill_state_tree_v1"},
+        metadata={
+            "state_semantic": "maniskill_state_tree_v1",
+            "state_verification_maximum_absolute_tolerance": (
+                PICKCUBE_STATE_VERIFICATION_MAX_ABSOLUTE_TOLERANCE
+            ),
+            "state_verification_semantic": PICKCUBE_STATE_VERIFICATION_SEMANTIC,
+        },
     )
     task_reference = ReplayTaskReference(
         task_id=PICKCUBE_TASK_ID,
@@ -341,6 +350,28 @@ class _Comparator:
         )
 
 
+class _SubtoleranceComparator:
+    def __init__(self) -> None:
+        self.tolerances: list[float] = []
+
+    def compare_state_trees(
+        self,
+        expected: object,
+        observed: object,
+        *,
+        tolerance: float,
+    ) -> StateTreeComparison:
+        assert expected is observed
+        self.tolerances.append(tolerance)
+        return StateTreeComparison(
+            expected_digest=_STATE_DIGEST,
+            observed_digest="sha256:" + "4" * 64,
+            structure_matches=True,
+            compared_component_count=1,
+            maximum_absolute_error=1.1920929e-7,
+        )
+
+
 class _CaseProvider:
     def __init__(self, replay_case: ReplayCase) -> None:
         self.replay_case = replay_case
@@ -380,6 +411,8 @@ def _adapter_fixture() -> tuple[
 
 def _adapter_fixture_with_runtime(
     runtime: _FakeRuntime,
+    state_comparator: PickCubeStateTreeComparator | None = None,
+    attestation_configuration_digest: str | None = None,
 ) -> tuple[
     CorruptedActionProposal,
     ReplayCase,
@@ -434,7 +467,7 @@ def _adapter_fixture_with_runtime(
         action_contract=action_contract,
         task_key_contract=keys,
         state_loader=state_loader,
-        state_comparator=_Comparator(),
+        state_comparator=state_comparator or _Comparator(),
         runtime=runtime,
     )
     adapter = ManiSkillPickCubeAdapter(
@@ -448,7 +481,11 @@ def _adapter_fixture_with_runtime(
         session_factory=session_factory,
         trust_attestation=TrustedManiSkillRuntimeAttestation(
             compatibility_identity=identity.compatibility_identity,
-            semantic_configuration_digest=configuration_digest,
+            semantic_configuration_digest=(
+                configuration_digest
+                if attestation_configuration_digest is None
+                else attestation_configuration_digest
+            ),
             compatibility_probe_passed=True,
             dependency_versions_verified=True,
             action_contract_verified=True,
@@ -461,6 +498,155 @@ def _adapter_fixture_with_runtime(
         ),
     )
     return proposal, replay_case, bundle, adapter, runtime, state_loader
+
+
+def test_pickcube_state_verification_contract_is_fixed_and_identity_bound() -> None:
+    identity = ManiSkillPickCubeSemanticIdentity(
+        compatibility_identity="compat-sha256-" + "5" * 64,
+        solver_identity="solver-sha256-" + "6" * 64,
+        task_implementation_identity="task-sha256-" + "7" * 64,
+        controller_configuration_identity="controller-sha256-" + "8" * 64,
+        action_layout_digest="sha256:" + "9" * 64,
+    )
+    resolved = resolve_maniskill_pickcube_configuration(
+        identity=identity,
+        settings=_settings(),
+        action_contract=_action_contract(),
+        task_keys=_task_keys(),
+    )
+    state_verification = resolved["state_verification"]
+
+    assert MANISKILL_PICKCUBE_ADAPTER_VERSION == "1.1.0"
+    assert isinstance(state_verification, MappingProxyType)
+    assert dict(state_verification) == {
+        "comparison_semantic": StateComparisonSemantic.NUMERIC_TOLERANCE.value,
+        "maximum_absolute_tolerance": (
+            PICKCUBE_STATE_VERIFICATION_MAX_ABSOLUTE_TOLERANCE
+        ),
+        "runtime_semantic": PICKCUBE_STATE_VERIFICATION_SEMANTIC,
+    }
+    assert identity.as_mapping()["state_verification_semantic"] == (
+        PICKCUBE_STATE_VERIFICATION_SEMANTIC
+    )
+    assert (
+        identity.as_mapping()["state_verification_maximum_absolute_tolerance"]
+        == PICKCUBE_STATE_VERIFICATION_MAX_ABSOLUTE_TOLERANCE
+    )
+
+    drifted = dict(resolved)
+    drifted["state_verification"] = {
+        **dict(state_verification),
+        "maximum_absolute_tolerance": 5e-7,
+    }
+    assert compute_configuration_digest(drifted) != compute_configuration_digest(
+        resolved
+    )
+
+
+@pytest.mark.parametrize(
+    ("updates", "message"),
+    (
+        ({"state_tolerance": 5e-7}, "fixed maximum absolute tolerance"),
+        ({"state_verification_semantic": "other"}, "semantic mismatch"),
+    ),
+)
+def test_pickcube_environment_rejects_state_verification_contract_drift(
+    updates: dict[str, object], message: str
+) -> None:
+    with pytest.raises(ReplayInvalidContextError, match=message):
+        replace(_settings(), **updates)
+
+
+@pytest.mark.parametrize(
+    "updates",
+    (
+        {"state_verification_semantic": "other"},
+        {"state_verification_maximum_absolute_tolerance": 5e-7},
+        {"state_verification_maximum_absolute_tolerance": np.float64(1e-6)},
+    ),
+)
+def test_pickcube_semantic_identity_rejects_state_verification_contract_drift(
+    updates: dict[str, object],
+) -> None:
+    fields: dict[str, object] = {
+        "compatibility_identity": "compat-sha256-" + "5" * 64,
+        "solver_identity": "solver-sha256-" + "6" * 64,
+        "task_implementation_identity": "task-sha256-" + "7" * 64,
+        "controller_configuration_identity": "controller-sha256-" + "8" * 64,
+        "action_layout_digest": "sha256:" + "9" * 64,
+    }
+    fields.update(updates)
+
+    with pytest.raises(
+        ManiSkillPickCubeAdapterConfigurationError,
+        match="state verification contract mismatch",
+    ):
+        ManiSkillPickCubeSemanticIdentity(**fields)  # type: ignore[arg-type]
+
+
+def test_adapter_rejects_state_verification_attestation_digest_drift() -> None:
+    drifted_digest = compute_configuration_digest(
+        {
+            "state_verification": {
+                "comparison_semantic": "numeric_tolerance",
+                "maximum_absolute_tolerance": 5e-7,
+                "runtime_semantic": PICKCUBE_STATE_VERIFICATION_SEMANTIC,
+            }
+        }
+    )
+
+    with pytest.raises(
+        ManiSkillPickCubeAdapterConfigurationError,
+        match="trusted runtime semantic configuration",
+    ):
+        _adapter_fixture_with_runtime(
+            _FakeRuntime(),
+            attestation_configuration_digest=drifted_digest,
+        )
+
+
+@pytest.mark.parametrize(
+    ("metadata_field", "drifted_value"),
+    (
+        ("state_verification_semantic", "other"),
+        ("state_verification_maximum_absolute_tolerance", 5e-7),
+    ),
+)
+def test_replay_case_identity_and_adapter_validation_bind_state_verification(
+    metadata_field: str, drifted_value: object
+) -> None:
+    _, replay_case = _proposal_and_case()
+    metadata = dict(replay_case.state_reference.metadata)
+    metadata[metadata_field] = drifted_value
+    drifted_reference = replace(replay_case.state_reference, metadata=metadata)
+    drifted_case_id = compute_replay_case_identifier(
+        proposal_id=replay_case.proposal_id,
+        source_dataset_id=replay_case.source_dataset_id,
+        source_dataset_digest=replay_case.source_dataset_digest,
+        corruption_dataset_digest=replay_case.corruption_dataset_digest,
+        source_episode_id=replay_case.source_episode_id,
+        source_candidate_id=replay_case.source_candidate_id,
+        split_group_id=replay_case.split_group_id,
+        original_action=replay_case.original_action,
+        transformed_action=replay_case.transformed_action,
+        state_reference=drifted_reference,
+        task_reference=replay_case.task_reference,
+        adapter_id=replay_case.adapter_id,
+        adapter_version=replay_case.adapter_version,
+        progress_semantic=replay_case.progress_semantic,
+        unsafe_semantic=replay_case.unsafe_semantic,
+    )
+    drifted_case = replace(
+        replay_case,
+        case_id=drifted_case_id,
+        state_reference=drifted_reference,
+    )
+
+    assert drifted_case.case_id != replay_case.case_id
+    with pytest.raises(ReplayInvalidContextError, match=metadata_field):
+        ManiSkillPickCubeAdapter._validate_case_semantics(
+            drifted_case, _action_contract()
+        )
 
 
 def test_task_evidence_binary_progress_and_narrow_unsafe_events() -> None:
@@ -572,6 +758,8 @@ def test_session_restores_same_reference_in_two_fresh_environments() -> None:
     second = corrupted.restore_state(replay_case.state_reference)
     assert first.match_kind is StateMatchKind.EXACT
     assert second.match_kind is StateMatchKind.EXACT
+    assert first.complete_state_comparison
+    assert second.complete_state_comparison
     assert state_loader.references == [
         replay_case.state_reference,
         replay_case.state_reference,
@@ -580,7 +768,57 @@ def test_session_restores_same_reference_in_two_fresh_environments() -> None:
     corrupted.close()
 
 
-def test_restoration_mismatch_is_unverified_not_repaired() -> None:
+def test_independent_restores_use_checked_in_numeric_tolerance() -> None:
+    _, replay_case, _, _, runtime, state_loader = _adapter_fixture()
+    settings = _settings()
+    comparator = _SubtoleranceComparator()
+    factory = ManiSkillPickCubeSessionFactory(
+        settings=settings,
+        action_contract=_action_contract(),
+        task_key_contract=_task_keys(),
+        state_loader=state_loader,
+        state_comparator=comparator,
+        runtime=runtime,
+    )
+    baseline = factory.create_session(
+        replay_case, execution_role=ReplayExecutionRole.BASELINE
+    )
+    corrupted = factory.create_session(
+        replay_case, execution_role=ReplayExecutionRole.CORRUPTED
+    )
+
+    first = baseline.restore_state(replay_case.state_reference)
+    second = corrupted.restore_state(replay_case.state_reference)
+
+    assert (
+        replay_case.state_reference.comparison_semantic
+        is StateComparisonSemantic.NUMERIC_TOLERANCE
+    )
+    assert first.match_kind is StateMatchKind.WITHIN_TOLERANCE
+    assert second.match_kind is StateMatchKind.WITHIN_TOLERANCE
+    assert first.complete_state_comparison
+    assert second.complete_state_comparison
+    assert first.expected_state_digest == _STATE_DIGEST
+    assert first.observed_state_digest != first.expected_state_digest
+    assert first.comparison_tolerance == settings.state_tolerance
+    assert second.comparison_tolerance == settings.state_tolerance
+    assert first.diagnostics["pickcube_state_verification_semantic"] == (
+        PICKCUBE_STATE_VERIFICATION_SEMANTIC
+    )
+    assert (
+        first.diagnostics["pickcube_state_verification_maximum_absolute_tolerance"]
+        == PICKCUBE_STATE_VERIFICATION_MAX_ABSOLUTE_TOLERANCE
+    )
+    assert comparator.tolerances == [settings.state_tolerance] * 2
+    assert state_loader.references == [
+        replay_case.state_reference,
+        replay_case.state_reference,
+    ]
+    baseline.close()
+    corrupted.close()
+
+
+def test_over_tolerance_complete_comparison_is_unverified_not_repaired() -> None:
     _, replay_case = _proposal_and_case()
     session = ManiSkillPickCubeReplaySession(
         replay_case,
@@ -595,6 +833,7 @@ def test_restoration_mismatch_is_unverified_not_repaired() -> None:
     evidence = session.restore_state(replay_case.state_reference)
     assert evidence.match_kind is StateMatchKind.MISMATCH
     assert evidence.restoration_verified is False
+    assert evidence.complete_state_comparison is True
     with pytest.raises(ManiSkillPickCubeSessionError, match="verified"):
         session.evaluate_task(replay_case.task_reference)
     session.close()
@@ -711,6 +950,48 @@ def test_adapter_complete_task_failure_is_conclusive_strong_simulator_evidence()
     assert len(runtime.environments) == 2
     assert runtime.environments[0] is not runtime.environments[1]
     assert all(environment.closed for environment in runtime.environments)
+
+
+def test_adapter_subtolerance_drift_is_verified_under_bound_numeric_contract() -> None:
+    comparator = _SubtoleranceComparator()
+    proposal, _, bundle, adapter, _, _ = _adapter_fixture_with_runtime(
+        _FakeRuntime(), comparator
+    )
+
+    evidence = create_exact_state_paired_replay_evaluator(adapter, bundle).evaluate(
+        proposal,
+        source_dataset_id="source-dataset",
+        evaluation_seed=19,
+        attempt_ordinal=0,
+    )
+
+    trust = adapter.trust_descriptor()
+    assert trust.state_verification_semantic is (
+        StateComparisonSemantic.NUMERIC_TOLERANCE
+    )
+    assert trust.state_verification_tolerance == pytest.approx(1e-6)
+    assert comparator.tolerances == [1e-6, 1e-6]
+    assert evidence.status is EvaluationStatus.CONCLUSIVE
+    assert evidence.label_strength is LabelStrength.STRONG
+    assert evidence.simulator_replay_verified is True
+    assert evidence.metrics[
+        "replay_baseline_restoration_maximum_absolute_error"
+    ] == pytest.approx(1.1920929e-7)
+    assert evidence.metrics[
+        "replay_corrupted_restoration_maximum_absolute_error"
+    ] == pytest.approx(1.1920929e-7)
+    assert evidence.metrics["replay_baseline_restoration_compared_component_count"] == 1
+    assert (
+        evidence.metrics["replay_corrupted_restoration_compared_component_count"] == 1
+    )
+    assert (
+        evidence.metrics["replay_baseline_restoration_complete_state_comparison"]
+        is True
+    )
+    assert (
+        evidence.metrics["replay_corrupted_restoration_complete_state_comparison"]
+        is True
+    )
 
 
 def test_adapter_complete_success_is_conclusive_strong_simulator_evidence() -> None:
