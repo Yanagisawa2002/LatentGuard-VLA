@@ -140,6 +140,15 @@ evidence only. M2C may add an explicitly trusted ManiSkill reference adapter
 without changing the core contracts. LangMani integration is deferred until a
 later typed adapter can satisfy the same exact-state, baseline, and trust gates.
 
+## Robot Episode Toolkit (RET-1)
+
+RET-1 adds a read-only layer over validated M0 Episodes. Audit findings remain
+separate from schema validation, exact-index offline iteration remains separate
+from M2B state-restoring replay, and all outcome aggregates use candidate-level
+denominators. Stable JSON/JSONL reports reuse the repository's protected-output
+and deterministic-serialization principles without changing the Episode schema
+or bundle format. Future LangMani conversion belongs behind a typed adapter.
+
 ## Safety and reproducibility
 
 All random generation takes an explicit seed. Derived examples retain their

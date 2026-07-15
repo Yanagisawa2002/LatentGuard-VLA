@@ -20,6 +20,11 @@ M2B-Core adds content-bound replay references, cases, restoration/execution/task
 evidence, adapter trust, paired results, and a replay bundle. These are generic
 contracts; no simulator-native state or framework object is serializable here.
 
+RET-1 adds no schema entity and does not change the serialization version. Its
+audit reports, offline replay plans/steps, and metrics are derived read-only
+views of already validated Episodes. Candidate outcome aggregates always use a
+candidate denominator; no Episode-level success is inferred.
+
 ## Entities
 
 - `CameraFrame` contains RGB data and optional aligned depth, intrinsics, and

@@ -153,6 +153,20 @@ Preview an exact-revision remote synchronization without network access:
 latentguard remote-sync --dry-run --host example-training-host --repo-dir /example/latentguard-vla --branch codex/m0-data-contract --commit 0000000000000000000000000000000000000000
 ```
 
+## Audit, summarize, and inspect Episodes offline
+
+The Robot Episode Toolkit adds read-only quality checks, candidate-denominator
+metrics, and exact-index offline iteration without invoking a simulator:
+
+```text
+latentguard audit-data --input-dir .tmp/m0-sanity --output .tmp/audit.json
+latentguard summarize-data --input-dir .tmp/m0-sanity --output .tmp/metrics.json
+latentguard replay-episode --input-dir .tmp/m0-sanity --episode-id synthetic-s00000042-e0000 --candidate-id synthetic-s00000042-e0000-candidate-000 --output .tmp/replay.jsonl
+```
+
+Offline iteration is not M2B simulator replay and produces no physical or
+simulator-verified evidence. See [the Robot Episode Toolkit contract](docs/robot_episode_toolkit.md).
+
 The remote-sync example values are placeholders. Store machine-specific values
 in environment variables or an ignored local file; never commit credentials
 or private paths. See [the remote workflow](docs/remote_training.md),

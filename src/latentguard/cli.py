@@ -104,6 +104,16 @@ from latentguard.serialization import (
     save_episodes,
 )
 from latentguard.synthetic import generate_synthetic_episodes
+from latentguard.toolkit import (
+    AuditConfig,
+    ReplayAlignmentError,
+    audit_episodes,
+    build_replay_plan,
+    iter_replay_steps,
+    summarize_episodes,
+    write_json,
+    write_replay_jsonl,
+)
 from latentguard.validation import validate_episodes
 
 _DEFAULT_PICKCUBE_EXPECTED_CONTRACT = Path(
@@ -151,6 +161,29 @@ def _build_parser() -> argparse.ArgumentParser:
         action="store_true",
         help="include aligned synthetic depth for every camera",
     )
+
+    audit_data = subparsers.add_parser(
+        "audit-data", help="strictly validate and read-only audit an Episode bundle"
+    )
+    audit_data.add_argument("--input-dir", type=Path, required=True)
+    audit_data.add_argument("--output", type=Path)
+    audit_data.add_argument(
+        "--fail-on", choices=("error", "warning", "never"), default="error"
+    )
+
+    summarize_data = subparsers.add_parser(
+        "summarize-data", help="summarize candidate-level Episode bundle metrics"
+    )
+    summarize_data.add_argument("--input-dir", type=Path, required=True)
+    summarize_data.add_argument("--output", type=Path)
+
+    replay_episode = subparsers.add_parser(
+        "replay-episode", help="iterate one Episode candidate offline by exact index"
+    )
+    replay_episode.add_argument("--input-dir", type=Path, required=True)
+    replay_episode.add_argument("--episode-id", required=True)
+    replay_episode.add_argument("--candidate-id", required=True)
+    replay_episode.add_argument("--output", type=Path)
 
     remote = subparsers.add_parser(
         "remote-sync",
@@ -366,6 +399,71 @@ def _run_sanity_data(args: argparse.Namespace) -> int:
         f"episodes={len(episodes)} observations={observation_count} "
         f"candidates={candidate_count} round-trip=verified "
         f"manifest={manifest_path}"
+    )
+    return 0
+
+
+def _run_audit_data(args: argparse.Namespace) -> int:
+    try:
+        episodes = load_episodes(args.input_dir)
+        report = audit_episodes(episodes, AuditConfig())
+        if args.output is not None:
+            write_json(report, args.output)
+    except (OSError, RuntimeError, TypeError, ValueError) as error:
+        print(f"audit-data failed: {error}", file=sys.stderr)
+        return 1
+    counts = report.issues_by_severity
+    print(
+        "audit-data OK: "
+        f"episodes={report.episode_count} candidates={report.candidate_count} "
+        f"issues={report.issue_count} errors={counts.get('error', 0)} "
+        f"warnings={counts.get('warning', 0)} info={counts.get('info', 0)}"
+    )
+    if args.fail_on == "error":
+        return int(counts.get("error", 0) > 0)
+    if args.fail_on == "warning":
+        return int(counts.get("error", 0) + counts.get("warning", 0) > 0)
+    return 0
+
+
+def _run_summarize_data(args: argparse.Namespace) -> int:
+    try:
+        metrics = summarize_episodes(load_episodes(args.input_dir))
+        if args.output is not None:
+            write_json(metrics, args.output)
+    except (OSError, RuntimeError, TypeError, ValueError) as error:
+        print(f"summarize-data failed: {error}", file=sys.stderr)
+        return 1
+    print(
+        "summarize-data OK: "
+        f"episodes={metrics.episode_count} observations={metrics.observation_count} "
+        f"candidates={metrics.candidate_count} "
+        f"candidate_success_rate={metrics.candidate_success_rate:.6f} "
+        f"candidate_unsafe_rate={metrics.candidate_unsafe_rate:.6f}"
+    )
+    return 0
+
+
+def _run_replay_episode(args: argparse.Namespace) -> int:
+    try:
+        episodes = load_episodes(args.input_dir)
+        episode = next(
+            (item for item in episodes if item.episode_id == args.episode_id), None
+        )
+        if episode is None:
+            raise ReplayAlignmentError(f"episode not found: {args.episode_id!r}")
+        plan = build_replay_plan(episode, args.candidate_id)
+        steps = tuple(iter_replay_steps(episode, args.candidate_id))
+        if args.output is not None:
+            write_replay_jsonl(steps, args.output)
+    except (OSError, RuntimeError, TypeError, ValueError) as error:
+        print(f"replay-episode failed: {error}", file=sys.stderr)
+        return 1
+    print(
+        "replay-episode OK (offline only): "
+        f"episode={plan.episode_id} candidate={plan.candidate_id} "
+        f"steps={plan.step_count} coordinate_frame={plan.coordinate_frame} "
+        f"control_period_s={plan.control_period_s:.17g}"
     )
     return 0
 
@@ -1148,6 +1246,12 @@ def main(argv: Sequence[str] | None = None) -> int:
     args = _build_parser().parse_args(argv)
     if args.command == "sanity-data":
         return _run_sanity_data(args)
+    if args.command == "audit-data":
+        return _run_audit_data(args)
+    if args.command == "summarize-data":
+        return _run_summarize_data(args)
+    if args.command == "replay-episode":
+        return _run_replay_episode(args)
     if args.command == "remote-sync":
         return _run_remote_sync(args)
     if args.command == "corrupt-data":
