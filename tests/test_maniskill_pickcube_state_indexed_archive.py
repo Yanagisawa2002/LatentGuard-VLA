@@ -10,6 +10,9 @@ import pytest
 
 from latentguard.integrations.maniskill_pickcube.state_indexed_archive import (
     STATE_INDEXED_ARCHIVE_FORMAT,
+    STATE_INDEXED_ARCHIVE_VERSION,
+    STATE_INDEXED_EPISODE_SCHEMA_VERSION,
+    STATE_INDEXED_STATE_SCHEMA_VERSION,
     PickCubeIndexedStateV1,
     PickCubeStateIndexedArchiveV1,
     PickCubeStateIndexedEpisodeV1,
@@ -27,6 +30,7 @@ from latentguard.integrations.maniskill_pickcube.state_tree import (
     compute_state_tree_structure_digest,
 )
 from latentguard.integrations.maniskill_pickcube.verifier_state import (
+    PICKCUBE_VERIFIER_STATE_EXTRACTION_BOUNDARY,
     build_pickcube_verifier_state_v1,
 )
 
@@ -45,6 +49,18 @@ def _task(index: int, terminal: int = 2) -> PickCubeTaskSnapshotV1:
     )
 
 
+def _restored_task(index: int, terminal: int = 2) -> PickCubeTaskSnapshotV1:
+    return PickCubeTaskSnapshotV1(
+        success=index == terminal,
+        is_obj_placed=index == terminal,
+        is_robot_static=index == terminal,
+        is_grasped=False,
+        cube_center_z=0.02,
+        cube_to_goal_distance=float(terminal - index) * 0.1,
+        tcp_to_cube_distance=float(max(1 - index, 0)) * 0.1,
+    )
+
+
 def _vector(index: int, *, joint_names: tuple[str, ...] = ("joint_a", "joint_b")):
     return build_pickcube_verifier_state_v1(
         joint_names=joint_names,
@@ -55,7 +71,7 @@ def _vector(index: int, *, joint_names: tuple[str, ...] = ("joint_a", "joint_b")
         cube_position=np.array([0.1, 0.2, 0.3], dtype=np.float32),
         cube_quaternion=np.array([1.0, 0.0, 0.0, 0.0], dtype=np.float32),
         goal_position=np.array([0.4, 0.5, 0.6], dtype=np.float32),
-        is_grasped=index >= 1,
+        is_grasped=False,
         is_obj_placed=index == 2,
         is_robot_static=index == 2,
     )
@@ -79,6 +95,7 @@ def _state(
         source_action_index=index,
         tree=resolved_tree,
         task_snapshot=_task(index),
+        restored_task_snapshot=_restored_task(index),
         verifier_state=_vector(index, joint_names=joint_names),
         seed=7,
         compatibility_identity=_COMPATIBILITY,
@@ -131,6 +148,9 @@ def test_models_enforce_t_plus_one_and_store_complete_state_inventory() -> None:
         for state in episode.states
     )
     assert episode.states[-1].task_snapshot.success is True
+    assert episode.states[1].task_snapshot.is_grasped is True
+    assert episode.states[1].restored_task_snapshot.is_grasped is False
+    assert episode.states[1].verifier_state.values[-3] == 0.0
 
 
 def test_archive_round_trip_is_path_independent_and_selects_intermediate_state(
@@ -168,6 +188,7 @@ def test_archive_manifest_and_models_record_all_required_per_state_fields(
     encoded = manifest["episodes"][0]["states"][1]
 
     assert manifest["format"] == STATE_INDEXED_ARCHIVE_FORMAT
+    assert manifest["serialization_version"] == STATE_INDEXED_ARCHIVE_VERSION
     assert encoded["state_index"] == 1
     assert encoded["source_action_index"] == 1
     assert encoded["seed"] == 7
@@ -180,6 +201,11 @@ def test_archive_manifest_and_models_record_all_required_per_state_fields(
         _state(1).tree
     )
     assert encoded["task_snapshot"]["is_grasped"] is True
+    assert encoded["restored_task_snapshot"]["is_grasped"] is False
+    assert (
+        encoded["verifier_state"]["extraction_boundary"]
+        == PICKCUBE_VERIFIER_STATE_EXTRACTION_BOUNDARY
+    )
     assert encoded["verifier_state"]["schema_digest"].startswith("sha256:")
     assert encoded["state_content_digest"].startswith("sha256:")
 
@@ -262,6 +288,40 @@ def test_task_snapshot_rejects_missing_boolean_type_or_invalid_distance() -> Non
         replace(_task(0), tcp_to_cube_distance=-0.1)
 
 
+def test_indexed_state_rejects_restored_snapshot_or_vector_flag_mismatch() -> None:
+    state = _state(1)
+    with pytest.raises(StateIndexedArchiveError, match="restored PickCube"):
+        replace(state, restored_task_snapshot=object())  # type: ignore[arg-type]
+
+    changed_restored = replace(state.restored_task_snapshot, is_grasped=True)
+    with pytest.raises(StateIndexedArchiveError, match="task flags differ"):
+        replace(state, restored_task_snapshot=changed_restored)
+
+    changed_vector = _vector(1)
+    values = np.array(changed_vector.values, copy=True)
+    values[-2] = 1.0
+    with pytest.raises(StateIndexedArchiveError, match="task flags differ"):
+        replace(
+            state,
+            verifier_state=replace(changed_vector, values=values),
+        )
+
+
+def test_restored_task_snapshot_is_content_bound_independently() -> None:
+    state = _state(1)
+    changed = replace(
+        state,
+        restored_task_snapshot=replace(
+            state.restored_task_snapshot,
+            tcp_to_cube_distance=0.25,
+        ),
+    )
+
+    assert changed.task_snapshot == state.task_snapshot
+    assert changed.verifier_state.content_digest == state.verifier_state.content_digest
+    assert changed.content_digest != state.content_digest
+
+
 def test_archive_rejects_tampered_array_bytes(tmp_path: Path) -> None:
     output = tmp_path / "archive"
     save_state_indexed_archive(_archive(), output)
@@ -297,6 +357,46 @@ def test_archive_rejects_tampered_state_digest_or_unknown_manifest_field(
         load_state_indexed_archive(second)
 
 
+def test_archive_rejects_persisted_restored_projection_and_schema_tampering(
+    tmp_path: Path,
+) -> None:
+    restored = tmp_path / "restored-task"
+    save_state_indexed_archive(_archive(), restored)
+    manifest = _manifest(restored)
+    manifest["episodes"][0]["states"][1]["restored_task_snapshot"][
+        "tcp_to_cube_distance"
+    ] = 0.25
+    _write_manifest(restored, manifest)
+    with pytest.raises(StateIndexedArchiveError, match="state_content_digest"):
+        load_state_indexed_archive(restored)
+
+    state_version = tmp_path / "state-version"
+    save_state_indexed_archive(_archive(), state_version)
+    manifest = _manifest(state_version)
+    manifest["episodes"][0]["states"][0]["schema_version"] = "1.0"
+    _write_manifest(state_version, manifest)
+    with pytest.raises(UnsupportedStateIndexedArchiveVersionError):
+        load_state_indexed_archive(state_version)
+
+    episode_version = tmp_path / "episode-version"
+    save_state_indexed_archive(_archive(), episode_version)
+    manifest = _manifest(episode_version)
+    manifest["episodes"][0]["schema_version"] = "1.0"
+    _write_manifest(episode_version, manifest)
+    with pytest.raises(UnsupportedStateIndexedArchiveVersionError):
+        load_state_indexed_archive(episode_version)
+
+    extraction_boundary = tmp_path / "extraction-boundary"
+    save_state_indexed_archive(_archive(), extraction_boundary)
+    manifest = _manifest(extraction_boundary)
+    manifest["episodes"][0]["states"][0]["verifier_state"]["extraction_boundary"] = (
+        "source_time_before_archive_v0"
+    )
+    _write_manifest(extraction_boundary, manifest)
+    with pytest.raises(StateIndexedArchiveError, match="extraction_boundary"):
+        load_state_indexed_archive(extraction_boundary)
+
+
 def test_archive_rejects_path_traversal_and_unmanifested_array(tmp_path: Path) -> None:
     traversal = tmp_path / "traversal"
     save_state_indexed_archive(_archive(), traversal)
@@ -320,13 +420,23 @@ def test_archive_rejects_unsupported_version_and_nonempty_destination(
     output = tmp_path / "archive"
     save_state_indexed_archive(_archive(), output)
     manifest = _manifest(output)
-    manifest["serialization_version"] = 999
+    assert STATE_INDEXED_ARCHIVE_VERSION == 2
+    manifest["serialization_version"] = 1
     _write_manifest(output, manifest)
     with pytest.raises(UnsupportedStateIndexedArchiveVersionError):
         load_state_indexed_archive(output)
 
     with pytest.raises(StateIndexedArchiveError, match="non-empty"):
         save_state_indexed_archive(_archive(), output)
+
+
+def test_models_reject_old_state_and_episode_schema_versions() -> None:
+    assert STATE_INDEXED_STATE_SCHEMA_VERSION == "1.1"
+    assert STATE_INDEXED_EPISODE_SCHEMA_VERSION == "1.1"
+    with pytest.raises(UnsupportedStateIndexedArchiveVersionError):
+        replace(_state(0), schema_version="1.0")
+    with pytest.raises(UnsupportedStateIndexedArchiveVersionError):
+        replace(_episode(), schema_version="1.0")
 
 
 def test_archive_binding_and_lookup_fail_closed(tmp_path: Path) -> None:

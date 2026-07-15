@@ -122,6 +122,7 @@ restoration.
 - Every state-indexed replay requires a successful remaining-trajectory baseline restored from the same archived state before any proposal from that anchor may enter training data.
 - Keep intermediate-state archives outside Git. Content-bind every training example to its replay evidence, and do not create scale or class balance through manual relabeling.
 - Model training is prohibited until the final training-dataset reload, evidence, split, leakage, and integrity validation gate passes.
+- Keep uninterrupted-trajectory task annotations separate from post-restoration model inputs. A restoration-derived verifier vector must be captured after a complete verified fresh-session state round trip and before any action; never substitute a source-time contact flag or advance physics to manufacture one.
 - A heuristic corruption is not a label. Any heuristic outcome label assigned by a later evaluator is weak evidence and is not simulator verification.
 - Corruption generation does not determine task outcome. Corrupted actions remain unlabeled proposals until a later evaluator attaches evidence; never represent heuristic corruption as simulator verification.
 - Evidence and outcome labels are distinct. An evaluator may return indeterminate evidence, and missing evidence must never be replaced with default task values.

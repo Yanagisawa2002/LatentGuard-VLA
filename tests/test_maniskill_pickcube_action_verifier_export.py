@@ -116,6 +116,7 @@ def _state(index: int, action_count: int) -> PickCubeIndexedStateV1:
             },
         },
         task_snapshot=_task(index, action_count),
+        restored_task_snapshot=_task(index, action_count),
         verifier_state=build_pickcube_verifier_state_v1(
             joint_names=("joint_a", "joint_b"),
             qpos=np.array([index, -index], dtype=np.float32),

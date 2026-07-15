@@ -3,7 +3,8 @@
 from __future__ import annotations
 
 import hashlib
-from collections.abc import Callable
+import math
+from collections.abc import Callable, Mapping
 from dataclasses import dataclass
 from typing import cast
 
@@ -41,6 +42,19 @@ from .state_tree import clone_state_tree, compare_state_trees, compute_state_tre
 from .task_evidence import (
     PickCubeTaskKeyContract,
     build_pickcube_task_evidence,
+)
+from .verifier_state import PickCubeVerifierStateV1
+
+_TASK_BOOLEAN_FIELDS = (
+    "success",
+    "is_obj_placed",
+    "is_robot_static",
+    "is_grasped",
+)
+_TASK_NUMERIC_FIELDS = (
+    "cube_center_z",
+    "cube_to_goal_distance",
+    "tcp_to_cube_distance",
 )
 
 
@@ -138,6 +152,18 @@ class StateRestorationAuditRecord:
     maximum_absolute_error: float
     verifier_component_count: int
     verifier_maximum_absolute_error: float
+    source_to_restored_task_mismatch_fields: tuple[str, ...]
+
+
+@dataclass(frozen=True, slots=True)
+class _FreshRestoredProjection:
+    """One public projection captured after a verified fresh state restoration."""
+
+    state_index: int
+    task_snapshot: PickCubeTaskSnapshotV1
+    verifier_state: PickCubeVerifierStateV1
+    compared_component_count: int
+    maximum_absolute_error: float
 
 
 def collect_state_indexed_reference_archive(
@@ -193,7 +219,18 @@ def collect_state_indexed_reference_archive(
                 action_contract=action_contract,
                 key_contract=key_contract,
             )
-            sequence = build_state_indexed_episode(recorded, reference=reference)
+            restored_projections = _restore_recorded_boundaries_fresh(
+                recorded,
+                environment_factory=environment_factory,
+                settings=settings,
+                action_contract=action_contract,
+                key_contract=key_contract,
+            )
+            sequence = build_state_indexed_episode(
+                recorded,
+                reference=reference,
+                restored_projections=restored_projections,
+            )
         except Exception as exc:
             attempts.append(
                 SourceAttemptRecord(
@@ -346,26 +383,27 @@ def build_state_indexed_episode(
     recorded: RecordedStateIndexedTrajectory,
     *,
     reference: ManiSkillReferenceEpisode,
+    restored_projections: tuple[_FreshRestoredProjection, ...],
 ) -> PickCubeStateIndexedEpisodeV1:
-    """Bind captured boundaries to an independently accepted M2C source identity."""
+    """Bind source annotations and fresh restored projections to one archive."""
+    if len(restored_projections) != len(recorded.boundaries) or tuple(
+        projection.state_index for projection in restored_projections
+    ) != tuple(boundary.state_index for boundary in recorded.boundaries):
+        raise PickCubeSourceGenerationError(
+            "restored public projections do not cover every T+1 boundary"
+        )
     states: list[PickCubeIndexedStateV1] = []
-    for boundary in recorded.boundaries:
-        task = boundary.task_snapshot
+    for boundary, restored in zip(
+        recorded.boundaries, restored_projections, strict=True
+    ):
         states.append(
             PickCubeIndexedStateV1(
                 state_index=boundary.state_index,
                 source_action_index=boundary.state_index,
                 tree=boundary.state_tree,
-                task_snapshot=PickCubeTaskSnapshotV1(
-                    success=cast(bool, task["success"]),
-                    is_obj_placed=cast(bool, task["is_obj_placed"]),
-                    is_robot_static=cast(bool, task["is_robot_static"]),
-                    is_grasped=cast(bool, task["is_grasped"]),
-                    cube_center_z=cast(float, task["cube_center_z"]),
-                    cube_to_goal_distance=cast(float, task["cube_to_goal_distance"]),
-                    tcp_to_cube_distance=cast(float, task["tcp_to_cube_distance"]),
-                ),
-                verifier_state=boundary.verifier_state,
+                task_snapshot=_task_snapshot_from_mapping(boundary.task_snapshot),
+                restored_task_snapshot=restored.task_snapshot,
+                verifier_state=restored.verifier_state,
                 seed=reference.seed,
                 compatibility_identity=reference.compatibility_identity,
                 source_trajectory_id=reference.source_trajectory_id,
@@ -382,6 +420,219 @@ def build_state_indexed_episode(
     )
 
 
+def _restore_recorded_boundaries_fresh(
+    recorded: RecordedStateIndexedTrajectory,
+    *,
+    environment_factory: SourceEnvironmentFactory,
+    settings: ManiSkillPickCubeEnvironmentSettings,
+    action_contract: PickCubeReplayActionContract,
+    key_contract: PickCubeTaskKeyContract,
+) -> tuple[_FreshRestoredProjection, ...]:
+    """Restore and publicly project every captured boundary before publication."""
+    return tuple(
+        _capture_fresh_restored_projection(
+            state_tree=boundary.state_tree,
+            state_index=boundary.state_index,
+            source_seed=recorded.source.seed,
+            expected_verifier_state=boundary.verifier_state,
+            environment_factory=environment_factory,
+            settings=settings,
+            action_contract=action_contract,
+            key_contract=key_contract,
+            purpose="indexed_state_restored_projection_binding",
+        )
+        for boundary in recorded.boundaries
+    )
+
+
+def _capture_fresh_restored_projection(
+    *,
+    state_tree: object,
+    state_index: int,
+    source_seed: int,
+    expected_verifier_state: PickCubeVerifierStateV1,
+    environment_factory: SourceEnvironmentFactory,
+    settings: ManiSkillPickCubeEnvironmentSettings,
+    action_contract: PickCubeReplayActionContract,
+    key_contract: PickCubeTaskKeyContract,
+    purpose: str,
+) -> _FreshRestoredProjection:
+    """Restore one state in a fresh session and capture its public projection."""
+    environment = environment_factory.create_environment(
+        settings, action_contract, purpose=purpose
+    )
+    primary: BaseException | None = None
+    try:
+        reset = getattr(environment, "reset", None)
+        if not callable(reset):
+            raise PickCubeSourceGenerationError(
+                "fresh validation environment lacks public reset"
+            )
+        reset(seed=source_seed)
+        base = getattr(environment, "unwrapped", environment)
+        set_state = getattr(base, "set_state_dict", None)
+        get_state = getattr(base, "get_state_dict", None)
+        if not callable(set_state) or not callable(get_state):
+            raise PickCubeSourceGenerationError(
+                "fresh validation environment lacks public state methods"
+            )
+        prepared = environment_factory.prepare_state_tree(environment, state_tree)
+        set_state(prepared)
+        observed_before = clone_state_tree(get_state())
+        compared_component_count, maximum_error = (
+            _require_complete_restoration_comparison(
+                expected=state_tree,
+                observed=observed_before,
+                tolerance=settings.state_tolerance,
+                context="fresh indexed-state restoration",
+            )
+        )
+        verified_boundary_digest = compute_state_tree_digest(observed_before)
+        recaptured = capture_pickcube_state_boundary(
+            environment,
+            state_index=state_index,
+            environment_factory=environment_factory,
+            key_contract=key_contract,
+        )
+        if compute_state_tree_digest(recaptured.state_tree) != verified_boundary_digest:
+            raise PickCubeSourceGenerationError(
+                "restored state changed before public projection extraction"
+            )
+        observed_after = clone_state_tree(get_state())
+        if compute_state_tree_digest(observed_after) != verified_boundary_digest:
+            raise PickCubeSourceGenerationError(
+                "public projection extraction mutated the restored state"
+            )
+        _require_complete_restoration_comparison(
+            expected=state_tree,
+            observed=observed_after,
+            tolerance=settings.state_tolerance,
+            context="post-projection indexed-state restoration",
+        )
+        _require_same_verifier_schema(
+            expected_verifier_state, recaptured.verifier_state
+        )
+        return _FreshRestoredProjection(
+            state_index=state_index,
+            task_snapshot=_task_snapshot_from_mapping(recaptured.task_snapshot),
+            verifier_state=recaptured.verifier_state,
+            compared_component_count=compared_component_count,
+            maximum_absolute_error=maximum_error,
+        )
+    except BaseException as exc:
+        primary = exc
+        raise
+    finally:
+        _close_fresh_environment(environment, primary)
+
+
+def _require_complete_restoration_comparison(
+    *,
+    expected: object,
+    observed: object,
+    tolerance: float,
+    context: str,
+) -> tuple[int, float]:
+    """Validate one complete state-tree comparison and return its statistics."""
+    comparison = compare_state_trees(expected, observed, atol=tolerance)
+    maximum_error = comparison.maximum_absolute_error
+    if (
+        not comparison.structure_matches
+        or not comparison.within_tolerance
+        or comparison.expected_leaf_count <= 0
+        or comparison.expected_leaf_count != comparison.observed_leaf_count
+        or comparison.compared_component_count <= 0
+        or maximum_error is None
+        or not math.isfinite(maximum_error)
+        or maximum_error > tolerance
+    ):
+        raise PickCubeSourceGenerationError(f"{context} failed full comparison")
+    return comparison.compared_component_count, float(maximum_error)
+
+
+def _close_fresh_environment(
+    environment: object, primary: BaseException | None
+) -> None:
+    """Close a fresh environment without obscuring an earlier failure."""
+    close = getattr(environment, "close", None)
+    if not callable(close):
+        error = PickCubeSourceGenerationError(
+            "fresh validation environment lacks public close"
+        )
+        if primary is None:
+            raise error
+        primary.add_note(str(error))
+        return
+    try:
+        close()
+    except BaseException as close_error:
+        if primary is None:
+            raise
+        primary.add_note(
+            f"fresh indexed-state close also failed: {type(close_error).__name__}"
+        )
+
+
+def _task_snapshot_from_mapping(value: object) -> PickCubeTaskSnapshotV1:
+    """Build one strict task snapshot from a captured public mapping."""
+    if not isinstance(value, Mapping):
+        raise PickCubeSourceGenerationError("captured task snapshot is not a mapping")
+    task = cast(Mapping[str, object], value)
+    try:
+        return PickCubeTaskSnapshotV1(
+            success=cast(bool, task["success"]),
+            is_obj_placed=cast(bool, task["is_obj_placed"]),
+            is_robot_static=cast(bool, task["is_robot_static"]),
+            is_grasped=cast(bool, task["is_grasped"]),
+            cube_center_z=cast(float, task["cube_center_z"]),
+            cube_to_goal_distance=cast(float, task["cube_to_goal_distance"]),
+            tcp_to_cube_distance=cast(float, task["tcp_to_cube_distance"]),
+        )
+    except (KeyError, TypeError) as exc:
+        raise PickCubeSourceGenerationError(
+            "captured task snapshot is incomplete"
+        ) from exc
+
+
+def _require_same_verifier_schema(
+    expected: PickCubeVerifierStateV1, observed: PickCubeVerifierStateV1
+) -> None:
+    """Require the complete public vector schema without comparing its values."""
+    if (
+        observed.semantic != expected.semantic
+        or observed.schema_digest != expected.schema_digest
+        or observed.component_names != expected.component_names
+        or observed.values.dtype != expected.values.dtype
+        or observed.values.shape != expected.values.shape
+        or expected.values.size <= 0
+        or not bool(np.all(np.isfinite(expected.values)))
+        or not bool(np.all(np.isfinite(observed.values)))
+    ):
+        raise PickCubeSourceGenerationError(
+            "fresh restoration changed verifier-state schema"
+        )
+
+
+def _task_snapshot_mismatch_fields(
+    expected: PickCubeTaskSnapshotV1,
+    observed: PickCubeTaskSnapshotV1,
+    *,
+    atol: float,
+) -> tuple[str, ...]:
+    """Return deterministic field diagnostics for two complete task snapshots."""
+    mismatches = [
+        field
+        for field in _TASK_BOOLEAN_FIELDS
+        if getattr(expected, field) != getattr(observed, field)
+    ]
+    mismatches.extend(
+        field
+        for field in _TASK_NUMERIC_FIELDS
+        if abs(float(getattr(expected, field)) - float(getattr(observed, field))) > atol
+    )
+    return tuple(mismatches)
+
+
 def verify_all_indexed_states_fresh(
     episode: PickCubeStateIndexedEpisodeV1,
     *,
@@ -390,103 +641,61 @@ def verify_all_indexed_states_fresh(
     action_contract: PickCubeReplayActionContract,
     key_contract: PickCubeTaskKeyContract,
 ) -> tuple[StateRestorationAuditRecord, ...]:
-    """Verify every stored state in its own fresh reset/set/get environment."""
+    """Independently verify every tree, restored task snapshot, and vector."""
     records: list[StateRestorationAuditRecord] = []
     for indexed_state in episode.states:
-        environment = environment_factory.create_environment(
-            settings, action_contract, purpose="indexed_state_fresh_validation"
+        restored = _capture_fresh_restored_projection(
+            state_tree=indexed_state.tree,
+            state_index=indexed_state.state_index,
+            source_seed=episode.seed,
+            expected_verifier_state=indexed_state.verifier_state,
+            environment_factory=environment_factory,
+            settings=settings,
+            action_contract=action_contract,
+            key_contract=key_contract,
+            purpose="indexed_state_fresh_validation",
         )
-        primary: BaseException | None = None
-        try:
-            reset = getattr(environment, "reset", None)
-            if not callable(reset):
-                raise PickCubeSourceGenerationError(
-                    "fresh validation environment lacks public reset"
-                )
-            reset(seed=episode.seed)
-            base = getattr(environment, "unwrapped", environment)
-            set_state = getattr(base, "set_state_dict", None)
-            get_state = getattr(base, "get_state_dict", None)
-            if not callable(set_state) or not callable(get_state):
-                raise PickCubeSourceGenerationError(
-                    "fresh validation environment lacks public state methods"
-                )
-            prepared = environment_factory.prepare_state_tree(
-                environment, indexed_state.tree
+        restored_mismatches = _task_snapshot_mismatch_fields(
+            indexed_state.restored_task_snapshot,
+            restored.task_snapshot,
+            atol=settings.state_tolerance,
+        )
+        if restored_mismatches:
+            raise PickCubeSourceGenerationError(
+                "fresh restoration changed restored task snapshot fields: "
+                + ", ".join(restored_mismatches)
             )
-            set_state(prepared)
-            observed = clone_state_tree(get_state())
-            comparison = compare_state_trees(
-                indexed_state.tree, observed, atol=settings.state_tolerance
-            )
-            if not comparison.structure_matches or not comparison.within_tolerance:
-                raise PickCubeSourceGenerationError(
-                    "fresh indexed-state restoration failed full comparison"
+        expected_vector = indexed_state.verifier_state
+        observed_vector = restored.verifier_state
+        vector_error = float(
+            np.max(
+                np.abs(
+                    expected_vector.values.astype(np.float64)
+                    - observed_vector.values.astype(np.float64)
                 )
-            recaptured = capture_pickcube_state_boundary(
-                environment,
+            )
+        )
+        if not math.isfinite(vector_error) or vector_error > settings.state_tolerance:
+            raise PickCubeSourceGenerationError(
+                "fresh restoration changed verifier-state values beyond tolerance"
+            )
+        records.append(
+            StateRestorationAuditRecord(
+                source_trajectory_id=episode.source_trajectory_id,
                 state_index=indexed_state.state_index,
-                environment_factory=environment_factory,
-                key_contract=key_contract,
-            )
-            expected_vector = indexed_state.verifier_state
-            observed_vector = recaptured.verifier_state
-            if (
-                expected_vector.schema_digest != observed_vector.schema_digest
-                or expected_vector.values.shape != observed_vector.values.shape
-            ):
-                raise PickCubeSourceGenerationError(
-                    "fresh restoration changed verifier-state schema"
-                )
-            vector_error = float(
-                np.max(
-                    np.abs(
-                        expected_vector.values.astype(np.float64)
-                        - observed_vector.values.astype(np.float64)
+                compared_component_count=restored.compared_component_count,
+                maximum_absolute_error=restored.maximum_absolute_error,
+                verifier_component_count=expected_vector.values.size,
+                verifier_maximum_absolute_error=vector_error,
+                source_to_restored_task_mismatch_fields=(
+                    _task_snapshot_mismatch_fields(
+                        indexed_state.task_snapshot,
+                        indexed_state.restored_task_snapshot,
+                        atol=settings.state_tolerance,
                     )
-                )
+                ),
             )
-            if vector_error > settings.state_tolerance:
-                raise PickCubeSourceGenerationError(
-                    "fresh restoration changed verifier-state values beyond tolerance"
-                )
-            maximum_error = comparison.maximum_absolute_error
-            if maximum_error is None:
-                raise PickCubeSourceGenerationError(
-                    "fresh restoration omitted maximum absolute error"
-                )
-            records.append(
-                StateRestorationAuditRecord(
-                    source_trajectory_id=episode.source_trajectory_id,
-                    state_index=indexed_state.state_index,
-                    compared_component_count=comparison.compared_component_count,
-                    maximum_absolute_error=float(maximum_error),
-                    verifier_component_count=expected_vector.values.size,
-                    verifier_maximum_absolute_error=vector_error,
-                )
-            )
-        except BaseException as exc:
-            primary = exc
-            raise
-        finally:
-            close = getattr(environment, "close", None)
-            if not callable(close):
-                error = PickCubeSourceGenerationError(
-                    "fresh validation environment lacks public close"
-                )
-                if primary is None:
-                    raise error
-                primary.add_note(str(error))
-            else:
-                try:
-                    close()
-                except BaseException as close_error:
-                    if primary is None:
-                        raise
-                    primary.add_note(
-                        "fresh indexed-state close also failed: "
-                        f"{type(close_error).__name__}"
-                    )
+        )
     return tuple(records)
 
 

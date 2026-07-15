@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from dataclasses import dataclass, field
+from dataclasses import dataclass, field, replace
 from types import SimpleNamespace
 from typing import Any
 
@@ -64,8 +64,16 @@ def _task(index: int, action_count: int) -> PickCubeTaskSnapshotV1:
     )
 
 
-def _state(index: int, action_count: int) -> PickCubeIndexedStateV1:
+def _state(
+    index: int,
+    action_count: int,
+    *,
+    source_initial_grasped: bool = False,
+) -> PickCubeIndexedStateV1:
     terminal = index == action_count
+    task_snapshot = _task(index, action_count)
+    if index == 0 and source_initial_grasped:
+        task_snapshot = replace(task_snapshot, is_grasped=True)
     return PickCubeIndexedStateV1(
         state_index=index,
         source_action_index=index,
@@ -73,7 +81,8 @@ def _state(index: int, action_count: int) -> PickCubeIndexedStateV1:
             "actors": np.array([index, index + 0.25], dtype=np.float32),
             "robot": {"qpos": np.array([index * 0.1], dtype=np.float64)},
         },
-        task_snapshot=_task(index, action_count),
+        task_snapshot=task_snapshot,
+        restored_task_snapshot=_task(index, action_count),
         verifier_state=build_pickcube_verifier_state_v1(
             joint_names=("joint_a", "joint_b"),
             qpos=np.array([index, -index], dtype=np.float32),
@@ -93,7 +102,9 @@ def _state(index: int, action_count: int) -> PickCubeIndexedStateV1:
     )
 
 
-def _source_episode() -> PickCubeStateIndexedEpisodeV1:
+def _source_episode(
+    *, source_initial_grasped: bool = False
+) -> PickCubeStateIndexedEpisodeV1:
     action_count = 4
     return PickCubeStateIndexedEpisodeV1(
         episode_id="mspc-sequence-a",
@@ -105,7 +116,14 @@ def _source_episode() -> PickCubeStateIndexedEpisodeV1:
             [[0.1, 0.0], [0.2, 0.0], [0.3, 0.0], [0.4, 0.0]],
             dtype=np.float32,
         ),
-        states=tuple(_state(index, action_count) for index in range(action_count + 1)),
+        states=tuple(
+            _state(
+                index,
+                action_count,
+                source_initial_grasped=source_initial_grasped,
+            )
+            for index in range(action_count + 1)
+        ),
     )
 
 
@@ -299,8 +317,12 @@ def _validator(factory: _FakeFactory) -> PickCubeAnchorBaselineValidator:
     )
 
 
-def _validate(factory: _FakeFactory):
-    source = _source_episode()
+def _validate(
+    factory: _FakeFactory,
+    *,
+    source: PickCubeStateIndexedEpisodeV1 | None = None,
+):
+    source = source or _source_episode()
     anchor = _anchor()
     build_contract = _build_action_contract()
     continuation = build_source_continuation_identity(
@@ -359,6 +381,17 @@ def test_successful_anchor_baseline_uses_fresh_environment_and_three_boundaries(
     assert len(factory.environments) == 2
     assert factory.environments[0] is not factory.environments[1]
     assert all(environment.closed for environment in factory.environments)
+
+
+def test_baseline_binds_restored_snapshot_not_source_contact_annotation() -> None:
+    factory = _FakeFactory()
+    source = _source_episode(source_initial_grasped=True)
+
+    evidence = _validate(factory, source=source)
+
+    assert source.states[0].task_snapshot.is_grasped is True
+    assert source.states[0].restored_task_snapshot.is_grasped is False
+    assert evidence.simulator_replay_verified is True
 
 
 def test_restoration_mismatch_fails_closed_and_closes_environment() -> None:

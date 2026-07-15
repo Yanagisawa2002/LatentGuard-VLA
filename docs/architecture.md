@@ -224,11 +224,15 @@ official successful action sequence + complete s[0:T+1] archive
 ```
 
 The T+1 archive preserves complete state-tree bytes, structure, and component
-inventories outside Git. `PickCubeVerifierStateV1` is separately extracted from
-public named robot/task interfaces and has an explicit float32 component schema;
-it never includes the future outcome. Each anchor M0 episode contains the full
-remaining source action sequence for replay, while the exported model input
-contains only the first 16 actions.
+inventories outside Git. It separately binds the uninterrupted-trajectory task
+snapshot used for event anchors and the fresh-restored public task projection
+used by replay. `PickCubeVerifierStateV1` is extracted from public named
+robot/task interfaces only after a complete fresh-session set/get restoration
+has verified, before any action. Its explicit float32 schema includes the
+extraction boundary and every declared task component; it never substitutes a
+source-time contact flag or includes the future outcome. Each anchor M0 episode
+contains the full remaining source action sequence for replay, while the
+exported model input contains only the first 16 actions.
 
 The source and corrupted sessions restore the same indexed state independently,
 execute the same remaining horizon, and differ only inside the declared

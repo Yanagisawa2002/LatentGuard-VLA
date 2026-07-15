@@ -37,8 +37,9 @@ not use LangMani.
    through a fresh public wrapper reset, full set/get round trip, complete
    structure/component comparison, and the fixed tolerance.
 3. Define `PickCubeVerifierStateV1` from verified public task/robot interfaces,
-   with explicit component names and fixed float32 ordering, and independently
-   re-extract it after state restoration.
+   with explicit component names and fixed float32 ordering. Its content-bound
+   extraction boundary is after a verified fresh-session restoration and before
+   any action; it is independently re-extracted at that same boundary.
 4. Select up to six anchors per trajectory using public task evidence and
    trajectory-relative positions: early, approach, first grasp transition,
    early transport, late transport, and near placement. Deduplicate collisions
@@ -74,6 +75,28 @@ completion only: it records official binary completion immediately before the
 candidate, after the candidate window, and before the unchanged continuation,
 but exports no fractional progress value or invented weighted heuristic.
 
+## Restored public-projection decision
+
+The first remote smoke exposed one important distinction that is now explicit
+in the archive contract. ManiSkill `3.0.1` computes the public `is_grasped`
+result from PhysX pairwise contact impulses. `set_state_dict` restores the
+complete serialized rigid-body and articulation state and updates articulation
+kinematics, but it does not reconstruct that contact-impulse buffer. The only
+public refresh found is a physics step, which would change `s[t]` and is invalid
+for a pre-action exact-state boundary.
+
+M3A therefore stores two separate, content-bound public projections. The
+uninterrupted source-trajectory task snapshot remains immutable event evidence
+for grasp-transition anchor scheduling. The verifier vector and a parallel
+restored-task snapshot are captured only after
+`reset(seed) -> set_state_dict -> complete get_state_dict comparison`, before
+any action or physics step. The vector still declares and includes
+`task/is_grasped`; it uses the value actually returned at that restored boundary
+and never substitutes the source-time value, infers a grasp, or repairs contact
+state. Independent fresh sessions must reproduce the entire declared vector
+schema and every value within `1e-6`. Source/restored snapshot differences are
+reported as compatibility diagnostics, not counted as state-restoration error.
+
 ## Validation
 
 Local validation requires the complete CPU suite, Ruff lint and formatting,
@@ -95,10 +118,10 @@ The local workstation does not provide CPython 3.11, so the pre-push CPU suite
 was run with its repository virtual environment on CPython 3.12.10. This is a
 temporary environment exception, not a compatibility claim. The exact pushed
 revision must repeat the complete suite and static checks with the configured
-remote CPython 3.11 interpreter before any simulator smoke. The local result is
-`1021 passed, 3 skipped`; the three skips are Windows tests that require the
-unavailable directory-symlink privilege. Ruff lint, Ruff format checking,
-mypy over `src`, all five CLI dry runs, and `git diff --check` pass.
+remote CPython 3.11 interpreter before any simulator smoke. The post-fix local
+result is `1030 passed, 3 skipped`; the three skips are Windows tests that
+require the unavailable directory-symlink privilege. Ruff lint, Ruff format
+checking, mypy over `src`, all five CLI dry runs, and `git diff --check` pass.
 
 ## Storage and source-of-truth policy
 
@@ -119,6 +142,19 @@ or real-robot execution is included.
 
 - Starting revision: `ca8e6a8b9d4eb305b8b1bfbdaa9f4d29e0efb842`.
 - Branch: `codex/m3a-state-indexed-dataset`.
-- Implementation and local CPU validation are complete. The implementation
-  commit/push, remote CPython 3.11 validation, remote smoke/full acceptance,
-  compact report retrieval, and final result revision are pending.
+- The implementation commit `fece3b199a05a456d43c9a97ec83fabe8a0e1542`
+  was pushed, and its remote CPython 3.11 suite/static checks passed. Remote run
+  `20260715T101849Z_m3a-smoke_fece3b1_seed0` correctly failed closed during
+  fresh-state collection because 42 restored grasp-phase states returned
+  source-time `is_grasped=1` versus restored-boundary `is_grasped=0`; all other
+  public-vector components stayed within tolerance and the complete state tree
+  restored with maximum error `1.1920929e-7`. The content-bound restored public
+  projection fix is implemented and passes the complete local suite. A bounded
+  follow-up probe, run
+  `20260715T115713Z_m3a-contact-refresh-probe_fece3b1_seed0`, confirmed that
+  public evaluation, contact queries, and render updates leave the restored
+  grasp flag false while preserving the 70-component state; one physics step
+  makes the flag true but changes the complete state by as much as
+  `32.6216516494751`, so that workaround is invalid. A new pushed exact
+  revision, smoke/full acceptance, compact report retrieval, and the final
+  result revision remain pending.

@@ -165,7 +165,13 @@ M3A records every post-reset and post-action boundary as `state[0]` through
 restored in a fresh environment and compared across the complete expected
 structure and numeric component inventory with the adapter-bound `1e-6`
 tolerance. A versioned `PickCubeVerifierStateV1` is independently re-extracted
-after restoration from public active-joint, TCP, cube, goal, and task APIs.
+after restoration from public active-joint, TCP, cube, goal, and task APIs. Its
+content-bound extraction boundary is the verified post-restore, pre-action
+state. The uninterrupted source task snapshot remains separate event evidence:
+in ManiSkill `3.0.1`, `is_grasped` reads a contact-impulse buffer that
+`set_state_dict` does not reconstruct, and a physics step would mutate the
+boundary. The verifier vector still contains the public grasp query observed
+after restoration; no source value is substituted and no contact is inferred.
 
 Each deterministic anchor has `H=16`, a successful independent replay of the
 complete source remainder, and one content-bound continuation identity. M3A

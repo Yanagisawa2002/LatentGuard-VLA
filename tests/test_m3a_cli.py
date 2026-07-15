@@ -11,8 +11,16 @@ import pytest
 
 from latentguard.action_verifier import CandidateType
 from latentguard.cli import main
+from latentguard.integrations.maniskill_pickcube.state_indexed_archive import (
+    STATE_INDEXED_ARCHIVE_VERSION,
+)
+from latentguard.integrations.maniskill_pickcube.verifier_state import (
+    PICKCUBE_VERIFIER_STATE_EXTRACTION_BOUNDARY,
+    PICKCUBE_VERIFIER_STATE_SEMANTIC,
+)
 from latentguard.m3a_cli import (
     _baseline_exclusion_counts,
+    _collection_summary,
     _load_resume_report,
     _require_full_dataset_targets,
     _restoration_report,
@@ -210,6 +218,79 @@ def test_build_rejects_nonfixed_candidate_horizon(tmp_path: Path) -> None:
         )
 
     assert error.value.code == 2
+
+
+def test_collection_summary_records_restored_projection_evidence() -> None:
+    archive = SimpleNamespace(
+        content_digest="sha256:archive",
+        episodes=(
+            SimpleNamespace(
+                compatibility_identity="sha256:compatibility",
+                source_actions=np.zeros((3, 8), dtype=np.float32),
+                states=(object(), object(), object(), object()),
+            ),
+        ),
+    )
+    result = SimpleNamespace(
+        accepted_count=1,
+        attempts=(
+            SimpleNamespace(failure_category=None),
+            SimpleNamespace(failure_category="solver_failure"),
+        ),
+        requested_success_count=1,
+    )
+    audit_records = (
+        SimpleNamespace(
+            compared_component_count=70,
+            maximum_absolute_error=1.0e-7,
+            verifier_component_count=24,
+            verifier_maximum_absolute_error=2.0e-7,
+            source_to_restored_task_mismatch_fields=("is_grasped",),
+        ),
+        SimpleNamespace(
+            compared_component_count=70,
+            maximum_absolute_error=3.0e-7,
+            verifier_component_count=24,
+            verifier_maximum_absolute_error=1.0e-7,
+            source_to_restored_task_mismatch_fields=(
+                "is_grasped",
+                "tcp_to_cube_distance",
+            ),
+        ),
+    )
+
+    summary = _collection_summary(
+        result=result,
+        archive=archive,
+        audit_records=audit_records,
+    )
+
+    assert summary["schema_version"] == "1.1"
+    assert (
+        summary["state_indexed_archive_serialization_version"]
+        == STATE_INDEXED_ARCHIVE_VERSION
+    )
+    assert (
+        summary["verifier_state_extraction_boundary"]
+        == PICKCUBE_VERIFIER_STATE_EXTRACTION_BOUNDARY
+    )
+    assert summary["verifier_state_semantic"] == PICKCUBE_VERIFIER_STATE_SEMANTIC
+    assert summary["fresh_state_verification_count"] == 2
+    assert summary["fresh_state_compared_component_counts"] == [70]
+    assert summary["fresh_state_maximum_absolute_error"] == 3.0e-7
+    assert summary["fresh_verifier_state_compared_component_counts"] == [24]
+    assert summary["fresh_verifier_state_maximum_absolute_error"] == 2.0e-7
+    assert summary["source_to_restored_task_mismatch_state_count"] == 2
+    assert summary["source_to_restored_task_mismatch_field_counts"] == {
+        "is_grasped": 2,
+        "tcp_to_cube_distance": 1,
+    }
+    assert summary["accepted_source_trajectories"] == 1
+    assert summary["requested_source_trajectories"] == 1
+    assert summary["attempt_count"] == 2
+    assert summary["attempt_failure_categories"] == {"solver_failure": 1}
+    assert summary["source_action_count"] == 3
+    assert summary["t_plus_one_state_count"] == 4
 
 
 def _resume_report_payload() -> dict[str, object]:

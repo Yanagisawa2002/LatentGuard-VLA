@@ -21,7 +21,8 @@ from numpy.typing import NDArray
 from latentguard.replay.identity import canonical_json_bytes
 
 PICKCUBE_VERIFIER_STATE_SEMANTIC = "PickCubeVerifierStateV1"
-PICKCUBE_VERIFIER_STATE_SCHEMA_VERSION = "1.0"
+PICKCUBE_VERIFIER_STATE_SCHEMA_VERSION = "1.1"
+PICKCUBE_VERIFIER_STATE_EXTRACTION_BOUNDARY = "after_verified_restore_before_action_v1"
 PICKCUBE_VERIFIER_STATE_DTYPE = np.dtype("<f4").str
 
 _POSE_POSITION_COMPONENTS = ("x", "y", "z")
@@ -111,10 +112,11 @@ def _strict_bool(value: object, *, context: str) -> bool:
 
 @dataclass(frozen=True, slots=True)
 class PickCubeVerifierStateSchemaV1:
-    """Content-bound component schema derived from verified active-joint names."""
+    """Content-bound post-restoration, pre-action public-state schema."""
 
     joint_names: tuple[str, ...]
     semantic: str = PICKCUBE_VERIFIER_STATE_SEMANTIC
+    extraction_boundary: str = PICKCUBE_VERIFIER_STATE_EXTRACTION_BOUNDARY
     dtype: str = PICKCUBE_VERIFIER_STATE_DTYPE
     schema_version: str = PICKCUBE_VERIFIER_STATE_SCHEMA_VERSION
 
@@ -123,6 +125,10 @@ class PickCubeVerifierStateSchemaV1:
         object.__setattr__(self, "joint_names", _validate_joint_names(self.joint_names))
         if self.semantic != PICKCUBE_VERIFIER_STATE_SEMANTIC:
             raise PickCubeVerifierStateError("verifier-state semantic mismatch")
+        if self.extraction_boundary != PICKCUBE_VERIFIER_STATE_EXTRACTION_BOUNDARY:
+            raise PickCubeVerifierStateError(
+                "verifier-state extraction boundary mismatch"
+            )
         if self.dtype != PICKCUBE_VERIFIER_STATE_DTYPE:
             raise PickCubeVerifierStateError("verifier-state dtype must be float32")
         if self.schema_version != PICKCUBE_VERIFIER_STATE_SCHEMA_VERSION:
@@ -155,6 +161,7 @@ class PickCubeVerifierStateSchemaV1:
             {
                 "component_names": self.component_names,
                 "dtype": self.dtype,
+                "extraction_boundary": self.extraction_boundary,
                 "joint_names": self.joint_names,
                 "schema_version": self.schema_version,
                 "semantic": self.semantic,
@@ -171,7 +178,7 @@ class PickCubeVerifierStateSchemaV1:
 
 @dataclass(frozen=True, slots=True, eq=False)
 class PickCubeVerifierStateV1:
-    """One immutable finite float32 state vector and its explicit schema."""
+    """One immutable public vector extracted after restore and before action."""
 
     schema: PickCubeVerifierStateSchemaV1
     values: NDArray[Any]
@@ -234,7 +241,7 @@ def build_pickcube_verifier_state_v1(
     is_obj_placed: bool,
     is_robot_static: bool,
 ) -> PickCubeVerifierStateV1:
-    """Build V1 from verified public values without normalization or defaults.
+    """Build V1 from verified post-restoration, pre-action public values.
 
     Quaternion inputs are interpreted in explicit ``(w, x, y, z)`` order and
     are copied exactly before the documented float32 projection.  They are not
@@ -286,6 +293,7 @@ def build_pickcube_verifier_state_v1(
 
 __all__ = [
     "PICKCUBE_VERIFIER_STATE_DTYPE",
+    "PICKCUBE_VERIFIER_STATE_EXTRACTION_BOUNDARY",
     "PICKCUBE_VERIFIER_STATE_SCHEMA_VERSION",
     "PICKCUBE_VERIFIER_STATE_SEMANTIC",
     "PickCubeVerifierStateError",

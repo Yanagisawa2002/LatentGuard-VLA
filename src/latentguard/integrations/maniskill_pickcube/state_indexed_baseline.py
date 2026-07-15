@@ -553,7 +553,12 @@ class PickCubeAnchorBaselineValidator:
         source_state: PickCubeIndexedStateV1,
         evidence: TerminalTaskEvidence,
     ) -> None:
-        expected = source_state.task_snapshot
+        # The uninterrupted-source snapshot is an immutable event annotation used
+        # by the anchor scheduler.  Runtime restoration is instead checked against
+        # the independently captured post-restoration projection.  In ManiSkill
+        # 3.0.1 the public grasp query is contact-impulse-derived and can therefore
+        # legitimately differ between those two explicitly separated boundaries.
+        expected = source_state.restored_task_snapshot
         observed = {
             "success": evidence.success,
             "is_obj_placed": _diagnostic_bool(

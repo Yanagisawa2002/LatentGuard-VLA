@@ -4,6 +4,7 @@ from dataclasses import dataclass
 from typing import Any
 
 import numpy as np
+import pytest
 
 from latentguard.integrations.maniskill_pickcube.session import (
     ManiSkillPickCubeEnvironmentSettings,
@@ -12,6 +13,7 @@ from latentguard.integrations.maniskill_pickcube.session import (
 from latentguard.integrations.maniskill_pickcube.source_generation import (
     OFFICIAL_SOLVER_EXPORT,
     OFFICIAL_SOLVER_MODULE,
+    PickCubeSourceGenerationError,
     SolverSourceIdentity,
 )
 from latentguard.integrations.maniskill_pickcube.state_indexed_source import (
@@ -74,6 +76,7 @@ class _Environment:
     def __init__(self, target_steps: int) -> None:
         self.target_steps = target_steps
         self.count = 0
+        self.grasp_contact = False
         self.closed = False
         self.agent = _Agent(self)
         self.cube = _Entity(
@@ -102,6 +105,7 @@ class _Environment:
     def reset(self, *, seed: int) -> tuple[None, dict[str, int]]:
         assert 0 <= seed < 2**32
         self.count = 0
+        self.grasp_contact = False
         self._sync()
         return None, {"elapsed_steps": 0}
 
@@ -109,6 +113,7 @@ class _Environment:
         array = np.asarray(action)
         assert array.shape in ((8,), (1, 8))
         self.count += 1
+        self.grasp_contact = 5 <= self.count < self.target_steps
         self._sync()
         return None, 0.0, False, False, {"elapsed_steps": self.count}
 
@@ -124,6 +129,9 @@ class _Environment:
     def set_state_dict(self, state: object) -> None:
         assert isinstance(state, dict)
         self.count = int(np.asarray(state["count"]).reshape(()))
+        # ManiSkill's public grasp result is contact-impulse-derived and is not
+        # reconstructed by set_state_dict until physics advances again.
+        self.grasp_contact = False
         self._sync()
 
     def close(self) -> None:
@@ -134,6 +142,8 @@ class _Factory:
     def __init__(self, target_steps: int) -> None:
         self.target_steps = target_steps
         self.environments: list[_Environment] = []
+        self.restored_grasp_override: bool | None = None
+        self.mutate_state_during_task_capture = False
 
     def create_environment(
         self,
@@ -162,10 +172,16 @@ class _Factory:
     ) -> RawPickCubeTaskSnapshot:
         assert isinstance(environment, _Environment)
         success = environment.count >= environment.target_steps
-        grasped = environment.count >= 5 and not success
+        grasped = environment.grasp_contact
+        if (
+            self.restored_grasp_override is not None
+            and environment.count > 0
+            and not environment.grasp_contact
+        ):
+            grasped = self.restored_grasp_override
         cube = environment.cube.pose.p.reshape(3)
         goal = environment.goal_site.pose.p.reshape(3)
-        return RawPickCubeTaskSnapshot(
+        snapshot = RawPickCubeTaskSnapshot(
             evaluator_values={
                 key_contract.success: np.array([success], dtype=np.bool_),
                 key_contract.object_placed: np.array([success], dtype=np.bool_),
@@ -177,6 +193,10 @@ class _Factory:
                 [np.linalg.norm(cube - goal)], dtype=np.float32
             ),
         )
+        if self.mutate_state_during_task_capture:
+            environment.count += 1
+            environment._sync()
+        return snapshot
 
     def step_action(
         self,
@@ -261,6 +281,13 @@ def test_collection_records_t_plus_one_and_freshly_verifies_every_state() -> Non
         episode.source_trajectory_id
         == result.reference_archive.episodes[0].source_trajectory_id
     )
+    grasped_state = episode.states[5]
+    assert grasped_state.task_snapshot.is_grasped is True
+    assert grasped_state.restored_task_snapshot.is_grasped is False
+    grasped_component = grasped_state.verifier_state.component_names.index(
+        "task/is_grasped"
+    )
+    assert grasped_state.verifier_state.values[grasped_component] == 0.0
 
     audit = verify_all_indexed_states_fresh(
         episode,
@@ -273,4 +300,90 @@ def test_collection_records_t_plus_one_and_freshly_verifies_every_state() -> Non
     assert {record.compared_component_count for record in audit} == {3}
     assert max(record.maximum_absolute_error for record in audit) == 0.0
     assert max(record.verifier_maximum_absolute_error for record in audit) == 0.0
+    assert audit[5].source_to_restored_task_mismatch_fields == ("is_grasped",)
+    assert audit[4].source_to_restored_task_mismatch_fields == ()
+    assert all(environment.closed for environment in factory.environments)
+
+
+def test_independent_verification_rejects_restored_task_projection_drift() -> None:
+    factory = _Factory(target_steps=18)
+    key_contract = PickCubeTaskKeyContract(
+        success="success",
+        object_placed="is_obj_placed",
+        robot_static="is_robot_static",
+        grasped="is_grasped",
+    )
+    result = collect_state_indexed_reference_archive(
+        requested_success_count=1,
+        starting_seed=3,
+        maximum_attempts=1,
+        compatibility_identity="sha256:" + "1" * 64,
+        environment_factory=factory,
+        settings=_settings(),
+        action_contract=_action_contract(),
+        key_contract=key_contract,
+        solver=_solver,
+        solver_identity=SolverSourceIdentity(
+            module_name=OFFICIAL_SOLVER_MODULE,
+            export_name=OFFICIAL_SOLVER_EXPORT,
+            source_sha256="2" * 64,
+        ),
+    )
+    assert result.archive is not None
+    factory.restored_grasp_override = True
+
+    with pytest.raises(
+        PickCubeSourceGenerationError,
+        match="restored task snapshot fields: is_grasped",
+    ):
+        verify_all_indexed_states_fresh(
+            result.archive.episodes[0],
+            environment_factory=factory,
+            settings=_settings(),
+            action_contract=_action_contract(),
+            key_contract=key_contract,
+        )
+
+    assert all(environment.closed for environment in factory.environments)
+
+
+def test_public_projection_extraction_must_not_mutate_restored_state() -> None:
+    factory = _Factory(target_steps=18)
+    key_contract = PickCubeTaskKeyContract(
+        success="success",
+        object_placed="is_obj_placed",
+        robot_static="is_robot_static",
+        grasped="is_grasped",
+    )
+    result = collect_state_indexed_reference_archive(
+        requested_success_count=1,
+        starting_seed=3,
+        maximum_attempts=1,
+        compatibility_identity="sha256:" + "1" * 64,
+        environment_factory=factory,
+        settings=_settings(),
+        action_contract=_action_contract(),
+        key_contract=key_contract,
+        solver=_solver,
+        solver_identity=SolverSourceIdentity(
+            module_name=OFFICIAL_SOLVER_MODULE,
+            export_name=OFFICIAL_SOLVER_EXPORT,
+            source_sha256="2" * 64,
+        ),
+    )
+    assert result.archive is not None
+    factory.mutate_state_during_task_capture = True
+
+    with pytest.raises(
+        PickCubeSourceGenerationError,
+        match="public projection extraction mutated the restored state",
+    ):
+        verify_all_indexed_states_fresh(
+            result.archive.episodes[0],
+            environment_factory=factory,
+            settings=_settings(),
+            action_contract=_action_contract(),
+            key_contract=key_contract,
+        )
+
     assert all(environment.closed for environment in factory.environments)

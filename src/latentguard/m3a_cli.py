@@ -79,6 +79,7 @@ from latentguard.integrations.maniskill_pickcube.source_generation import (
     load_official_solver,
 )
 from latentguard.integrations.maniskill_pickcube.state_indexed_archive import (
+    STATE_INDEXED_ARCHIVE_VERSION,
     PickCubeStateIndexedArchiveV1,
     load_state_indexed_archive,
     save_state_indexed_archive,
@@ -96,6 +97,10 @@ from latentguard.integrations.maniskill_pickcube.state_indexed_source import (
 )
 from latentguard.integrations.maniskill_pickcube.task_evidence import (
     PickCubeTaskKeyContract,
+)
+from latentguard.integrations.maniskill_pickcube.verifier_state import (
+    PICKCUBE_VERIFIER_STATE_EXTRACTION_BOUNDARY,
+    PICKCUBE_VERIFIER_STATE_SEMANTIC,
 )
 from latentguard.replay.evaluator import (
     create_exact_state_paired_replay_evaluator,
@@ -415,6 +420,18 @@ def _collection_summary(
     component_counts = sorted(
         {int(record.compared_component_count) for record in audit_records}
     )
+    verifier_maximum_error = max(
+        (float(record.verifier_maximum_absolute_error) for record in audit_records),
+        default=0.0,
+    )
+    verifier_component_counts = sorted(
+        {int(record.verifier_component_count) for record in audit_records}
+    )
+    task_mismatch_counts = Counter(
+        field
+        for record in audit_records
+        for field in record.source_to_restored_task_mismatch_fields
+    )
     return {
         "accepted_source_trajectories": result.accepted_count,
         "archive_content_digest": archive.content_digest,
@@ -432,12 +449,26 @@ def _collection_summary(
         "fresh_state_compared_component_counts": component_counts,
         "fresh_state_maximum_absolute_error": maximum_error,
         "fresh_state_verification_count": len(audit_records),
+        "fresh_verifier_state_compared_component_counts": (verifier_component_counts),
+        "fresh_verifier_state_maximum_absolute_error": verifier_maximum_error,
+        "source_to_restored_task_mismatch_field_counts": dict(
+            sorted(task_mismatch_counts.items())
+        ),
+        "source_to_restored_task_mismatch_state_count": sum(
+            bool(record.source_to_restored_task_mismatch_fields)
+            for record in audit_records
+        ),
         "requested_source_trajectories": result.requested_success_count,
-        "schema_version": "1.0",
+        "schema_version": "1.1",
         "source_action_count": sum(
             int(episode.source_actions.shape[0]) for episode in archive.episodes
         ),
+        "state_indexed_archive_serialization_version": (STATE_INDEXED_ARCHIVE_VERSION),
         "t_plus_one_state_count": state_count,
+        "verifier_state_extraction_boundary": (
+            PICKCUBE_VERIFIER_STATE_EXTRACTION_BOUNDARY
+        ),
+        "verifier_state_semantic": PICKCUBE_VERIFIER_STATE_SEMANTIC,
     }
 
 
@@ -538,7 +569,7 @@ def _run_collect_sequences(
             "accepted_source_trajectories": error.result.accepted_count,
             "attempt_count": len(error.result.attempts),
             "requested_source_trajectories": error.result.requested_success_count,
-            "schema_version": "1.0",
+            "schema_version": "1.1",
             "status": "incomplete",
         }
         summary_written = False

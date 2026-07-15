@@ -53,6 +53,7 @@ from .state_tree import (
 )
 from .verifier_state import (
     PICKCUBE_VERIFIER_STATE_DTYPE,
+    PICKCUBE_VERIFIER_STATE_EXTRACTION_BOUNDARY,
     PICKCUBE_VERIFIER_STATE_SCHEMA_VERSION,
     PICKCUBE_VERIFIER_STATE_SEMANTIC,
     PickCubeVerifierStateError,
@@ -63,9 +64,9 @@ from .verifier_state import (
 STATE_INDEXED_ARCHIVE_FORMAT = (
     "latentguard-maniskill-pickcube-state-indexed-reference-archive"
 )
-STATE_INDEXED_ARCHIVE_VERSION = 1
-STATE_INDEXED_EPISODE_SCHEMA_VERSION = "1.0"
-STATE_INDEXED_STATE_SCHEMA_VERSION = "1.0"
+STATE_INDEXED_ARCHIVE_VERSION = 2
+STATE_INDEXED_EPISODE_SCHEMA_VERSION = "1.1"
+STATE_INDEXED_STATE_SCHEMA_VERSION = "1.1"
 STATE_INDEXED_TASK_SNAPSHOT_SCHEMA_VERSION = "1.0"
 STATE_INDEXED_MANIFEST_NAME = "manifest.json"
 
@@ -108,6 +109,7 @@ _STATE_FIELDS = frozenset(
         "state_digest",
         "state_index",
         "structure_digest",
+        "restored_task_snapshot",
         "task_snapshot",
         "tree",
         "verifier_state",
@@ -130,6 +132,7 @@ _VECTOR_FIELDS = frozenset(
         "component_names",
         "content_digest",
         "dtype",
+        "extraction_boundary",
         "joint_names",
         "schema_digest",
         "schema_version",
@@ -262,12 +265,15 @@ class PickCubeTaskSnapshotV1:
 
 @dataclass(frozen=True, slots=True, eq=False)
 class PickCubeIndexedStateV1:
-    """One exact state boundary and its public task/vector projections."""
+    """One exact state with source-time and restored-boundary public facts."""
 
     state_index: int
     source_action_index: int
     tree: NormalizedStateTree | object
+    # Immutable source-time annotation used for trajectory event scheduling.
     task_snapshot: PickCubeTaskSnapshotV1
+    # Public task facts re-extracted after verified restore and before action.
+    restored_task_snapshot: PickCubeTaskSnapshotV1
     verifier_state: PickCubeVerifierStateV1
     seed: int
     compatibility_identity: str
@@ -296,9 +302,27 @@ class PickCubeIndexedStateV1:
             raise StateIndexedArchiveError(
                 "indexed state requires PickCubeTaskSnapshotV1"
             )
+        if not isinstance(self.restored_task_snapshot, PickCubeTaskSnapshotV1):
+            raise StateIndexedArchiveError(
+                "indexed state requires a restored PickCubeTaskSnapshotV1"
+            )
         if not isinstance(self.verifier_state, PickCubeVerifierStateV1):
             raise StateIndexedArchiveError(
                 "indexed state requires PickCubeVerifierStateV1"
+            )
+        restored_flags = {
+            "task/is_grasped": float(self.restored_task_snapshot.is_grasped),
+            "task/is_obj_placed": float(self.restored_task_snapshot.is_obj_placed),
+            "task/is_robot_static": float(self.restored_task_snapshot.is_robot_static),
+        }
+        vector_flags = {
+            name: float(self.verifier_state.values[index])
+            for index, name in enumerate(self.verifier_state.component_names)
+            if name in restored_flags
+        }
+        if vector_flags != restored_flags:
+            raise StateIndexedArchiveError(
+                "verifier-state task flags differ from restored task snapshot"
             )
         try:
             tree = normalize_state_tree(self.tree)
@@ -549,6 +573,7 @@ def compute_state_indexed_state_content_digest(
         "state_digest": state.state_digest,
         "state_index": state.state_index,
         "structure_digest": state.structure_digest,
+        "restored_task_snapshot": state.restored_task_snapshot.as_mapping(),
         "task_snapshot": state.task_snapshot.as_mapping(),
         "verifier_state_content_digest": state.verifier_state.content_digest,
         "verifier_state_schema_digest": state.verifier_state.schema_digest,
@@ -636,6 +661,7 @@ def _encode_vector(
         "schema_digest": vector.schema_digest,
         "schema_version": vector.schema.schema_version,
         "semantic": vector.semantic,
+        "extraction_boundary": vector.schema.extraction_boundary,
         "shape": list(vector.values.shape),
         "values": writer.write(vector.values),
     }
@@ -657,6 +683,7 @@ def _encode_state(
         "state_digest": state.state_digest,
         "state_index": state.state_index,
         "structure_digest": state.structure_digest,
+        "restored_task_snapshot": dict(state.restored_task_snapshot.as_mapping()),
         "task_snapshot": dict(state.task_snapshot.as_mapping()),
         "tree": _encode_state_node(tree.root, "$", writer),
         "verifier_state": _encode_vector(state.verifier_state, writer),
@@ -809,6 +836,11 @@ def _decode_vector(
     if _string(item, "semantic", context) != PICKCUBE_VERIFIER_STATE_SEMANTIC:
         raise StateIndexedArchiveError(f"{context}.semantic: mismatch")
     if (
+        _string(item, "extraction_boundary", context)
+        != PICKCUBE_VERIFIER_STATE_EXTRACTION_BOUNDARY
+    ):
+        raise StateIndexedArchiveError(f"{context}.extraction_boundary: mismatch")
+    if (
         _string(item, "schema_version", context)
         != PICKCUBE_VERIFIER_STATE_SCHEMA_VERSION
     ):
@@ -859,6 +891,10 @@ def _decode_state(
         ),
         task_snapshot=_decode_task(
             _field(item, "task_snapshot", context), context=f"{context}.task_snapshot"
+        ),
+        restored_task_snapshot=_decode_task(
+            _field(item, "restored_task_snapshot", context),
+            context=f"{context}.restored_task_snapshot",
         ),
         verifier_state=_decode_vector(
             _field(item, "verifier_state", context),

@@ -8,6 +8,8 @@ import pytest
 
 from latentguard.integrations.maniskill_pickcube.verifier_state import (
     PICKCUBE_VERIFIER_STATE_DTYPE,
+    PICKCUBE_VERIFIER_STATE_EXTRACTION_BOUNDARY,
+    PICKCUBE_VERIFIER_STATE_SCHEMA_VERSION,
     PICKCUBE_VERIFIER_STATE_SEMANTIC,
     PickCubeVerifierStateError,
     PickCubeVerifierStateSchemaV1,
@@ -42,6 +44,10 @@ def test_verifier_state_has_explicit_complete_component_order() -> None:
     state = _build()
 
     assert state.semantic == PICKCUBE_VERIFIER_STATE_SEMANTIC
+    assert (
+        state.schema.extraction_boundary == PICKCUBE_VERIFIER_STATE_EXTRACTION_BOUNDARY
+    )
+    assert state.schema.schema_version == PICKCUBE_VERIFIER_STATE_SCHEMA_VERSION
     assert state.values.dtype.str == PICKCUBE_VERIFIER_STATE_DTYPE
     assert state.values.shape == (24,)
     assert state.component_names[:4] == (
@@ -76,6 +82,18 @@ def test_schema_and_vector_digests_are_deterministic_and_content_bound() -> None
     assert changed_values.schema_digest == first.schema_digest
     assert changed_values.content_digest != first.content_digest
     assert reordered.schema_digest != first.schema_digest
+
+
+def test_schema_rejects_extraction_boundary_or_version_drift() -> None:
+    with pytest.raises(PickCubeVerifierStateError, match="extraction boundary"):
+        PickCubeVerifierStateSchemaV1(
+            joint_names=("joint_a", "joint_b"),
+            extraction_boundary="source_time_before_archive_v0",
+        )
+    with pytest.raises(PickCubeVerifierStateError, match="schema version"):
+        PickCubeVerifierStateSchemaV1(
+            joint_names=("joint_a", "joint_b"), schema_version="1.0"
+        )
 
 
 def test_builder_detaches_every_public_input() -> None:
@@ -157,5 +175,6 @@ def test_schema_mapping_is_canonical_and_read_only() -> None:
     mapping = schema.as_mapping()
 
     assert mapping["shape"] == (24,)
+    assert mapping["extraction_boundary"] == PICKCUBE_VERIFIER_STATE_EXTRACTION_BOUNDARY
     with pytest.raises(TypeError):
         mapping["semantic"] = "changed"  # type: ignore[index]
