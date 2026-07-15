@@ -119,7 +119,7 @@ was run with its repository virtual environment on CPython 3.12.10. This is a
 temporary environment exception, not a compatibility claim. The exact pushed
 revision must repeat the complete suite and static checks with the configured
 remote CPython 3.11 interpreter before any simulator smoke. The post-fix local
-result is `1030 passed, 3 skipped`; the three skips are Windows tests that
+result is `1031 passed, 3 skipped`; the three skips are Windows tests that
 require the unavailable directory-symlink privilege. Ruff lint, Ruff format
 checking, mypy over `src`, all five CLI dry runs, and `git diff --check` pass.
 
@@ -156,5 +156,14 @@ or real-robot execution is included.
   grasp flag false while preserving the 70-component state; one physics step
   makes the flag true but changes the complete state by as much as
   `32.6216516494751`, so that workaround is invalid. A new pushed exact
-  revision, smoke/full acceptance, compact report retrieval, and the final
-  result revision remain pending.
+  revision `7795e329eae16ccf6530ffc4b7beb21c4ae77ecf` then passed the remote
+  Python 3.11 suite (`1033 passed`) and static checks. Strict-warning smoke run
+  `20260715T121805Z_m3a-smoke_7795e32_seed0` rejected all 48 attempts before
+  publication. Diagnostic run
+  `20260715T122100Z_m3a-warning-probe_7795e32_seed0` identified one local
+  unclosed solver-source file and one pinned-upstream deprecation emitted by
+  ManiSkill's official geometry helper. The local fix now closes the file and
+  filters only that exact message, category, and upstream module during the
+  official solver call; all other warnings retain the caller's error policy.
+  The next fix revision, smoke/full acceptance, compact report retrieval, and
+  the final result revision remain pending.

@@ -5,8 +5,10 @@ from __future__ import annotations
 import hashlib
 import importlib
 import inspect
+import warnings
 from collections.abc import Callable, Mapping, Sequence
 from dataclasses import dataclass
+from pathlib import Path
 from types import MappingProxyType
 from typing import Any, Protocol, cast, runtime_checkable
 
@@ -36,6 +38,13 @@ OFFICIAL_SOLVER_MODULE = "mani_skill.examples.motionplanning.panda.solutions.pic
 OFFICIAL_SOLVER_EXPORT = "solve"
 OFFICIAL_SOURCE_POLICY_ID = "maniskill/official-panda-motionplanning-pickcube-v1"
 ROBOT_STATE_SEMANTIC = "panda_active_joint_qpos_qvel_named_v1"
+_OFFICIAL_SOLVER_COMPONENT_POSE_WARNING = (
+    r"^component\.pose can be ambiguous thus deprecated\. It is equivalent to "
+    r"component\.entity_pose, which should be used instead$"
+)
+_OFFICIAL_SOLVER_COMPONENT_POSE_WARNING_MODULE = (
+    r"^mani_skill\.utils\.geometry\.trimesh_utils$"
+)
 
 
 class PickCubeSourceGenerationError(RuntimeError):
@@ -358,7 +367,7 @@ def load_official_solver() -> tuple[Callable[..., object], SolverSourceIdentity]
             "official ManiSkill PickCube solver source file is unavailable"
         )
     try:
-        source = open(source_path, "rb").read()
+        source = Path(source_path).read_bytes()
     except OSError as exc:
         raise PickCubeSourceGenerationError(
             "official ManiSkill PickCube solver source could not be read"
@@ -369,6 +378,26 @@ def load_official_solver() -> tuple[Callable[..., object], SolverSourceIdentity]
         source_sha256=hashlib.sha256(source).hexdigest(),
     )
     return solver, identity
+
+
+def run_official_solver(
+    solver: Callable[..., object], environment: object, *, seed: int
+) -> object:
+    """Run the pinned solver while filtering its exact deprecated pose alias.
+
+    ManiSkill 3.0.1's packaged PickCube solver calls the deprecated
+    ``component.pose`` alias from its own geometry helper.  The warning is
+    narrowly bound by exact message, category, and module; every other warning
+    remains governed by the caller's warning policy.
+    """
+    with warnings.catch_warnings():
+        warnings.filterwarnings(
+            "ignore",
+            message=_OFFICIAL_SOLVER_COMPONENT_POSE_WARNING,
+            category=DeprecationWarning,
+            module=_OFFICIAL_SOLVER_COMPONENT_POSE_WARNING_MODULE,
+        )
+        return solver(environment, seed=seed, debug=False, vis=False)
 
 
 @runtime_checkable
@@ -816,7 +845,7 @@ def record_official_source_trajectory(
     )
     primary: BaseException | None = None
     try:
-        result = solver(recorder, seed=seed, debug=False, vis=False)
+        result = run_official_solver(solver, recorder, seed=seed)
         if result == -1:
             raise PickCubeSourceGenerationError(
                 "official solver reported motion-planning failure"
@@ -1000,5 +1029,6 @@ __all__ = [
     "load_official_solver",
     "ordered_source_seeds",
     "record_official_source_trajectory",
+    "run_official_solver",
     "validate_independent_source_baseline",
 ]

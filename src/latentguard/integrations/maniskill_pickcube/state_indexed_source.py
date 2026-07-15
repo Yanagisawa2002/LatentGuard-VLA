@@ -25,6 +25,7 @@ from .source_generation import (
     SourceEnvironmentFactory,
     build_reference_episode,
     ordered_source_seeds,
+    run_official_solver,
     validate_independent_source_baseline,
 )
 from .source_import import OFFICIAL_PICKCUBE_SOURCE_POLICY_ID
@@ -301,7 +302,7 @@ def record_official_state_indexed_trajectory(
     )
     primary: BaseException | None = None
     try:
-        result = solver(recorder, seed=seed, debug=False, vis=False)
+        result = run_official_solver(solver, recorder, seed=seed)
         if result == -1:
             raise PickCubeSourceGenerationError(
                 "official solver reported motion-planning failure"

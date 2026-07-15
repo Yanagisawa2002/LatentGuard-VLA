@@ -406,6 +406,19 @@ def _validate_solver_identity(
         raise ValueError("installed official solver differs from compatibility report")
 
 
+def _attempt_failure_categories(result: Any) -> dict[str, int]:
+    """Return deterministic non-secret source-attempt failure counts."""
+    return dict(
+        sorted(
+            Counter(
+                item.failure_category
+                for item in result.attempts
+                if item.failure_category is not None
+            ).items()
+        )
+    )
+
+
 def _collection_summary(
     *,
     result: Any,
@@ -436,15 +449,7 @@ def _collection_summary(
         "accepted_source_trajectories": result.accepted_count,
         "archive_content_digest": archive.content_digest,
         "attempt_count": len(result.attempts),
-        "attempt_failure_categories": dict(
-            sorted(
-                Counter(
-                    item.failure_category
-                    for item in result.attempts
-                    if item.failure_category is not None
-                ).items()
-            )
-        ),
+        "attempt_failure_categories": _attempt_failure_categories(result),
         "compatibility_identity": archive.episodes[0].compatibility_identity,
         "fresh_state_compared_component_counts": component_counts,
         "fresh_state_maximum_absolute_error": maximum_error,
@@ -568,6 +573,7 @@ def _run_collect_sequences(
         incomplete_summary: Mapping[str, object] = {
             "accepted_source_trajectories": error.result.accepted_count,
             "attempt_count": len(error.result.attempts),
+            "attempt_failure_categories": _attempt_failure_categories(error.result),
             "requested_source_trajectories": error.result.requested_success_count,
             "schema_version": "1.1",
             "status": "incomplete",

@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import hashlib
+import warnings
 from typing import Any
 
 import numpy as np
@@ -21,6 +22,7 @@ from latentguard.integrations.maniskill_pickcube.source_generation import (
     collect_reference_archive,
     ordered_source_seeds,
     record_official_source_trajectory,
+    run_official_solver,
     validate_independent_source_baseline,
 )
 from latentguard.integrations.maniskill_pickcube.state_tree import (
@@ -63,6 +65,50 @@ def _keys() -> PickCubeTaskKeyContract:
         robot_static="is_robot_static",
         grasped="is_grasped",
     )
+
+
+def test_official_solver_filters_only_the_pinned_pose_deprecation() -> None:
+    exact_message = (
+        "component.pose can be ambiguous thus deprecated. It is equivalent to "
+        "component.entity_pose, which should be used instead"
+    )
+
+    def solver(
+        environment: object, *, seed: int, debug: bool, vis: bool
+    ) -> tuple[object, int, bool, bool]:
+        warnings.warn_explicit(
+            exact_message,
+            DeprecationWarning,
+            filename="mani_skill/utils/geometry/trimesh_utils.py",
+            lineno=111,
+            module="mani_skill.utils.geometry.trimesh_utils",
+        )
+        return environment, seed, debug, vis
+
+    with warnings.catch_warnings():
+        warnings.simplefilter("error")
+        assert run_official_solver(solver, "environment", seed=7) == (
+            "environment",
+            7,
+            False,
+            False,
+        )
+
+    def changed_warning(
+        environment: object, *, seed: int, debug: bool, vis: bool
+    ) -> None:
+        del environment, seed, debug, vis
+        warnings.warn_explicit(
+            exact_message + " changed",
+            DeprecationWarning,
+            filename="mani_skill/utils/geometry/trimesh_utils.py",
+            lineno=111,
+            module="mani_skill.utils.geometry.trimesh_utils",
+        )
+
+    with warnings.catch_warnings(), pytest.raises(DeprecationWarning):
+        warnings.simplefilter("error")
+        run_official_solver(changed_warning, "environment", seed=7)
 
 
 class _Joint:
