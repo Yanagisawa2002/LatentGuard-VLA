@@ -17,10 +17,11 @@ records official Panda motion-planning sources, independently replays every
 accepted source, and keeps exact runtime state archives outside Git. It does not
 use LangMani or train a model.
 
-The current M2C checkout is the locally implemented, CPU-fake-tested first
-stage. No real ManiSkill trajectory or simulator evidence has been accepted
-yet: the remote mplib version, observation spelling, action layout, and action
-semantics remain probe-required rather than guessed.
+The current M2C checkout has completed its first real-runtime discovery and
+locally binds the probe-verified dependency, compatibility, and action
+contracts. No real ManiSkill source trajectory or strong task-outcome evidence
+has been accepted yet: a second trusted probe must match the committed contract
+before collection or paired replay begins.
 
 Tracked source is developed and validated in the local repository, which is
 authoritative. Remote servers only pull committed revisions and execute them;
@@ -129,9 +130,9 @@ simulator verification. See [the exact-replay contract](docs/exact_replay.md).
 ## Probe the optional ManiSkill PickCube integration
 
 The ordinary core install does not include or import ManiSkill, SAPIEN, mplib,
-Vulkan, or CUDA. The first M2C remote stage is designed to use the separate
-probe requirement file, which currently pins only `mani_skill==3.0.1`, and then
-runs:
+Vulkan, or CUDA. M2C uses a separate probe requirement file whose
+discovery-verified pins are `mani_skill==3.0.1`, `mplib==0.1.1`, and
+`sapien==3.0.3`, and then runs:
 
 ```text
 latentguard probe-maniskill-pickcube --help
@@ -139,12 +140,11 @@ latentguard collect-maniskill-pickcube --help
 latentguard replay-maniskill-pickcube --help
 ```
 
-The first probe is intentionally required before the exact mplib package and
-action layout can be checked in; those values are never guessed. Trusted source
+The successful schema-1.1 discovery probe resolved the dependency,
+compatibility, and action contracts without guessing them. Trusted source
 collection and paired replay begin only after a second remote probe agrees with
-the locally committed contract. Remote execution and acceptance are currently
-pending the key-only authentication prerequisite described in the remote
-workflow. See the
+the locally committed contract. Key-only access is verified; trusted probe,
+collection, replay, and remote acceptance remain pending. See the
 [PickCube reference integration](docs/maniskill_pickcube_reference.md).
 
 Preview an exact-revision remote synchronization without network access:

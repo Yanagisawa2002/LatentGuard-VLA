@@ -22,15 +22,15 @@ APIs, reset-state structure, and state round-trip behavior. Operational Python,
 PyTorch, CUDA, GPU, SAPIEN, and mplib versions are retained for diagnosis, but
 hostnames and installation paths do not enter semantic compatibility identity.
 
-ManiSkill must be exactly `3.0.1`. The compatible mplib package and action
-layout are deliberately left unresolved until the first remote probe; neither
-is guessed from memory or from vector dimension. The verified dependency set
-and `configs/integrations/maniskill_pickcube/action-layout-v1.json` are then
-changed locally, committed, pushed, and checked by a second probe. Trusted
-collection cannot begin while the checked-in contract is unresolved or differs
-from the remote report. Remote discovery observed maximum full-state round-trip
-error `1.1920929e-7` across 70 numeric components. The authorized adapter-bound
-maximum remains fixed at `1e-6` and cannot be loosened on the remote machine.
+The reviewed schema-1.1 discovery report resolves ManiSkill `3.0.1`, mplib
+`0.1.1`, SAPIEN `3.0.3`, observation mode `none`, and the eight-component
+controller/action contract. Those values, the source and state identities, and
+the compatibility identity are now bound locally rather than guessed from
+memory or vector dimension. Trusted collection cannot begin until this binding
+is committed, pushed, and matched by a second trusted probe. Discovery observed
+maximum full-state round-trip error `1.1920929e-7` across 70 numeric components;
+the authorized adapter-bound maximum remains fixed at `1e-6` and cannot be
+loosened on the remote machine.
 
 ## Official source boundary
 
@@ -157,21 +157,22 @@ environment, and resume summaries return under `reports/m2c/<run-id>/`.
 
 ## Current status
 
-The local integration, strict unresolved expected-contract template, safe
+The local integration, probe-bound expected contract and dependencies, safe
 archive, M0 import, adapter boundaries, three CLIs, and CPU fake tests are
 implemented. Dedicated key-only access, the remote read-only Git deploy key,
 Python 3.11, one RTX 5090, CUDA/Vulkan/PhysX, ManiSkill `3.0.1`, SAPIEN `3.0.3`,
-and resolver-selected mplib `0.1.1` have been operationally verified.
+and mplib `0.1.1` have been operationally verified.
 
 Remote discovery established observation mode `none`, eight float32 action
 components (seven arm and one gripper), and complete 4-leaf/70-component state
 round trips with maximum error `1.1920929e-7`. The historical schema-1.0 probe
-failed only because it also required byte-identical runtime readback; it is
-retained as sanitized diagnostic evidence and cannot authorize trust. The
-adapter-specific schema-1.1 correction must still be pushed and pass a fresh
-probe before the dependency/action contract is committed locally. The second
-trusted probe, source collection, paired replay, compact final retrieval, and
-result commit remain pending; no remote M2C acceptance or training is claimed.
+remains sanitized diagnostic evidence and cannot authorize trust. The passing
+schema-1.1 discovery report
+`20260715T073250Z_m2c-pickcube-compat_bb2c35c_seed0_numeric-v1` now supplies the
+local dependency and expected-contract binding. Committing and pushing that
+binding, the second trusted probe, source collection, paired replay, compact
+final retrieval, and result commit remain pending; no remote M2C acceptance or
+training is claimed.
 
 ## Known limitations
 

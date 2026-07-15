@@ -200,6 +200,28 @@ def _verified_contract(
     )
 
 
+def _probe_only_contract() -> ExpectedManiSkillPickCubeContract:
+    """Return the original unresolved contract for discovery-only unit tests."""
+    return replace(
+        load_expected_contract(_EXPECTED_CONTRACT),
+        contract_status="probe_required",
+        sapien_version=None,
+        mplib_version=None,
+        observation_mode=None,
+        resolved_sim_backend=None,
+        action_dimension=None,
+        action_dtype=None,
+        action_contract_digest=None,
+        control_frequency_hz=None,
+        simulation_frequency_hz=None,
+        solver_sha256=None,
+        task_sha256=None,
+        controller_configuration_identity=None,
+        state_tree_structure_digest=None,
+        compatibility_identity=None,
+    )
+
+
 def _action_layout_document(
     report: CompatibilityReport | None = None,
 ) -> dict[str, object]:
@@ -248,33 +270,60 @@ def _write_action_layout(
     return path
 
 
-def test_initial_contract_is_explicitly_probe_only_and_fail_closed() -> None:
+def test_post_discovery_contract_is_fully_bound_and_trust_ready() -> None:
     expected = load_expected_contract(_EXPECTED_CONTRACT)
 
     assert expected.mani_skill_version == "3.0.1"
-    assert expected.contract_status == "probe_required"
-    assert expected.action_dimension is None
-    assert expected.mplib_version is None
-    assert not expected.trusted_replay_ready
-    with pytest.raises(ManiSkillConfigurationError, match="trusted replay"):
-        expected.require_trusted_replay_ready()
+    assert expected.sapien_version == "3.0.3"
+    assert expected.mplib_version == "0.1.1"
+    assert expected.contract_status == "verified"
+    assert expected.observation_mode == "none"
+    assert expected.resolved_sim_backend == "physx_cuda"
+    assert expected.action_dimension == 8
+    assert expected.action_dtype == "float32"
+    assert expected.control_frequency_hz == pytest.approx(20.0)
+    assert expected.simulation_frequency_hz == pytest.approx(100.0)
+    assert expected.action_contract_digest == (
+        "sha256:028d8c2cbb10e867d709f1c5d4c31e07ef1e084f1a8ad8370f96185ba892f0eb"
+    )
+    assert expected.controller_configuration_identity == (
+        "sha256:aed1daebe14982021776aaec5dead168fd999d841b6398be01612999383a9072"
+    )
+    assert expected.solver_sha256 == (
+        "sha256:75f6e26118a66b055927e368a7cd73b28d9974c6cf0181069ca55f8fcb1505ed"
+    )
+    assert expected.task_sha256 == (
+        "sha256:6f881f11151bd124a4ec6d1189e86e20b17d366aa1cbcc6e2f751f1f5bb03ed1"
+    )
+    assert expected.state_tree_structure_digest == (
+        "sha256:6f7ab9a632dfa7f34305ce5058e41da5c08c0e5926ff7f9ff90f42274a277ca0"
+    )
+    assert expected.compatibility_identity == (
+        "sha256:05a560fd89e0989b6d94017c6456efc535de4a0bf87ededaf468f5e2d9ef71f7"
+    )
+    assert expected.trusted_replay_ready
+    expected.require_trusted_replay_ready()
 
 
-def test_probe_requirements_pin_only_maniskill_before_discovery() -> None:
+def test_probe_requirements_pin_discovery_verified_dependencies() -> None:
     package_lines = tuple(
         line.strip()
         for line in _PROBE_REQUIREMENTS.read_text(encoding="utf-8").splitlines()
         if line.strip() and not line.lstrip().startswith("#")
     )
 
-    assert package_lines == ("mani_skill==3.0.1",)
+    assert package_lines == (
+        "mani_skill==3.0.1",
+        "mplib==0.1.1",
+        "sapien==3.0.3",
+    )
 
 
 def test_exact_report_is_accepted_for_discovery_but_not_trusted() -> None:
     report = _report()
     binding = validate_compatibility_report(
         report,
-        load_expected_contract(_EXPECTED_CONTRACT),
+        _probe_only_contract(),
     )
 
     assert binding.report.compatibility_identity.startswith("sha256:")
@@ -327,7 +376,7 @@ def test_round_trip_accepts_non_equal_raw_digests_within_tolerance() -> None:
     )
     binding = validate_compatibility_report(
         report,
-        load_expected_contract(_EXPECTED_CONTRACT),
+        _probe_only_contract(),
     )
 
     assert round_trip.passed
@@ -361,7 +410,7 @@ def test_round_trip_rejects_over_tolerance_and_incomplete_structure() -> None:
                     state_round_trip=round_trip,
                     state_tree_structure_digest=(round_trip.expected_structure_digest),
                 ),
-                load_expected_contract(_EXPECTED_CONTRACT),
+                _probe_only_contract(),
             )
 
 
@@ -392,7 +441,7 @@ def test_fixed_scope_mismatches_are_rejected(
     with pytest.raises(ManiSkillCompatibilityError, match=message):
         validate_compatibility_report(
             replace(_report(), **updates),
-            load_expected_contract(_EXPECTED_CONTRACT),
+            _probe_only_contract(),
         )
 
 
@@ -406,7 +455,7 @@ def test_python_311_is_required_for_the_real_integration_contract() -> None:
     with pytest.raises(ManiSkillCompatibilityError, match="Python 3.11"):
         validate_compatibility_report(
             changed,
-            load_expected_contract(_EXPECTED_CONTRACT),
+            _probe_only_contract(),
         )
 
 
@@ -421,14 +470,14 @@ def test_expected_contract_rejects_state_tolerance_drift() -> None:
 def test_checked_in_action_dimension_and_dtype_must_match_observation() -> None:
     report = _report()
     expected = replace(
-        load_expected_contract(_EXPECTED_CONTRACT),
+        _verified_contract(report),
         action_dimension=report.action_space.action_dimension + 1,
     )
     with pytest.raises(ManiSkillCompatibilityError, match="action_dimension"):
         validate_compatibility_report(report, expected)
 
     expected = replace(
-        load_expected_contract(_EXPECTED_CONTRACT),
+        _verified_contract(report),
         action_dtype="float64",
     )
     with pytest.raises(ManiSkillCompatibilityError, match="action_dtype"):
@@ -444,15 +493,11 @@ def test_missing_state_api_and_task_keys_are_rejected() -> None:
         )
     )
     with pytest.raises(ManiSkillCompatibilityError, match="runtime_apis"):
-        validate_compatibility_report(
-            report, load_expected_contract(_EXPECTED_CONTRACT)
-        )
+        validate_compatibility_report(report, _probe_only_contract())
 
     report = _report(task_keys=("is_obj_placed", "is_robot_static", "success"))
     with pytest.raises(ManiSkillCompatibilityError, match="is_grasped"):
-        validate_compatibility_report(
-            report, load_expected_contract(_EXPECTED_CONTRACT)
-        )
+        validate_compatibility_report(report, _probe_only_contract())
 
 
 def test_solver_and_task_module_identity_are_strict() -> None:
@@ -464,7 +509,7 @@ def test_solver_and_task_module_identity_are_strict() -> None:
                     source_sha256=_sha("3"),
                 )
             ),
-            load_expected_contract(_EXPECTED_CONTRACT),
+            _probe_only_contract(),
         )
 
     with pytest.raises(ManiSkillCompatibilityError, match="task module"):
@@ -475,7 +520,7 @@ def test_solver_and_task_module_identity_are_strict() -> None:
                     source_sha256=_sha("4"),
                 )
             ),
-            load_expected_contract(_EXPECTED_CONTRACT),
+            _probe_only_contract(),
         )
 
 
@@ -654,7 +699,7 @@ def test_probe_uses_injected_fake_runtime_and_writes_sanitized_report(
     output = tmp_path / "compatibility.json"
 
     binding = probe_maniskill_pickcube(
-        load_expected_contract(_EXPECTED_CONTRACT),
+        _probe_only_contract(),
         runtime=fake,
         report_path=output,
         reset_seed=17,
@@ -673,7 +718,7 @@ def test_probe_requires_fully_bound_expectation_when_trusted() -> None:
     fake = _FakeProbeRuntime(report=_report(), calls=[])
     with pytest.raises(ManiSkillCompatibilityError, match="probe-only"):
         probe_maniskill_pickcube(
-            load_expected_contract(_EXPECTED_CONTRACT),
+            _probe_only_contract(),
             runtime=fake,
             require_trusted=True,
         )
@@ -710,7 +755,7 @@ def test_expected_contract_loader_rejects_duplicate_and_wrong_fixed_fields(
 def test_verified_contract_cannot_retain_unresolved_fields() -> None:
     expected = load_expected_contract(_EXPECTED_CONTRACT)
     with pytest.raises(ManiSkillConfigurationError, match="unresolved"):
-        replace(expected, contract_status="verified")
+        replace(expected, action_dimension=None)
 
 
 def test_distribution_discovery_checks_version_without_importing_modules() -> None:
@@ -1034,7 +1079,7 @@ def test_action_layout_binding_rejects_probe_only_binding(tmp_path: Path) -> Non
     report = _report()
     probe_only = validate_compatibility_report(
         report,
-        load_expected_contract(_EXPECTED_CONTRACT),
+        _probe_only_contract(),
     )
     layout = load_maniskill_pickcube_action_layout(
         _write_action_layout(tmp_path / "layout.json", _action_layout_document(report))

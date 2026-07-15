@@ -46,13 +46,14 @@ passwords or private keys.
 
 ## Two-stage configuration
 
-The first implementation revision contains a strict unresolved expected
-contract and pins only `mani_skill==3.0.1`. It deliberately does not guess the
-installed `mplib` version, action dimension, action indices, controller
-semantics, or observation-mode spelling. Its `1e-6` state tolerance is a
-conservative provisional value that cannot authorize trusted replay until the
-remote behavior is observed and the locally committed contract is reviewed; it
-must never be loosened remotely.
+The first implementation revision deliberately left the expected contract
+unresolved and pinned only `mani_skill==3.0.1`; it did not guess mplib, SAPIEN,
+the action contract, controller semantics, or observation mode. The reviewed
+schema-1.1 discovery report now binds those values locally, together with the
+source, state, and compatibility identities. The authorized `1e-6` restoration
+tolerance remains fixed and must never be loosened remotely. This local binding
+cannot authorize trusted replay until it is committed, pushed, and matched by a
+second trusted probe.
 
 1. Push the locally tested reference integration.
 2. Synchronize that exact SHA to the remote checkout.
@@ -113,10 +114,11 @@ manual relabeling, or general robot-safety claims are included.
 - Required before each source/config push: `python -m pytest`, `ruff check .`,
   `ruff format --check .`, `mypy src`, milestone CLI smoke tests, and
   `git diff --check`.
-- First-stage implementation status: local code, strict unresolved expected
-  contract, probe-only ManiSkill pin, CLIs, safe archive, M0 import, replay
-  adapter, fake tests, and documentation are present. No final mplib pin,
-  resolved action layout, corruption plan, or compact remote report is claimed.
+- First-stage implementation status: local code, CLIs, safe archive, M0 import,
+  replay adapter, fake tests, and documentation are present. Post-discovery
+  dependency, compatibility, action-layout, and corruption bindings are now
+  being applied locally from reviewed remote evidence; trusted acceptance is
+  not yet claimed.
 - Remote bootstrap on 2026-07-15 verified dedicated key-only `BatchMode=yes`
   authentication, a repository-scoped read-only deploy key, a clean checkout at
   `10658cf0554403aeedc291530f52527c7026636a`, and an isolated Python 3.11.15
@@ -175,8 +177,16 @@ manual relabeling, or general robot-safety claims are included.
   report to schema `1.1`. Its complete local validation passed with
   `872 passed, 3 skipped` (the three existing Windows directory-symlink
   privilege skips), Ruff lint/format, mypy across 61 source files, all three M2C
-  CLI help smokes, and `git diff --check`. Commit, push, exact remote sync, and a
-  fresh schema-1.1 discovery probe are the next gate.
-- Remote acceptance remains pending. The first successful probe, locally
-  committed resolved contract, second trusted probe, source collection, paired
-  replay, and result commit have not occurred.
+  CLI help smokes, and `git diff --check`. The correction was committed, pushed,
+  and synchronized exactly before the next remote probe.
+- Schema-1.1 discovery run
+  `20260715T073250Z_m2c-pickcube-compat_bb2c35c_seed0_numeric-v1` at exact pushed
+  revision `bb2c35c6a96a6deac7baee55b294b1025c156074` passed the complete
+  compatibility probe. It resolved ManiSkill `3.0.1`, mplib `0.1.1`, SAPIEN
+  `3.0.3`, observation mode `none`, an eight-component float32 action contract,
+  `physx_cuda`, the solver/task/controller/state identities, and compatibility
+  identity `sha256:05a560fd89e0989b6d94017c6456efc535de4a0bf87ededaf468f5e2d9ef71f7`.
+  Its sanitized schema-1.1 report was retrieved and reviewed locally.
+- Remote acceptance remains pending. The resolved post-discovery contract is
+  locally bound but not yet committed or pushed. The second trusted probe,
+  source collection, paired replay, and result commit have not occurred.

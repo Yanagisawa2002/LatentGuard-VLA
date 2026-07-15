@@ -1,4 +1,4 @@
-# Initial isolated-environment probe dependency.
-# The installer may resolve an mplib candidate, but that version is not trusted
-# or pinned here until the remote compatibility probe verifies it.
+# Probe-verified isolated-environment dependencies for ManiSkill PickCube M2C.
 mani_skill==3.0.1
+mplib==0.1.1
+sapien==3.0.3

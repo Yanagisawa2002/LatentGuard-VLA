@@ -200,9 +200,10 @@ The remote simulator is used only after an exact local revision has been pushed
 and synchronized. Its state archives and trajectories stay outside the checkout;
 only sanitized compact reports return to the local authority.
 
-The first-stage checked-in expected contract is intentionally unresolved for
-mplib, observation spelling, controller/action semantics, action dimension, and
-compatibility identity. The adapter fails closed for trusted collection or
-replay until a remote probe is reviewed and those values are committed locally;
-the local fake tests are structural infrastructure checks, not remote simulator
+The post-discovery expected contract locally binds mplib, SAPIEN, observation
+mode, the controller/action contract, action dimension, source digests, state
+structure, and compatibility identity to the reviewed schema-1.1 report. The
+adapter still fails closed for trusted collection or replay until that local
+binding is committed, pushed, and matched by a second trusted remote probe; the
+local fake tests remain structural infrastructure checks, not remote simulator
 acceptance.
