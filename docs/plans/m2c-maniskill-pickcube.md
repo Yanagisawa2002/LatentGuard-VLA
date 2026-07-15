@@ -17,10 +17,11 @@ whose full SHA is verified on the server. Runtime state archives, trajectories,
 simulator caches, and logs remain outside Git. Any mismatch found remotely is
 fixed locally, committed, pushed, and synchronized before a new run.
 
-Remote authentication is fail-closed: only a configured SSH host alias with
-key-based `BatchMode=yes` authentication is acceptable. Rotation of the
-previously exposed credential must be confirmed; password authentication will
-not be used, stored, or printed.
+Remote authentication is fail-closed: automated execution requires dedicated
+key-based `BatchMode=yes` authentication, with connection details supplied
+outside Git. The remote checkout uses a separate repository-scoped, read-only
+deploy key. Automated synchronization and execution do not use, store, or print
+passwords or private keys.
 
 ## Fixed contract
 
@@ -113,8 +114,18 @@ manual relabeling, or general robot-safety claims are included.
   contract, probe-only ManiSkill pin, CLIs, safe archive, M0 import, replay
   adapter, fake tests, and documentation are present. No final mplib pin,
   resolved action layout, corruption plan, or compact remote report is claimed.
-- Remote execution performed: no.
-- Remote acceptance: pending. It is blocked until credential rotation is
-  confirmed and a configured key-only SSH alias succeeds with `BatchMode=yes`;
-  the first probe, locally committed resolved contract, second trusted probe,
-  source collection, paired replay, and result commit have not occurred.
+- Remote bootstrap on 2026-07-15 verified dedicated key-only `BatchMode=yes`
+  authentication, a repository-scoped read-only deploy key, a clean checkout at
+  `10658cf0554403aeedc291530f52527c7026636a`, and an isolated Python 3.11.15
+  environment. The dependency gate passed with ManiSkill 3.0.1, SAPIEN 3.0.3,
+  resolver-selected mplib 0.1.1, PyTorch 2.8.0+cu128, CUDA 12.8, and one visible
+  RTX 5090.
+- Discovery run `20260715T044250Z_m2c-pickcube-compat_10658cf_seed0` stopped
+  before ManiSkill initialization because the later RET1 toolkit commit used a
+  direct `mappingproxy` dataclass default that Python 3.11 rejects. It produced
+  no compatibility report and made no simulator claim. The local fix replaces
+  that default with a factory and adds a regression test; the remote must pull
+  the resulting pushed SHA and rerun the discovery probe.
+- Remote acceptance remains pending. The first successful probe, locally
+  committed resolved contract, second trusted probe, source collection, paired
+  replay, and result commit have not occurred.

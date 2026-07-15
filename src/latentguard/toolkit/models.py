@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import math
 from collections.abc import Mapping
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from enum import StrEnum
 from types import MappingProxyType
 
@@ -30,7 +30,7 @@ class DataIssue:
     candidate_id: str | None = None
     observation_id: str | None = None
     camera_id: str | None = None
-    details: Mapping[str, JsonScalar] = MappingProxyType({})
+    details: Mapping[str, JsonScalar] = field(default_factory=dict)
 
     def __post_init__(self) -> None:
         """Detach details behind an immutable mapping."""

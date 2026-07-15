@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 import json
-from dataclasses import replace
+from dataclasses import MISSING, fields, replace
 
 import numpy as np
 import pytest
@@ -12,6 +12,8 @@ from latentguard.models import ActionChunk
 from latentguard.synthetic import generate_synthetic_episodes
 from latentguard.toolkit import (
     AuditConfig,
+    AuditSeverity,
+    DataIssue,
     ReplayAlignmentError,
     audit_episodes,
     build_replay_plan,
@@ -37,6 +39,19 @@ def _episode():
 
 def _codes(report):
     return [issue.issue_code for issue in report.issues]
+
+
+def test_data_issue_details_use_an_immutable_factory_default() -> None:
+    details_field = next(item for item in fields(DataIssue) if item.name == "details")
+    assert details_field.default is MISSING
+    assert details_field.default_factory is not MISSING
+
+    first = DataIssue("TEST", AuditSeverity.INFO, "first")
+    second = DataIssue("TEST", AuditSeverity.INFO, "second")
+    assert first.details == second.details == {}
+    assert first.details is not second.details
+    with pytest.raises(TypeError):
+        first.details["unexpected"] = 1  # type: ignore[index]
 
 
 def test_audit_clean_synthetic_has_no_error_and_is_deterministic() -> None:
