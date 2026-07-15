@@ -419,6 +419,54 @@ def _attempt_failure_categories(result: Any) -> dict[str, int]:
     )
 
 
+def _restoration_error_distribution(values: list[float]) -> Mapping[str, object]:
+    """Summarize finite restoration errors with fixed bins and nearest ranks."""
+
+    errors = sorted(float(value) for value in values)
+    if any(not math.isfinite(value) or value < 0.0 for value in errors):
+        raise ValueError(
+            "restoration error distribution requires finite non-negative values"
+        )
+
+    def nearest_rank(fraction: float) -> float | None:
+        if not errors:
+            return None
+        index = max(0, math.ceil(fraction * len(errors)) - 1)
+        return errors[index]
+
+    bins = {
+        "equal_zero": 0,
+        "gt_zero_le_1e-8": 0,
+        "gt_1e-8_le_1e-7": 0,
+        "gt_1e-7_le_5e-7": 0,
+        "gt_5e-7_le_1e-6": 0,
+        "gt_1e-6": 0,
+    }
+    for error in errors:
+        if error == 0.0:
+            bins["equal_zero"] += 1
+        elif error <= 1e-8:
+            bins["gt_zero_le_1e-8"] += 1
+        elif error <= 1e-7:
+            bins["gt_1e-8_le_1e-7"] += 1
+        elif error <= 5e-7:
+            bins["gt_1e-7_le_5e-7"] += 1
+        elif error <= 1e-6:
+            bins["gt_5e-7_le_1e-6"] += 1
+        else:
+            bins["gt_1e-6"] += 1
+    return {
+        "count": len(errors),
+        "fixed_bin_counts": bins,
+        "maximum": None if not errors else errors[-1],
+        "minimum": None if not errors else errors[0],
+        "p50": nearest_rank(0.50),
+        "p95": nearest_rank(0.95),
+        "p99": nearest_rank(0.99),
+        "quantile_semantic": "nearest_rank_v1",
+    }
+
+
 def _collection_summary(
     *,
     result: Any,
@@ -426,17 +474,15 @@ def _collection_summary(
     audit_records: tuple[Any, ...],
 ) -> Mapping[str, object]:
     state_count = sum(len(episode.states) for episode in archive.episodes)
-    maximum_error = max(
-        (float(record.maximum_absolute_error) for record in audit_records),
-        default=0.0,
-    )
+    state_errors = [float(record.maximum_absolute_error) for record in audit_records]
+    maximum_error = max(state_errors, default=0.0)
     component_counts = sorted(
         {int(record.compared_component_count) for record in audit_records}
     )
-    verifier_maximum_error = max(
-        (float(record.verifier_maximum_absolute_error) for record in audit_records),
-        default=0.0,
-    )
+    verifier_errors = [
+        float(record.verifier_maximum_absolute_error) for record in audit_records
+    ]
+    verifier_maximum_error = max(verifier_errors, default=0.0)
     verifier_component_counts = sorted(
         {int(record.verifier_component_count) for record in audit_records}
     )
@@ -453,9 +499,15 @@ def _collection_summary(
         "compatibility_identity": archive.episodes[0].compatibility_identity,
         "fresh_state_compared_component_counts": component_counts,
         "fresh_state_maximum_absolute_error": maximum_error,
+        "fresh_state_restoration_error_distribution": (
+            _restoration_error_distribution(state_errors)
+        ),
         "fresh_state_verification_count": len(audit_records),
         "fresh_verifier_state_compared_component_counts": (verifier_component_counts),
         "fresh_verifier_state_maximum_absolute_error": verifier_maximum_error,
+        "fresh_verifier_state_restoration_error_distribution": (
+            _restoration_error_distribution(verifier_errors)
+        ),
         "source_to_restored_task_mismatch_field_counts": dict(
             sorted(task_mismatch_counts.items())
         ),
@@ -867,6 +919,7 @@ def _build_replay_report(
             "prefix_evidence_count": prefix_count,
             "recovered_attempts_this_invocation": recovered_attempts,
             "restoration_compared_component_counts": sorted(component_counts),
+            "restoration_error_distribution": _restoration_error_distribution(errors),
             "restoration_maximum_absolute_error": max(errors, default=0.0),
             "retried_attempts_this_invocation": retried_attempts,
             "resumed_invocation": resumed,
@@ -1148,7 +1201,15 @@ def _restoration_report(
     evaluation_dataset: Any,
     anchor_manifest: Any,
     corruption_dataset: CorruptionDataset,
-) -> tuple[list[int], float, int, list[int], float]:
+) -> tuple[
+    list[int],
+    float,
+    int,
+    list[int],
+    float,
+    Mapping[str, object],
+    Mapping[str, object],
+]:
     """Fail closed while summarizing every baseline and exported corruption."""
 
     baseline_by_id = {
@@ -1266,6 +1327,8 @@ def _restoration_report(
         len(corrupted_samples),
         sorted(verifier_component_counts),
         max(verifier_errors),
+        _restoration_error_distribution(errors),
+        _restoration_error_distribution(verifier_errors),
     )
 
 
@@ -1500,6 +1563,8 @@ def _run_validate_action_verifier(args: argparse.Namespace) -> int:
             restoration_evidence_count,
             verifier_component_counts,
             verifier_maximum_error,
+            restoration_error_distribution,
+            verifier_restoration_error_distribution,
         ) = _restoration_report(dataset, evaluation, anchor_manifest, corruption)
         resume_report = (
             None
@@ -1539,6 +1604,7 @@ def _run_validate_action_verifier(args: argparse.Namespace) -> int:
                 "progress_semantic": dataset.samples[0].progress_semantic,
                 "restoration_compared_component_counts": component_counts,
                 "restoration_evidence_count": restoration_evidence_count,
+                "restoration_error_distribution": restoration_error_distribution,
                 "restoration_maximum_absolute_error": maximum_error,
                 "resume_idempotence_valid": resume_report is not None,
                 "run_id": evaluation.run_id,
@@ -1549,6 +1615,9 @@ def _run_validate_action_verifier(args: argparse.Namespace) -> int:
                 ),
                 "verifier_state_restoration_maximum_absolute_error": (
                     verifier_maximum_error
+                ),
+                "verifier_state_restoration_error_distribution": (
+                    verifier_restoration_error_distribution
                 ),
                 "verifier_state_restoration_valid": True,
             }

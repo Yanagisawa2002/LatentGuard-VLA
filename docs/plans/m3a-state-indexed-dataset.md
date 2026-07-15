@@ -31,7 +31,11 @@ not use LangMani.
 1. Add a safe sequence archive that retains the existing M2C initial/terminal
    archive contract while recording all `T+1` complete state trees, structural
    and content digests, component inventories, public task snapshots, seed,
-   compatibility identity, and source-action index.
+   compatibility identity, and source-action index. Carry an ordered,
+   content-bound full `T+1` state-tree digest sequence for every source
+   trajectory into the anchor manifest, then derive its sorted unique leakage
+   inventory in the compact split assignment so repeated states retain their
+   temporal multiplicity while the leakage gate covers non-anchor states.
 2. Capture every post-step state and task snapshot without changing the
    official solver action stream. Validate every state of a bounded trajectory
    through a fresh public wrapper reset, full set/get round trip, complete
@@ -60,7 +64,8 @@ not use LangMani.
 9. Export `ActionVerifierSampleV1` and
    `ActionVerifierCandidateGroupV1` using compact safe JSON/NPY storage,
    evidence references, deterministic ordering, strict inventory, transactional
-   publication, and trajectory-level split/leakage validation.
+   publication, trajectory-level split/leakage validation, and independent
+   rebinding of each full trajectory state inventory to the source archive.
 10. Add the five bounded CLIs, CPU-only fake tests, compact reports, remote
     six-source smoke, and remote sixty-source single-GPU acceptance run.
 
@@ -102,7 +107,9 @@ reported as compatibility diagnostics, not counted as state-restoration error.
 Local validation requires the complete CPU suite, Ruff lint and formatting,
 mypy, `git diff --check`, all five CLI help/dry-run smoke paths, archive and
 dataset round trips, tamper rejection, continuation immutability, resume
-idempotence, and split leakage rejection.
+idempotence, and split leakage rejection. Compact collection, replay, and final
+validation reports include deterministic fixed-bin and nearest-rank restoration
+error distributions in addition to maxima and compared-component inventories.
 
 Remote execution begins only from the clean pushed implementation revision.
 The six-trajectory smoke must produce at least 24 valid anchors, at least 96
@@ -173,6 +180,27 @@ or real-robot execution is included.
   `20260715T123200Z_m3a-stage-probe_b57c287_seed0` proved that the 82-action
   source and independent baseline passed and isolated the rejection to a
   missing production-factory purpose allowlist entry for restored projection
-  binding. That exact purpose and a production-factory regression are now
-  added locally. The next fix revision, smoke/full acceptance, compact report
-  retrieval, and the final result revision remain pending.
+  binding. Revision `d745bbe185d537342beecafcf754141c57ee40f2` added
+  that exact purpose, passed the remote Python 3.11 suite (`1035 passed`) and
+  static checks, and produced successful smoke run
+  `20260715T123712Z_m3a-smoke_d745bbe_seed0`: 6/6 accepted source
+  trajectories, 468 archived states, 36 anchors, 288 proposals, 252
+  conclusive strong outcomes, 219 conclusive successes, 33 conclusive task
+  failures, 36 explicit invalid-context outcomes, zero execution errors, 70
+  compared full-state components, and maximum restoration error
+  `1.1920929e-7`. Resume reused all 288 terminal attempts without rerun.
+  Export produced 288 compact samples, but independent evidence rebinding
+  correctly exposed an identity-based comparison of otherwise identical
+  serialized failure events. The preserved run also showed that every invalid
+  proposal was the all-dimension zeroing definition: action index 3 has a
+  compatibility-bound upper limit below zero. The local candidate fix compares
+  failure events by serialized field content and changes only that checked-in
+  zeroing definition to the maximal contract-valid explicit index set
+  `(0, 1, 2, 4, 5, 6, 7)`; it neither clips nor dynamically repairs actions.
+  The same candidate revision closes two report/audit gaps found before push:
+  split assignments now bind a leakage set derived from the ordered complete
+  T+1 state-tree digest sequence instead of only anchor-state digests, and
+  compact reports include
+  fixed-bin plus nearest-rank restoration-error distributions.
+  A new pushed revision and run ID must revalidate export reload and empirical
+  class balance before the single-GPU full target begins.

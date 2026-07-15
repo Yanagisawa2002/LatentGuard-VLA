@@ -118,11 +118,11 @@
       "parameters": {
         "start_step": 0,
         "end_step": 16,
-        "target_indices": [0, 1, 2, 3, 4, 5, 6, 7]
+        "target_indices": [0, 1, 2, 4, 5, 6, 7]
       },
       "window_start": 0,
       "window_end": 16,
-      "severity_id": "severe_all_zero_0_16"
+      "severity_id": "severe_contract_safe_zero_0_16"
     }
   ]
 }

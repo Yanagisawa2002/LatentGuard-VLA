@@ -579,8 +579,8 @@ def validate_action_verifier_dataset(dataset: ActionVerifierDatasetV1) -> None:
                 if sample.proposal_id is not None
             )
         )
-        if assignment.state_digests != expected_states:
-            _fail(context, "split_assignments", "state inventory mismatch")
+        if not set(expected_states).issubset(assignment.state_digests):
+            _fail(context, "split_assignments", "sample state inventory mismatch")
         if assignment.anchor_ids != expected_anchors:
             _fail(context, "split_assignments", "anchor inventory mismatch")
         if assignment.proposal_ids != expected_proposals:

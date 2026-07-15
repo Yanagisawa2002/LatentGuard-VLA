@@ -15,6 +15,7 @@ import tempfile
 from collections.abc import Mapping
 from dataclasses import dataclass
 from pathlib import Path
+from types import MappingProxyType
 from typing import Any, Protocol, cast, runtime_checkable
 
 import numpy as np
@@ -67,7 +68,7 @@ from .state_indexed_archive import (
 
 ANCHOR_MANIFEST_FORMAT = "latentguard-maniskill-pickcube-anchor-source-manifest"
 ANCHOR_MANIFEST_VERSION = 1
-ANCHOR_MANIFEST_SCHEMA_VERSION = "1.0"
+ANCHOR_MANIFEST_SCHEMA_VERSION = "1.1"
 ANCHOR_MANIFEST_NAME = "manifest.json"
 ANCHOR_EVIDENCE_DIRECTORY = "evidence"
 ANCHOR_BASELINE_EVIDENCE_SCHEMA_VERSION = "1.1"
@@ -723,6 +724,7 @@ class PickCubeAnchorManifestV1:
     action_control_contract: PickCubeActionControlContractV1
     records: tuple[PickCubeAnchorSourceRecordV1, ...]
     baseline_evidence: tuple[AnchorBaselineEvidenceV1, ...]
+    trajectory_state_digests: Mapping[str, tuple[str, ...]]
     exclusions: tuple[AnchorBaselineExclusionV1, ...] = ()
     serialization_version: int = ANCHOR_MANIFEST_VERSION
     schema_version: str = ANCHOR_MANIFEST_SCHEMA_VERSION
@@ -743,6 +745,23 @@ class PickCubeAnchorManifestV1:
         records = tuple(self.records)
         evidence = tuple(self.baseline_evidence)
         exclusions = tuple(self.exclusions)
+        if not isinstance(self.trajectory_state_digests, Mapping) or not (
+            self.trajectory_state_digests
+        ):
+            raise StateIndexedBuildError(
+                "anchor manifest requires complete trajectory state inventories"
+            )
+        state_inventories: dict[str, tuple[str, ...]] = {}
+        for trajectory_id in sorted(self.trajectory_state_digests):
+            _canonical_text(trajectory_id, "state-inventory source trajectory ID")
+            state_digests = tuple(self.trajectory_state_digests[trajectory_id])
+            if not state_digests:
+                raise StateIndexedBuildError(
+                    "trajectory state digest inventory must not be empty"
+                )
+            for value in state_digests:
+                _digest(value, "trajectory state digest inventory")
+            state_inventories[trajectory_id] = state_digests
         if any(not isinstance(item, PickCubeAnchorSourceRecordV1) for item in records):
             raise StateIndexedBuildError("anchor manifest contains invalid records")
         if any(not isinstance(item, AnchorBaselineEvidenceV1) for item in evidence):
@@ -786,6 +805,20 @@ class PickCubeAnchorManifestV1:
                 raise StateIndexedBuildError(
                     "anchor record differs from the manifest build contract"
                 )
+            trajectory_states = state_inventories.get(
+                record.anchor.source_trajectory_id
+            )
+            if (
+                trajectory_states is None
+                or len(trajectory_states)
+                != record.continuation.trajectory_action_count + 1
+                or trajectory_states[record.anchor.state_index]
+                != record.source_state_digest
+            ):
+                raise StateIndexedBuildError(
+                    "anchor source state index is not exactly bound in its complete "
+                    "T+1 trajectory inventory"
+                )
         accepted = {record.anchor.anchor_id for record in records}
         excluded = {item.anchor_id for item in exclusions}
         if accepted & excluded:
@@ -803,6 +836,11 @@ class PickCubeAnchorManifestV1:
         object.__setattr__(self, "records", records)
         object.__setattr__(self, "baseline_evidence", evidence)
         object.__setattr__(self, "exclusions", exclusions)
+        object.__setattr__(
+            self,
+            "trajectory_state_digests",
+            MappingProxyType(state_inventories),
+        )
 
     @property
     def content_digest(self) -> str:
@@ -823,6 +861,10 @@ class PickCubeAnchorManifestV1:
             "schema_version": self.schema_version,
             "serialization_version": self.serialization_version,
             "source_archive_content_digest": self.source_archive_content_digest,
+            "trajectory_state_digests": {
+                trajectory_id: list(digests)
+                for trajectory_id, digests in self.trajectory_state_digests.items()
+            },
         }
         return _content_digest(payload)
 
@@ -1042,6 +1084,12 @@ def build_state_indexed_anchor_sources(
         action_control_contract=action_control_contract,
         records=tuple(records),
         baseline_evidence=tuple(evidence_items),
+        trajectory_state_digests={
+            episode.source_trajectory_id: tuple(
+                state.state_digest for state in episode.states
+            )
+            for episode in selected_source_episodes
+        },
         exclusions=tuple(exclusions),
     )
     return PickCubeAnchorBuildResult(tuple(source_episodes), manifest)
@@ -1385,6 +1433,10 @@ def save_anchor_manifest(manifest: PickCubeAnchorManifestV1, output_dir: Path) -
             "schema_version": manifest.schema_version,
             "serialization_version": manifest.serialization_version,
             "source_archive_content_digest": manifest.source_archive_content_digest,
+            "trajectory_state_digests": {
+                trajectory_id: list(digests)
+                for trajectory_id, digests in manifest.trajectory_state_digests.items()
+            },
         }
         _write_json_exclusive(staging / ANCHOR_MANIFEST_NAME, payload)
         _publish_staging_directory(staging, destination)
@@ -1464,6 +1516,7 @@ def load_anchor_manifest(output_dir: Path) -> PickCubeAnchorManifestV1:
                 "schema_version",
                 "serialization_version",
                 "source_archive_content_digest",
+                "trajectory_state_digests",
             },
             "AnchorManifest.manifest",
         )
@@ -1533,6 +1586,9 @@ def load_anchor_manifest(output_dir: Path) -> PickCubeAnchorManifestV1:
             action_control_contract=contract,
             records=records,
             baseline_evidence=evidence,
+            trajectory_state_digests=_decode_trajectory_state_digests(
+                _field(item, "trajectory_state_digests", "AnchorManifest.manifest")
+            ),
             exclusions=exclusions,
             serialization_version=version,
             schema_version=_text_field(
@@ -1563,6 +1619,26 @@ def _mapping(value: object, context: str) -> Mapping[str, object]:
     if any(not isinstance(key, str) for key in value):
         raise StateIndexedBuildError(f"{context} has a non-string field")
     return cast(Mapping[str, object], value)
+
+
+def _decode_trajectory_state_digests(
+    value: object,
+) -> Mapping[str, tuple[str, ...]]:
+    context = "AnchorManifest.trajectory_state_digests"
+    item = _mapping(value, context)
+    if not item:
+        raise StateIndexedBuildError(f"{context} must not be empty")
+    decoded: dict[str, tuple[str, ...]] = {}
+    for trajectory_id in sorted(item):
+        _canonical_text(trajectory_id, f"{context} key")
+        raw_digests = item[trajectory_id]
+        if not isinstance(raw_digests, list):
+            raise StateIndexedBuildError(f"{context}.{trajectory_id} must be a list")
+        decoded[trajectory_id] = tuple(
+            _digest(digest, f"{context}.{trajectory_id}[{index}]")
+            for index, digest in enumerate(raw_digests)
+        )
+    return decoded
 
 
 def _exact_fields(

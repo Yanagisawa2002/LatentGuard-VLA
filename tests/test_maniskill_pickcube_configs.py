@@ -26,12 +26,16 @@ from latentguard.integrations.maniskill_pickcube.configuration import (
     load_maniskill_pickcube_action_layout,
     validate_maniskill_pickcube_action_layout_binding,
 )
+from latentguard.integrations.maniskill_pickcube.serialization import (
+    action_contract_from_compatibility,
+)
 from latentguard.models import ActionChunk, LabelSource, LabelStrength
 
 _ROOT = Path(__file__).resolve().parents[1]
 _CONFIG_DIRECTORY = _ROOT / "configs" / "integrations" / "maniskill_pickcube"
 _ACTION_LAYOUT = _CONFIG_DIRECTORY / "action-layout-v1.json"
 _CORRUPTION_PLAN = _CONFIG_DIRECTORY / "corruptions-v1.json"
+_M3A_CORRUPTION_PLAN = _CONFIG_DIRECTORY / "m3a-corruptions-v1.json"
 _EXPECTED_CONTRACT = _CONFIG_DIRECTORY / "expected-contract-v1.json"
 _REPORT_ROOT = _ROOT / "reports" / "m2c"
 _COMPATIBILITY_REPORT = (
@@ -121,6 +125,39 @@ def test_real_configs_bind_exactly_to_retrieved_compatibility_report() -> None:
         "state_verification_tolerance": report.state_round_trip.tolerance,
         "task_implementation_identity": report.task_implementation.source_sha256,
     }
+
+
+def test_m3a_segment_zeroing_is_maximal_and_action_contract_valid() -> None:
+    report = load_compatibility_report(_COMPATIBILITY_REPORT)
+    expected = load_expected_contract(_EXPECTED_CONTRACT)
+    binding = validate_compatibility_report(report, expected, require_trusted=True)
+    layout = load_maniskill_pickcube_action_layout(_ACTION_LAYOUT)
+    plan = load_corruption_plan(_M3A_CORRUPTION_PLAN)
+    zeroing = plan.corruptions[-1]
+    dtype = np.dtype(report.action_space.dtype)
+    lower = np.asarray(report.action_space.lower_bounds, dtype=dtype)
+    upper = np.asarray(report.action_space.upper_bounds, dtype=dtype)
+    source = ActionChunk(
+        actions=np.broadcast_to((lower + upper) / 2.0, (16, lower.shape[0])).copy(),
+        coordinate_frame=layout.coordinate_frame,
+        control_period_s=report.control_period_s,
+    )
+
+    parameters = zeroing.resolved_parameters_for(source, plan.action_layout)
+    targets = cast(tuple[int, ...], parameters["target_indices"])
+    assert zeroing.name == "segment_zeroing"
+    assert parameters["severity_id"] == "severe_contract_safe_zero_0_16"
+    assert targets == (0, 1, 2, 4, 5, 6, 7)
+    assert 3 not in targets
+    assert upper[3] < 0.0
+    assert all(lower[index] <= 0.0 <= upper[index] for index in targets)
+
+    transformed = zeroing.apply(source, plan.action_layout, seed=0)
+    contract = action_contract_from_compatibility(
+        binding,
+        coordinate_frame=layout.coordinate_frame,
+    )
+    contract.validate_action_chunk(transformed, role="M3A segment-zeroing regression")
 
 
 def test_real_corruption_plan_has_three_unrepaired_m1_transformations() -> None:

@@ -69,7 +69,13 @@ from latentguard.integrations.maniskill_pickcube.verifier_state import (
     PICKCUBE_VERIFIER_STATE_DTYPE,
     PICKCUBE_VERIFIER_STATE_SEMANTIC,
 )
-from latentguard.models import CandidateAction, Episode, LabelSource, LabelStrength
+from latentguard.models import (
+    CandidateAction,
+    Episode,
+    FailureEvent,
+    LabelSource,
+    LabelStrength,
+)
 from latentguard.replay.identity import canonical_json_bytes
 from latentguard.replay.models import ReplayTrustTier, StateComparisonSemantic
 from latentguard.replay.source import compute_episode_content_digest
@@ -472,6 +478,23 @@ def _number(value: object, context: str, *, normalized: bool = False) -> float:
     if normalized and not 0.0 <= number <= 1.0:
         raise ActionVerifierExportError(f"{context}: expected a value in [0, 1]")
     return number
+
+
+def _failure_event_content(
+    events: Sequence[FailureEvent],
+) -> tuple[tuple[str, float | None, float | None, str | None, str], ...]:
+    """Return the serialized value contract for identity-free event comparison."""
+
+    return tuple(
+        (
+            event.failure_type,
+            event.timestamp_s,
+            event.probability,
+            event.description,
+            event.schema_version,
+        )
+        for event in events
+    )
 
 
 def _integer(value: object, context: str) -> int:
@@ -1231,6 +1254,26 @@ def validate_action_verifier_evidence_bindings(
     }
     final_evidence = _final_evidence_by_proposal(evaluation_dataset)
     samples = {sample.sample_id: sample for sample in dataset.samples}
+    assignments = {
+        assignment.source_trajectory_id: assignment
+        for assignment in dataset.split_assignments
+    }
+    record_trajectory_ids = {
+        record.anchor.source_trajectory_id for record in anchor_manifest.records
+    }
+    if set(assignments) != record_trajectory_ids:
+        raise ActionVerifierExportError(
+            "compact dataset trajectory assignments differ from accepted anchors"
+        )
+    for trajectory_id, assignment in assignments.items():
+        trajectory_states = anchor_manifest.trajectory_state_digests.get(trajectory_id)
+        expected_states = (
+            None if trajectory_states is None else tuple(sorted(set(trajectory_states)))
+        )
+        if expected_states is None or assignment.state_digests != expected_states:
+            raise ActionVerifierExportError(
+                "compact dataset trajectory state inventory differs from source archive"
+            )
     expected_corrupted_evidence = {
         evidence.evidence_id
         for evidence in final_evidence.values()
@@ -1338,7 +1381,8 @@ def validate_action_verifier_evidence_bindings(
             if (
                 sample.final_task_success != evidence.success
                 or sample.final_unsafe != evidence.unsafe
-                or sample.failure_events != evidence.failure_events
+                or _failure_event_content(sample.failure_events)
+                != _failure_event_content(evidence.failure_events)
                 or sample.progress_semantic != semantic
                 or sample.progress_before != before
                 or sample.progress_after_candidate_chunk != after
@@ -1507,7 +1551,7 @@ def export_action_verifier_dataset(
                 source_seed=anchors[0].record.anchor.source_seed,
                 split_group_id=anchors[0].record.anchor.split_group_id,
                 state_digests=tuple(
-                    sorted({anchor.record.source_state_digest for anchor in anchors})
+                    sorted(set(anchor_manifest.trajectory_state_digests[trajectory_id]))
                 ),
                 anchor_ids=tuple(
                     sorted(anchor.record.anchor.anchor_id for anchor in anchors)

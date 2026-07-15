@@ -13,6 +13,7 @@ from numpy.typing import NDArray
 from latentguard.action_verifier import (
     CandidateType,
     DatasetSplit,
+    load_action_verifier_dataset,
     save_action_verifier_dataset,
 )
 from latentguard.corruptions import (
@@ -561,6 +562,18 @@ def test_export_keeps_only_conclusive_strong_simulator_evidence() -> None:
     }
     assert len(result.available_evidence_ids) == 3
     assert result.validation_report.valid
+    assert dataset.split_assignments[0].state_digests == tuple(
+        sorted(
+            set(
+                build.manifest.trajectory_state_digests[
+                    build.manifest.records[0].anchor.source_trajectory_id
+                ]
+            )
+        )
+    )
+    assert len(dataset.split_assignments[0].state_digests) > len(
+        {sample.state_content_digest for sample in dataset.samples}
+    )
 
 
 def test_evidence_inventory_excludes_weak_and_indeterminate_attempts() -> None:
@@ -684,6 +697,28 @@ def test_independent_binding_rejects_swapped_per_proposal_evidence() -> None:
         )
 
 
+def test_independent_binding_rejects_unbound_trajectory_state_inventory() -> None:
+    build, corruption, evaluation = _inputs()
+    result = _export(build, corruption, evaluation)
+    assignment = result.dataset.split_assignments[0]
+    changed_assignment = replace(
+        assignment,
+        state_digests=tuple(sorted((*assignment.state_digests, f"sha256:{'f' * 64}"))),
+    )
+    tampered = replace(result.dataset, split_assignments=(changed_assignment,))
+
+    with pytest.raises(
+        ActionVerifierExportError,
+        match="trajectory state inventory differs from source archive",
+    ):
+        validate_action_verifier_evidence_bindings(
+            tampered,
+            anchor_manifest=build.manifest,
+            corruption_dataset=corruption,
+            evaluation_dataset=evaluation,
+        )
+
+
 def test_export_fails_closed_when_strong_prefix_metrics_are_missing() -> None:
     build, corruption, evaluation = _inputs()
     first = evaluation.evidence[0]
@@ -719,6 +754,14 @@ def test_serialized_reload_reports_classes_and_rejects_tampering(
     assert report.validation_scope == "serialized_reload"
     assert report.corrupted_success_count == 1
     assert report.corrupted_failure_count == 1
+
+    reloaded = load_action_verifier_dataset(dataset_dir)
+    validate_action_verifier_evidence_bindings(
+        reloaded,
+        anchor_manifest=build.manifest,
+        corruption_dataset=corruption,
+        evaluation_dataset=evaluation,
+    )
 
     reports_dir = tmp_path / "reports"
     summary_path, validation_path = save_action_verifier_export_reports(

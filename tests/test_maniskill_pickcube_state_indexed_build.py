@@ -243,6 +243,11 @@ def test_builder_creates_deterministic_one_observation_full_remainder_sources() 
 
     assert len(first.source_episodes) == 3
     assert first.manifest.content_digest == second.manifest.content_digest
+    assert first.manifest.trajectory_state_digests == {
+        archive.episodes[0].source_trajectory_id: tuple(
+            state.state_digest for state in archive.episodes[0].states
+        )
+    }
     assert tuple(item.episode_id for item in first.source_episodes) == tuple(
         item.episode_id for item in second.source_episodes
     )
@@ -290,6 +295,27 @@ def test_builder_trajectory_limit_preserves_full_archive_binding() -> None:
 
     assert len(result.source_episodes) == 1
     assert result.manifest.source_archive_content_digest == archive.content_digest
+
+
+def test_trajectory_state_inventory_deduplicates_a_revisited_state_tree() -> None:
+    source = _source_episode()
+    states = list(source.states)
+    states[1] = replace(states[1], tree=states[0].tree)
+    revisited = replace(source, states=tuple(states))
+    archive = PickCubeStateIndexedArchiveV1(episodes=(revisited,))
+
+    result = build_state_indexed_anchor_sources(
+        archive,
+        action_control_contract=_contract(),
+        baseline_validator=_FakeBaselineValidator(),
+        candidate_horizon=3,
+        maximum_anchors_per_trajectory=1,
+    )
+
+    inventory = result.manifest.trajectory_state_digests[revisited.source_trajectory_id]
+    assert len(inventory) == len(revisited.states)
+    assert inventory[0] == inventory[1]
+    assert len(set(inventory)) == len(revisited.states) - 1
 
 
 def test_builder_reuses_one_archive_digest_and_rechecks_only_at_end(
@@ -380,11 +406,27 @@ def test_anchor_manifest_round_trip_and_tamper_detection(tmp_path: Path) -> None
 
     assert saved == output / "manifest.json"
     assert loaded.content_digest == result.manifest.content_digest
+    assert loaded.trajectory_state_digests == result.manifest.trajectory_state_digests
     assert len(list((output / "evidence").glob("*.json"))) == 2
     assert loaded.baseline_evidence[0].progress_before == 0.0
     assert loaded.baseline_evidence[0].progress_after_candidate == 0.0
     assert loaded.baseline_evidence[0].progress_delta == 0.0
     assert_anchor_manifest_unchanged(output, result.manifest.content_digest)
+
+    manifest_path = output / "manifest.json"
+    original_manifest = manifest_path.read_bytes()
+    manifest_payload = json.loads(original_manifest)
+    trajectory_id = next(iter(manifest_payload["trajectory_state_digests"]))
+    manifest_payload["trajectory_state_digests"][trajectory_id][-1] = (
+        f"sha256:{'f' * 64}"
+    )
+    manifest_path.write_text(
+        json.dumps(manifest_payload, indent=2, sort_keys=True) + "\n",
+        encoding="utf-8",
+    )
+    with pytest.raises(StateIndexedBuildError, match="content digest mismatch"):
+        load_anchor_manifest(output)
+    manifest_path.write_bytes(original_manifest)
 
     evidence_path = output / "evidence" / "000000.json"
     payload = json.loads(evidence_path.read_text(encoding="utf-8"))

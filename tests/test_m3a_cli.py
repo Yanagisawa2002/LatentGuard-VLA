@@ -23,6 +23,7 @@ from latentguard.m3a_cli import (
     _collection_summary,
     _load_resume_report,
     _require_full_dataset_targets,
+    _restoration_error_distribution,
     _restoration_report,
 )
 
@@ -278,8 +279,14 @@ def test_collection_summary_records_restored_projection_evidence() -> None:
     assert summary["fresh_state_verification_count"] == 2
     assert summary["fresh_state_compared_component_counts"] == [70]
     assert summary["fresh_state_maximum_absolute_error"] == 3.0e-7
+    assert summary["fresh_state_restoration_error_distribution"]["count"] == 2
+    assert summary["fresh_state_restoration_error_distribution"]["p95"] == 3.0e-7
     assert summary["fresh_verifier_state_compared_component_counts"] == [24]
     assert summary["fresh_verifier_state_maximum_absolute_error"] == 2.0e-7
+    assert (
+        summary["fresh_verifier_state_restoration_error_distribution"]["maximum"]
+        == 2.0e-7
+    )
     assert summary["source_to_restored_task_mismatch_state_count"] == 2
     assert summary["source_to_restored_task_mismatch_field_counts"] == {
         "is_grasped": 2,
@@ -412,7 +419,33 @@ def _valid_restoration_metrics() -> dict[str, object]:
 def test_restoration_report_accepts_complete_metrics() -> None:
     inputs = _restoration_inputs(_valid_restoration_metrics())
 
-    assert _restoration_report(*inputs) == ([70], 1.0e-7, 1, [32], 5.0e-8)
+    report = _restoration_report(*inputs)
+    assert report[:5] == ([70], 1.0e-7, 1, [32], 5.0e-8)
+    assert report[5]["count"] == 3
+    assert report[5]["minimum"] == 1.0e-7
+    assert report[5]["p50"] == 1.0e-7
+    assert report[6]["count"] == 1
+    assert report[6]["maximum"] == 5.0e-8
+
+
+def test_restoration_error_distribution_has_fixed_boundary_bins() -> None:
+    report = _restoration_error_distribution(
+        [0.0, 1.0e-9, 1.0e-8, 2.0e-8, 1.0e-7, 2.0e-7, 5.0e-7, 8.0e-7, 1.0e-6, 2.0e-6]
+    )
+
+    assert report["count"] == 10
+    assert report["minimum"] == 0.0
+    assert report["maximum"] == 2.0e-6
+    assert report["p50"] == 1.0e-7
+    assert report["p95"] == 2.0e-6
+    assert report["fixed_bin_counts"] == {
+        "equal_zero": 1,
+        "gt_zero_le_1e-8": 2,
+        "gt_1e-8_le_1e-7": 2,
+        "gt_1e-7_le_5e-7": 2,
+        "gt_5e-7_le_1e-6": 2,
+        "gt_1e-6": 1,
+    }
 
 
 @pytest.mark.parametrize(
