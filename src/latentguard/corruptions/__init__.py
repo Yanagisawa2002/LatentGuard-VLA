@@ -8,6 +8,8 @@ from latentguard.corruptions.base import (
 )
 from latentguard.corruptions.config import (
     CORRUPTION_CONFIG_SCHEMA_VERSION,
+    LEGACY_CORRUPTION_CONFIG_SCHEMA_VERSION,
+    SUPPORTED_CORRUPTION_CONFIG_SCHEMA_VERSIONS,
     CorruptionPlan,
     CorruptionPlanError,
     load_corruption_plan,
@@ -69,6 +71,7 @@ from latentguard.corruptions.transforms import (
     SegmentZeroing,
     TemporalFieldShift,
     TemporalFillPolicy,
+    WindowScopedCorruption,
 )
 
 __all__ = [
@@ -76,11 +79,13 @@ __all__ = [
     "CORRUPTION_SCHEMA_VERSION",
     "CORRUPTION_DATASET_SCHEMA_VERSION",
     "CORRUPTION_CONFIG_SCHEMA_VERSION",
+    "LEGACY_CORRUPTION_CONFIG_SCHEMA_VERSION",
     "MANIFEST_NAME",
     "PROPOSAL_ID_PREFIX",
     "SERIALIZATION_FORMAT",
     "SERIALIZATION_VERSION",
     "SUPPORTED_CORRUPTION_SCHEMA_VERSIONS",
+    "SUPPORTED_CORRUPTION_CONFIG_SCHEMA_VERSIONS",
     "ActionCorruption",
     "ActionField",
     "ActionLayout",
@@ -113,6 +118,7 @@ __all__ = [
     "TemporalFillPolicy",
     "UnknownCorruptionError",
     "UnsupportedCorruptionSerializationVersionError",
+    "WindowScopedCorruption",
     "create_corruption",
     "compute_proposal_identifier",
     "default_corruption_registry",

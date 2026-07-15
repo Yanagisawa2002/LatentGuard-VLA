@@ -350,6 +350,17 @@ class ExactStatePairedReplayEvaluator:
                 metric = terminal.diagnostics.get(source_name)
                 if metric is not None:
                     metrics[metric_name] = metric
+            for metric_name in (
+                "pickcube_candidate_horizon_steps",
+                "pickcube_candidate_progress_semantic",
+                "pickcube_progress_before_candidate",
+                "pickcube_progress_after_candidate",
+                "pickcube_progress_delta_candidate",
+                "pickcube_prefix_evaluated_before_continuation",
+            ):
+                metric = terminal.diagnostics.get(metric_name)
+                if metric is not None:
+                    metrics[metric_name] = metric
         metrics.update(result.diagnostics)
         notes = (
             "deterministic non-physical replay fixture; infrastructure evidence only"

@@ -253,6 +253,7 @@ def generate_corruption_proposals(
                     transformed.actions,
                     source_snapshot=source_snapshot,
                     corruption_name=corruption.name,
+                    resolved_parameters=resolved,
                 )
                 generation_ordinal = len(proposals)
                 proposal_id = build_proposal_identifier(
@@ -302,6 +303,7 @@ def _validate_transformed_action(
     *,
     source_snapshot: bytes,
     corruption_name: str,
+    resolved_parameters: Mapping[str, ResolvedParameterValue],
 ) -> None:
     if source.tobytes(order="C") != source_snapshot:
         raise CorruptionGenerationError(
@@ -320,6 +322,62 @@ def _validate_transformed_action(
     if np.shares_memory(source, transformed):
         raise CorruptionGenerationError(
             f"{corruption_name}: transformed action still shares source memory"
+        )
+    _validate_declared_window_immutability(
+        source,
+        transformed,
+        corruption_name=corruption_name,
+        resolved_parameters=resolved_parameters,
+    )
+
+
+def _validate_declared_window_immutability(
+    source: NDArray[Any],
+    transformed: NDArray[Any],
+    *,
+    corruption_name: str,
+    resolved_parameters: Mapping[str, ResolvedParameterValue],
+) -> None:
+    window_fields = {"window_start", "window_end", "severity_id"}
+    present = window_fields.intersection(resolved_parameters)
+    if not present:
+        return
+    if present != window_fields:
+        missing = ", ".join(sorted(window_fields - present))
+        raise CorruptionGenerationError(
+            f"{corruption_name}: resolved window contract is incomplete; missing "
+            f"{missing}"
+        )
+    start = resolved_parameters["window_start"]
+    end = resolved_parameters["window_end"]
+    severity_id = resolved_parameters["severity_id"]
+    if (
+        type(start) is not int
+        or type(end) is not int
+        or start < 0
+        or end <= start
+        or end > source.shape[0]
+    ):
+        raise CorruptionGenerationError(
+            f"{corruption_name}: resolved action window is outside the source horizon"
+        )
+    if (
+        not isinstance(severity_id, str)
+        or not severity_id
+        or severity_id != severity_id.strip()
+        or any(
+            ord(character) < 32 or ord(character) == 127 for character in severity_id
+        )
+    ):
+        raise CorruptionGenerationError(
+            f"{corruption_name}: resolved severity_id is not canonical"
+        )
+    if source[:start].tobytes(order="C") != transformed[:start].tobytes(
+        order="C"
+    ) or source[end:].tobytes(order="C") != transformed[end:].tobytes(order="C"):
+        raise CorruptionGenerationError(
+            f"{corruption_name}: transformed action changed bytes outside declared "
+            f"window [{start}, {end})"
         )
 
 

@@ -165,3 +165,18 @@ This is the implemented fail-closed adapter path, not by itself a simulator
 claim. Discovery observed complete 70-component restoration with maximum error
 `1.1920929e-7`; trusted collection and strong PickCube evidence still require a
 passing compatibility-bound probe and every subsequent remote gate.
+
+## M3A indexed-state cases
+
+An M3A replay case uses `ReplayStateReference.state_index` to select one exact
+`s[t]` from the externally validated T+1 archive. Its source and transformed
+actions both contain the complete remaining horizon. The first 16 actions are
+the candidate window; the suffix is required to have identical dtype, shape,
+and bytes and is bound by a path-independent continuation digest.
+
+The session captures official binary task evidence before stepping, immediately
+after action 16 and before the fixed continuation, and at terminal evaluation.
+Those prefix diagnostics pass through the unchanged M2A evidence contract. A
+separate successful source-remainder baseline is also required before an anchor
+enters M0, while the paired replay core still performs its own independent
+baseline for every proposal.

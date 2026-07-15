@@ -31,6 +31,7 @@ from latentguard.corruptions.models import (
     validate_corrupted_action_proposal,
 )
 from latentguard.corruptions.registry import create_corruption
+from latentguard.corruptions.transforms import WindowScopedCorruption
 from latentguard.models import CURRENT_SCHEMA_VERSION, ActionChunk, JsonScalar
 from latentguard.validation import DataValidationError, validate_action_chunk
 
@@ -216,13 +217,43 @@ def _validate_resolved_corruption(
     layout: ActionLayout,
     context: str,
 ) -> None:
-    """Validate that serialized parameters exactly describe one built-in M1 type."""
+    """Validate that serialized parameters exactly describe one built-in type."""
     parameters = dict(proposal.resolved_parameters)
     factory_parameters = dict(parameters)
+    window_names = {"window_start", "window_end", "severity_id"}
+    present_window_names = window_names.intersection(factory_parameters)
+    window_parameters: tuple[int, int, str] | None = None
+    if present_window_names:
+        if present_window_names != window_names:
+            missing = ", ".join(sorted(window_names - present_window_names))
+            raise CorruptionSerializationError(
+                f"{context}.resolved_parameters: incomplete window contract; "
+                f"missing {missing}"
+            )
+        raw_start = factory_parameters.pop("window_start")
+        raw_end = factory_parameters.pop("window_end")
+        raw_severity = factory_parameters.pop("severity_id")
+        if type(raw_start) is not int or type(raw_end) is not int:
+            raise CorruptionSerializationError(
+                f"{context}.resolved_parameters: window bounds must be integers"
+            )
+        if not isinstance(raw_severity, str):
+            raise CorruptionSerializationError(
+                f"{context}.resolved_parameters.severity_id: expected a string"
+            )
+        window_parameters = (raw_start, raw_end, raw_severity)
     if proposal.corruption_type == "temporal_field_shift":
         factory_parameters.pop("target_indices", None)
     try:
         corruption = create_corruption(proposal.corruption_type, factory_parameters)
+        if window_parameters is not None:
+            window_start, window_end, severity_id = window_parameters
+            corruption = WindowScopedCorruption(
+                inner=corruption,
+                window_start=window_start,
+                window_end=window_end,
+                severity_id=severity_id,
+            )
         validation_action = _validation_source_action(proposal)
         expected = corruption.resolved_parameters_for(validation_action, layout)
     except (TypeError, ValueError) as exc:
@@ -248,16 +279,25 @@ def _validation_source_action(proposal: CorruptedActionProposal) -> ActionChunk:
     if not isinstance(raw_indices, tuple) or not isinstance(raw_bias, tuple):
         return transformed
     source = np.array(transformed.actions, copy=True, order="C")
+    start = 0
+    end = source.shape[0]
+    raw_start = proposal.resolved_parameters.get("window_start")
+    raw_end = proposal.resolved_parameters.get("window_end")
+    if type(raw_start) is int and type(raw_end) is int:
+        if raw_start < 0 or raw_end <= raw_start or raw_end > source.shape[0]:
+            return transformed
+        start = raw_start
+        end = raw_end
     limits = np.iinfo(source.dtype)
     try:
         for index, bias in zip(raw_indices, raw_bias, strict=True):
             if type(index) is not int or type(bias) not in (int, float):
                 return transformed
             delta = int(cast(int | float, bias))
-            recovered = [int(value) - delta for value in source[:, index]]
+            recovered = [int(value) - delta for value in source[start:end, index]]
             if any(value < limits.min or value > limits.max for value in recovered):
                 return transformed
-            source[:, index] = recovered
+            source[start:end, index] = recovered
     except (IndexError, TypeError, ValueError):
         return transformed
     return ActionChunk(

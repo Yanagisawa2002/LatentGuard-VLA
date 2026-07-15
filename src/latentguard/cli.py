@@ -86,6 +86,7 @@ from latentguard.integrations.maniskill_pickcube.source_import import (
 from latentguard.integrations.maniskill_pickcube.task_evidence import (
     PickCubeTaskKeyContract,
 )
+from latentguard.m3a_cli import add_m3a_subparsers, run_m3a_command
 from latentguard.remote import RemoteSyncError, resolve_remote_config, sync_remote
 from latentguard.replay.evaluator import ExactStatePairedReplayEvaluator
 from latentguard.replay.registry import (
@@ -337,6 +338,8 @@ def _build_parser() -> argparse.ArgumentParser:
         action="store_true",
         help="print concise paired-replay attempt audit records",
     )
+
+    add_m3a_subparsers(subparsers)
 
     return parser
 
@@ -1244,6 +1247,9 @@ def _run_replay_maniskill_pickcube(args: argparse.Namespace) -> int:
 def main(argv: Sequence[str] | None = None) -> int:
     """Run the LatentGuard-VLA command-line interface."""
     args = _build_parser().parse_args(argv)
+    m3a_result = run_m3a_command(args)
+    if m3a_result is not None:
+        return m3a_result
     if args.command == "sanity-data":
         return _run_sanity_data(args)
     if args.command == "audit-data":

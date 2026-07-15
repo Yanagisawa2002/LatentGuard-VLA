@@ -109,7 +109,7 @@ def _settings() -> ManiSkillPickCubeEnvironmentSettings:
 
 
 def _proposal_and_case(
-    *, transformed: np.ndarray | None = None
+    *, transformed: np.ndarray | None = None, candidate_horizon: int | None = None
 ) -> tuple[CorruptedActionProposal, ReplayCase]:
     original_array = np.array([[0.2, 0.1], [0.3, -0.1]], dtype=np.float32)
     transformed_array = (
@@ -146,6 +146,16 @@ def _proposal_and_case(
         seed=7,
         generation_ordinal=0,
     )
+    state_metadata: dict[str, object] = {
+        "source_reset_seed": 17,
+        "state_semantic": "maniskill_state_tree_v1",
+        "state_verification_maximum_absolute_tolerance": (
+            PICKCUBE_STATE_VERIFICATION_MAX_ABSOLUTE_TOLERANCE
+        ),
+        "state_verification_semantic": PICKCUBE_STATE_VERIFICATION_SEMANTIC,
+    }
+    if candidate_horizon is not None:
+        state_metadata["candidate_horizon_steps"] = candidate_horizon
     state_reference = ReplayStateReference(
         adapter_id=MANISKILL_PICKCUBE_ADAPTER_ID,
         adapter_version=MANISKILL_PICKCUBE_ADAPTER_VERSION,
@@ -153,14 +163,7 @@ def _proposal_and_case(
         expected_state_digest=_STATE_DIGEST,
         comparison_semantic=StateComparisonSemantic.NUMERIC_TOLERANCE,
         state_key="initial",
-        metadata={
-            "source_reset_seed": 17,
-            "state_semantic": "maniskill_state_tree_v1",
-            "state_verification_maximum_absolute_tolerance": (
-                PICKCUBE_STATE_VERIFICATION_MAX_ABSOLUTE_TOLERANCE
-            ),
-            "state_verification_semantic": PICKCUBE_STATE_VERIFICATION_SEMANTIC,
-        },
+        metadata=state_metadata,
     )
     task_reference = ReplayTaskReference(
         task_id=PICKCUBE_TASK_ID,
@@ -879,6 +882,44 @@ def test_archive_source_reset_seed_drift_fails_before_wrapper_reset() -> None:
         session.restore_state(replay_case.state_reference)
 
     assert runtime.environments[0].events == []
+    session.close()
+
+
+def test_state_indexed_session_records_binary_candidate_boundary_before_suffix() -> (
+    None
+):
+    transformed = np.array([[0.0, 0.0], [0.3, -0.1]], dtype=np.float32)
+    _, replay_case = _proposal_and_case(
+        transformed=transformed,
+        candidate_horizon=1,
+    )
+    runtime = _FakeRuntime(corrupted_succeeds=True)
+    session = ManiSkillPickCubeReplaySession(
+        replay_case,
+        execution_role=ReplayExecutionRole.CORRUPTED,
+        settings=_settings(),
+        action_contract=_action_contract(),
+        task_key_contract=_task_keys(),
+        state_loader=_StateLoader(),
+        state_comparator=_Comparator(),
+        runtime=runtime,
+    )
+
+    restored = session.restore_state(replay_case.state_reference)
+    assert restored.restoration_verified
+    initial = session.evaluate_task(replay_case.task_reference)
+    session.step_action(transformed[0])
+    assert runtime.environments[0].steps == 1
+    session.step_action(transformed[1])
+    terminal = session.evaluate_task(replay_case.task_reference)
+
+    assert initial.progress == 0.0
+    assert terminal.success is True
+    assert terminal.diagnostics["pickcube_candidate_horizon_steps"] == 1
+    assert terminal.diagnostics["pickcube_progress_before_candidate"] == 0.0
+    assert terminal.diagnostics["pickcube_progress_after_candidate"] == 0.0
+    assert terminal.diagnostics["pickcube_progress_delta_candidate"] == 0.0
+    assert terminal.diagnostics["pickcube_prefix_evaluated_before_continuation"] is True
     session.close()
 
 

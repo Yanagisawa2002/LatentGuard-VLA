@@ -158,6 +158,39 @@ archives and logs remain under the remote run root outside the checkout. Only
 reviewed, sanitized compatibility, collection, replay, evidence, state-statistic,
 environment, and resume summaries return under `reports/m2c/<run-id>/`.
 
+## M3A state-indexed extension
+
+M3A records every post-reset and post-action boundary as `state[0]` through
+`state[T]` in a separate safe T+1 archive. Every selected intermediate state is
+restored in a fresh environment and compared across the complete expected
+structure and numeric component inventory with the adapter-bound `1e-6`
+tolerance. A versioned `PickCubeVerifierStateV1` is independently re-extracted
+after restoration from public active-joint, TCP, cube, goal, and task APIs.
+
+Each deterministic anchor has `H=16`, a successful independent replay of the
+complete source remainder, and one content-bound continuation identity. M3A
+corruptions may change only actions `[0,16)` of that remainder; every action
+after index 16 must remain byte-identical. Baseline and corrupted sessions start
+from the same indexed archive state but are independently created and reset.
+The official binary completion semantic is recorded before the candidate,
+after action 16 and before continuation, and at terminal evaluation. The narrow
+cube-below-world-zero unsafe semantic is unchanged.
+
+The additional commands are:
+
+```text
+latentguard collect-maniskill-pickcube-sequences --help
+latentguard build-state-indexed-pickcube --help
+latentguard replay-state-indexed-pickcube --help
+latentguard export-action-verifier-dataset --help
+latentguard validate-action-verifier-dataset --help
+```
+
+Large sequence archives, M0/M1 bundles, replay ledgers, and compact verifier
+datasets stay under the external run root. Only sanitized summaries are eligible
+for `reports/m3a/<run-id>/`. M3A performs no model training and adds no LangMani
+dependency.
+
 ## Current status
 
 The local integration, probe-bound expected contract and dependencies, safe

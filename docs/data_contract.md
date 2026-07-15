@@ -20,6 +20,10 @@ M2B-Core adds content-bound replay references, cases, restoration/execution/task
 evidence, adapter trust, paired results, and a replay bundle. These are generic
 contracts; no simulator-native state or framework object is serializable here.
 
+M3A-Data adds compact, model-ready action-verifier samples and candidate groups.
+Their labels are foreign keys into strong, simulator-verified paired-replay
+evidence; full simulator state trees remain in an external adapter archive.
+
 RET-1 adds no schema entity and does not change the serialization version. Its
 audit reports, offline replay plans/steps, and metrics are derived read-only
 views of already validated Episodes. Candidate outcome aggregates always use a
@@ -94,6 +98,20 @@ M2B-Core adds:
 - `PairedReplayResult`, the validated result of the baseline and corrupted
   sessions, and `ReplayBundle`, an ordered JSON-only case-reference manifest.
 
+M3A-Data adds:
+
+- `ActionVerifierSampleV1`, containing one verified compact state vector, one
+  fixed `[16, action_dim]` candidate chunk, an all-true action mask, task and
+  continuation identity, raw strong outcome fields, and content-bound
+  provenance. The continuation and raw simulator state are not model inputs.
+- `ActionVerifierCandidateGroupV1`, grouping one successful source chunk and
+  all accepted conclusive corruptions for one exact state, task, and
+  continuation. It does not invent pairwise preferences.
+- `TrajectorySplitAssignmentV1`, recording leakage-sensitive state, anchor,
+  proposal, source-seed, and split-group inventories for one source trajectory.
+- `ActionVerifierDatasetV1`, binding deterministic samples, groups, split
+  assignments, state-vector schema, dimensions, and a content digest.
+
 Evidence status has exact semantics: `conclusive` is projectable when complete;
 `indeterminate` is a completed but insufficient evaluation; `invalid` is an
 unevaluable proposal/context; `skipped` is an explicit applicability/policy
@@ -148,6 +166,12 @@ transformation, parameter, seed, ordering, split, and schema data but carries no
 label provenance because it is unlabeled. A source episode and every derivative
 share one split group. Dataset code must split source groups before generating
 derivatives.
+
+M3A assigns splits only at original source-trajectory granularity. Source
+trajectory IDs, source seeds, state digests, anchor IDs, proposal IDs, and split
+group IDs are all checked for cross-split reuse. The full policy is 48 train, 6
+validation, and 6 test trajectories; bounded smoke datasets use explicit quotas
+that exactly cover their trajectories.
 
 M1 prohibits cross-source transformations. A proposal has exactly one source
 episode and candidate until a later schema version can represent complete
@@ -243,6 +267,13 @@ Loading rejects links, traversal, unsupported versions, unknown or duplicate
 fields and IDs, digest or identity tampering, missing source/proposal references,
 and any changed source or corruption content. The caller must supply the current
 content binding when reloading; a stored digest is never trusted by itself.
+
+The M3A training dataset is a separate strict JSON/NPY bundle. It stores stacked
+non-pickle arrays for state vectors, candidate chunks, and masks, plus compact
+labels, identifiers, groups, and split assignments. Saving is transactional and
+deterministic. Loading checks exact inventory, safe paths, links, dtype, shape,
+content digests, evidence foreign keys, candidate-group coverage, and split
+leakage. It never duplicates T+1 state trees or continuation actions.
 
 ## M2C integration archive boundary
 

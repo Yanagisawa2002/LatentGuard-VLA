@@ -141,3 +141,18 @@ or made fatal with `--strict-applicability`.
 
 This M1 workflow is CPU-only and local-authoritative. It performs no GPU
 training, simulator execution, SSH synchronization, or AutoDL access.
+
+## M3A fixed-window extension
+
+Schema-1.1 corruption definitions may declare `window_start` and `window_end`.
+The transformation applies only inside that half-open step interval and records
+the resolved window in proposal identity. M3A fixes the interval to `[0,16)` and
+checks the complete source suffix from step 16 byte-for-byte after every
+transformation. Gaussian noise, constant bias, temporal gripper shift, segment
+hold, segment zeroing, and local temporal permutation support this contract.
+Schema-1.0 configurations retain their original whole-chunk behavior.
+
+The checked-in PickCube M3A schedule contains eight definitions across those
+families with explicit mild, moderate, and severe identifiers. Values are never
+clipped into the action contract: an out-of-bounds result is invalid context at
+replay, not a task failure and not a silently repaired sample.

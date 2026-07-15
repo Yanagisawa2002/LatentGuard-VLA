@@ -327,7 +327,7 @@ class PickCubeReplayActionContract:
 
 @dataclass(frozen=True, slots=True)
 class LoadedReferenceState:
-    """One archive-loaded initial state detached from its runtime path."""
+    """One archive-loaded state detached from its runtime path."""
 
     source_reference_id: str
     source_reset_seed: int
@@ -335,6 +335,7 @@ class LoadedReferenceState:
     state_digest: str
     state_tree: object
     compared_component_count: int
+    state_index: int | None = None
 
     def __post_init__(self) -> None:
         """Validate identity fields while leaving the normalized tree opaque."""
@@ -362,6 +363,12 @@ class LoadedReferenceState:
         ):
             raise ReplayInvalidContextError(
                 "loaded PickCube state has an invalid source reset seed"
+            )
+        if self.state_index is not None and (
+            type(self.state_index) is not int or self.state_index < 0
+        ):
+            raise ReplayInvalidContextError(
+                "loaded PickCube state has an invalid state index"
             )
 
 
@@ -876,9 +883,37 @@ class ManiSkillPickCubeReplaySession:
         self._runtime = runtime
         self._source_reset_seed = source_reset_seed
         self._expected_action = action
+        raw_candidate_horizon = state_reference.metadata.get("candidate_horizon_steps")
+        if raw_candidate_horizon is None:
+            self._candidate_horizon_steps: int | None = None
+        elif (
+            type(raw_candidate_horizon) is not int
+            or raw_candidate_horizon <= 0
+            or raw_candidate_horizon > action.actions.shape[0]
+        ):
+            raise ReplayInvalidContextError(
+                "PickCube candidate horizon metadata is invalid"
+            )
+        else:
+            self._candidate_horizon_steps = raw_candidate_horizon
+            source = replay_case.original_action.actions
+            transformed = replay_case.transformed_action.actions
+            if (
+                source[raw_candidate_horizon:].dtype
+                != transformed[raw_candidate_horizon:].dtype
+                or source[raw_candidate_horizon:].shape
+                != transformed[raw_candidate_horizon:].shape
+                or source[raw_candidate_horizon:].tobytes(order="C")
+                != transformed[raw_candidate_horizon:].tobytes(order="C")
+            ):
+                raise ReplayInvalidContextError(
+                    "PickCube source continuation is not byte-identical"
+                )
         self._restored = False
         self._closed = False
         self._executed_rows = 0
+        self._initial_task_evidence: TerminalTaskEvidence | None = None
+        self._candidate_boundary_task_evidence: TerminalTaskEvidence | None = None
         self._environment = runtime.create_environment(
             settings, action_contract, execution_role=execution_role
         )
@@ -902,9 +937,13 @@ class ManiSkillPickCubeReplaySession:
                 "PickCube session received a different state reference"
             )
         loaded = self._state_loader.load_reference_state(reference)
+        expected_state_key = (
+            reference.state_key if reference.state_key is not None else "state_index"
+        )
         if (
             loaded.source_reference_id != reference.source_reference_id
-            or loaded.state_key != reference.state_key
+            or loaded.state_key != expected_state_key
+            or loaded.state_index != reference.state_index
         ):
             raise ReplayInvalidContextError(
                 "PickCube archive state identity does not match the replay reference"
@@ -1014,7 +1053,42 @@ class ManiSkillPickCubeReplaySession:
         snapshot = self._runtime.capture_task_snapshot(
             self._environment, self._task_key_contract
         )
-        return build_pickcube_task_evidence(snapshot, self._task_key_contract)
+        evidence = build_pickcube_task_evidence(snapshot, self._task_key_contract)
+        if self._executed_rows == 0:
+            self._initial_task_evidence = evidence
+            return evidence
+        if self._candidate_horizon_steps is None:
+            return evidence
+        boundary = self._candidate_boundary_task_evidence
+        initial = self._initial_task_evidence
+        if boundary is None or initial is None:
+            raise ManiSkillPickCubeSessionError(
+                "PickCube candidate-boundary task evidence is incomplete"
+            )
+        diagnostics = dict(evidence.diagnostics)
+        diagnostics.update(
+            {
+                "pickcube_candidate_horizon_steps": self._candidate_horizon_steps,
+                "pickcube_candidate_progress_semantic": PICKCUBE_PROGRESS_SEMANTIC,
+                "pickcube_progress_before_candidate": initial.progress,
+                "pickcube_progress_after_candidate": boundary.progress,
+                "pickcube_progress_delta_candidate": (
+                    None
+                    if initial.progress is None or boundary.progress is None
+                    else boundary.progress - initial.progress
+                ),
+                "pickcube_prefix_evaluated_before_continuation": True,
+            }
+        )
+        return TerminalTaskEvidence(
+            status=evidence.status,
+            success=evidence.success,
+            progress=evidence.progress,
+            unsafe=evidence.unsafe,
+            failure_events=evidence.failure_events,
+            termination_reason=evidence.termination_reason,
+            diagnostics=diagnostics,
+        )
 
     def step_action(self, action: NDArray[Any]) -> None:
         """Execute one exact detached row, detecting mutation by the runtime."""
@@ -1030,13 +1104,20 @@ class ManiSkillPickCubeReplaySession:
                 "PickCube action row does not match the content-bound replay case"
             )
         detached = np.array(action, copy=True, order="C", subok=False)
-        snapshot = detached.tobytes(order="C")
+        action_snapshot = detached.tobytes(order="C")
         self._runtime.step_action(self._environment, detached, self._action_contract)
-        if detached.tobytes(order="C") != snapshot:
+        if detached.tobytes(order="C") != action_snapshot:
             raise ManiSkillPickCubeSessionError(
                 "PickCube runtime mutated a replay action row"
             )
         self._executed_rows += 1
+        if self._executed_rows == self._candidate_horizon_steps:
+            task_snapshot = self._runtime.capture_task_snapshot(
+                self._environment, self._task_key_contract
+            )
+            self._candidate_boundary_task_evidence = build_pickcube_task_evidence(
+                task_snapshot, self._task_key_contract
+            )
 
     def close(self) -> None:
         """Close the independently owned environment exactly once."""

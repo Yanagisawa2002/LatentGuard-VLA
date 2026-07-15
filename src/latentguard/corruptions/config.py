@@ -10,19 +10,36 @@ from pathlib import Path
 from typing import NoReturn, cast
 
 from latentguard.corruptions.base import ActionCorruption
-from latentguard.corruptions.layout import ActionField, ActionLayout, ActionSemantic
+from latentguard.corruptions.layout import (
+    ACTION_LAYOUT_SCHEMA_VERSION,
+    ActionField,
+    ActionLayout,
+    ActionSemantic,
+)
 from latentguard.corruptions.registry import create_corruption
+from latentguard.corruptions.transforms import WindowScopedCorruption
 from latentguard.models import JsonScalar
 
-CORRUPTION_CONFIG_SCHEMA_VERSION = "1.0"
-"""Configuration schema version supported by M1."""
+LEGACY_CORRUPTION_CONFIG_SCHEMA_VERSION = "1.0"
+"""Original unwindowed M1 configuration schema version."""
+
+CORRUPTION_CONFIG_SCHEMA_VERSION = "1.1"
+"""Current configuration schema with explicit action-step windows."""
+
+SUPPORTED_CORRUPTION_CONFIG_SCHEMA_VERSIONS = frozenset(
+    {LEGACY_CORRUPTION_CONFIG_SCHEMA_VERSION, CORRUPTION_CONFIG_SCHEMA_VERSION}
+)
+"""Configuration schema versions supported by the corruption engine."""
 
 _TOP_LEVEL_FIELDS = frozenset({"schema_version", "action_layout", "corruptions"})
 _LAYOUT_REQUIRED_FIELDS = frozenset({"action_dim", "fields", "schema_version"})
 _LAYOUT_OPTIONAL_FIELDS = frozenset({"description", "metadata"})
 _FIELD_REQUIRED_FIELDS = frozenset({"name", "indices", "semantic"})
 _FIELD_OPTIONAL_FIELDS = frozenset({"units", "description", "metadata"})
-_CORRUPTION_FIELDS = frozenset({"type", "parameters"})
+_LEGACY_CORRUPTION_FIELDS = frozenset({"type", "parameters"})
+_WINDOWED_CORRUPTION_FIELDS = frozenset(
+    {"type", "parameters", "window_start", "window_end", "severity_id"}
+)
 
 
 class CorruptionPlanError(ValueError):
@@ -70,10 +87,11 @@ def load_corruption_plan(path: Path) -> CorruptionPlan:
     root = _mapping(raw, "CorruptionPlan.config")
     _require_exact_fields(root, _TOP_LEVEL_FIELDS, "CorruptionPlan.config")
     version = _string(root, "schema_version", "CorruptionPlan.config")
-    if version != CORRUPTION_CONFIG_SCHEMA_VERSION:
+    if version not in SUPPORTED_CORRUPTION_CONFIG_SCHEMA_VERSIONS:
         raise CorruptionPlanError(
             "CorruptionPlan.config.schema_version: unsupported version "
-            f"{version!r}; supported: {CORRUPTION_CONFIG_SCHEMA_VERSION}"
+            f"{version!r}; supported: "
+            + ", ".join(sorted(SUPPORTED_CORRUPTION_CONFIG_SCHEMA_VERSIONS))
         )
 
     layout = _parse_layout(_field(root, "action_layout", "CorruptionPlan.config"))
@@ -83,7 +101,7 @@ def load_corruption_plan(path: Path) -> CorruptionPlan:
             "CorruptionPlan.config.corruptions: must contain at least one definition"
         )
     corruptions = tuple(
-        _parse_corruption(definition, layout, index)
+        _parse_corruption(definition, layout, index, config_version=version)
         for index, definition in enumerate(definitions)
     )
     return CorruptionPlan(
@@ -103,7 +121,7 @@ def _parse_layout(value: object) -> ActionLayout:
         context,
     )
     schema_version = _string(item, "schema_version", context)
-    if schema_version != CORRUPTION_CONFIG_SCHEMA_VERSION:
+    if schema_version != ACTION_LAYOUT_SCHEMA_VERSION:
         raise CorruptionPlanError(
             f"{context}.schema_version: unsupported version {schema_version!r}"
         )
@@ -163,16 +181,33 @@ def _parse_action_field(value: object, index: int) -> ActionField:
 
 
 def _parse_corruption(
-    value: object, layout: ActionLayout, index: int
+    value: object,
+    layout: ActionLayout,
+    index: int,
+    *,
+    config_version: str,
 ) -> ActionCorruption:
     context = f"CorruptionPlan.corruptions[index={index}]"
     item = _mapping(value, context)
-    _require_exact_fields(item, _CORRUPTION_FIELDS, context)
+    expected_fields = (
+        _LEGACY_CORRUPTION_FIELDS
+        if config_version == LEGACY_CORRUPTION_CONFIG_SCHEMA_VERSION
+        else _WINDOWED_CORRUPTION_FIELDS
+    )
+    _require_exact_fields(item, expected_fields, context)
     name = _string(item, "type", context)
     parameters = _mapping(_field(item, "parameters", context), f"{context}.parameters")
     _validate_explicit_indices(parameters, layout, context)
     try:
-        return create_corruption(name, parameters)
+        corruption = create_corruption(name, parameters)
+        if config_version == LEGACY_CORRUPTION_CONFIG_SCHEMA_VERSION:
+            return corruption
+        return WindowScopedCorruption(
+            inner=corruption,
+            window_start=_integer(item, "window_start", context),
+            window_end=_integer(item, "window_end", context),
+            severity_id=_string(item, "severity_id", context),
+        )
     except (TypeError, ValueError) as exc:
         raise CorruptionPlanError(f"{context}: {exc}") from exc
 

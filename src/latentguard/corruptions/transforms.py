@@ -948,6 +948,143 @@ class LocalTemporalPermutation(BaseActionCorruption):
         return self._result(action, output)
 
 
+_WINDOW_PARAMETER_NAMES = frozenset({"severity_id", "window_end", "window_start"})
+
+
+@dataclass(frozen=True, slots=True, kw_only=True)
+class WindowScopedCorruption(BaseActionCorruption):
+    """Apply one existing corruption only inside an explicit action-step window."""
+
+    inner: ActionCorruption
+    window_start: int
+    window_end: int
+    severity_id: str
+
+    def __post_init__(self) -> None:
+        """Validate the immutable wrapper without changing the inner semantic."""
+        if not isinstance(self.inner, ActionCorruption):
+            raise CorruptionConfigurationError(
+                "window_scoped_corruption.inner: expected ActionCorruption"
+            )
+        object.__setattr__(
+            self,
+            "window_start",
+            _integer(self.window_start, "window_scoped_corruption.window_start"),
+        )
+        object.__setattr__(
+            self,
+            "window_end",
+            _integer(self.window_end, "window_scoped_corruption.window_end"),
+        )
+        if self.window_start < 0:
+            raise CorruptionConfigurationError(
+                "window_scoped_corruption.window_start: must be non-negative"
+            )
+        if self.window_end <= self.window_start:
+            raise CorruptionConfigurationError(
+                "window_scoped_corruption.window_end: must be greater than window_start"
+            )
+        if (
+            not isinstance(self.severity_id, str)
+            or not self.severity_id
+            or self.severity_id != self.severity_id.strip()
+            or any(
+                ord(character) < 32 or ord(character) == 127
+                for character in self.severity_id
+            )
+        ):
+            raise CorruptionConfigurationError(
+                "window_scoped_corruption.severity_id: expected a non-empty "
+                "canonical string"
+            )
+        conflicts = _WINDOW_PARAMETER_NAMES.intersection(self.inner.resolved_parameters)
+        if conflicts:
+            raise CorruptionConfigurationError(
+                "window_scoped_corruption.inner: reserved resolved parameter names "
+                + ", ".join(sorted(conflicts))
+            )
+
+    @property
+    def name(self) -> str:
+        """Preserve the wrapped transformation's stable registry name."""
+        return self.inner.name
+
+    @property
+    def resolved_parameters(self) -> Mapping[str, ResolvedParameterValue]:
+        """Return unresolved inner parameters plus the explicit window contract."""
+        return self._with_window(self.inner.resolved_parameters)
+
+    def resolved_parameters_for(
+        self, action: ActionChunk, layout: ActionLayout
+    ) -> Mapping[str, ResolvedParameterValue]:
+        """Resolve the wrapped transformation against only the declared window."""
+        window = self._window_action(action, layout)
+        return self._with_window(self.inner.resolved_parameters_for(window, layout))
+
+    def validate_for(self, action: ActionChunk, layout: ActionLayout) -> None:
+        """Require a complete in-bounds window and applicable inner transform."""
+        window = self._window_action(action, layout)
+        self.inner.validate_for(window, layout)
+
+    def apply(
+        self, action: ActionChunk, layout: ActionLayout, *, seed: int
+    ) -> ActionChunk:
+        """Splice a transformed window into an otherwise byte-identical action."""
+        window = self._window_action(action, layout)
+        self._validate_seed(seed)
+        transformed = self.inner.apply(window, layout, seed=seed)
+        if (
+            transformed.actions.shape != window.actions.shape
+            or transformed.actions.dtype != window.actions.dtype
+            or transformed.coordinate_frame != window.coordinate_frame
+            or transformed.control_period_s != window.control_period_s
+            or transformed.schema_version != window.schema_version
+        ):
+            self._not_applicable(
+                "wrapped corruption changed the window action contract",
+                action,
+                layout,
+            )
+        output = np.array(action.actions, copy=True, order="C")
+        output[self.window_start : self.window_end] = transformed.actions
+        return self._result(action, output)
+
+    def _window_action(self, action: ActionChunk, layout: ActionLayout) -> ActionChunk:
+        self._validate_common(action, layout)
+        horizon = action.actions.shape[0]
+        if self.window_end > horizon:
+            self._not_applicable(
+                f"window [{self.window_start}, {self.window_end}) outside horizon "
+                f"{horizon}",
+                action,
+                layout,
+            )
+        return ActionChunk(
+            actions=action.actions[self.window_start : self.window_end],
+            coordinate_frame=action.coordinate_frame,
+            control_period_s=action.control_period_s,
+            schema_version=action.schema_version,
+        )
+
+    def _with_window(
+        self, parameters: Mapping[str, ResolvedParameterValue]
+    ) -> Mapping[str, ResolvedParameterValue]:
+        conflicts = _WINDOW_PARAMETER_NAMES.intersection(parameters)
+        if conflicts:
+            raise CorruptionConfigurationError(
+                "window_scoped_corruption.inner: reserved resolved parameter names "
+                + ", ".join(sorted(conflicts))
+            )
+        return _parameters(
+            {
+                **parameters,
+                "window_start": self.window_start,
+                "window_end": self.window_end,
+                "severity_id": self.severity_id,
+            }
+        )
+
+
 def _expect_fields(
     parameters: Mapping[str, object],
     corruption_name: str,

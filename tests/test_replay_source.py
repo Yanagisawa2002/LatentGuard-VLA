@@ -371,6 +371,58 @@ def test_resolve_compares_complete_incoming_proposal_not_only_identifier() -> No
     with pytest.raises(ReplaySourceBindingError, match="proposal content"):
         binding.resolve(changed)
 
+    binding.assert_unchanged()
+    with pytest.raises(ReplaySourceBindingError, match="proposal content"):
+        binding.resolve_prevalidated(changed)
+    binding.assert_unchanged()
+
+
+def test_prevalidated_batch_resolve_uses_only_explicit_content_gates(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    episodes = _episodes()
+    dataset = _dataset(episodes)
+    binding = ReplaySourceBinding.from_datasets(episodes, dataset)
+    gate_calls = 0
+    original_gate = ReplaySourceBinding.assert_unchanged
+
+    def _counted_gate(self: ReplaySourceBinding) -> None:
+        nonlocal gate_calls
+        gate_calls += 1
+        original_gate(self)
+
+    monkeypatch.setattr(ReplaySourceBinding, "assert_unchanged", _counted_gate)
+
+    binding.assert_unchanged()
+    pairs = tuple(
+        binding.resolve_prevalidated(proposal) for proposal in dataset.proposals
+    )
+    binding.assert_unchanged()
+
+    assert tuple(pair.proposal_id for pair in pairs) == binding.proposal_ids
+    assert gate_calls == 2
+
+
+def test_generic_resolve_retains_before_and_after_content_gates(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    episodes = _episodes()
+    dataset = _dataset(episodes)
+    binding = ReplaySourceBinding.from_datasets(episodes, dataset)
+    gate_calls = 0
+    original_gate = ReplaySourceBinding.assert_unchanged
+
+    def _counted_gate(self: ReplaySourceBinding) -> None:
+        nonlocal gate_calls
+        gate_calls += 1
+        original_gate(self)
+
+    monkeypatch.setattr(ReplaySourceBinding, "assert_unchanged", _counted_gate)
+
+    binding.resolve(dataset.proposals[0])
+
+    assert gate_calls == 2
+
 
 def test_bound_source_and_proposal_arrays_remain_immutable() -> None:
     episodes = _episodes()

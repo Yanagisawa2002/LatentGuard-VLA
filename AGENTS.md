@@ -117,6 +117,11 @@ restoration.
 - Keep model, data, storage, simulator, policy, remote-execution, and training interfaces decoupled. Add only dependencies needed for the current milestone.
 - Do not silently repair malformed data; raise descriptive validation errors. All random operations take an explicit seed or generator, and all configs are serializable.
 - Preserve complete provenance for generated/transformed samples. Split source episodes before deriving samples, and keep every source episode plus derivatives in the same split.
+- Group and split training examples by original source trajectory. States, anchors, corruptions, proposals, and evidence from one trajectory may not cross dataset splits.
+- Action-chunk corruption may modify only its declared step window. The source continuation after that window must remain byte-identical, and its source policy identity must be recorded.
+- Every state-indexed replay requires a successful remaining-trajectory baseline restored from the same archived state before any proposal from that anchor may enter training data.
+- Keep intermediate-state archives outside Git. Content-bind every training example to its replay evidence, and do not create scale or class balance through manual relabeling.
+- Model training is prohibited until the final training-dataset reload, evidence, split, leakage, and integrity validation gate passes.
 - A heuristic corruption is not a label. Any heuristic outcome label assigned by a later evaluator is weak evidence and is not simulator verification.
 - Corruption generation does not determine task outcome. Corrupted actions remain unlabeled proposals until a later evaluator attaches evidence; never represent heuristic corruption as simulator verification.
 - Evidence and outcome labels are distinct. An evaluator may return indeterminate evidence, and missing evidence must never be replaced with default task values.

@@ -1,0 +1,128 @@
+{
+  "schema_version": "1.1",
+  "action_layout": {
+    "schema_version": "1.0",
+    "action_dim": 8,
+    "fields": [
+      {
+        "name": "arm",
+        "indices": [0, 1, 2, 3, 4, 5, 6],
+        "semantic": "unspecified",
+        "units": "unspecified",
+        "description": "Probe-verified Panda arm controller component; physical semantics remain unspecified.",
+        "metadata": {
+          "controller_component_identity": "sha256:cb355ab8727b9c1239bec33a56943858916b8631cfb35706b430ba62e5f96dc4"
+        }
+      },
+      {
+        "name": "gripper",
+        "indices": [7],
+        "semantic": "unspecified",
+        "units": "unspecified",
+        "description": "Probe-verified Panda gripper controller component; physical semantics remain unspecified.",
+        "metadata": {
+          "controller_component_identity": "sha256:820a62d8d213b40ef360ff41eb68b9d11d91cd59feffa339ee842c17c5a25d5c"
+        }
+      }
+    ],
+    "description": "ManiSkill 3.0.1 PickCube-v1 Panda pd_joint_pos action layout bound to the reviewed schema-1.1 compatibility probe.",
+    "metadata": {
+      "action_contract_digest": "sha256:028d8c2cbb10e867d709f1c5d4c31e07ef1e084f1a8ad8370f96185ba892f0eb",
+      "compatibility_identity": "sha256:05a560fd89e0989b6d94017c6456efc535de4a0bf87ededaf468f5e2d9ef71f7",
+      "compatibility_report_schema_version": "1.1",
+      "controller_configuration_identity": "sha256:aed1daebe14982021776aaec5dead168fd999d841b6398be01612999383a9072",
+      "source_solver_identity": "sha256:75f6e26118a66b055927e368a7cd73b28d9974c6cf0181069ca55f8fcb1505ed",
+      "state_tree_structure_digest": "sha256:6f7ab9a632dfa7f34305ce5058e41da5c08c0e5926ff7f9ff90f42274a277ca0",
+      "state_verification_semantic": "tolerance_verified_full_state_v1",
+      "state_verification_tolerance": 1e-6,
+      "task_implementation_identity": "sha256:6f881f11151bd124a4ec6d1189e86e20b17d366aa1cbcc6e2f751f1f5bb03ed1"
+    }
+  },
+  "corruptions": [
+    {
+      "type": "additive_gaussian_noise",
+      "parameters": {
+        "target_fields": ["arm"],
+        "standard_deviation": 0.005,
+        "mean": 0.0
+      },
+      "window_start": 0,
+      "window_end": 16,
+      "severity_id": "mild_arm_gaussian_0p005"
+    },
+    {
+      "type": "constant_bias",
+      "parameters": {
+        "target_fields": ["arm"],
+        "bias": 0.01
+      },
+      "window_start": 0,
+      "window_end": 16,
+      "severity_id": "moderate_arm_bias_0p01"
+    },
+    {
+      "type": "temporal_field_shift",
+      "parameters": {
+        "target_field": "gripper",
+        "shift_steps": 1,
+        "fill_policy": "edge"
+      },
+      "window_start": 0,
+      "window_end": 16,
+      "severity_id": "mild_gripper_shift_1"
+    },
+    {
+      "type": "local_temporal_permutation",
+      "parameters": {
+        "start_step": 4,
+        "end_step": 12,
+        "target_fields": ["gripper"]
+      },
+      "window_start": 0,
+      "window_end": 16,
+      "severity_id": "moderate_gripper_permutation_4_12"
+    },
+    {
+      "type": "additive_gaussian_noise",
+      "parameters": {
+        "target_fields": ["arm"],
+        "standard_deviation": 0.05,
+        "mean": 0.0
+      },
+      "window_start": 0,
+      "window_end": 16,
+      "severity_id": "severe_arm_gaussian_0p05"
+    },
+    {
+      "type": "constant_bias",
+      "parameters": {
+        "target_fields": ["arm"],
+        "bias": 0.15
+      },
+      "window_start": 0,
+      "window_end": 16,
+      "severity_id": "severe_arm_bias_0p15"
+    },
+    {
+      "type": "segment_hold",
+      "parameters": {
+        "start_step": 1,
+        "target_indices": [0, 1, 2, 3, 4, 5, 6, 7]
+      },
+      "window_start": 0,
+      "window_end": 16,
+      "severity_id": "severe_all_hold_1_16"
+    },
+    {
+      "type": "segment_zeroing",
+      "parameters": {
+        "start_step": 0,
+        "end_step": 16,
+        "target_indices": [0, 1, 2, 3, 4, 5, 6, 7]
+      },
+      "window_start": 0,
+      "window_end": 16,
+      "severity_id": "severe_all_zero_0_16"
+    }
+  ]
+}

@@ -665,14 +665,37 @@ class ReplaySourceBinding:
     def resolve(self, proposal: CorruptedActionProposal) -> BoundActionPair:
         """Resolve one exact M1 proposal to a detached validated source action pair."""
 
+        self._validate_resolution_proposal(proposal)
+        self.assert_unchanged()
+        pair = self._build_bound_pair(proposal)
+        self.assert_unchanged()
+        return pair
+
+    def resolve_prevalidated(
+        self, proposal: CorruptedActionProposal
+    ) -> BoundActionPair:
+        """Resolve after the caller gates a batch with ``assert_unchanged``.
+
+        This fast path validates the complete supplied proposal and its M0/M1
+        relationship, but deliberately does not rehash or reload either complete
+        dataset. Callers must invoke :meth:`assert_unchanged` immediately before
+        and after the batch containing all such resolutions.
+        """
+
+        self._validate_resolution_proposal(proposal)
+        return self._build_bound_pair(proposal)
+
+    @staticmethod
+    def _validate_resolution_proposal(proposal: object) -> None:
         if not isinstance(proposal, CorruptedActionProposal):
             raise ReplaySourceBindingError(
                 "ReplaySourceBinding.proposal: expected CorruptedActionProposal"
             )
         validate_corrupted_action_proposal(proposal)
-        self.assert_unchanged()
+
+    def _build_bound_pair(self, proposal: CorruptedActionProposal) -> BoundActionPair:
         episode, candidate, bound_proposal = self._resolve_validated(proposal)
-        pair = BoundActionPair(
+        return BoundActionPair(
             proposal_id=bound_proposal.proposal_id,
             source_dataset_id=self.source_dataset_id,
             source_dataset_digest=self._source_dataset_digest,
@@ -686,8 +709,6 @@ class ReplaySourceBinding:
             original_action=candidate.action,
             transformed_action=bound_proposal.transformed_action,
         )
-        self.assert_unchanged()
-        return pair
 
 
 __all__ = [

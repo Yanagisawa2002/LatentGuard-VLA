@@ -207,3 +207,33 @@ adapter still fails closed for trusted collection or replay until that local
 binding is committed, pushed, and matched by a second trusted remote probe; the
 local fake tests remain structural infrastructure checks, not remote simulator
 acceptance.
+
+## State-indexed action-verifier data (M3A-Data)
+
+M3A extends only the trusted PickCube outer integration and introduces a compact
+simulator-independent training-data package:
+
+```text
+official successful action sequence + complete s[0:T+1] archive
+    -> deterministic public-evidence anchors with H=16
+    -> independent successful source-remainder baselines
+    -> window-only M1 corruptions + byte-identical source continuation
+    -> independent exact-state paired replay through the M2A ledger
+    -> strong conclusive evidence foreign keys
+    -> trajectory-disjoint compact ActionVerifierDatasetV1
+```
+
+The T+1 archive preserves complete state-tree bytes, structure, and component
+inventories outside Git. `PickCubeVerifierStateV1` is separately extracted from
+public named robot/task interfaces and has an explicit float32 component schema;
+it never includes the future outcome. Each anchor M0 episode contains the full
+remaining source action sequence for replay, while the exported model input
+contains only the first 16 actions.
+
+The source and corrupted sessions restore the same indexed state independently,
+execute the same remaining horizon, and differ only inside the declared
+candidate window. Binary official task completion is captured before the
+candidate, immediately after it, and at the terminal state. Fractional progress
+is omitted because the accepted compatibility probe does not bind ManiSkill's
+normalized dense-reward implementation. Training remains prohibited until the
+final dataset reload, evidence-reference, class-count, and leakage gates pass.

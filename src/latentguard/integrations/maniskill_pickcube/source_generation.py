@@ -123,6 +123,7 @@ class RecordingEnvironmentProxy:
         action_contract: PickCubeReplayActionContract,
         *,
         trajectory_action_limit: int | None = None,
+        boundary_capture: Callable[[object, int], None] | None = None,
     ) -> None:
         """Wrap one environment without altering solver-visible attributes."""
         self._environment = environment
@@ -130,6 +131,11 @@ class RecordingEnvironmentProxy:
         self._trajectory_action_limit = _trajectory_action_limit(
             trajectory_action_limit
         )
+        if boundary_capture is not None and not callable(boundary_capture):
+            raise PickCubeSourceGenerationError(
+                "boundary capture must be callable or null"
+            )
+        self._boundary_capture = boundary_capture
         self._action_limit_exceeded = False
         self._initial_state: object | None = None
         self._actions: list[NDArray[Any]] = []
@@ -205,6 +211,8 @@ class RecordingEnvironmentProxy:
         state = _required_method(self._environment, "get_state_dict")()
         self._initial_state = clone_state_tree(state)
         self._reset_seed = seed
+        if self._boundary_capture is not None:
+            self._boundary_capture(self._environment, 0)
         return result
 
     def step(self, action: object) -> object:
@@ -244,6 +252,8 @@ class RecordingEnvironmentProxy:
             )
         self._actions.append(source)
         self._last_step_result = result
+        if self._boundary_capture is not None:
+            self._boundary_capture(self._environment, len(self._actions))
         return result
 
     def verify_interception_complete(self) -> None:
@@ -421,6 +431,9 @@ class LazyManiSkillSourceEnvironmentFactory:
         if purpose not in {
             "official_source_generation",
             "independent_source_baseline",
+            "official_state_indexed_source_generation",
+            "indexed_state_fresh_validation",
+            "state_indexed_anchor_baseline",
         }:
             raise PickCubeSourceGenerationError(
                 f"unsupported source environment purpose {purpose!r}"
