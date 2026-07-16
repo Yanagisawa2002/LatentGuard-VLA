@@ -1072,6 +1072,21 @@ def _load_pickcube_scope(args: argparse.Namespace) -> _PickCubeScope:
     return _PickCubeScope(binding=binding, layout=layout, action_contract=contract)
 
 
+def _validate_candidate_runtime_action_contract(
+    configuration: object, scope: _PickCubeScope
+) -> None:
+    """Bind candidate generation to the trusted environment action contract."""
+
+    observed = cast(Any, configuration).action_contract_digest
+    expected = cast(Any, scope.layout).action_contract_digest
+    if observed != expected:
+        _fail(
+            "candidate configuration",
+            "action contract digest differs from trusted runtime layout "
+            f"(expected {expected}, observed {observed})",
+        )
+
+
 def _build_exclusion_inventory(
     m3a_dataset_dir: Path,
     m3a_anchor_manifest_dir: Path,
@@ -1248,18 +1263,14 @@ def _run_build_blind_candidate_pools(args: argparse.Namespace) -> int:
     protocol = _load_protocol(args.config, mode=args.mode)
     configuration = load_candidate_pool_configuration(args.candidate_config)
     scope = _load_pickcube_scope(args)
-    sources, _, manifest, _ = _candidate_sources(
+    _validate_candidate_runtime_action_contract(configuration, scope)
+    sources, _, _, _ = _candidate_sources(
         source_dir=args.source_dir,
         runtime_archive_dir=args.runtime_archive_dir,
         anchor_manifest_dir=args.anchor_manifest_dir,
         protocol=protocol,
     )
     source_dataset_id = compute_episode_bundle_identifier(args.source_dir)
-    if (
-        configuration.action_contract_digest
-        != cast(Any, manifest).action_control_contract.content_digest
-    ):
-        _fail("candidate configuration", "action-control contract digest differs")
     if args.resume:
         pool = load_candidate_pool(args.candidate_pool_dir)
         blind_input = load_blind_candidate_pool(args.blind_input_dir)

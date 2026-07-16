@@ -118,6 +118,10 @@ coverage and is neither success nor task failure.
     corrupted M3B validation candidate inventory, while fitting coverage
     thresholds on validation per-group minima. This remains validation-only and
     handles the observed one-class group-minimum labels without consulting M3C.
+14. Bind candidate generation to the trusted compatibility/action-layout
+    action-contract digest. Keep the source solver action dtype and byte contract
+    independently bound by the anchor manifest; the environment runtime contract
+    and source serialization contract are intentionally distinct identities.
 
 ## Candidate and evaluation contract
 
@@ -154,12 +158,20 @@ binding, complementary replay gates, selector/metric contracts, predeclared
 target interpretation, pre-collection inference forward gate, atomic Stage A
 publication, semantic/archive replay digest separation, compact resume proofs,
 and CPU-only fake protocol coverage. Final combined-tree validation passed
-`1207` tests with `3` Windows symlink-privilege-only skips. `ruff check .`,
+`1208` tests with `3` Windows symlink-privilege-only skips. `ruff check .`,
 `ruff format --check .`, `mypy src` over 119 source files, and
 `git diff --check` also passed after the release-audit fixes.
 
-No M3C remote collection, GPU profiling, simulator replay, full benchmark, or
-result commit has been performed or claimed at this point.
+The first remote smoke attempt at implementation revision
+`93dd0e2a7e989cecc47bf72de1a09fd68d8b9d8d` passed all M3A/M3B artifact gates,
+CPU/GPU pre-collection forward smokes, six-source collection, and 36 independent
+anchor baselines. Candidate construction then failed closed before publishing a
+pool because the CLI compared the trusted environment action-contract digest
+with the distinct source-solver serialization contract. No Stage A manifest,
+replay evidence, or candidate outcome was created. The local correction keeps
+the trusted `sha256:028d8c2cbb10e867d709f1c5d4c31e07ef1e084f1a8ad8370f96185ba892f0eb`
+runtime binding and preserves the source `<f8` contract independently in the
+anchor manifest. No M3C full benchmark or result claim has yet been made.
 
 ## Ordered local gates
 

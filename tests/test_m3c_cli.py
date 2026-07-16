@@ -12,8 +12,15 @@ import numpy as np
 import pytest
 
 from latentguard import cli
+from latentguard.integrations.maniskill_pickcube.configuration import (
+    load_maniskill_pickcube_action_layout,
+)
+from latentguard.integrations.maniskill_pickcube.state_indexed_build import (
+    PickCubeActionControlContractV1,
+)
 from latentguard.m3c_cli import (
     M3C_COMMANDS,
+    M3CCommandError,
     _fit_temporal_policies,
     _inference_latency_payload,
     _load_bound_inference_latency_report,
@@ -25,6 +32,7 @@ from latentguard.m3c_cli import (
     _precollection_inference_smoke_payload,
     _run_replay_complete_candidate_pools,
     _selector_configuration_payload,
+    _validate_candidate_runtime_action_contract,
     _validate_m3b_runtime_artifact_digests,
     _validated_phase_completion_timestamp,
     add_m3c_subparsers,
@@ -39,6 +47,7 @@ from latentguard.selection.blind_protocol import (
     EXPECTED_STAGE_A_VERIFIER_BUNDLE_KEYS,
 )
 from latentguard.selection.checkpoint_bundle import BundleLoadingDiagnosticsV1
+from latentguard.selection.configuration import load_candidate_pool_configuration
 from latentguard.selection.ensemble import (
     EnsembleEndToEndProfileV1,
     EnsembleInferenceDiagnosticsV1,
@@ -201,6 +210,30 @@ def test_registers_exact_commands_and_stage_a_has_no_outcome_capability() -> Non
                 "forbidden",
             ]
         )
+
+
+def test_candidate_configuration_binds_runtime_not_source_action_contract() -> None:
+    configuration = load_candidate_pool_configuration(
+        Path("configs/selection/m3c/candidate-pool-v1.json")
+    )
+    layout = load_maniskill_pickcube_action_layout(
+        Path("configs/integrations/maniskill_pickcube/action-layout-v1.json")
+    )
+    scope = SimpleNamespace(layout=layout)
+
+    _validate_candidate_runtime_action_contract(configuration, scope)  # type: ignore[arg-type]
+
+    source_contract = PickCubeActionControlContractV1(
+        coordinate_frame="unspecified",
+        control_period_s=0.05,
+        action_dtype="<f8",
+        action_dimension=8,
+    )
+    assert source_contract.content_digest != configuration.action_contract_digest
+
+    changed = SimpleNamespace(action_contract_digest=_sha("0"))
+    with pytest.raises(M3CCommandError, match="trusted runtime layout"):
+        _validate_candidate_runtime_action_contract(changed, scope)  # type: ignore[arg-type]
 
 
 def test_latency_payload_aggregates_all_end_to_end_repetitions() -> None:
