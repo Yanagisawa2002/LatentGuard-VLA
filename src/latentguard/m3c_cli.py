@@ -123,7 +123,15 @@ def add_m3c_subparsers(
     prepare.add_argument("--m3b-result-root", type=Path, required=True)
     prepare.add_argument("--m3b-runtime-root", type=Path, required=True)
     prepare.add_argument("--dataset-root", type=Path, required=True)
-    prepare.add_argument("--acceptance-report", type=Path, required=True)
+    prepare.add_argument(
+        "--acceptance-report",
+        type=Path,
+        required=True,
+        help=(
+            "accepted M3A serialized-reload validation-report.json "
+            "(not acceptance-summary.json)"
+        ),
+    )
     prepare.add_argument("--anchor-manifest-dir", type=Path, required=True)
     prepare.add_argument("--output-dir", type=Path, required=True)
     prepare.add_argument("--device", default="cpu")

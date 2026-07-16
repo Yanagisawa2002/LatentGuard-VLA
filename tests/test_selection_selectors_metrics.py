@@ -280,6 +280,37 @@ def test_validation_policies_require_five_seed_predictions_and_use_group_minima(
         )
 
 
+def test_validation_thresholds_fit_all_candidates_when_group_minima_are_one_class() -> (
+    None
+):
+    one_group = np.asarray(
+        [0.05, 0.80, 0.70, 0.60, 0.40, 0.30, 0.20, 0.10],
+        dtype=np.float64,
+    )
+    base = np.concatenate((one_group, one_group + 0.01))
+    per_seed = np.stack([base + offset for offset in (0.0, 0.001, 0.002, 0.003, 0.004)])
+    targets = np.asarray([0, 1, 1, 1, 0, 0, 0, 0] * 2, dtype=np.int64)
+    group_ids = ("validation-group-a",) * 8 + ("validation-group-b",) * 8
+    candidate_ids = tuple(f"validation-candidate-{index}" for index in range(16))
+
+    policies = fit_validation_ensemble_abstention_policies(
+        per_seed,
+        targets,
+        group_ids,
+        candidate_ids,
+        split="validation",
+        verifier_bundle_digest=_DIGEST_A,
+        validation_split_digest=_DIGEST_B,
+    )
+
+    assert policies[0].validation_balanced_accuracy == pytest.approx(1.0)
+    assert policies[0].achieved_failure_recall == pytest.approx(1.0)
+    assert policies[0].achieved_validation_coverage == pytest.approx(1.0)
+    assert policies[1].achieved_failure_recall == pytest.approx(1.0)
+    assert policies[1].target_met is True
+    assert all(policy.validation_group_count == 2 for policy in policies)
+
+
 def test_learned_abstention_is_strict_below_and_oracle_is_post_outcome() -> None:
     group = _group(2)
     blinded = _blind(group)

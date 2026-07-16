@@ -114,6 +114,10 @@ coverage and is neither success nor task failure.
     from the exact archive-audit digest. Emit independent zero-work replay
     resume proofs, a combined final resume summary, and a byte-bound Markdown
     review without raw predictions, states, actions, or evidence payloads.
+13. Fit balanced-accuracy and failure-recall abstention thresholds on the full
+    corrupted M3B validation candidate inventory, while fitting coverage
+    thresholds on validation per-group minima. This remains validation-only and
+    handles the observed one-class group-minimum labels without consulting M3C.
 
 ## Candidate and evaluation contract
 
@@ -150,7 +154,7 @@ binding, complementary replay gates, selector/metric contracts, predeclared
 target interpretation, pre-collection inference forward gate, atomic Stage A
 publication, semantic/archive replay digest separation, compact resume proofs,
 and CPU-only fake protocol coverage. Final combined-tree validation passed
-`1206` tests with `3` Windows symlink-privilege-only skips. `ruff check .`,
+`1207` tests with `3` Windows symlink-privilege-only skips. `ruff check .`,
 `ruff format --check .`, `mypy src` over 119 source files, and
 `git diff --check` also passed after the release-audit fixes.
 

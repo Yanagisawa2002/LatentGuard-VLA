@@ -149,9 +149,13 @@ be promoted into the full benchmark or used to tune a full configuration.
 
 Temporal abstention thresholds are derived only from the accepted M3B
 validation predictions after averaging the five calibrated seed probabilities.
-Per-seed thresholds are not averaged. The frozen maximum-balanced-accuracy,
-target-failure-recall, and approximately 90/80/70/50 percent coverage policies
-are content-bound before full execution.
+Per-seed thresholds are not averaged. Maximum-balanced-accuracy and
+target-failure-recall thresholds are fitted on the complete candidate-level
+corrupted validation inventory, which retains both outcome classes. The
+approximately 90/80/70/50 percent coverage thresholds use the per-group minimum
+ensemble scores because deployment first selects each group's minimum-score
+candidate. All six policies and this fitting semantic are content-bound before
+full execution.
 
 An abstention executes no proposal, lowers coverage, and is neither a success
 nor a task failure. Outcome rates therefore carry explicit numerators,

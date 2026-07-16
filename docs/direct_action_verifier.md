@@ -174,6 +174,10 @@ scores because the existing thresholds are per seed. This is a frozen
 validation-only deployment transformation, not model or architecture
 reselection. M3C full outcomes neither fit nor change calibration, thresholds,
 preprocessing, checkpoints, candidate definitions, or primary-selector status.
+Balanced-accuracy and failure-recall operating points use every corrupted M3B
+validation candidate; coverage operating points use the validation per-group
+minimum ensemble scores that match selection-time application. This distinction
+is required when all validation group minima happen to share one outcome class.
 
 The deployment inventory is exactly three learned bundle families, each with
 seeds 0 through 4. Stage A evaluates those action-only, state+action MLP, and

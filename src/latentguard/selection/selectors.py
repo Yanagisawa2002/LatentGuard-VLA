@@ -26,7 +26,7 @@ from latentguard.training.baselines import ActionMagnitudeBaselineV1
 
 EXPECTED_ENSEMBLE_SEEDS = (0, 1, 2, 3, 4)
 RANDOM_SELECTOR_SEMANTIC = "sha256_per_candidate_uniform_ranking_v1"
-ABSTENTION_SEMANTIC = "execute_when_group_min_failure_probability_lt_threshold_v1"
+ABSTENTION_SEMANTIC = "fit_candidate_validation_apply_group_min_strict_threshold_v1"
 VALIDATION_ENSEMBLE_SEMANTIC = "arithmetic_mean_of_five_calibrated_probabilities_v1"
 
 
@@ -294,9 +294,11 @@ def fit_validation_ensemble_abstention_policies(
     """Fit ensemble policies from validation predictions, never seed thresholds.
 
     The function requires the complete five-by-candidate probability matrix and
-    computes the arithmetic ensemble itself.  Accepting only the matrix makes it
-    impossible to implement this contract by averaging five pre-fitted scalar
-    thresholds.
+    computes the arithmetic ensemble itself. Balanced-accuracy and failure-recall
+    thresholds are fitted on all corrupted validation candidates, while coverage
+    policies use the per-group minimum scores to match deployment selection.
+    Accepting only the matrix makes it impossible to implement this contract by
+    averaging five pre-fitted scalar thresholds.
     """
 
     if split != "validation":
@@ -374,17 +376,9 @@ def fit_validation_ensemble_abstention_policies(
     group_minima = np.asarray(
         [ensemble[index] for index in selected_indices], dtype=np.float64
     )
-    group_targets = np.asarray(
-        [targets[index] for index in selected_indices], dtype=np.int64
-    )
-    if int(np.min(group_targets)) == int(np.max(group_targets)):
-        _fail(
-            "failure_targets",
-            "selected validation group minima require both outcome classes",
-        )
-    candidates = _threshold_candidates(group_minima)
+    candidates = _threshold_candidates(ensemble)
     evaluated = [
-        (threshold, *_classification_counts(group_minima, group_targets, threshold))
+        (threshold, *_classification_counts(ensemble, targets, threshold))
         for threshold in candidates
     ]
     best_threshold, best_balanced, best_recall = max(
