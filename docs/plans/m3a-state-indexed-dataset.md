@@ -121,14 +121,15 @@ at least 500 successes and 500 task failures, exact 48/6/6 trajectory splits,
 no leakage, complete restoration coverage within `1e-6`, unchanged
 continuations, safe reload, and idempotent resume.
 
-The local workstation does not provide CPython 3.11, so the pre-push CPU suite
-was run with its repository virtual environment on CPython 3.12.10. This is a
+The local workstation does not provide CPython 3.11, so the final CPU suite was
+run with its repository virtual environment on CPython 3.12.10. This is a
 temporary environment exception, not a compatibility claim. The exact pushed
-revision must repeat the complete suite and static checks with the configured
-remote CPython 3.11 interpreter before any simulator smoke. The post-fix local
-result is `1032 passed, 3 skipped`; the three skips are Windows tests that
-require the unavailable directory-symlink privilege. Ruff lint, Ruff format
-checking, mypy over `src`, all five CLI dry runs, and `git diff --check` pass.
+execution revision repeated the complete suite and static checks with the
+configured remote CPython 3.11 interpreter before simulator execution. The
+final local result is `1036 passed, 3 skipped`; the three skips are Windows
+tests that require the unavailable directory-symlink privilege. The remote
+CPython 3.11 result is `1039 passed`. Ruff lint, Ruff format checking, mypy over
+`src`, all five M3A CLI help smoke paths, and `git diff --check` pass.
 
 ## Storage and source-of-truth policy
 
@@ -149,58 +150,57 @@ or real-robot execution is included.
 
 - Starting revision: `ca8e6a8b9d4eb305b8b1bfbdaa9f4d29e0efb842`.
 - Branch: `codex/m3a-state-indexed-dataset`.
-- The implementation commit `fece3b199a05a456d43c9a97ec83fabe8a0e1542`
-  was pushed, and its remote CPython 3.11 suite/static checks passed. Remote run
-  `20260715T101849Z_m3a-smoke_fece3b1_seed0` correctly failed closed during
-  fresh-state collection because 42 restored grasp-phase states returned
-  source-time `is_grasped=1` versus restored-boundary `is_grasped=0`; all other
-  public-vector components stayed within tolerance and the complete state tree
-  restored with maximum error `1.1920929e-7`. The content-bound restored public
-  projection fix is implemented and passes the complete local suite. A bounded
-  follow-up probe, run
-  `20260715T115713Z_m3a-contact-refresh-probe_fece3b1_seed0`, confirmed that
-  public evaluation, contact queries, and render updates leave the restored
-  grasp flag false while preserving the 70-component state; one physics step
-  makes the flag true but changes the complete state by as much as
-  `32.6216516494751`, so that workaround is invalid. A new pushed exact
-  revision `7795e329eae16ccf6530ffc4b7beb21c4ae77ecf` then passed the remote
-  Python 3.11 suite (`1033 passed`) and static checks. Strict-warning smoke run
-  `20260715T121805Z_m3a-smoke_7795e32_seed0` rejected all 48 attempts before
-  publication. Diagnostic run
-  `20260715T122100Z_m3a-warning-probe_7795e32_seed0` identified one local
-  unclosed solver-source file and one pinned-upstream deprecation emitted by
-  ManiSkill's official geometry helper. The local fix now closes the file and
-  filters only that exact message, category, and upstream module during the
-  official solver call; all other warnings retain the caller's error policy.
-  Revision `b57c287e95a68d64c05272bb81ec6905ec6f0d98` then passed the
-  remote Python 3.11 suite (`1034 passed`) and static checks. Strict-warning run
-  `20260715T122701Z_m3a-smoke_b57c287_seed0` again published no archive; its
-  improved summary recorded 48 `PickCubeSourceGenerationError` attempts.
-  Single-seed diagnostic
-  `20260715T123200Z_m3a-stage-probe_b57c287_seed0` proved that the 82-action
-  source and independent baseline passed and isolated the rejection to a
-  missing production-factory purpose allowlist entry for restored projection
-  binding. Revision `d745bbe185d537342beecafcf754141c57ee40f2` added
-  that exact purpose, passed the remote Python 3.11 suite (`1035 passed`) and
-  static checks, and produced successful smoke run
-  `20260715T123712Z_m3a-smoke_d745bbe_seed0`: 6/6 accepted source
-  trajectories, 468 archived states, 36 anchors, 288 proposals, 252
-  conclusive strong outcomes, 219 conclusive successes, 33 conclusive task
-  failures, 36 explicit invalid-context outcomes, zero execution errors, 70
-  compared full-state components, and maximum restoration error
-  `1.1920929e-7`. Resume reused all 288 terminal attempts without rerun.
-  Export produced 288 compact samples, but independent evidence rebinding
-  correctly exposed an identity-based comparison of otherwise identical
-  serialized failure events. The preserved run also showed that every invalid
-  proposal was the all-dimension zeroing definition: action index 3 has a
-  compatibility-bound upper limit below zero. The local candidate fix compares
-  failure events by serialized field content and changes only that checked-in
-  zeroing definition to the maximal contract-valid explicit index set
-  `(0, 1, 2, 4, 5, 6, 7)`; it neither clips nor dynamically repairs actions.
-  The same candidate revision closes two report/audit gaps found before push:
-  split assignments now bind a leakage set derived from the ordered complete
-  T+1 state-tree digest sequence instead of only anchor-state digests, and
-  compact reports include
-  fixed-bin plus nearest-rank restoration-error distributions.
-  A new pushed revision and run ID must revalidate export reload and empirical
-  class balance before the single-GPU full target begins.
+- Implementation lineage:
+  `fece3b199a05a456d43c9a97ec83fabe8a0e1542`,
+  `7795e329eae16ccf6530ffc4b7beb21c4ae77ecf`,
+  `b57c287e95a68d64c05272bb81ec6905ec6f0d98`,
+  `d745bbe185d537342beecafcf754141c57ee40f2`, and the accepted execution
+  revision `cc01a01a22bd8e53f4a442d0a6f7fd561d0ab85a`. The lineage records the
+  restored-boundary public projection, exact upstream-warning filter,
+  production factory purpose binding, serialized failure-event comparison,
+  contract-valid zeroing definition, ordered complete T+1 state inventory,
+  and deterministic restoration-error distributions.
+- Accepted smoke run `20260715T133653Z_m3a-smoke_cc01a01_seed0` executed the
+  clean pushed revision on one RTX 5090. It accepted 6/6 source trajectories,
+  archived 468 T+1 states, built 36 valid anchors with zero baseline
+  exclusions, and evaluated all 288 proposals. All 288 results were conclusive
+  strong simulator evidence: 231 successes and 57 task failures, with zero
+  invalid, indeterminate, skipped, or execution-error outcomes. Resume
+  evaluated zero attempts and reused all 288 terminal attempts. Export and
+  independent reload validation accepted 324 samples in 36 groups with 4/1/1
+  trajectory splits, no leakage, and dataset digest
+  `sha256:feae1784aec087689e9a7efd36851e12692d70545ce556c6f73249c82379a1c2`.
+- Full single-GPU acceptance run
+  `20260715T140743Z_m3a-full_cc01a01_seed0` executed the same clean pushed
+  revision on one RTX 5090. Collection accepted 60/60 attempts, recorded 4,560
+  source actions and 4,620 T+1 states, and published archive digest
+  `sha256:cc48c42f1c8395d348f968be72102b857eb2994702c6ca85bf8e6239f2fb36d5`.
+  Build produced 360 anchors and 360 successful anchor baselines with zero
+  exclusions. Anchor reasons were approach 60, early trajectory 60, evenly
+  spaced fill 69, first grasp transition 53, late transport 59, and near
+  placement 59.
+- Full replay evaluated all 2,880 proposals with 2,880 valid paired baselines:
+  2,289 conclusive successes and 591 conclusive task failures, with zero
+  invalid, indeterminate, skipped, or execution-error outcomes. Every accepted
+  result uses the `exact_simulator` trust tier. The no-op resume evaluated,
+  recovered, and retried zero attempts and reused all 2,880 terminal attempts.
+  Complete continuation integrity passed for every proposal.
+- Full-state restoration validation covers 6,120 comparisons of exactly 70
+  components, with maximum absolute error `1.1920928955078125e-7` and no value
+  above `1e-6`. Independent `PickCubeVerifierStateV1` restoration covers all
+  360 anchors at dimension 38 with zero maximum error. The action dimension is
+  8, horizon is 16, and progress remains the binary semantic
+  `pickcube_binary_completion_v0`.
+- Export and independent `--require-full-target` reload validation accepted
+  3,240 samples in 360 groups: 360 source and 2,880 corrupted samples. Exact
+  trajectory splits are 48/6/6, with 2,592/324/324 samples. Evidence rebinding,
+  resume idempotence, continuation integrity, and full-trajectory state leakage
+  validation all pass. Dataset digest is
+  `sha256:7847c9d0e09170531e13ba07531fabb3ea6f0aa6b0122298b733726d2055856d`.
+- Compact sanitized evidence is stored under
+  `reports/m3a/20260715T133653Z_m3a-smoke_cc01a01_seed0/` and
+  `reports/m3a/20260715T140743Z_m3a-full_cc01a01_seed0/`. Raw states, actions,
+  source bundles, manifests, evidence ledger, and the full verifier dataset
+  remain outside Git in the remote run root.
+- No training or LangMani execution was performed. The result commit subject is
+  `docs(m3a): record state-indexed dataset acceptance`.

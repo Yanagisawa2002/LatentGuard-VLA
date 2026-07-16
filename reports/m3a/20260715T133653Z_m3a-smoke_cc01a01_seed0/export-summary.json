@@ -1,0 +1,86 @@
+{
+  "action_dimension": 8,
+  "anchors_without_conclusive_corruption": 0,
+  "candidate_group_count": 36,
+  "chunk_horizon": 16,
+  "corrupted_failure_count": 57,
+  "corrupted_sample_count": 288,
+  "corrupted_success_count": 231,
+  "corrupted_unsafe_count": 1,
+  "corruption_dataset_digest": "sha256:9a47079317ff1eb62cc1e68264e1b06bd265764587aefee8fdeb04848c6f2d3e",
+  "corruption_type_counts": {
+    "additive_gaussian_noise": 72,
+    "constant_bias": 72,
+    "local_temporal_permutation": 36,
+    "segment_hold": 36,
+    "segment_zeroing": 36,
+    "temporal_field_shift": 36
+  },
+  "dataset_content_digest": "sha256:feae1784aec087689e9a7efd36851e12692d70545ce556c6f73249c82379a1c2",
+  "dataset_sample_count": 324,
+  "evaluation_attempt_count": 288,
+  "evaluation_status_counts": {
+    "conclusive": 288
+  },
+  "evidence_dataset_digest": "sha256:74868bc5cefcb7fb844b8b1f2d5221abc7626276804e62e2b473b999b232347a",
+  "evidence_reference_count": 324,
+  "exclusion_reason_counts": {},
+  "included_anchor_count": 36,
+  "manifest_anchor_count": 36,
+  "progress_semantic": "pickcube_binary_completion_v0",
+  "schema_version": "1.0",
+  "selected_proposal_count": 288,
+  "serialized_reload_validation": {
+    "candidate_group_count": 36,
+    "corrupted_failure_count": 57,
+    "corrupted_sample_count": 288,
+    "corrupted_success_count": 231,
+    "dataset_content_digest": "sha256:feae1784aec087689e9a7efd36851e12692d70545ce556c6f73249c82379a1c2",
+    "evidence_dataset_digest": "sha256:74868bc5cefcb7fb844b8b1f2d5221abc7626276804e62e2b473b999b232347a",
+    "evidence_reference_count": 324,
+    "evidence_references_valid": true,
+    "leakage_valid": true,
+    "sample_count": 324,
+    "schema_version": "1.0",
+    "source_sample_count": 36,
+    "source_trajectory_count": 6,
+    "split_sample_counts": {
+      "test": 54,
+      "train": 216,
+      "validation": 54
+    },
+    "split_trajectory_counts": {
+      "test": 1,
+      "train": 4,
+      "validation": 1
+    },
+    "valid": true,
+    "validation_scope": "serialized_reload"
+  },
+  "severity_counts": {
+    "mild_arm_gaussian_0p005": 36,
+    "mild_gripper_shift_1": 36,
+    "moderate_arm_bias_0p01": 36,
+    "moderate_gripper_permutation_4_12": 36,
+    "severe_all_hold_1_16": 36,
+    "severe_arm_bias_0p15": 36,
+    "severe_arm_gaussian_0p05": 36,
+    "severe_contract_safe_zero_0_16": 36
+  },
+  "source_dataset_digest": "sha256:1bdec50ab94ea7810bdf14f7501355e0cb620e439487d13fe3de8604dfc754d6",
+  "source_dataset_id": "sha256:75d7f8a03f8f59ab9d04bcb230dd23c93d5a2c04adc8abea62487ec39f0e19a8",
+  "source_sample_count": 36,
+  "source_trajectory_count": 6,
+  "split_sample_counts": {
+    "test": 54,
+    "train": 216,
+    "validation": 54
+  },
+  "split_trajectory_counts": {
+    "test": 1,
+    "train": 4,
+    "validation": 1
+  },
+  "state_vector_dimension": 38,
+  "total_proposal_count": 288
+}

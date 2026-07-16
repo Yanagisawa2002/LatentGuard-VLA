@@ -1,0 +1,26 @@
+{
+  "action_layout": "configs/integrations/maniskill_pickcube/action-layout-v1.json",
+  "branch": "codex/m3a-state-indexed-dataset",
+  "commit_sha": "cc01a01a22bd8e53f4a442d0a6f7fd561d0ab85a",
+  "compatibility_report": "reports/m2c/20260715T080753Z_m2c-pickcube-trusted_aafe838_seed0/compatibility-trusted.json",
+  "cuda_visible_devices": "0",
+  "expected_contract": "configs/integrations/maniskill_pickcube/expected-contract-v1.json",
+  "gpu_inventory": [
+    "NVIDIA GeForce RTX 5090, 32607 MiB"
+  ],
+  "hostname_digest": "sha256:395a1a7413343b4c413b5953e0eae5e6f1dff51b54dfb1adbda7fa70f3c70d39",
+  "launch_command": "latentguard collect-maniskill-pickcube-sequences --requested-success-count 60 --starting-seed 0 --maximum-attempts 480 --sim-backend gpu --fresh-state-trajectory-limit 1",
+  "packages": {
+    "mani_skill": "3.0.1",
+    "mplib": "0.1.1",
+    "numpy": "1.26.4",
+    "sapien": "3.0.3"
+  },
+  "platform": "Linux-5.15.0-119-generic-x86_64-with-glibc2.35",
+  "python": "3.11.15 (main, Jun 11 2026, 15:20:16) [GCC 14.3.0]",
+  "pytorch_cuda": "12.8",
+  "run_id": "20260715T140743Z_m3a-full_cc01a01_seed0",
+  "schema_version": "1.0",
+  "start_time_utc": "2026-07-15T14:08:23.493400+00:00",
+  "warnings_policy": "error except exact pinned official-solver component.pose deprecation"
+}

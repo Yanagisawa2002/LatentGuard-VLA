@@ -1,0 +1,263 @@
+{
+  "acceptance_valid": true,
+  "adapter_trust_tier": "exact_simulator",
+  "anchor_count": 360,
+  "anchor_manifest_content_digest": "sha256:c15d4fdaf36994f5cd58304484110407e8f281057983056aa5a7025fad363e9e",
+  "anchor_selection_reasons": {
+    "approach_phase": 60,
+    "early_trajectory": 60,
+    "evenly_spaced_fill": 69,
+    "first_grasp_transition": 53,
+    "late_transport": 59,
+    "near_placement": 59
+  },
+  "archive_content_digest": "sha256:cc48c42f1c8395d348f968be72102b857eb2994702c6ca85bf8e6239f2fb36d5",
+  "baseline_success_count": 360,
+  "by_definition": [
+    {
+      "conclusive_success_count": 360,
+      "conclusive_task_failure_count": 0,
+      "corruption_type": "additive_gaussian_noise",
+      "sample_count": 360,
+      "severity_id": "mild_arm_gaussian_0p005",
+      "unsafe_count": 0
+    },
+    {
+      "conclusive_success_count": 271,
+      "conclusive_task_failure_count": 89,
+      "corruption_type": "additive_gaussian_noise",
+      "sample_count": 360,
+      "severity_id": "severe_arm_gaussian_0p05",
+      "unsafe_count": 0
+    },
+    {
+      "conclusive_success_count": 360,
+      "conclusive_task_failure_count": 0,
+      "corruption_type": "constant_bias",
+      "sample_count": 360,
+      "severity_id": "moderate_arm_bias_0p01",
+      "unsafe_count": 0
+    },
+    {
+      "conclusive_success_count": 186,
+      "conclusive_task_failure_count": 174,
+      "corruption_type": "constant_bias",
+      "sample_count": 360,
+      "severity_id": "severe_arm_bias_0p15",
+      "unsafe_count": 4
+    },
+    {
+      "conclusive_success_count": 359,
+      "conclusive_task_failure_count": 1,
+      "corruption_type": "local_temporal_permutation",
+      "sample_count": 360,
+      "severity_id": "moderate_gripper_permutation_4_12",
+      "unsafe_count": 0
+    },
+    {
+      "conclusive_success_count": 269,
+      "conclusive_task_failure_count": 91,
+      "corruption_type": "segment_hold",
+      "sample_count": 360,
+      "severity_id": "severe_all_hold_1_16",
+      "unsafe_count": 0
+    },
+    {
+      "conclusive_success_count": 124,
+      "conclusive_task_failure_count": 236,
+      "corruption_type": "segment_zeroing",
+      "sample_count": 360,
+      "severity_id": "severe_contract_safe_zero_0_16",
+      "unsafe_count": 32
+    },
+    {
+      "conclusive_success_count": 360,
+      "conclusive_task_failure_count": 0,
+      "corruption_type": "temporal_field_shift",
+      "sample_count": 360,
+      "severity_id": "mild_gripper_shift_1",
+      "unsafe_count": 0
+    }
+  ],
+  "by_family": [
+    {
+      "conclusive_success_count": 631,
+      "conclusive_task_failure_count": 89,
+      "corruption_type": "additive_gaussian_noise",
+      "sample_count": 720,
+      "unsafe_count": 0
+    },
+    {
+      "conclusive_success_count": 546,
+      "conclusive_task_failure_count": 174,
+      "corruption_type": "constant_bias",
+      "sample_count": 720,
+      "unsafe_count": 4
+    },
+    {
+      "conclusive_success_count": 359,
+      "conclusive_task_failure_count": 1,
+      "corruption_type": "local_temporal_permutation",
+      "sample_count": 360,
+      "unsafe_count": 0
+    },
+    {
+      "conclusive_success_count": 269,
+      "conclusive_task_failure_count": 91,
+      "corruption_type": "segment_hold",
+      "sample_count": 360,
+      "unsafe_count": 0
+    },
+    {
+      "conclusive_success_count": 124,
+      "conclusive_task_failure_count": 236,
+      "corruption_type": "segment_zeroing",
+      "sample_count": 360,
+      "unsafe_count": 32
+    },
+    {
+      "conclusive_success_count": 360,
+      "conclusive_task_failure_count": 0,
+      "corruption_type": "temporal_field_shift",
+      "sample_count": 360,
+      "unsafe_count": 0
+    }
+  ],
+  "by_severity": [
+    {
+      "conclusive_success_count": 360,
+      "conclusive_task_failure_count": 0,
+      "sample_count": 360,
+      "severity_id": "mild_arm_gaussian_0p005",
+      "unsafe_count": 0
+    },
+    {
+      "conclusive_success_count": 360,
+      "conclusive_task_failure_count": 0,
+      "sample_count": 360,
+      "severity_id": "mild_gripper_shift_1",
+      "unsafe_count": 0
+    },
+    {
+      "conclusive_success_count": 360,
+      "conclusive_task_failure_count": 0,
+      "sample_count": 360,
+      "severity_id": "moderate_arm_bias_0p01",
+      "unsafe_count": 0
+    },
+    {
+      "conclusive_success_count": 359,
+      "conclusive_task_failure_count": 1,
+      "sample_count": 360,
+      "severity_id": "moderate_gripper_permutation_4_12",
+      "unsafe_count": 0
+    },
+    {
+      "conclusive_success_count": 269,
+      "conclusive_task_failure_count": 91,
+      "sample_count": 360,
+      "severity_id": "severe_all_hold_1_16",
+      "unsafe_count": 0
+    },
+    {
+      "conclusive_success_count": 186,
+      "conclusive_task_failure_count": 174,
+      "sample_count": 360,
+      "severity_id": "severe_arm_bias_0p15",
+      "unsafe_count": 4
+    },
+    {
+      "conclusive_success_count": 271,
+      "conclusive_task_failure_count": 89,
+      "sample_count": 360,
+      "severity_id": "severe_arm_gaussian_0p05",
+      "unsafe_count": 0
+    },
+    {
+      "conclusive_success_count": 124,
+      "conclusive_task_failure_count": 236,
+      "sample_count": 360,
+      "severity_id": "severe_contract_safe_zero_0_16",
+      "unsafe_count": 32
+    }
+  ],
+  "commit_sha": "cc01a01a22bd8e53f4a442d0a6f7fd561d0ab85a",
+  "conclusive_success_count": 2289,
+  "conclusive_task_failure_count": 591,
+  "continuation_integrity_valid": true,
+  "corrupted_sample_count": 2880,
+  "corruption_dataset_digest": "sha256:0435a7d7576070f39d17d266136514a201d7f8815053e0f5b21c9bbaebd61f97",
+  "dataset_content_digest": "sha256:7847c9d0e09170531e13ba07531fabb3ea6f0aa6b0122298b733726d2055856d",
+  "evaluation_run_id": "evr-sha256-45622545e63ca98d1000352c0c437b8dddddb0ff0e1c3fcabc5a2dffe7d8c065",
+  "evidence_dataset_digest": "sha256:d077dcf31012d32f4b4833a0622b58d55a43d5a96a1f81b4eea045da0f747995",
+  "evidence_references_valid": true,
+  "execution_error_count": 0,
+  "execution_run_id": "20260715T140743Z_m3a-full_cc01a01_seed0",
+  "full_target_valid": true,
+  "indeterminate_count": 0,
+  "invalid_count": 0,
+  "leakage_valid": true,
+  "progress_semantic": "pickcube_binary_completion_v0",
+  "proposal_count": 2880,
+  "restoration_compared_component_counts": [
+    70
+  ],
+  "restoration_error_distribution": {
+    "count": 6120,
+    "fixed_bin_counts": {
+      "equal_zero": 0,
+      "gt_1e-6": 0,
+      "gt_1e-7_le_5e-7": 6120,
+      "gt_1e-8_le_1e-7": 0,
+      "gt_5e-7_le_1e-6": 0,
+      "gt_zero_le_1e-8": 0
+    },
+    "maximum": 1.1920928955078125e-07,
+    "minimum": 1.1920928955078125e-07,
+    "p50": 1.1920928955078125e-07,
+    "p95": 1.1920928955078125e-07,
+    "p99": 1.1920928955078125e-07,
+    "quantile_semantic": "nearest_rank_v1"
+  },
+  "restoration_maximum_absolute_error": 1.1920928955078125e-07,
+  "resume_idempotence_valid": true,
+  "resume_reused_without_rerun_count": 2880,
+  "sample_count": 3240,
+  "schema_version": "1.0",
+  "skipped_count": 0,
+  "source_sample_count": 360,
+  "source_trajectory_count": 60,
+  "split_sample_counts": {
+    "test": 324,
+    "train": 2592,
+    "validation": 324
+  },
+  "split_trajectory_counts": {
+    "test": 6,
+    "train": 48,
+    "validation": 6
+  },
+  "state_vector_dimension": 38,
+  "state_vector_semantic": "PickCubeVerifierStateV1",
+  "verifier_state_restoration_compared_component_counts": [
+    38
+  ],
+  "verifier_state_restoration_error_distribution": {
+    "count": 360,
+    "fixed_bin_counts": {
+      "equal_zero": 360,
+      "gt_1e-6": 0,
+      "gt_1e-7_le_5e-7": 0,
+      "gt_1e-8_le_1e-7": 0,
+      "gt_5e-7_le_1e-6": 0,
+      "gt_zero_le_1e-8": 0
+    },
+    "maximum": 0.0,
+    "minimum": 0.0,
+    "p50": 0.0,
+    "p95": 0.0,
+    "p99": 0.0,
+    "quantile_semantic": "nearest_rank_v1"
+  },
+  "verifier_state_restoration_maximum_absolute_error": 0.0
+}

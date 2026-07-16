@@ -1,0 +1,19 @@
+{
+  "anchor_count": 360,
+  "anchor_manifest_content_digest": "sha256:c15d4fdaf36994f5cd58304484110407e8f281057983056aa5a7025fad363e9e",
+  "anchor_selection_reasons": {
+    "approach_phase": 60,
+    "early_trajectory": 60,
+    "evenly_spaced_fill": 69,
+    "first_grasp_transition": 53,
+    "late_transport": 59,
+    "near_placement": 59
+  },
+  "baseline_exclusion_reasons": {},
+  "baseline_success_count": 360,
+  "candidate_horizon": 16,
+  "exclusion_count": 0,
+  "schema_version": "1.0",
+  "source_dataset_digest": "sha256:ba7091f039cfd0e042cc708c16a3c2ccf65f14d19bd46b53046b5bea84c17f38",
+  "source_trajectory_count": 60
+}

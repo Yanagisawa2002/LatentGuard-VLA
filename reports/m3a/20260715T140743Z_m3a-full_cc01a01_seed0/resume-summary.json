@@ -1,0 +1,47 @@
+{
+  "adapter_trust_tier": "exact_simulator",
+  "anchor_manifest_content_digest": "sha256:c15d4fdaf36994f5cd58304484110407e8f281057983056aa5a7025fad363e9e",
+  "conclusive_success_count": 2289,
+  "conclusive_task_failure_count": 591,
+  "corruption_dataset_digest": "sha256:0435a7d7576070f39d17d266136514a201d7f8815053e0f5b21c9bbaebd61f97",
+  "evaluated_attempts_this_invocation": 0,
+  "evidence_count": 2880,
+  "execution_error_count": 0,
+  "indeterminate_count": 0,
+  "invalid_baseline_count": 0,
+  "invalid_count": 0,
+  "prefix_evidence_count": 2880,
+  "projected_outcome_count": 2880,
+  "proposal_count": 2880,
+  "recovered_attempts_this_invocation": 0,
+  "restoration_compared_component_counts": [
+    70
+  ],
+  "restoration_error_distribution": {
+    "count": 5760,
+    "fixed_bin_counts": {
+      "equal_zero": 0,
+      "gt_1e-6": 0,
+      "gt_1e-7_le_5e-7": 5760,
+      "gt_1e-8_le_1e-7": 0,
+      "gt_5e-7_le_1e-6": 0,
+      "gt_zero_le_1e-8": 0
+    },
+    "maximum": 1.1920928955078125e-07,
+    "minimum": 1.1920928955078125e-07,
+    "p50": 1.1920928955078125e-07,
+    "p95": 1.1920928955078125e-07,
+    "p99": 1.1920928955078125e-07,
+    "quantile_semantic": "nearest_rank_v1"
+  },
+  "restoration_maximum_absolute_error": 1.1920928955078125e-07,
+  "resumed_invocation": true,
+  "resumed_without_rerun_count": 2880,
+  "retried_attempts_this_invocation": 0,
+  "run_id": "evr-sha256-45622545e63ca98d1000352c0c437b8dddddb0ff0e1c3fcabc5a2dffe7d8c065",
+  "schema_version": "1.0",
+  "skipped_count": 0,
+  "source_candidate_count": 360,
+  "source_episode_count": 360,
+  "valid_baseline_count": 2880
+}

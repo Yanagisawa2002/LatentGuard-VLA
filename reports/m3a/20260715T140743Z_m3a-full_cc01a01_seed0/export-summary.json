@@ -1,0 +1,86 @@
+{
+  "action_dimension": 8,
+  "anchors_without_conclusive_corruption": 0,
+  "candidate_group_count": 360,
+  "chunk_horizon": 16,
+  "corrupted_failure_count": 591,
+  "corrupted_sample_count": 2880,
+  "corrupted_success_count": 2289,
+  "corrupted_unsafe_count": 36,
+  "corruption_dataset_digest": "sha256:0435a7d7576070f39d17d266136514a201d7f8815053e0f5b21c9bbaebd61f97",
+  "corruption_type_counts": {
+    "additive_gaussian_noise": 720,
+    "constant_bias": 720,
+    "local_temporal_permutation": 360,
+    "segment_hold": 360,
+    "segment_zeroing": 360,
+    "temporal_field_shift": 360
+  },
+  "dataset_content_digest": "sha256:7847c9d0e09170531e13ba07531fabb3ea6f0aa6b0122298b733726d2055856d",
+  "dataset_sample_count": 3240,
+  "evaluation_attempt_count": 2880,
+  "evaluation_status_counts": {
+    "conclusive": 2880
+  },
+  "evidence_dataset_digest": "sha256:d077dcf31012d32f4b4833a0622b58d55a43d5a96a1f81b4eea045da0f747995",
+  "evidence_reference_count": 3240,
+  "exclusion_reason_counts": {},
+  "included_anchor_count": 360,
+  "manifest_anchor_count": 360,
+  "progress_semantic": "pickcube_binary_completion_v0",
+  "schema_version": "1.0",
+  "selected_proposal_count": 2880,
+  "serialized_reload_validation": {
+    "candidate_group_count": 360,
+    "corrupted_failure_count": 591,
+    "corrupted_sample_count": 2880,
+    "corrupted_success_count": 2289,
+    "dataset_content_digest": "sha256:7847c9d0e09170531e13ba07531fabb3ea6f0aa6b0122298b733726d2055856d",
+    "evidence_dataset_digest": "sha256:d077dcf31012d32f4b4833a0622b58d55a43d5a96a1f81b4eea045da0f747995",
+    "evidence_reference_count": 3240,
+    "evidence_references_valid": true,
+    "leakage_valid": true,
+    "sample_count": 3240,
+    "schema_version": "1.0",
+    "source_sample_count": 360,
+    "source_trajectory_count": 60,
+    "split_sample_counts": {
+      "test": 324,
+      "train": 2592,
+      "validation": 324
+    },
+    "split_trajectory_counts": {
+      "test": 6,
+      "train": 48,
+      "validation": 6
+    },
+    "valid": true,
+    "validation_scope": "serialized_reload"
+  },
+  "severity_counts": {
+    "mild_arm_gaussian_0p005": 360,
+    "mild_gripper_shift_1": 360,
+    "moderate_arm_bias_0p01": 360,
+    "moderate_gripper_permutation_4_12": 360,
+    "severe_all_hold_1_16": 360,
+    "severe_arm_bias_0p15": 360,
+    "severe_arm_gaussian_0p05": 360,
+    "severe_contract_safe_zero_0_16": 360
+  },
+  "source_dataset_digest": "sha256:abed37ec5309543ef5714f721d46e39105dcb5f29ec15f3f0668e83c20bf3185",
+  "source_dataset_id": "sha256:ba7091f039cfd0e042cc708c16a3c2ccf65f14d19bd46b53046b5bea84c17f38",
+  "source_sample_count": 360,
+  "source_trajectory_count": 60,
+  "split_sample_counts": {
+    "test": 324,
+    "train": 2592,
+    "validation": 324
+  },
+  "split_trajectory_counts": {
+    "test": 6,
+    "train": 48,
+    "validation": 6
+  },
+  "state_vector_dimension": 38,
+  "total_proposal_count": 2880
+}
