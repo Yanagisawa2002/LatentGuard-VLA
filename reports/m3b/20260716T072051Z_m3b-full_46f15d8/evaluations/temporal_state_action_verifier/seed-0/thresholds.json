@@ -1,0 +1,46 @@
+{
+  "content_digest": "sha256:84cca2c65ec2b52c1f7eeeaa8bbc879b4f640468e147f68fb814b8bc1bfb4a65",
+  "payload": {
+    "calibration_digest": "sha256:6d204a4635013066c143bad019c60990ad372b5a3938439d33236e47f4287c07",
+    "comparison_semantic": "predict_failure_when_probability_gte_threshold_v1",
+    "content_digest": "sha256:b6e36a30d7f7885ea6cb2cb39ecbeed3d3af783828eb2d0e55a62f914667d9fc",
+    "dataset_digest": "sha256:7847c9d0e09170531e13ba07531fabb3ea6f0aa6b0122298b733726d2055856d",
+    "maximum_balanced_accuracy": {
+      "achieved_failure_recall": {
+        "reason": null,
+        "status": "defined",
+        "value": 0.9666666666666667
+      },
+      "policy": "maximum_validation_balanced_accuracy",
+      "target_failure_recall": null,
+      "target_met": null,
+      "threshold": 0.4390382033881458,
+      "validation_balanced_accuracy": {
+        "reason": null,
+        "status": "defined",
+        "value": 0.928409090909091
+      }
+    },
+    "schema_version": "1.0",
+    "split_digest": "sha256:173ca40a072a1977cc65dbcccedb4684ae573e97f3984c176e3f91bba09f940a",
+    "target_failure_recall": {
+      "achieved_failure_recall": {
+        "reason": null,
+        "status": "defined",
+        "value": 0.9
+      },
+      "policy": "target_validation_failure_recall",
+      "target_failure_recall": 0.9,
+      "target_met": true,
+      "threshold": 0.7704767903360998,
+      "validation_balanced_accuracy": {
+        "reason": null,
+        "status": "defined",
+        "value": 0.9102272727272727
+      }
+    },
+    "validation_prediction_digest": "sha256:e746fe92f5c80f9ed7964cf7554bc9256a8bac4525173c17eee9487ff57988e4"
+  },
+  "report_type": "frozen_thresholds_v1",
+  "schema_version": "1.0"
+}

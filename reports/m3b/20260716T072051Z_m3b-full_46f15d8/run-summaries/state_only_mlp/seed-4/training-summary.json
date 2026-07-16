@@ -1,0 +1,83 @@
+{
+  "content_digest": "sha256:d23a8e954956505667118a08a0ecb7f52fa8fd79b69a1cb981e7e436dbdebc94",
+  "payload": {
+    "acceptance_report_digest": "sha256:f3d747daffc8dfe3528350de4e193bc2e6d2a2954fe1d4476c3a2797c317c06f",
+    "best_checkpoint_content_digest": "sha256:6c3e199d27be83b7246838ee19bcf9c41123807994de9c484cdd9070f4338d60",
+    "best_epoch": 19,
+    "best_validation_failure_auprc": 0.3891073946006467,
+    "completed": true,
+    "cumulative_epoch_duration_seconds": 6.590612981468439,
+    "environment": {
+      "cublas_workspace_config": ":4096:8",
+      "cuda_version": "12.8",
+      "deterministic_algorithms": true,
+      "gpu_driver_version": "580.76.05",
+      "gpu_model": "NVIDIA GeForce RTX 5090",
+      "nondeterministic_operations": [],
+      "numpy_version": "1.26.4",
+      "package_versions": [
+        "latentguard-vla=0.1.0",
+        "numpy=1.26.4",
+        "torch=2.8.0+cu128"
+      ],
+      "python_version": "3.11.15",
+      "pytorch_version": "2.8.0+cu128"
+    },
+    "final_checkpoint_content_digest": "sha256:2571b4517c4722f4a7b5f7082667d3a8f49f1a1039b1b57531696477947432fc",
+    "final_epoch": 31,
+    "final_validation_corrupted_brier_score": 0.20267727587739895,
+    "final_validation_corrupted_failure_auprc": 0.3728444758152555,
+    "final_validation_loss": 0.9885666988514088,
+    "global_step": 672,
+    "model_type": "state_only_mlp",
+    "peak_gpu_memory_bytes": 69193728,
+    "positive_class_weight": 4.479915433403805,
+    "resolved_model_configuration": {
+      "action_dimension": 8,
+      "action_horizon": 16,
+      "action_projection_dimension": null,
+      "activation": "gelu",
+      "attention_heads": null,
+      "dropout": 0.1,
+      "hidden_dimensions": [
+        128,
+        128
+      ],
+      "model_type": "state_only_mlp",
+      "parameter_count": 38913,
+      "schema_version": "1.0",
+      "state_dimension": 38,
+      "state_projection_dimension": 128,
+      "temporal_embedding_dimension": null,
+      "transformer_feedforward_dimension": null,
+      "transformer_layers": null
+    },
+    "resolved_training_configuration": {
+      "batch_size": 128,
+      "checkpoint_interval_epochs": 1,
+      "deterministic_algorithms": true,
+      "early_stopping_min_delta": 0.0001,
+      "early_stopping_patience": 12,
+      "gradient_clip_norm": 1.0,
+      "learning_rate": 0.001,
+      "limit_samples": null,
+      "loss_mode": "class_weighted_bce",
+      "max_epochs": 100,
+      "max_steps": null,
+      "minimum_standard_deviation": 1e-06,
+      "num_workers": 0,
+      "optimizer": "adamw",
+      "scheduler": "none",
+      "schema_version": "1.0",
+      "selection_metric": "validation_corrupted_failure_auprc",
+      "target_failure_recall": 0.9,
+      "validation_interval_epochs": 1,
+      "weight_decay": 0.0001
+    },
+    "run_id": "m3b-run-sha256-31b9de18a15e668793d54f2311d14c6fa9c87377b7fd823ce700563ea4f565ef",
+    "seed": 4,
+    "training_duration_seconds_current_attempt": 6.804709177464247
+  },
+  "report_type": "training_run_summary_v1",
+  "schema_version": "1.0"
+}

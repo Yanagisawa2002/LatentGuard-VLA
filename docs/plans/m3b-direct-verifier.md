@@ -156,11 +156,13 @@ resume tests are also mandatory.
 ## Artifacts and automatic push
 
 Training runs, checkpoints, optimizer state, the full dataset, vectors, actions,
-and raw simulator artifacts remain outside Git. Compact resolved configs,
-manifests, scalar histories, metrics, selection/calibration/threshold records,
-coverage and ranking tables, sanitized predictions, statistical comparisons, and
-the final Markdown summary may be retrieved under
-`reports/m3b/<benchmark-run-id>/` after review.
+raw per-sample predictions, and raw simulator artifacts remain outside Git.
+Per-sample predictions may be retrieved only into ignored audit staging so their
+digests and aggregate metrics can be checked. Compact resolved configs,
+sanitized manifests, scalar histories, metrics, selection/calibration/threshold
+records, coverage and ranking tables, statistical comparisons, and the final
+Markdown summary may be committed under `reports/m3b/<benchmark-run-id>/` after
+review.
 
 Retrieved envelopes and their content digests are reloaded before the result
 commit. Reports may contain the sanitized environment and semantic identities,
@@ -181,13 +183,51 @@ additional simulator, task, robot, controller, pretrained backbone,
 hyperparameter sweep, multi-GPU training, online data collection, real-robot
 execution, or general safety claim.
 
-## Current state
+## Accepted execution and result
 
-The implementation and local regression hardening are complete. The local CPU
-suite passes with 1,098 tests and three pre-existing Windows-only symbolic-link
-tests skipped because this account lacks link-creation privilege; Ruff, format,
-mypy, all three CLI help paths, and diff checks pass. A four-model bounded CPU
-smoke and a controlled 20-run end-to-end fixture exercise both completed and
-validated immutable-result reuse. No authoritative M3A full-dataset GPU
-benchmark or frozen remote test evaluation has yet been accepted from this
-branch.
+The implementation commit is
+`87280afc294c6c9eda038ad4c5d7b1972249fa37`. The authoritative M3A archive
+exposed its exact action dtype as little-endian float64, so the localized
+archive/batch-boundary correction was committed as
+`91a8910c572d843ac739be35ffd93d9b821d3395`. A Linux gate then exposed a
+Windows-specific interpreter path in one test; the portable test fix and exact
+remote execution revision is
+`46f15d8cf50ac45027b62b0d73a4f2f49ac30224`. All three revisions were pushed
+before remote use.
+
+The local suite passes with 1,099 tests and three Windows-only symbolic-link
+privilege skips. The exact remote revision passes all 1,102 Linux tests with no
+skips, plus Ruff, format, and mypy. The accepted dataset dry-run revalidated
+digest `sha256:7847c9d0e09170531e13ba07531fabb3ea6f0aa6b0122298b733726d2055856d`,
+the fixed inventory and split, and created no output.
+
+Remote run `20260716T071853Z_m3b-smoke_46f15d8` passed all four RTX 5090 GPU
+forward/backward, tiny-overfit, checkpoint reload, exact resume, bounded
+50-step, and memory gates without test evaluation. Full run
+`20260716T072051Z_m3b-full_46f15d8` completed four architectures by seeds
+`[0, 1, 2, 3, 4]`, froze validation-only selection, and only then evaluated the
+test set. A second `--resume` invocation strictly reloaded the complete output
+without retraining and reproduced report digest
+`sha256:9e569db6cbca9626380373bea51af31bf66b3e73bc6fa2af22fb9d1dc9396bce`.
+The environment was one NVIDIA GeForce RTX 5090, driver 580.76.05, CUDA 12.8,
+PyTorch 2.8.0+cu128, Python 3.11.15, and NumPy 1.26.4.
+
+Validation selected `temporal_state_action_verifier` at mean corrupted-only
+failure AUPRC 0.924928, ahead of joint MLP 0.908771, action-only 0.730439, and
+state-only 0.386841. Its untouched candidate-level test means were failure AUPRC
+0.894784, ROC AUC 0.971208, calibrated Brier 0.060384, and calibrated ECE
+0.061362. Corrupted-only pairwise concordance was 0.986349 and top-1 success was
+1.0. Three of four learned architectures passed all fixed acceptance targets;
+state-only did not. The selected temporal model's paired test interval versus
+the joint MLP included zero, and the joint MLP's calibrated test AUPRC was
+slightly higher, so no clear test superiority claim is made.
+
+Reviewed compact evidence is under
+`reports/m3b/20260716T072051Z_m3b-full_46f15d8/`. It contains no checkpoints,
+optimizer state, per-sample predictions, raw runtime manifests, private absolute
+paths, state vectors, or action chunks. The retrieval manifest digest is
+`sha256:0c16dd8f7ace4b7e58c36d778df01033f7c29fb6195613bf8167a3dab59765b0`;
+the detailed human review is `review.md`. The result commit uses the required
+subject `docs(m3b): record direct verifier baseline results`. The paid server is
+shut down only after that commit is pushed and local/upstream/GitHub SHA
+equality is confirmed.

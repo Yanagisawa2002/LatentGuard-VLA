@@ -1,0 +1,12 @@
+{
+  "best_checkpoint_content_digest": "sha256:8792b4c2b4cdac9a6325aa20de76a3541dcd23f089ef4ef48a18c029940c4c1a",
+  "final_checkpoint_content_digest": "sha256:5a288d760f17103e066a433264b9c5fce4ef082398f814f0df06517948d67b83",
+  "history_file_digest": "sha256:df01c9d2b561dd6f09ee9ac3eec1aa1d20e87238d707fd86f7df24a85fefb366",
+  "periodic_checkpoint_content_digest": "sha256:a4a9e73c52a2b266d7e09275fb2b2b95c1b4742398667d84f2e04db6d2c36819",
+  "run_id": "m3b-run-sha256-0eb4f5615ba17a078ec5a37c2955ca7bbc4bc70bc34e16bc2188885bfee2bb81",
+  "run_manifest_file_digest": "sha256:57826c13bf62cae8d789141760ae788498d7a25ca2e7dbb553e846520c9e843e",
+  "training_summary_digest": "sha256:e639855b21de7d66354e56a547c0bd68980ab1736d28b7b97ac6a91020f80d8c",
+  "validation_evaluation_digest": "sha256:a2e33258cc3ba546b07b42032492130c3f04550abe07aedc251bd53ba1438bfa",
+  "validation_predictions_digest": "sha256:ad6edf9d50f2f480d483e9f9498afedaf4ed1d24d30b0c389d210cbba08e20aa",
+  "validation_result_digest": "sha256:971cf078edfdce3bc159125d5e52176955c62a564a85faf76bf6f7cfac85c169"
+}

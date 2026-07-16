@@ -1,0 +1,80 @@
+{
+  "content_digest": "sha256:4fa92feb68af11214d5b76c25248f43213ce51618465f0d662b410965ba02076",
+  "payload": {
+    "acceptance_report_digest": "sha256:f3d747daffc8dfe3528350de4e193bc2e6d2a2954fe1d4476c3a2797c317c06f",
+    "accepted_action_dtype_fix_commit": "91a8910c572d843ac739be35ffd93d9b821d3395",
+    "accepted_m3a_run_id": "20260715T140743Z_m3a-full_cc01a01_seed0",
+    "branch": "codex/m3b-direct-verifier",
+    "dataset_digest": "sha256:7847c9d0e09170531e13ba07531fabb3ea6f0aa6b0122298b733726d2055856d",
+    "implementation_commit": "87280afc294c6c9eda038ad4c5d7b1972249fa37",
+    "portable_linux_test_fix_commit": "46f15d8cf50ac45027b62b0d73a4f2f49ac30224",
+    "remote_environment": {
+      "cublas_workspace_config": ":4096:8",
+      "cuda_version": "12.8",
+      "gpu_count": 1,
+      "gpu_driver_version": "580.76.05",
+      "gpu_model": "NVIDIA GeForce RTX 5090",
+      "numpy_version": "1.26.4",
+      "python_version": "3.11.15",
+      "pytorch_version": "2.8.0+cu128"
+    },
+    "remote_execution_commit": "46f15d8cf50ac45027b62b0d73a4f2f49ac30224",
+    "retrieval": {
+      "checkpoint_files_in_committed_reports": 0,
+      "compact_summary_projection_committed": true,
+      "full_archive_sha256": "3491a8e83194500100c5ffdb46a029f982c033e0bec892b56d1afc24c11a097c",
+      "per_sample_prediction_files_in_committed_reports": 0,
+      "per_sample_prediction_files_retrieved_outside_git": 40,
+      "raw_runtime_manifests_in_committed_reports": 0,
+      "sanitized_runtime_manifest_count": 20,
+      "smoke_archive_sha256": "93075eb83ecf401349e47195c08f3085db7d1251cf9446c7335069275c55b8f5",
+      "source_full_summary_committed": false,
+      "state_or_action_arrays_in_committed_reports": 0
+    },
+    "run_ids": {
+      "full": "20260716T072051Z_m3b-full_46f15d8",
+      "smoke": "20260716T071853Z_m3b-smoke_46f15d8"
+    },
+    "scope": {
+      "distributed_or_multi_gpu_used": false,
+      "langmani_used": false,
+      "pretrained_model_used": false,
+      "simulator_used_during_training": false,
+      "vlm_or_llm_used": false
+    },
+    "shutdown_policy": "after_result_commit_push_and_clean_sha_verification",
+    "split_digest": "sha256:173ca40a072a1977cc65dbcccedb4684ae573e97f3984c176e3f91bba09f940a",
+    "validation_gates": {
+      "dataset_dry_run": "passed_without_output_creation",
+      "format": "passed",
+      "full": {
+        "passed": true,
+        "report_digest": "sha256:9e569db6cbca9626380373bea51af31bf66b3e73bc6fa2af22fb9d1dc9396bce",
+        "run_count": 20
+      },
+      "immutable_resume_revalidation": {
+        "passed": true,
+        "report_digest_unchanged": true
+      },
+      "local_windows": {
+        "passed": 1099,
+        "skip_reason": "windows_symlink_privilege_only",
+        "skipped": 3
+      },
+      "mypy": "passed",
+      "remote_linux": {
+        "passed": 1102,
+        "skipped": 0
+      },
+      "ruff": "passed",
+      "smoke": {
+        "gate_digest": "sha256:825e7edfeb5dba15fc7b3d186ec0fe543fb646459ded7d9578bfb5fd2d210500",
+        "passed": true,
+        "report_digest": "sha256:9a298a9ccd701ef1d6ab16980881aa16be5a2f6ca3c9227697dd9e7577d1af82",
+        "run_count": 4
+      }
+    }
+  },
+  "report_type": "m3b_remote_execution_summary_v1",
+  "schema_version": "1.0"
+}

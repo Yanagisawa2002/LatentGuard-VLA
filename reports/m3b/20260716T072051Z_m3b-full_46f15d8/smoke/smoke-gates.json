@@ -1,0 +1,53 @@
+{
+  "content_digest": "sha256:825e7edfeb5dba15fc7b3d186ec0fe543fb646459ded7d9578bfb5fd2d210500",
+  "payload": {
+    "acceptance_report_digest": "sha256:f3d747daffc8dfe3528350de4e193bc2e6d2a2954fe1d4476c3a2797c317c06f",
+    "dataset_digest": "sha256:7847c9d0e09170531e13ba07531fabb3ea6f0aa6b0122298b733726d2055856d",
+    "models": {
+      "action_only_mlp": {
+        "checkpoint_reload_valid": true,
+        "checkpoint_resume_valid": true,
+        "final_accuracy": 1.0,
+        "final_loss": 0.0007156523643061519,
+        "initial_loss": 0.7620507478713989,
+        "optimization_steps": 200,
+        "peak_gpu_memory_bytes": 69892096,
+        "sample_count": 64
+      },
+      "state_action_mlp": {
+        "checkpoint_reload_valid": true,
+        "checkpoint_resume_valid": true,
+        "final_accuracy": 1.0,
+        "final_loss": 0.0005339223425835371,
+        "initial_loss": 0.7243163585662842,
+        "optimization_steps": 200,
+        "peak_gpu_memory_bytes": 70299648,
+        "sample_count": 64
+      },
+      "state_only_mlp": {
+        "checkpoint_reload_valid": true,
+        "checkpoint_resume_valid": true,
+        "final_accuracy": 1.0,
+        "final_loss": 0.0007129984442144632,
+        "initial_loss": 0.7158011794090271,
+        "optimization_steps": 200,
+        "peak_gpu_memory_bytes": 69536768,
+        "sample_count": 64
+      },
+      "temporal_state_action_verifier": {
+        "checkpoint_reload_valid": true,
+        "checkpoint_resume_valid": true,
+        "final_accuracy": 1.0,
+        "final_loss": 0.0005221775500103831,
+        "initial_loss": 0.6673561930656433,
+        "optimization_steps": 200,
+        "peak_gpu_memory_bytes": 94439424,
+        "sample_count": 64
+      }
+    },
+    "orchestration_identity": "sha256:172f5551eae39acfe23adfe22257564e067bc2713154705bf62a4dc78cbbe08c",
+    "split_digest": "sha256:173ca40a072a1977cc65dbcccedb4684ae573e97f3984c176e3f91bba09f940a"
+  },
+  "report_type": "smoke_gate_summary_v1",
+  "schema_version": "1.0"
+}

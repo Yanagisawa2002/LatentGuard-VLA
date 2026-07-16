@@ -1,0 +1,18 @@
+{
+  "content_digest": "sha256:420d8478da750f529b5f98c225c5cf61f3053835e072765fddbe227890572aef",
+  "payload": {
+    "checkpoint_content_digest": "sha256:d1da5ce5314a6168257338109ca341f0ad0fb13ae087b751ee89564b57d32888",
+    "checkpoint_identity": "m3b-run-sha256-27a01f97be2197e06f08e04f0a8c8e81fe2d3c5c282f3025951baba52cdcf4df",
+    "content_digest": "sha256:07cf2637c3e95db970449ac2d985bb5b2e1929310282d6232909cd7f9545bda9",
+    "dataset_digest": "sha256:7847c9d0e09170531e13ba07531fabb3ea6f0aa6b0122298b733726d2055856d",
+    "method": "bounded_log_temperature_golden_section_v1",
+    "model_config_digest": "sha256:a1727f872ffb9020d371b7ea559024a2f109c684644905de3b474a9f7f04713b",
+    "preprocessing_digest": "sha256:ee3353b81609d489a0cc654ded70e2db777db863d9c12c4b9e4cca96f51b6de6",
+    "schema_version": "1.0",
+    "split_digest": "sha256:173ca40a072a1977cc65dbcccedb4684ae573e97f3984c176e3f91bba09f940a",
+    "temperature": 1.564068889055508,
+    "validation_prediction_digest": "sha256:86601d00d4bb4e7926b6d4f52ccf5cc4145823dbfefce1e24714c228474e4590"
+  },
+  "report_type": "temperature_calibration_v1",
+  "schema_version": "1.0"
+}

@@ -1,0 +1,116 @@
+{
+  "content_digest": "sha256:9a298a9ccd701ef1d6ab16980881aa16be5a2f6ca3c9227697dd9e7577d1af82",
+  "payload": {
+    "acceptance_report_digest": "sha256:f3d747daffc8dfe3528350de4e193bc2e6d2a2954fe1d4476c3a2797c317c06f",
+    "benchmark_config_digest": "sha256:5174cec3390cfd738490100ae1fbf99d5b12d8a0eee8899eaaf52ef2a5580198",
+    "branch": "codex/m3b-direct-verifier",
+    "completed": true,
+    "dataset_digest": "sha256:7847c9d0e09170531e13ba07531fabb3ea6f0aa6b0122298b733726d2055856d",
+    "git_sha": "46f15d8cf50ac45027b62b0d73a4f2f49ac30224",
+    "mode": "smoke",
+    "orchestration_identity": "sha256:172f5551eae39acfe23adfe22257564e067bc2713154705bf62a4dc78cbbe08c",
+    "planned_runs": [
+      {
+        "model_config_digest": "sha256:9d7216366c668c19efdf40caf134362d293657fb0eb24bdc750587e619e20964",
+        "model_type": "state_only_mlp",
+        "parameter_count": 38913,
+        "run_id": "m3b-run-sha256-e85b6a4efc338e90e8fd8b3c5206225b0122ce193da29a7ba916c74f89aa05c2",
+        "seed": 0
+      },
+      {
+        "model_config_digest": "sha256:a7300b22e872cb734b9f6565dbeb0e0796a5eaf5460f52fd52ce917851be6a13",
+        "model_type": "action_only_mlp",
+        "parameter_count": 50433,
+        "run_id": "m3b-run-sha256-31f8c5ad153b9d6f89f92279f7c055a26021e2de6bbabc372aec517f9541cad0",
+        "seed": 0
+      },
+      {
+        "model_config_digest": "sha256:6538d6a8c248c3ef682be606a4dbcd8a3e7635545f26a8548ffebe123cb66fdc",
+        "model_type": "state_action_mlp",
+        "parameter_count": 61249,
+        "run_id": "m3b-run-sha256-c6ca96b22b61f7e1701c40f3b50ef7c1f63a12e719906781d6d589dc047ffe69",
+        "seed": 0
+      },
+      {
+        "model_config_digest": "sha256:a1727f872ffb9020d371b7ea559024a2f109c684644905de3b474a9f7f04713b",
+        "model_type": "temporal_state_action_verifier",
+        "parameter_count": 312897,
+        "run_id": "m3b-run-sha256-7796a446034fc93d10446d6bc3e0ab872aa1cb434696fbf9f5b72832cbe18279",
+        "seed": 0
+      }
+    ],
+    "preprocessing_digest": "sha256:ee3353b81609d489a0cc654ded70e2db777db863d9c12c4b9e4cca96f51b6de6",
+    "run_count": 4,
+    "runs": [
+      {
+        "brier_score": 0.20383700430792187,
+        "checkpoint_content_digest": "sha256:340324b38590272f1867f9235d6de605900647162e811b9ee2c311a90fd279ca",
+        "checkpoint_epoch": 1,
+        "checkpoint_identity": "m3b-run-sha256-e85b6a4efc338e90e8fd8b3c5206225b0122ce193da29a7ba916c74f89aa05c2",
+        "checkpoint_kind": "best",
+        "failure_auprc": 0.3606835305230406,
+        "model_config_digest": "sha256:9d7216366c668c19efdf40caf134362d293657fb0eb24bdc750587e619e20964",
+        "model_type": "state_only_mlp",
+        "pairwise_concordance": 0.5703231292517007,
+        "parameter_count": 38913,
+        "seed": 0,
+        "split": "validation",
+        "training_config_digest": "sha256:41ba8ef18e949df1e629a84bdb8660c372a0d67325888f9627c39f34baa9d3d0",
+        "validation_prediction_digest": "sha256:dbb2b1a195f96e3af223667c35f8d8480a92f03db6f9cf24316d393842c46257"
+      },
+      {
+        "brier_score": 0.12242325474911368,
+        "checkpoint_content_digest": "sha256:5bfd4c975b15035b4d2183f250f8664536d6763f185706f927f33c1c1d0ea972",
+        "checkpoint_epoch": 1,
+        "checkpoint_identity": "m3b-run-sha256-31f8c5ad153b9d6f89f92279f7c055a26021e2de6bbabc372aec517f9541cad0",
+        "checkpoint_kind": "best",
+        "failure_auprc": 0.6512679711200078,
+        "model_config_digest": "sha256:a7300b22e872cb734b9f6565dbeb0e0796a5eaf5460f52fd52ce917851be6a13",
+        "model_type": "action_only_mlp",
+        "pairwise_concordance": 0.9556760204081634,
+        "parameter_count": 50433,
+        "seed": 0,
+        "split": "validation",
+        "training_config_digest": "sha256:41ba8ef18e949df1e629a84bdb8660c372a0d67325888f9627c39f34baa9d3d0",
+        "validation_prediction_digest": "sha256:ba03f5fc10d59afefb9395aa07f59456330ee0aaa67cec317d2dd9e0609546ef"
+      },
+      {
+        "brier_score": 0.11853491952407391,
+        "checkpoint_content_digest": "sha256:b8862442fc22f636099294a23d1971a4e36a8edb77d91bc620d45f1ea2affaf2",
+        "checkpoint_epoch": 2,
+        "checkpoint_identity": "m3b-run-sha256-c6ca96b22b61f7e1701c40f3b50ef7c1f63a12e719906781d6d589dc047ffe69",
+        "checkpoint_kind": "best",
+        "failure_auprc": 0.8577471047140788,
+        "model_config_digest": "sha256:6538d6a8c248c3ef682be606a4dbcd8a3e7635545f26a8548ffebe123cb66fdc",
+        "model_type": "state_action_mlp",
+        "pairwise_concordance": 0.9592899659863946,
+        "parameter_count": 61249,
+        "seed": 0,
+        "split": "validation",
+        "training_config_digest": "sha256:41ba8ef18e949df1e629a84bdb8660c372a0d67325888f9627c39f34baa9d3d0",
+        "validation_prediction_digest": "sha256:74f58b6b49c0c5ccd53e0baa46fead70834a2fd94971b745ea1eeb74f7a34823"
+      },
+      {
+        "brier_score": 0.125339604557658,
+        "checkpoint_content_digest": "sha256:cd1fc7c2607f1d76c6123d4ae862764deeb4567b6250f94e749b18f5c6ed5e70",
+        "checkpoint_epoch": 2,
+        "checkpoint_identity": "m3b-run-sha256-7796a446034fc93d10446d6bc3e0ab872aa1cb434696fbf9f5b72832cbe18279",
+        "checkpoint_kind": "best",
+        "failure_auprc": 0.8395864229943638,
+        "model_config_digest": "sha256:a1727f872ffb9020d371b7ea559024a2f109c684644905de3b474a9f7f04713b",
+        "model_type": "temporal_state_action_verifier",
+        "pairwise_concordance": 0.9198554421768707,
+        "parameter_count": 312897,
+        "seed": 0,
+        "split": "validation",
+        "training_config_digest": "sha256:41ba8ef18e949df1e629a84bdb8660c372a0d67325888f9627c39f34baa9d3d0",
+        "validation_prediction_digest": "sha256:b12e6c57e8fa88cc4de8787fa979ef86370ecef0970b18d60ffdac1cbfa390d3"
+      }
+    ],
+    "split_digest": "sha256:173ca40a072a1977cc65dbcccedb4684ae573e97f3984c176e3f91bba09f940a",
+    "test_evaluation_performed": false,
+    "training_config_digest": "sha256:41ba8ef18e949df1e629a84bdb8660c372a0d67325888f9627c39f34baa9d3d0"
+  },
+  "report_type": "m3b_benchmark_summary_v1",
+  "schema_version": "1.0"
+}

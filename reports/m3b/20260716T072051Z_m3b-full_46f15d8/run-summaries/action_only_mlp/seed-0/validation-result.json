@@ -1,0 +1,21 @@
+{
+  "content_digest": "sha256:a533bb357ba65bc2715cfdf685da417b11d120b6870a9aa8791c3212eb7ff6a4",
+  "payload": {
+    "brier_score": 0.10315721125942605,
+    "checkpoint_content_digest": "sha256:df44fbbf3514f028ab5d5fb61725c5a4fc7b00997d9742809157ed09d36de2f9",
+    "checkpoint_epoch": 17,
+    "checkpoint_identity": "m3b-run-sha256-f1031c14ad86929eaa88853ade5a4f75ee3eac1264afdd752aa71c4e5268e0e0",
+    "checkpoint_kind": "best",
+    "failure_auprc": 0.7331274317086963,
+    "model_config_digest": "sha256:a7300b22e872cb734b9f6565dbeb0e0796a5eaf5460f52fd52ce917851be6a13",
+    "model_type": "action_only_mlp",
+    "pairwise_concordance": 0.9441964285714287,
+    "parameter_count": 50433,
+    "seed": 0,
+    "split": "validation",
+    "training_config_digest": "sha256:a5d9245d33f8d89f1075e8e2b6ba467897ce5bdd20a0feb96169de75a9f996cb",
+    "validation_prediction_digest": "sha256:98499fa29f38980522a0f8c204da9fdabefeb4d4870b6849b151b4fbba116a80"
+  },
+  "report_type": "seed_validation_result_v1",
+  "schema_version": "1.0"
+}
