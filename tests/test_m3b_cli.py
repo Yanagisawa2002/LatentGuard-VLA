@@ -1,6 +1,8 @@
 from __future__ import annotations
 
+import os
 import subprocess
+import sys
 from dataclasses import replace
 from pathlib import Path
 
@@ -44,14 +46,23 @@ def _patch_dataset(monkeypatch: pytest.MonkeyPatch) -> None:
 
 
 def test_m3b_help_registration_keeps_torch_lazy() -> None:
+    environment = dict(os.environ)
+    source_root = str(Path(__file__).resolve().parents[1] / "src")
+    inherited_pythonpath = environment.get("PYTHONPATH")
+    environment["PYTHONPATH"] = (
+        source_root
+        if not inherited_pythonpath
+        else os.pathsep.join((source_root, inherited_pythonpath))
+    )
     command = (
         "import sys; from latentguard.cli import _build_parser; "
         "_build_parser(); print('torch' in sys.modules)"
     )
     completed = subprocess.run(
-        [str(Path(".venv/Scripts/python.exe")), "-c", command],
+        [sys.executable, "-c", command],
         check=True,
         capture_output=True,
+        env=environment,
         text=True,
     )
     assert completed.stdout.strip() == "False"
