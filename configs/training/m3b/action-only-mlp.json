@@ -1,0 +1,16 @@
+{
+  "schema_version": "1.0",
+  "model_type": "action_only_mlp",
+  "state_dimension": 38,
+  "action_dimension": 8,
+  "action_horizon": 16,
+  "hidden_dimensions": [128, 128],
+  "state_projection_dimension": null,
+  "action_projection_dimension": 128,
+  "temporal_embedding_dimension": null,
+  "transformer_layers": null,
+  "attention_heads": null,
+  "transformer_feedforward_dimension": null,
+  "dropout": 0.1,
+  "activation": "gelu"
+}

@@ -58,6 +58,25 @@ Every training entry point must support `--dry-run`, `--max-steps`, `--limit-sam
 
 Before a full remote run, pass these gates in order: configuration validation; CPU data-loading smoke test; one-batch GPU forward pass; one-batch forward/backward pass; short overfit or max-steps run; checkpoint save/resume test; then full training. Do not start an expensive run if an earlier gate fails. Never silently shrink model/data settings to make a run succeed; record and justify changes.
 
+## Learned-model evaluation rules
+
+- Begin training only from an independently validated accepted dataset. Bind the
+  exact dataset digest and trajectory-level split assignment to every run.
+- Explicitly allowlist deployable model inputs. Provenance, corruption metadata,
+  candidate type, and outcome-derived fields are reporting-only unless a future
+  milestone explicitly authorizes them as deployable inputs.
+- Fit preprocessing, class weights, calibration, thresholds, checkpoint
+  selection, and model selection without test data. Checkpoint selection uses
+  validation metrics only.
+- Compare every learned baseline with non-learned baselines and aggregate learned
+  performance across multiple fixed seeds. Preserve and report weak, failed, or
+  negative results rather than hiding them.
+- Keep checkpoints and raw predictions outside Git. Only compact metrics and
+  reviewed sanitized reports may be committed locally.
+- M3B learned-model claims are limited to the fixed PickCube structured-state
+  scope and do not imply visual, language, cross-task, general safety, or
+  real-robot performance.
+
 Runtime state-restoration verification
 
 Serialized and archived simulator state remains subject to exact structural and

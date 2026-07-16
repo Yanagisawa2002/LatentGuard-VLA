@@ -275,6 +275,52 @@ deterministic. Loading checks exact inventory, safe paths, links, dtype, shape,
 content digests, evidence foreign keys, candidate-group coverage, and split
 leakage. It never duplicates T+1 state trees or continuation actions.
 
+## M3B learned-input projection
+
+An M3B accepted-dataset loader revalidates the complete M3A bundle, its exact
+content digest, split assignments, evidence properties, required full-target
+report, and fixed 60-trajectory acceptance facts before exposing training rows.
+The resulting model-input schema is an allowlist, not a view of the original
+sample dataclass:
+
+```text
+state_vector: float32[38]
+candidate_action_chunk: float32[16, 8]
+action_mask: bool[16]
+failure_target: binary scalar (loss and metrics only)
+sample_index: internal reporting join key
+```
+
+Model `forward` receives only the first three tensors. Every identifier,
+provenance field, corruption descriptor, candidate type, split label, evidence
+field, source ordering value, and post-execution outcome remains in a separate
+reporting record. Missing, additional, non-finite, wrong-dtype, or wrong-shape
+model fields fail validation; no silent casting or repair is permitted before
+the explicit NumPy-to-PyTorch conversion boundary.
+
+The preprocessing identity binds the accepted dataset digest, exact training
+membership digest, state/action component counts, means, standard deviations,
+and fixed floor. A run additionally binds the complete split digest, resolved
+model and training configuration digests, seed, and code semantic. Filesystem
+location and host identity never contribute to semantic identity.
+
+The run manifest also binds the accepted full-target report digest, exact
+resolved configurations, training-only positive class weight, source revision,
+and sanitized deterministic environment. Checkpoint content has an independent
+byte digest. A validation seed result binds that digest, checkpoint kind/epoch,
+and the ordered validation label/logit digest. Calibration binds the same
+checkpoint, model and preprocessing identities; thresholds bind the same
+validation-prediction digest. These links are checked before test inference, so
+artifacts from different seeds, epochs, or runs cannot be silently combined.
+
+A completed training-run marker binds its scalar summary, seed result, and best
+checkpoint. Benchmark orchestration separately binds the acceptance report,
+dataset/split/preprocessing, benchmark/training configuration, Git revision,
+mode, and full planned-run inventory. Runtime paths, hostnames, process IDs, and
+timestamps remain non-semantic. Completion is immutable; resume may extend only
+an incomplete matching run, while an explicit rerun receives a new identity
+location.
+
 ## M2C integration archive boundary
 
 The ManiSkill PickCube runtime archive is not a new core replay format. It is an

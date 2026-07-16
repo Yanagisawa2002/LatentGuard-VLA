@@ -1,0 +1,22 @@
+{
+  "schema_version": "1.0",
+  "optimizer": "adamw",
+  "scheduler": "none",
+  "learning_rate": 0.001,
+  "weight_decay": 0.0001,
+  "batch_size": 128,
+  "gradient_clip_norm": 1.0,
+  "max_epochs": 100,
+  "max_steps": null,
+  "limit_samples": null,
+  "validation_interval_epochs": 1,
+  "early_stopping_patience": 12,
+  "early_stopping_min_delta": 0.0001,
+  "selection_metric": "validation_corrupted_failure_auprc",
+  "loss_mode": "class_weighted_bce",
+  "target_failure_recall": 0.9,
+  "minimum_standard_deviation": 0.000001,
+  "checkpoint_interval_epochs": 1,
+  "deterministic_algorithms": true,
+  "num_workers": 0
+}

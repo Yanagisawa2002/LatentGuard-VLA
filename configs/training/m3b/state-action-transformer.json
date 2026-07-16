@@ -1,0 +1,16 @@
+{
+  "schema_version": "1.0",
+  "model_type": "temporal_state_action_verifier",
+  "state_dimension": 38,
+  "action_dimension": 8,
+  "action_horizon": 16,
+  "hidden_dimensions": [128, 128],
+  "state_projection_dimension": 64,
+  "action_projection_dimension": null,
+  "temporal_embedding_dimension": 128,
+  "transformer_layers": 2,
+  "attention_heads": 4,
+  "transformer_feedforward_dimension": 256,
+  "dropout": 0.1,
+  "activation": "gelu"
+}

@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "model_types": [
+    "state_only_mlp",
+    "action_only_mlp",
+    "state_action_mlp",
+    "temporal_state_action_verifier"
+  ],
+  "seeds": [0, 1, 2, 3, 4],
+  "bootstrap_seed": 314159,
+  "bootstrap_replicates": 2000,
+  "confidence_level": 0.95
+}

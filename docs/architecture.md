@@ -241,3 +241,31 @@ candidate, immediately after it, and at the terminal state. Fractional progress
 is omitted because the accepted compatibility probe does not bind ManiSkill's
 normalized dense-reward implementation. Training remains prohibited until the
 final dataset reload, evidence-reference, class-count, and leakage gates pass.
+
+## Direct Action Verifier training (M3B)
+
+The optional `latentguard.training` layer consumes only independently validated
+M3A exports. Its dataset projection forms a hard boundary between deployable
+numeric inputs and reporting metadata. Training modules do not import ManiSkill,
+and core package and CLI imports remain usable without PyTorch.
+
+The layer separates strict configuration, accepted-dataset projection,
+training-only preprocessing, tensor batching, four small model families,
+non-learned baselines, losses, metrics, calibration and thresholds,
+checkpoint/resume, evaluation, multi-seed selection, statistical comparison,
+run identity, and sanitized reporting. Run identity is content-based and omits
+runtime paths, hostnames, process identifiers, and timestamps.
+
+Validation artifacts flow in one direction: training data fits preprocessing and
+class weights; validation data controls early stopping, checkpoint/architecture
+selection, temperature, and thresholds; an immutable selection record unlocks
+test evaluation. Reporting metadata can be joined by internal row index only
+after inference and cannot enter a model call.
+
+The unlock is content-bound rather than nominal. Every validation seed record
+identifies the exact best-checkpoint bytes, epoch, resolved configurations, and
+validation-prediction digest. Calibration and thresholds bind that same digest;
+test evaluation first validates the complete frozen selection and recomputes the
+authorized validation predictions. Training-run completion and benchmark
+orchestration are independently digested, completed directories are immutable,
+and post-selection evaluation artifacts live outside them.

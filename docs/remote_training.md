@@ -139,3 +139,51 @@ under `LATENTGUARD_REMOTE_RUN_ROOT`. Only reviewed sanitized manifests,
 compatibility/action/collection/replay summaries, compact evidence, failure
 counts, state statistics, resume results, and a final report return under
 `reports/m2c/<run-id>/`.
+
+## M3B single-GPU verifier benchmark
+
+M3B reuses the same exact-revision synchronization contract, but performs no
+simulator execution. Before starting a paid GPU, verify that the persistent M3A
+full dataset is present and independently reloads with digest
+`sha256:7847c9d0e09170531e13ba07531fabb3ea6f0aa6b0122298b733726d2055856d`.
+If it is missing, rerun the accepted full M3A pipeline; never substitute the
+smoke dataset or reconstruct samples manually.
+
+Remote gates run on one RTX 5090 in this order: exact SHA sync, full dataset
+validation, CPU loader, one-batch GPU forward and backward, tiny overfit for all
+four models, checkpoint reload and resume, bounded 50-step runs, the fixed
+four-model/five-seed benchmark, validation-only architecture selection, frozen
+test evaluation, calibration and group metrics, then artifact reload. A failed
+gate stops the sequence. Test data is not evaluated by smoke gates.
+
+Smoke and full execution use distinct immutable output roots, for example
+`<run-id>-smoke` and `<run-id>-full`. Execution mode participates in the
+orchestration identity, so a completed smoke summary must never be overwritten
+or reused as the full-benchmark root.
+
+The benchmark identity binds the exact Git SHA, accepted-dataset and acceptance
+report digests, split and preprocessing digests, benchmark/training
+configuration digests, mode, and complete 20-run plan. A completed run is reused
+only after its manifest, complete scalar history, summary, completion marker,
+best/final/periodic checkpoint bytes, validation evaluation and predictions,
+and exact directory inventory pass again. Interrupted matching runs resume from
+periodic checkpoints; explicit reruns use a new root. Calibration and thresholds
+bind the selected best checkpoint and its validation predictions, and those
+predictions are recomputed before any test inference. The completed benchmark
+also re-parses the typed selection/calibration/threshold records, recomputes
+test metrics from compact predictions, and binds every evaluation artifact
+digest plus the generated Markdown summary.
+
+Runs use external immutable identities derived from content digests and write
+under `LATENTGUARD_REMOTE_RUN_ROOT`. Retrieve only compact resolved configs,
+manifests, histories, metrics, selection/calibration/threshold records,
+coverage/group/slice tables, sanitized predictions, comparisons, and summaries
+to `reports/m3b/<benchmark-id>/`. Do not retrieve datasets, checkpoints,
+optimizer state, vectors, action chunks, raw simulator state, event files, or
+large traces. After verified retrieval and the pushed result commit, shut down
+the paid GPU server.
+
+The remote M3B job consumes the already accepted compact M3A dataset; it does
+not start ManiSkill, LangMani, a VLM, or any online simulator rollout. The fixed
+models run sequentially on one GPU rather than distributed or multi-GPU
+training.

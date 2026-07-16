@@ -44,6 +44,13 @@ python -m pip install --upgrade pip
 python -m pip install -e ".[dev]"
 ```
 
+M3B neural baselines use an optional PyTorch dependency and remain isolated from
+the simulator-independent core:
+
+```text
+python -m pip install -e ".[dev,training]"
+```
+
 On POSIX systems, activate with `source .venv/bin/activate` instead. The
 remaining validation and CLI commands assume the environment is active.
 
@@ -55,6 +62,29 @@ ruff check .
 ruff format --check .
 mypy src
 ```
+
+## Train the structured-state verifier baselines
+
+M3B adds strict, leakage-resistant Direct Action Verifier training over the
+accepted M3A dataset. The four learned baselines use only the verifier state,
+candidate action chunk, and action mask; provenance and corruption metadata are
+reporting-only. Inspect a bounded run without training with:
+
+```text
+latentguard train-action-verifier --help
+latentguard evaluate-action-verifier --help
+latentguard benchmark-action-verifier --help
+```
+
+The full protocol, model-selection boundary, metrics, calibration, and scope
+limitations are documented in `docs/direct_action_verifier.md`. A frozen
+selection authorizes only its exact best-checkpoint bytes and validation
+prediction digest; calibration and thresholds are bound to that same identity
+before the test split can be inferred. Training, checkpoints, and authoritative
+predictions belong outside the repository and require the exact accepted M3A
+dataset digest. M3B performs no simulator rollout, LangMani execution, or VLM
+training. Completed benchmarks revalidate all run and evaluation artifacts and
+emit a compact content-bound Markdown result summary.
 
 Generate, validate, save, reload, and compare a small deterministic dataset:
 
