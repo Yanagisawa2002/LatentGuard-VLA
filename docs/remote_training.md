@@ -235,6 +235,19 @@ trajectory ID, split-group ID, or complete state-tree digest. If smoke changes a
 configuration, the fix is made locally, committed and pushed, and the full run
 uses a new untouched source set at the new exact SHA.
 
+Production source collection bounds native ManiSkill session churn with a
+sequential supervisor. It starts the same public collection CLI for exactly one
+seed and one attempt in each short-lived subprocess, strictly reloads and
+cross-checks the paired state/reference archives, and aggregates accepted
+episodes in declared seed order. Normal source rejection is accepted only from
+an exact one-attempt incomplete summary. A signal, unexpected status, missing or
+malformed summary, partial archive, or identity mismatch aborts collection
+before final publication. The parent then runs each requested complete
+fresh-state audit in a separate short-lived subprocess and strictly rebuilds the
+content-bound audit records. This is sequential failure containment on one GPU,
+not multiprocessing parallelism, distributed execution, or a relaxed evidence
+gate.
+
 CPU and GPU inference/profile gates each write a compact report containing
 per-candidate/group p50/p95/p99, throughput, peak allocated memory, bundle/model
 loading time, and joint-versus-temporal cost differences. Raw predictions stay

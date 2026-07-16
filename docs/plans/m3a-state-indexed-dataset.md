@@ -143,8 +143,14 @@ each run. Any runtime defect is fixed locally and rerun under a new run ID.
 
 No training, neural networks, VLMs, images, video, LangMani, additional tasks,
 robots, controllers, simulators, arbitrary continuation policies,
-multiprocessing, multi-GPU merge, manual relabeling, generalized safety claims,
-or real-robot execution is included.
+parallel or distributed collection, multi-GPU merge, manual relabeling,
+generalized safety claims, or real-robot execution is included. Production
+collection may run one seed at a time in sequential short-lived subprocesses and
+run each requested fresh-restoration audit in its own subprocess to contain
+native simulator failure. The parent strictly reloads and content-checks every
+single-seed archive before deterministic aggregation. This containment does not
+parallelize work, change source semantics, relax exact archive validation, or
+turn a native worker failure into a rejected source attempt.
 
 ## Milestone state
 

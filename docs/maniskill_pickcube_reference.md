@@ -197,6 +197,17 @@ datasets stay under the external run root. Only sanitized summaries are eligible
 for `reports/m3a/<run-id>/`. M3A performs no model training and adds no LangMani
 dependency.
 
+Production sequence collection uses bounded native-runtime containment without
+changing the collection contract. A supervisor invokes the same public CLI
+sequentially for one seed and one attempt per short-lived process, strictly
+reloads both exact archives, cross-checks seed, compatibility, trajectory,
+action bytes, and endpoint state digests, and aggregates accepted episodes in
+seed order. Each requested complete fresh-restoration audit runs in a separate
+short-lived process. Native signals and malformed or partial worker artifacts
+abort before final publication; only an exact normal incomplete summary is a
+source rejection. No work is parallelized, and archive bytes, digests, state
+inventory, restoration tolerance, and evidence semantics are unchanged.
+
 ## Current status
 
 The local integration, probe-bound expected contract and dependencies, safe

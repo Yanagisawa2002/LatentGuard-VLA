@@ -10,8 +10,11 @@ from __future__ import annotations
 import argparse
 import json
 import math
+import os
 import shutil
+import subprocess
 import sys
+import tempfile
 from collections import Counter
 from collections.abc import Callable, Mapping
 from dataclasses import asdict, dataclass
@@ -47,6 +50,7 @@ from latentguard.integrations.maniskill_pickcube.action_verifier_export import (
     validate_serialized_action_verifier_export,
 )
 from latentguard.integrations.maniskill_pickcube.archive import (
+    ManiSkillReferenceArchive,
     load_reference_archive,
     save_reference_archive,
 )
@@ -75,8 +79,10 @@ from latentguard.integrations.maniskill_pickcube.session import (
 from latentguard.integrations.maniskill_pickcube.source_generation import (
     LazyManiSkillSourceEnvironmentFactory,
     SolverSourceIdentity,
+    SourceAttemptRecord,
     SourceEnvironmentFactory,
     load_official_solver,
+    ordered_source_seeds,
 )
 from latentguard.integrations.maniskill_pickcube.state_indexed_archive import (
     STATE_INDEXED_ARCHIVE_VERSION,
@@ -92,6 +98,9 @@ from latentguard.integrations.maniskill_pickcube.state_indexed_replay import (
 )
 from latentguard.integrations.maniskill_pickcube.state_indexed_source import (
     StateIndexedSourceCollectionIncompleteError,
+    StateIndexedSourceCollectionResult,
+    StateRestorationAuditRecord,
+    _task_snapshot_mismatch_fields,
     collect_state_indexed_reference_archive,
     verify_all_indexed_states_fresh,
 )
@@ -124,6 +133,8 @@ DEFAULT_EXPECTED_CONTRACT = Path(
 DEFAULT_M3A_CORRUPTION_CONFIG = Path(
     "configs/integrations/maniskill_pickcube/m3a-corruptions-v1.json"
 )
+_ISOLATED_COLLECTION_WORKER_ENV = "LATENTGUARD_INTERNAL_M3A_COLLECTION_WORKER"
+_ISOLATED_COLLECTION_REQUEST_ENV = "LATENTGUARD_INTERNAL_M3A_COLLECTION_REQUEST"
 M3A_COMMANDS = frozenset(
     {
         "collect-maniskill-pickcube-sequences",
@@ -467,6 +478,30 @@ def _restoration_error_distribution(values: list[float]) -> Mapping[str, object]
     }
 
 
+def _is_exact_empty_restoration_distribution(value: object) -> bool:
+    """Return whether a worker emitted the exact zero-record distribution."""
+
+    expected = _restoration_error_distribution([])
+    if not isinstance(value, Mapping) or set(value) != set(expected):
+        return False
+    counts = value.get("fixed_bin_counts")
+    expected_counts = expected["fixed_bin_counts"]
+    return (
+        type(value.get("count")) is int
+        and value["count"] == 0
+        and isinstance(counts, Mapping)
+        and isinstance(expected_counts, Mapping)
+        and set(counts) == set(expected_counts)
+        and all(type(counts[key]) is int and counts[key] == 0 for key in counts)
+        and value.get("maximum") is None
+        and value.get("minimum") is None
+        and value.get("p50") is None
+        and value.get("p95") is None
+        and value.get("p99") is None
+        and value.get("quantile_semantic") == "nearest_rank_v1"
+    )
+
+
 def _collection_summary(
     *,
     result: Any,
@@ -529,6 +564,589 @@ def _collection_summary(
     }
 
 
+def _use_isolated_sequence_collection(
+    *,
+    internal_worker: bool,
+    environment_factory: SourceEnvironmentFactory | None,
+    solver: Callable[..., object] | None,
+    solver_identity: SolverSourceIdentity | None,
+) -> bool:
+    """Return whether production collection needs per-seed process isolation."""
+
+    return (
+        not internal_worker
+        and environment_factory is None
+        and solver is None
+        and solver_identity is None
+    )
+
+
+def _collection_worker_request_payload(
+    args: argparse.Namespace,
+) -> Mapping[str, object]:
+    """Return the exact private single-seed request represented by parsed args."""
+
+    return {
+        "action_layout": str(Path(args.action_layout).absolute().resolve()),
+        "compatibility_report": str(
+            Path(args.compatibility_report).absolute().resolve()
+        ),
+        "expected_contract": str(Path(args.expected_contract).absolute().resolve()),
+        "fresh_state_trajectory_limit": args.fresh_state_trajectory_limit,
+        "maximum_attempts": args.maximum_attempts,
+        "reference_archive_dir": str(
+            Path(args.reference_archive_dir).absolute().resolve()
+        ),
+        "requested_success_count": args.requested_success_count,
+        "runtime_archive_dir": str(Path(args.runtime_archive_dir).absolute().resolve()),
+        "schema_version": "1.0",
+        "sim_backend": args.sim_backend,
+        "starting_seed": args.starting_seed,
+        "summary_output": str(Path(args.summary_output).absolute().resolve()),
+        "trajectory_action_limit": args.trajectory_action_limit,
+    }
+
+
+def _validate_internal_collection_worker(args: argparse.Namespace) -> bool:
+    """Require a parent-owned exact request before enabling private worker mode."""
+
+    marker = os.environ.get(_ISOLATED_COLLECTION_WORKER_ENV)
+    request_text = os.environ.get(_ISOLATED_COLLECTION_REQUEST_ENV)
+    if marker is None and request_text is None:
+        return False
+    if marker != "1" or request_text is None:
+        raise ValueError("isolated collection worker marker is incomplete")
+    raw_request_path = Path(request_text).absolute()
+    if (
+        raw_request_path.is_symlink()
+        or not raw_request_path.is_file()
+        or raw_request_path.stat().st_nlink != 1
+    ):
+        raise ValueError("isolated collection worker request is not a regular file")
+    request_path = raw_request_path.resolve()
+    payload = _load_isolated_worker_summary(
+        request_path, context="isolated collection worker request"
+    )
+    expected = _collection_worker_request_payload(args)
+    if (
+        payload != expected
+        or any(
+            type(payload[field]) is not int
+            for field in (
+                "fresh_state_trajectory_limit",
+                "maximum_attempts",
+                "requested_success_count",
+                "starting_seed",
+            )
+        )
+        or (
+            payload["trajectory_action_limit"] is not None
+            and type(payload["trajectory_action_limit"]) is not int
+        )
+    ):
+        raise ValueError("isolated collection worker request differs from arguments")
+    output_parents = {
+        Path(str(payload[field])).parent
+        for field in (
+            "reference_archive_dir",
+            "runtime_archive_dir",
+            "summary_output",
+        )
+    }
+    if len(output_parents) != 1 or request_path.parent not in output_parents:
+        raise ValueError("isolated collection worker outputs leave staging root")
+    if (
+        args.requested_success_count != 1
+        or args.maximum_attempts != 1
+        or args.fresh_state_trajectory_limit != 1
+    ):
+        raise ValueError("isolated collection worker contract is not single-seed")
+    return True
+
+
+def _isolated_sequence_worker_command(
+    args: argparse.Namespace, *, seed: int, output_root: Path
+) -> tuple[str, ...]:
+    """Build the private single-seed worker command without a shell."""
+
+    root = output_root.absolute().resolve()
+    command = [
+        sys.executable,
+        "-X",
+        "faulthandler",
+        "-m",
+        "latentguard",
+        "collect-maniskill-pickcube-sequences",
+        "--runtime-archive-dir",
+        str(root / "runtime-archive"),
+        "--reference-archive-dir",
+        str(root / "reference-archive"),
+        "--compatibility-report",
+        str(Path(args.compatibility_report).absolute().resolve()),
+        "--expected-contract",
+        str(Path(args.expected_contract).absolute().resolve()),
+        "--action-layout",
+        str(Path(args.action_layout).absolute().resolve()),
+        "--summary-output",
+        str(root / "summary.json"),
+        "--requested-success-count",
+        "1",
+        "--starting-seed",
+        str(seed),
+        "--maximum-attempts",
+        "1",
+        "--sim-backend",
+        str(args.sim_backend),
+        "--fresh-state-trajectory-limit",
+        "1",
+    ]
+    if args.trajectory_action_limit is not None:
+        command.extend(("--trajectory-action-limit", str(args.trajectory_action_limit)))
+    return tuple(command)
+
+
+def _write_isolated_collection_worker_request(
+    args: argparse.Namespace, *, seed: int, output_root: Path
+) -> Path:
+    """Write one exact private worker request inside its staging directory."""
+
+    root = output_root.absolute().resolve()
+    worker_args = argparse.Namespace(
+        action_layout=Path(args.action_layout).absolute().resolve(),
+        compatibility_report=Path(args.compatibility_report).absolute().resolve(),
+        expected_contract=Path(args.expected_contract).absolute().resolve(),
+        fresh_state_trajectory_limit=1,
+        maximum_attempts=1,
+        reference_archive_dir=root / "reference-archive",
+        requested_success_count=1,
+        runtime_archive_dir=root / "runtime-archive",
+        sim_backend=args.sim_backend,
+        starting_seed=seed,
+        summary_output=root / "summary.json",
+        trajectory_action_limit=args.trajectory_action_limit,
+    )
+    request = root / "worker-request.json"
+    request.write_text(
+        json.dumps(
+            dict(_collection_worker_request_payload(worker_args)),
+            sort_keys=True,
+            ensure_ascii=False,
+            allow_nan=False,
+        )
+        + "\n",
+        encoding="utf-8",
+    )
+    return request
+
+
+def _load_isolated_worker_summary(path: Path, *, context: str) -> Mapping[str, Any]:
+    """Load one private worker summary as a strict JSON object."""
+
+    try:
+        value = json.loads(path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError) as exc:
+        raise RuntimeError(f"{context} is missing or invalid") from exc
+    if not isinstance(value, Mapping) or any(not isinstance(key, str) for key in value):
+        raise RuntimeError(f"{context} must be a JSON object")
+    return value
+
+
+def _isolated_worker_rejection_category(
+    completed: subprocess.CompletedProcess[Any], *, summary_path: Path, seed: int
+) -> str:
+    """Accept only a normal, strictly summarized single-seed rejection."""
+
+    if completed.returncode != 1:
+        if completed.returncode < 0:
+            detail = f"signal {-completed.returncode}"
+        else:
+            detail = f"status {completed.returncode}"
+        raise RuntimeError(
+            f"isolated sequence worker for seed {seed} terminated with {detail}"
+        )
+    payload = _load_isolated_worker_summary(
+        summary_path, context="isolated rejection summary"
+    )
+    expected_fields = {
+        "accepted_source_trajectories",
+        "attempt_count",
+        "attempt_failure_categories",
+        "requested_source_trajectories",
+        "schema_version",
+        "status",
+    }
+    if (
+        set(payload) != expected_fields
+        or type(payload["accepted_source_trajectories"]) is not int
+        or payload["accepted_source_trajectories"] != 0
+        or type(payload["attempt_count"]) is not int
+        or payload["attempt_count"] != 1
+        or type(payload["requested_source_trajectories"]) is not int
+        or payload["requested_source_trajectories"] != 1
+        or payload["schema_version"] != "1.1"
+        or payload["status"] != "incomplete"
+    ):
+        raise RuntimeError("isolated rejection summary has invalid identity fields")
+    categories = payload["attempt_failure_categories"]
+    if not isinstance(categories, Mapping) or len(categories) != 1:
+        raise RuntimeError("isolated rejection summary must contain one category")
+    category, count = next(iter(categories.items()))
+    if not isinstance(category, str) or type(count) is not int or count != 1:
+        raise RuntimeError("isolated rejection category is malformed")
+    SourceAttemptRecord(seed=seed, accepted=False, failure_category=category)
+    return category
+
+
+def _validate_isolated_worker_success(
+    *,
+    summary_path: Path,
+    archive: PickCubeStateIndexedArchiveV1,
+    reference_archive: ManiSkillReferenceArchive,
+    seed: int,
+) -> tuple[Any, Any]:
+    """Cross-check one successful worker's strict summary and paired archives."""
+
+    payload = _load_isolated_worker_summary(
+        summary_path, context="isolated success summary"
+    )
+    expected_fields = {
+        "accepted_source_trajectories",
+        "archive_content_digest",
+        "attempt_count",
+        "attempt_failure_categories",
+        "compatibility_identity",
+        "fresh_state_compared_component_counts",
+        "fresh_state_maximum_absolute_error",
+        "fresh_state_restoration_error_distribution",
+        "fresh_state_verification_count",
+        "fresh_verifier_state_compared_component_counts",
+        "fresh_verifier_state_maximum_absolute_error",
+        "fresh_verifier_state_restoration_error_distribution",
+        "requested_source_trajectories",
+        "schema_version",
+        "source_action_count",
+        "source_to_restored_task_mismatch_field_counts",
+        "source_to_restored_task_mismatch_state_count",
+        "state_indexed_archive_serialization_version",
+        "t_plus_one_state_count",
+        "verifier_state_extraction_boundary",
+        "verifier_state_semantic",
+    }
+    if (
+        set(payload) != expected_fields
+        or type(payload["accepted_source_trajectories"]) is not int
+        or payload["accepted_source_trajectories"] != 1
+        or type(payload["attempt_count"]) is not int
+        or payload["attempt_count"] != 1
+        or payload.get("attempt_failure_categories") != {}
+        or type(payload["requested_source_trajectories"]) is not int
+        or payload["requested_source_trajectories"] != 1
+        or payload.get("schema_version") != "1.1"
+        or payload.get("archive_content_digest") != archive.content_digest
+        or type(payload["fresh_state_verification_count"]) is not int
+        or payload["fresh_state_verification_count"] != 0
+        or payload.get("fresh_state_compared_component_counts") != []
+        or type(payload["fresh_state_maximum_absolute_error"]) is not float
+        or payload.get("fresh_state_maximum_absolute_error") != 0.0
+        or not _is_exact_empty_restoration_distribution(
+            payload.get("fresh_state_restoration_error_distribution")
+        )
+        or payload.get("fresh_verifier_state_compared_component_counts") != []
+        or type(payload["fresh_verifier_state_maximum_absolute_error"]) is not float
+        or payload.get("fresh_verifier_state_maximum_absolute_error") != 0.0
+        or not _is_exact_empty_restoration_distribution(
+            payload.get("fresh_verifier_state_restoration_error_distribution")
+        )
+        or payload.get("source_to_restored_task_mismatch_field_counts") != {}
+        or type(payload["source_to_restored_task_mismatch_state_count"]) is not int
+        or payload.get("source_to_restored_task_mismatch_state_count") != 0
+        or payload.get("verifier_state_extraction_boundary")
+        != PICKCUBE_VERIFIER_STATE_EXTRACTION_BOUNDARY
+        or payload.get("verifier_state_semantic") != PICKCUBE_VERIFIER_STATE_SEMANTIC
+    ):
+        raise RuntimeError("isolated success summary differs from worker outputs")
+    if len(archive.episodes) != 1 or len(reference_archive.episodes) != 1:
+        raise RuntimeError("isolated worker must publish exactly one paired episode")
+    episode = archive.episodes[0]
+    reference = reference_archive.episodes[0]
+    if (
+        payload.get("compatibility_identity") != episode.compatibility_identity
+        or type(payload["source_action_count"]) is not int
+        or payload["source_action_count"] != int(episode.source_actions.shape[0])
+        or type(payload["t_plus_one_state_count"]) is not int
+        or payload["t_plus_one_state_count"] != len(episode.states)
+        or type(payload["state_indexed_archive_serialization_version"]) is not int
+        or payload.get("state_indexed_archive_serialization_version")
+        != STATE_INDEXED_ARCHIVE_VERSION
+        or episode.seed != seed
+        or reference.seed != seed
+        or episode.compatibility_identity != reference.compatibility_identity
+        or episode.source_trajectory_id != reference.source_trajectory_id
+        or episode.episode_id != reference.episode_id
+        or episode.source_actions.dtype.str != reference.source_actions.dtype.str
+        or episode.source_actions.shape != reference.source_actions.shape
+        or episode.source_actions.tobytes(order="C")
+        != reference.source_actions.tobytes(order="C")
+        or episode.states[0].state_digest != reference.initial_state_digest
+        or episode.states[-1].state_digest != reference.terminal_state_digest
+    ):
+        raise RuntimeError("isolated worker paired episode identity differs")
+    return episode, reference
+
+
+def _collect_state_indexed_reference_archive_isolated(
+    args: argparse.Namespace,
+) -> StateIndexedSourceCollectionResult:
+    """Collect sequential seeds in short-lived processes and merge exact archives."""
+
+    attempts: list[SourceAttemptRecord] = []
+    episodes: list[Any] = []
+    references: list[Any] = []
+    for seed in ordered_source_seeds(args.starting_seed, args.maximum_attempts):
+        with tempfile.TemporaryDirectory(
+            prefix=f"latentguard-m3a-seed-{seed}-"
+        ) as temporary:
+            root = Path(temporary)
+            command = _isolated_sequence_worker_command(
+                args, seed=seed, output_root=root
+            )
+            request = _write_isolated_collection_worker_request(
+                args, seed=seed, output_root=root
+            )
+            environment = dict(os.environ)
+            environment[_ISOLATED_COLLECTION_WORKER_ENV] = "1"
+            environment[_ISOLATED_COLLECTION_REQUEST_ENV] = str(request)
+            completed = subprocess.run(
+                command,
+                check=False,
+                env=environment,
+                stdin=subprocess.DEVNULL,
+            )
+            if completed.returncode != 0:
+                if any(
+                    path.exists() or path.is_symlink()
+                    for path in (
+                        root / "runtime-archive",
+                        root / "reference-archive",
+                    )
+                ):
+                    raise RuntimeError("rejected isolated worker published an archive")
+                category = _isolated_worker_rejection_category(
+                    completed, summary_path=root / "summary.json", seed=seed
+                )
+                attempts.append(
+                    SourceAttemptRecord(
+                        seed=seed, accepted=False, failure_category=category
+                    )
+                )
+                continue
+            archive = load_state_indexed_archive(root / "runtime-archive")
+            reference_archive = load_reference_archive(root / "reference-archive")
+            episode, reference = _validate_isolated_worker_success(
+                summary_path=root / "summary.json",
+                archive=archive,
+                reference_archive=reference_archive,
+                seed=seed,
+            )
+            attempts.append(
+                SourceAttemptRecord(seed=seed, accepted=True, failure_category=None)
+            )
+            episodes.append(episode)
+            references.append(reference)
+        if len(episodes) == args.requested_success_count:
+            return StateIndexedSourceCollectionResult(
+                requested_success_count=args.requested_success_count,
+                attempts=tuple(attempts),
+                archive=PickCubeStateIndexedArchiveV1(episodes=tuple(episodes)),
+                reference_archive=ManiSkillReferenceArchive(episodes=tuple(references)),
+            )
+    incomplete = StateIndexedSourceCollectionResult(
+        requested_success_count=args.requested_success_count,
+        attempts=tuple(attempts),
+        archive=None,
+        reference_archive=None,
+    )
+    raise StateIndexedSourceCollectionIncompleteError(incomplete)
+
+
+def _isolated_fresh_audit_worker_command(
+    args: argparse.Namespace,
+    *,
+    runtime_archive_dir: Path,
+    archive_digest: str,
+    source_trajectory_id: str,
+    output: Path,
+) -> tuple[str, ...]:
+    """Build one private fresh-audit worker command without a shell."""
+
+    return (
+        sys.executable,
+        "-X",
+        "faulthandler",
+        "-m",
+        "latentguard.integrations.maniskill_pickcube.fresh_audit_worker",
+        "--runtime-archive-dir",
+        str(runtime_archive_dir.absolute().resolve()),
+        "--expected-archive-digest",
+        archive_digest,
+        "--source-trajectory-id",
+        source_trajectory_id,
+        "--compatibility-report",
+        str(Path(args.compatibility_report).absolute().resolve()),
+        "--expected-contract",
+        str(Path(args.expected_contract).absolute().resolve()),
+        "--action-layout",
+        str(Path(args.action_layout).absolute().resolve()),
+        "--output",
+        str(output.absolute().resolve()),
+    )
+
+
+def _load_isolated_fresh_audit_records(
+    path: Path,
+    *,
+    archive: PickCubeStateIndexedArchiveV1,
+    episode: Any,
+    tolerance: float,
+) -> tuple[StateRestorationAuditRecord, ...]:
+    """Strictly rebuild compact records emitted by one fresh-audit worker."""
+
+    payload = _load_isolated_worker_summary(path, context="isolated fresh audit")
+    expected_envelope = {
+        "archive_content_digest",
+        "compatibility_identity",
+        "episode_content_digest",
+        "records",
+        "schema_version",
+        "source_trajectory_id",
+        "state_count",
+    }
+    if (
+        set(payload) != expected_envelope
+        or type(payload["state_count"]) is not int
+        or payload["archive_content_digest"] != archive.content_digest
+        or payload["compatibility_identity"] != episode.compatibility_identity
+        or payload["episode_content_digest"] != episode.content_digest
+        or payload["schema_version"] != "1.0"
+        or payload["source_trajectory_id"] != episode.source_trajectory_id
+        or payload["state_count"] != len(episode.states)
+    ):
+        raise RuntimeError("isolated fresh audit envelope identity differs")
+    raw_records = payload["records"]
+    if not isinstance(raw_records, list) or len(raw_records) != len(episode.states):
+        raise RuntimeError("isolated fresh audit record count differs")
+    record_fields = {
+        "compared_component_count",
+        "maximum_absolute_error",
+        "source_to_restored_task_mismatch_fields",
+        "source_trajectory_id",
+        "state_index",
+        "verifier_component_count",
+        "verifier_maximum_absolute_error",
+    }
+    records: list[StateRestorationAuditRecord] = []
+    for state, raw in zip(episode.states, raw_records, strict=True):
+        if not isinstance(raw, Mapping) or set(raw) != record_fields:
+            raise RuntimeError("isolated fresh audit record fields differ")
+        state_index = raw["state_index"]
+        compared_count = raw["compared_component_count"]
+        verifier_count = raw["verifier_component_count"]
+        maximum_error = raw["maximum_absolute_error"]
+        verifier_error = raw["verifier_maximum_absolute_error"]
+        mismatches = raw["source_to_restored_task_mismatch_fields"]
+        expected_mismatches = _task_snapshot_mismatch_fields(
+            state.task_snapshot,
+            state.restored_task_snapshot,
+            atol=tolerance,
+        )
+        if (
+            type(state_index) is not int
+            or state_index != state.state_index
+            or raw["source_trajectory_id"] != episode.source_trajectory_id
+            or type(compared_count) is not int
+            or compared_count != state.numeric_component_count
+            or type(verifier_count) is not int
+            or verifier_count != int(state.verifier_state.values.size)
+            or type(maximum_error) is not float
+            or type(verifier_error) is not float
+            or not math.isfinite(float(maximum_error))
+            or not math.isfinite(float(verifier_error))
+            or not 0.0 <= float(maximum_error) <= tolerance
+            or not 0.0 <= float(verifier_error) <= tolerance
+            or not isinstance(mismatches, list)
+            or any(not isinstance(field, str) for field in mismatches)
+            or tuple(mismatches) != expected_mismatches
+        ):
+            raise RuntimeError("isolated fresh audit record content differs")
+        records.append(
+            StateRestorationAuditRecord(
+                source_trajectory_id=episode.source_trajectory_id,
+                state_index=state_index,
+                compared_component_count=compared_count,
+                maximum_absolute_error=float(maximum_error),
+                verifier_component_count=verifier_count,
+                verifier_maximum_absolute_error=float(verifier_error),
+                source_to_restored_task_mismatch_fields=tuple(mismatches),
+            )
+        )
+    return tuple(records)
+
+
+def _verify_indexed_states_isolated(
+    args: argparse.Namespace,
+    *,
+    archive: PickCubeStateIndexedArchiveV1,
+    trajectory_limit: int,
+    tolerance: float,
+) -> tuple[StateRestorationAuditRecord, ...]:
+    """Audit each requested trajectory in its own native-runtime process."""
+
+    records: list[StateRestorationAuditRecord] = []
+    with tempfile.TemporaryDirectory(
+        prefix="latentguard-m3a-fresh-audit-"
+    ) as temporary:
+        root = Path(temporary)
+        runtime_archive = root / "runtime-archive"
+        save_state_indexed_archive(archive, runtime_archive)
+        if (
+            load_state_indexed_archive(runtime_archive).content_digest
+            != archive.content_digest
+        ):
+            raise RuntimeError("isolated fresh audit staging digest changed")
+        for index, episode in enumerate(archive.episodes[:trajectory_limit]):
+            output = root / f"audit-{index:06d}.json"
+            command = _isolated_fresh_audit_worker_command(
+                args,
+                runtime_archive_dir=runtime_archive,
+                archive_digest=archive.content_digest,
+                source_trajectory_id=episode.source_trajectory_id,
+                output=output,
+            )
+            completed = subprocess.run(
+                command,
+                check=False,
+                stdin=subprocess.DEVNULL,
+            )
+            if completed.returncode != 0:
+                if completed.returncode < 0:
+                    detail = f"signal {-completed.returncode}"
+                else:
+                    detail = f"status {completed.returncode}"
+                raise RuntimeError(
+                    "isolated fresh audit for trajectory "
+                    f"{episode.source_trajectory_id} terminated with {detail}"
+                )
+            records.extend(
+                _load_isolated_fresh_audit_records(
+                    output,
+                    archive=archive,
+                    episode=episode,
+                    tolerance=tolerance,
+                )
+            )
+    return tuple(records)
+
+
 def _run_collect_sequences(
     args: argparse.Namespace,
     *,
@@ -560,42 +1178,70 @@ def _run_collect_sequences(
         scope = _load_scope(args)
         if args.sim_backend != scope.settings.sim_backend:
             raise ValueError("collection simulator backend differs from compatibility")
-        if solver is None or solver_identity is None:
-            if solver is not None or solver_identity is not None:
-                raise ValueError("solver and solver identity must be supplied together")
-            solver, solver_identity = load_official_solver()
-        assert solver is not None
-        assert solver_identity is not None
-        _validate_solver_identity(scope.binding, solver_identity)
-        factory = environment_factory or LazyManiSkillSourceEnvironmentFactory()
-        result = collect_state_indexed_reference_archive(
-            requested_success_count=args.requested_success_count,
-            starting_seed=args.starting_seed,
-            maximum_attempts=args.maximum_attempts,
-            compatibility_identity=scope.binding.report.compatibility_identity,
-            environment_factory=factory,
-            settings=scope.settings,
-            action_contract=scope.action_contract,
-            key_contract=scope.task_keys,
+        internal_worker = _validate_internal_collection_worker(args)
+        isolated = _use_isolated_sequence_collection(
+            internal_worker=internal_worker,
+            environment_factory=environment_factory,
             solver=solver,
             solver_identity=solver_identity,
-            trajectory_action_limit=args.trajectory_action_limit,
         )
+        factory: SourceEnvironmentFactory | None
+        if isolated:
+            result = _collect_state_indexed_reference_archive_isolated(args)
+            factory = None
+        else:
+            if solver is None or solver_identity is None:
+                if solver is not None or solver_identity is not None:
+                    raise ValueError(
+                        "solver and solver identity must be supplied together"
+                    )
+                solver, solver_identity = load_official_solver()
+            assert solver is not None
+            assert solver_identity is not None
+            _validate_solver_identity(scope.binding, solver_identity)
+            factory = environment_factory or LazyManiSkillSourceEnvironmentFactory()
+            result = collect_state_indexed_reference_archive(
+                requested_success_count=args.requested_success_count,
+                starting_seed=args.starting_seed,
+                maximum_attempts=args.maximum_attempts,
+                compatibility_identity=scope.binding.report.compatibility_identity,
+                environment_factory=factory,
+                settings=scope.settings,
+                action_contract=scope.action_contract,
+                key_contract=scope.task_keys,
+                solver=solver,
+                solver_identity=solver_identity,
+                trajectory_action_limit=args.trajectory_action_limit,
+            )
         archive = result.archive
         reference_archive = result.reference_archive
         if archive is None or reference_archive is None:
             raise RuntimeError("complete sequence collection returned no archives")
         audit: list[Any] = []
-        for episode in archive.episodes[: args.fresh_state_trajectory_limit]:
+        if isolated:
             audit.extend(
-                verify_all_indexed_states_fresh(
-                    episode,
-                    environment_factory=factory,
-                    settings=scope.settings,
-                    action_contract=scope.action_contract,
-                    key_contract=scope.task_keys,
+                _verify_indexed_states_isolated(
+                    args,
+                    archive=archive,
+                    trajectory_limit=args.fresh_state_trajectory_limit,
+                    tolerance=scope.settings.state_tolerance,
                 )
             )
+        else:
+            assert factory is not None
+            fresh_state_trajectory_limit = (
+                0 if internal_worker else args.fresh_state_trajectory_limit
+            )
+            for episode in archive.episodes[:fresh_state_trajectory_limit]:
+                audit.extend(
+                    verify_all_indexed_states_fresh(
+                        episode,
+                        environment_factory=factory,
+                        settings=scope.settings,
+                        action_contract=scope.action_contract,
+                        key_contract=scope.task_keys,
+                    )
+                )
         save_state_indexed_archive(archive, outputs["state-indexed runtime archive"])
         save_reference_archive(reference_archive, outputs["M2C reference archive"])
         if (

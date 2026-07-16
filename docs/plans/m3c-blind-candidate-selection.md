@@ -122,6 +122,14 @@ coverage and is neither success nor task failure.
     action-contract digest. Keep the source solver action dtype and byte contract
     independently bound by the anchor manifest; the environment runtime contract
     and source serialization contract are intentionally distinct identities.
+15. Bound ManiSkill native-runtime lifetime during production source collection:
+    launch the same collection CLI sequentially for one seed and one attempt per
+    short-lived subprocess, strictly reload and cross-check both exact archives,
+    and merge accepted episodes in deterministic seed order. Run the requested
+    outer fresh-state audit in a separate short-lived process per trajectory.
+    This is failure containment only, not parallel or distributed collection;
+    native signals, malformed worker output, or partial archives fail closed
+    before any final archive or summary is published.
 
 ## Candidate and evaluation contract
 
@@ -157,10 +165,12 @@ entry points, capability-level blinded Stage A input, strict manifest/report
 binding, complementary replay gates, selector/metric contracts, predeclared
 target interpretation, pre-collection inference forward gate, atomic Stage A
 publication, semantic/archive replay digest separation, compact resume proofs,
-and CPU-only fake protocol coverage. Final combined-tree validation passed
-`1208` tests with `3` Windows symlink-privilege-only skips. `ruff check .`,
-`ruff format --check .`, `mypy src` over 119 source files, and
-`git diff --check` also passed after the release-audit fixes.
+and CPU-only fake protocol coverage. The current native-containment correction
+adds strict single-seed collection-worker and fresh-audit-worker coverage. Final
+combined-tree validation on the repository CPython 3.12.10 environment passed
+`1215` tests with `3` Windows symlink-privilege-only skips. `ruff check .`,
+`ruff format --check .`, `mypy src` over 120 source files, all six M3C CLI help
+smokes, and `git diff --check` also passed before the correction commit.
 
 The first remote smoke attempt at implementation revision
 `93dd0e2a7e989cecc47bf72de1a09fd68d8b9d8d` passed all M3A/M3B artifact gates,
@@ -172,6 +182,21 @@ replay evidence, or candidate outcome was created. The local correction keeps
 the trusted `sha256:028d8c2cbb10e867d709f1c5d4c31e07ef1e084f1a8ad8370f96185ba892f0eb`
 runtime binding and preserves the source `<f8` contract independently in the
 anchor manifest. No M3C full benchmark or result claim has yet been made.
+
+The corrected smoke at revision
+`70a608ff062210ee4c5541eec4f78939f1283fb8` completed the full blind mechanics
+protocol: six accepted sources, 36 anchors, 288 candidates, all eleven Stage A
+selectors, 122 selected-union replays, 166 complementary replays, complete
+strong simulator evidence, and zero-work resume. These are smoke mechanics only
+and do not support a research claim. The first two attempts to collect the fixed
+60-source full range then terminated inside native code with `SIGSEGV` before
+collection returned. Both failure records and the second faulthandler log are
+preserved; the full output directory remained empty and no full candidate pool,
+Stage A manifest, replay evidence, or outcome was created. The local correction
+therefore changes only process containment around the same source collector and
+fresh-restoration audit. It does not change seeds, source policy, simulator
+contract, candidate configuration, selectors, labels, or evaluation semantics.
+The full benchmark must restart under the new exact pushed revision.
 
 ## Ordered local gates
 

@@ -3,12 +3,14 @@
 from __future__ import annotations
 
 import json
+import subprocess
 from pathlib import Path
 from types import SimpleNamespace
 
 import numpy as np
 import pytest
 
+import latentguard.m3a_cli as m3a_cli
 from latentguard.action_verifier import CandidateType
 from latentguard.cli import main
 from latentguard.integrations.maniskill_pickcube.state_indexed_archive import (
@@ -19,12 +21,23 @@ from latentguard.integrations.maniskill_pickcube.verifier_state import (
     PICKCUBE_VERIFIER_STATE_SEMANTIC,
 )
 from latentguard.m3a_cli import (
+    _ISOLATED_COLLECTION_REQUEST_ENV,
+    _ISOLATED_COLLECTION_WORKER_ENV,
     _baseline_exclusion_counts,
+    _collect_state_indexed_reference_archive_isolated,
     _collection_summary,
+    _isolated_fresh_audit_worker_command,
+    _isolated_sequence_worker_command,
+    _isolated_worker_rejection_category,
+    _load_isolated_fresh_audit_records,
     _load_resume_report,
     _require_full_dataset_targets,
     _restoration_error_distribution,
     _restoration_report,
+    _use_isolated_sequence_collection,
+    _validate_internal_collection_worker,
+    _validate_isolated_worker_success,
+    _write_isolated_collection_worker_request,
 )
 
 
@@ -35,6 +48,439 @@ def _common_pickcube_args(tmp_path: Path) -> list[str]:
         "--action-layout",
         str(tmp_path / "layout.json"),
     ]
+
+
+def test_public_collection_rejects_zero_fresh_state_trajectories(
+    tmp_path: Path,
+) -> None:
+    with pytest.raises(SystemExit):
+        main(
+            [
+                "collect-maniskill-pickcube-sequences",
+                "--runtime-archive-dir",
+                str(tmp_path / "states"),
+                "--reference-archive-dir",
+                str(tmp_path / "references"),
+                "--summary-output",
+                str(tmp_path / "summary.json"),
+                "--fresh-state-trajectory-limit",
+                "0",
+                "--dry-run",
+                *_common_pickcube_args(tmp_path),
+            ]
+        )
+
+
+def test_production_collection_uses_private_nonrecursive_workers(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    monkeypatch.delenv(_ISOLATED_COLLECTION_WORKER_ENV, raising=False)
+    assert _use_isolated_sequence_collection(
+        internal_worker=False,
+        environment_factory=None,
+        solver=None,
+        solver_identity=None,
+    )
+    assert not _use_isolated_sequence_collection(
+        internal_worker=True,
+        environment_factory=None,
+        solver=None,
+        solver_identity=None,
+    )
+
+    args = SimpleNamespace(
+        action_layout=tmp_path / "layout.json",
+        compatibility_report=tmp_path / "compatibility.json",
+        expected_contract=tmp_path / "expected.json",
+        sim_backend="gpu",
+        trajectory_action_limit=123,
+    )
+    command = _isolated_sequence_worker_command(
+        args, seed=20_000, output_root=tmp_path / "worker"
+    )
+    assert command[:5] == (
+        command[0],
+        "-X",
+        "faulthandler",
+        "-m",
+        "latentguard",
+    )
+    assert command[command.index("--requested-success-count") + 1] == "1"
+    assert command[command.index("--starting-seed") + 1] == "20000"
+    assert command[command.index("--maximum-attempts") + 1] == "1"
+    assert command[command.index("--fresh-state-trajectory-limit") + 1] == "1"
+    assert command[command.index("--trajectory-action-limit") + 1] == "123"
+
+    (tmp_path / "worker").mkdir()
+    request = _write_isolated_collection_worker_request(
+        args, seed=20_000, output_root=tmp_path / "worker"
+    )
+    monkeypatch.setenv(_ISOLATED_COLLECTION_WORKER_ENV, "1")
+    monkeypatch.setenv(_ISOLATED_COLLECTION_REQUEST_ENV, str(request))
+    child_args = SimpleNamespace(
+        action_layout=tmp_path / "layout.json",
+        compatibility_report=tmp_path / "compatibility.json",
+        expected_contract=tmp_path / "expected.json",
+        fresh_state_trajectory_limit=1,
+        maximum_attempts=1,
+        reference_archive_dir=tmp_path / "worker" / "reference-archive",
+        requested_success_count=1,
+        runtime_archive_dir=tmp_path / "worker" / "runtime-archive",
+        sim_backend="gpu",
+        starting_seed=20_000,
+        summary_output=tmp_path / "worker" / "summary.json",
+        trajectory_action_limit=123,
+    )
+    assert _validate_internal_collection_worker(child_args)
+
+    request_payload = json.loads(request.read_text(encoding="utf-8"))
+    request_payload["trajectory_action_limit"] = True
+    request.write_text(json.dumps(request_payload), encoding="utf-8")
+    with pytest.raises(ValueError, match="request differs from arguments"):
+        _validate_internal_collection_worker(child_args)
+
+    request_payload["trajectory_action_limit"] = 123
+    request.write_text(json.dumps(request_payload), encoding="utf-8")
+    monkeypatch.delenv(_ISOLATED_COLLECTION_REQUEST_ENV)
+    with pytest.raises(ValueError, match="marker is incomplete"):
+        _validate_internal_collection_worker(child_args)
+
+
+def test_isolated_worker_accepts_only_strict_normal_seed_rejection(
+    tmp_path: Path,
+) -> None:
+    summary = tmp_path / "summary.json"
+    summary.write_text(
+        json.dumps(
+            {
+                "accepted_source_trajectories": 0,
+                "attempt_count": 1,
+                "attempt_failure_categories": {"PickCubeSourceGenerationError": 1},
+                "requested_source_trajectories": 1,
+                "schema_version": "1.1",
+                "status": "incomplete",
+            }
+        ),
+        encoding="utf-8",
+    )
+    completed = subprocess.CompletedProcess(args=("worker",), returncode=1)
+    assert (
+        _isolated_worker_rejection_category(
+            completed, summary_path=summary, seed=20_000
+        )
+        == "PickCubeSourceGenerationError"
+    )
+
+    with pytest.raises(RuntimeError, match="signal 11"):
+        _isolated_worker_rejection_category(
+            subprocess.CompletedProcess(args=("worker",), returncode=-11),
+            summary_path=summary,
+            seed=20_000,
+        )
+    summary.unlink()
+    with pytest.raises(RuntimeError, match="missing or invalid"):
+        _isolated_worker_rejection_category(
+            completed, summary_path=summary, seed=20_000
+        )
+
+
+def test_isolated_collection_preserves_global_attempt_order(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    args = SimpleNamespace(
+        action_layout=tmp_path / "layout.json",
+        compatibility_report=tmp_path / "compatibility.json",
+        expected_contract=tmp_path / "expected.json",
+        maximum_attempts=3,
+        requested_success_count=2,
+        sim_backend="gpu",
+        starting_seed=10,
+        trajectory_action_limit=None,
+    )
+    outcomes = iter((1, 0, 0))
+    monkeypatch.setattr(
+        m3a_cli.subprocess,
+        "run",
+        lambda *args, **kwargs: subprocess.CompletedProcess(
+            args=("worker",), returncode=next(outcomes)
+        ),
+    )
+    monkeypatch.setattr(
+        m3a_cli,
+        "_isolated_worker_rejection_category",
+        lambda *args, **kwargs: "NormalSeedRejection",
+    )
+    monkeypatch.setattr(
+        m3a_cli,
+        "load_state_indexed_archive",
+        lambda path: SimpleNamespace(episodes=(object(),)),
+    )
+    monkeypatch.setattr(
+        m3a_cli,
+        "load_reference_archive",
+        lambda path: SimpleNamespace(episodes=(object(),)),
+    )
+    monkeypatch.setattr(
+        m3a_cli,
+        "_validate_isolated_worker_success",
+        lambda **kwargs: (
+            f"episode-{kwargs['seed']}",
+            f"reference-{kwargs['seed']}",
+        ),
+    )
+    monkeypatch.setattr(
+        m3a_cli,
+        "PickCubeStateIndexedArchiveV1",
+        lambda *, episodes: SimpleNamespace(episodes=episodes),
+    )
+    monkeypatch.setattr(
+        m3a_cli,
+        "ManiSkillReferenceArchive",
+        lambda *, episodes: SimpleNamespace(episodes=episodes),
+    )
+
+    result = _collect_state_indexed_reference_archive_isolated(args)
+
+    assert tuple(attempt.seed for attempt in result.attempts) == (10, 11, 12)
+    assert tuple(attempt.accepted for attempt in result.attempts) == (
+        False,
+        True,
+        True,
+    )
+    assert result.archive.episodes == ("episode-11", "episode-12")
+    assert result.reference_archive.episodes == (
+        "reference-11",
+        "reference-12",
+    )
+
+
+def test_isolated_collection_aborts_on_native_worker_signal(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    args = SimpleNamespace(
+        action_layout=tmp_path / "layout.json",
+        compatibility_report=tmp_path / "compatibility.json",
+        expected_contract=tmp_path / "expected.json",
+        maximum_attempts=1,
+        requested_success_count=1,
+        sim_backend="gpu",
+        starting_seed=20_000,
+        trajectory_action_limit=None,
+    )
+    monkeypatch.setattr(
+        m3a_cli.subprocess,
+        "run",
+        lambda *args, **kwargs: subprocess.CompletedProcess(
+            args=("worker",), returncode=-11
+        ),
+    )
+
+    with pytest.raises(RuntimeError, match="signal 11"):
+        _collect_state_indexed_reference_archive_isolated(args)
+
+
+def test_isolated_worker_success_cross_checks_complete_pair(tmp_path: Path) -> None:
+    digest = f"sha256:{'a' * 64}"
+    initial = f"sha256:{'b' * 64}"
+    terminal = f"sha256:{'c' * 64}"
+    actions = np.arange(24, dtype=np.float64).reshape(3, 8)
+    episode = SimpleNamespace(
+        seed=20_000,
+        compatibility_identity=digest,
+        source_trajectory_id="trajectory-20000",
+        episode_id="episode-20000",
+        source_actions=actions,
+        states=(
+            SimpleNamespace(state_digest=initial),
+            SimpleNamespace(state_digest=terminal),
+        ),
+    )
+    reference = SimpleNamespace(
+        seed=20_000,
+        compatibility_identity=digest,
+        source_trajectory_id="trajectory-20000",
+        episode_id="episode-20000",
+        source_actions=actions.copy(),
+        initial_state_digest=initial,
+        terminal_state_digest=terminal,
+    )
+    archive = SimpleNamespace(episodes=(episode,), content_digest=digest)
+    reference_archive = SimpleNamespace(episodes=(reference,))
+    summary = tmp_path / "summary.json"
+    summary.write_text(
+        json.dumps(
+            {
+                "accepted_source_trajectories": 1,
+                "archive_content_digest": digest,
+                "attempt_count": 1,
+                "attempt_failure_categories": {},
+                "compatibility_identity": digest,
+                "fresh_state_compared_component_counts": [],
+                "fresh_state_maximum_absolute_error": 0.0,
+                "fresh_state_restoration_error_distribution": {
+                    "count": 0,
+                    "fixed_bin_counts": {
+                        "equal_zero": 0,
+                        "gt_1e-6": 0,
+                        "gt_1e-7_le_5e-7": 0,
+                        "gt_1e-8_le_1e-7": 0,
+                        "gt_5e-7_le_1e-6": 0,
+                        "gt_zero_le_1e-8": 0,
+                    },
+                    "maximum": None,
+                    "minimum": None,
+                    "p50": None,
+                    "p95": None,
+                    "p99": None,
+                    "quantile_semantic": "nearest_rank_v1",
+                },
+                "fresh_state_verification_count": 0,
+                "fresh_verifier_state_compared_component_counts": [],
+                "fresh_verifier_state_maximum_absolute_error": 0.0,
+                "fresh_verifier_state_restoration_error_distribution": {
+                    "count": 0,
+                    "fixed_bin_counts": {
+                        "equal_zero": 0,
+                        "gt_1e-6": 0,
+                        "gt_1e-7_le_5e-7": 0,
+                        "gt_1e-8_le_1e-7": 0,
+                        "gt_5e-7_le_1e-6": 0,
+                        "gt_zero_le_1e-8": 0,
+                    },
+                    "maximum": None,
+                    "minimum": None,
+                    "p50": None,
+                    "p95": None,
+                    "p99": None,
+                    "quantile_semantic": "nearest_rank_v1",
+                },
+                "requested_source_trajectories": 1,
+                "schema_version": "1.1",
+                "source_action_count": 3,
+                "source_to_restored_task_mismatch_field_counts": {},
+                "source_to_restored_task_mismatch_state_count": 0,
+                "state_indexed_archive_serialization_version": (
+                    STATE_INDEXED_ARCHIVE_VERSION
+                ),
+                "t_plus_one_state_count": 2,
+                "verifier_state_extraction_boundary": (
+                    PICKCUBE_VERIFIER_STATE_EXTRACTION_BOUNDARY
+                ),
+                "verifier_state_semantic": PICKCUBE_VERIFIER_STATE_SEMANTIC,
+            }
+        ),
+        encoding="utf-8",
+    )
+
+    observed = _validate_isolated_worker_success(
+        summary_path=summary,
+        archive=archive,
+        reference_archive=reference_archive,
+        seed=20_000,
+    )
+    assert observed == (episode, reference)
+
+    reference.source_actions[0, 0] = -1.0
+    with pytest.raises(RuntimeError, match="paired episode identity"):
+        _validate_isolated_worker_success(
+            summary_path=summary,
+            archive=archive,
+            reference_archive=reference_archive,
+            seed=20_000,
+        )
+
+
+def test_isolated_fresh_audit_records_are_strictly_content_bound(
+    tmp_path: Path,
+) -> None:
+    archive_digest = f"sha256:{'a' * 64}"
+    episode_digest = f"sha256:{'b' * 64}"
+    compatibility = f"sha256:{'c' * 64}"
+    state = SimpleNamespace(
+        state_index=0,
+        numeric_component_count=70,
+        task_snapshot=SimpleNamespace(
+            success=False,
+            is_obj_placed=False,
+            is_robot_static=False,
+            is_grasped=False,
+            cube_center_z=0.02,
+            cube_to_goal_distance=0.2,
+            tcp_to_cube_distance=0.1,
+        ),
+        restored_task_snapshot=SimpleNamespace(
+            success=False,
+            is_obj_placed=False,
+            is_robot_static=False,
+            is_grasped=True,
+            cube_center_z=0.02,
+            cube_to_goal_distance=0.2,
+            tcp_to_cube_distance=0.1,
+        ),
+        verifier_state=SimpleNamespace(values=np.zeros(38, dtype=np.float32)),
+    )
+    episode = SimpleNamespace(
+        compatibility_identity=compatibility,
+        content_digest=episode_digest,
+        source_trajectory_id="trajectory-20000",
+        states=(state,),
+    )
+    archive = SimpleNamespace(content_digest=archive_digest)
+    output = tmp_path / "audit.json"
+    payload = {
+        "archive_content_digest": archive_digest,
+        "compatibility_identity": compatibility,
+        "episode_content_digest": episode_digest,
+        "records": [
+            {
+                "compared_component_count": 70,
+                "maximum_absolute_error": 1.1920928955078125e-07,
+                "source_to_restored_task_mismatch_fields": ["is_grasped"],
+                "source_trajectory_id": "trajectory-20000",
+                "state_index": 0,
+                "verifier_component_count": 38,
+                "verifier_maximum_absolute_error": 0.0,
+            }
+        ],
+        "schema_version": "1.0",
+        "source_trajectory_id": "trajectory-20000",
+        "state_count": 1,
+    }
+    output.write_text(json.dumps(payload), encoding="utf-8")
+
+    records = _load_isolated_fresh_audit_records(
+        output,
+        archive=archive,
+        episode=episode,
+        tolerance=1e-6,
+    )
+    assert len(records) == 1
+    assert records[0].source_to_restored_task_mismatch_fields == ("is_grasped",)
+
+    payload["unexpected"] = True
+    output.write_text(json.dumps(payload), encoding="utf-8")
+    with pytest.raises(RuntimeError, match="envelope identity"):
+        _load_isolated_fresh_audit_records(
+            output,
+            archive=archive,
+            episode=episode,
+            tolerance=1e-6,
+        )
+
+    args = SimpleNamespace(
+        action_layout=tmp_path / "layout.json",
+        compatibility_report=tmp_path / "compatibility.json",
+        expected_contract=tmp_path / "expected.json",
+    )
+    command = _isolated_fresh_audit_worker_command(
+        args,
+        runtime_archive_dir=tmp_path / "runtime",
+        archive_digest=archive_digest,
+        source_trajectory_id="trajectory-20000",
+        output=output,
+    )
+    assert command[command.index("-m") + 1].endswith("fresh_audit_worker")
+    assert command[command.index("--expected-archive-digest") + 1] == archive_digest
 
 
 @pytest.mark.parametrize(
