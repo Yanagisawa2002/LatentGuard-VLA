@@ -1,0 +1,119 @@
+{
+  "schema_version": "1.0",
+  "action_dimension": 8,
+  "candidate_horizon": 16,
+  "semantic": "blind_eight_candidate_pool_v1",
+  "base_seed": 271828,
+  "action_contract_digest": "sha256:028d8c2cbb10e867d709f1c5d4c31e07ef1e084f1a8ad8370f96185ba892f0eb",
+  "candidates": [
+    {
+      "configuration_ordinal": 0,
+      "distribution": "id_like",
+      "corruption_type": "additive_gaussian_noise",
+      "parameters": {
+        "target_fields": ["arm"],
+        "standard_deviation": 0.005,
+        "mean": 0.0
+      },
+      "window_start": 0,
+      "window_end": 16,
+      "severity_id": "mild_arm_gaussian_0p005",
+      "schema_version": "1.0"
+    },
+    {
+      "configuration_ordinal": 1,
+      "distribution": "id_like",
+      "corruption_type": "constant_bias",
+      "parameters": {
+        "target_fields": ["arm"],
+        "bias": 0.01
+      },
+      "window_start": 0,
+      "window_end": 16,
+      "severity_id": "moderate_arm_bias_0p01",
+      "schema_version": "1.0"
+    },
+    {
+      "configuration_ordinal": 2,
+      "distribution": "id_like",
+      "corruption_type": "additive_gaussian_noise",
+      "parameters": {
+        "target_fields": ["arm"],
+        "standard_deviation": 0.05,
+        "mean": 0.0
+      },
+      "window_start": 0,
+      "window_end": 16,
+      "severity_id": "severe_arm_gaussian_0p05",
+      "schema_version": "1.0"
+    },
+    {
+      "configuration_ordinal": 3,
+      "distribution": "id_like",
+      "corruption_type": "segment_hold",
+      "parameters": {
+        "start_step": 1,
+        "target_indices": [0, 1, 2, 3, 4, 5, 6, 7]
+      },
+      "window_start": 0,
+      "window_end": 16,
+      "severity_id": "severe_all_hold_1_16",
+      "schema_version": "1.0"
+    },
+    {
+      "configuration_ordinal": 4,
+      "distribution": "shifted",
+      "corruption_type": "additive_gaussian_noise",
+      "parameters": {
+        "target_fields": ["arm"],
+        "standard_deviation": 0.02,
+        "mean": 0.0
+      },
+      "window_start": 0,
+      "window_end": 16,
+      "severity_id": "shifted_arm_gaussian_0p02",
+      "schema_version": "1.0"
+    },
+    {
+      "configuration_ordinal": 5,
+      "distribution": "shifted",
+      "corruption_type": "constant_bias",
+      "parameters": {
+        "target_fields": ["arm"],
+        "bias": 0.05
+      },
+      "window_start": 0,
+      "window_end": 16,
+      "severity_id": "shifted_arm_bias_0p05",
+      "schema_version": "1.0"
+    },
+    {
+      "configuration_ordinal": 6,
+      "distribution": "shifted",
+      "corruption_type": "segment_hold",
+      "parameters": {
+        "start_step": 4,
+        "end_step": 12,
+        "target_indices": [0, 1, 2, 3, 4, 5, 6, 7]
+      },
+      "window_start": 0,
+      "window_end": 16,
+      "severity_id": "shifted_all_hold_4_12",
+      "schema_version": "1.0"
+    },
+    {
+      "configuration_ordinal": 7,
+      "distribution": "shifted",
+      "corruption_type": "local_temporal_permutation",
+      "parameters": {
+        "start_step": 2,
+        "end_step": 10,
+        "target_fields": ["arm"]
+      },
+      "window_start": 0,
+      "window_end": 16,
+      "severity_id": "shifted_arm_permutation_2_10",
+      "schema_version": "1.0"
+    }
+  ]
+}

@@ -187,3 +187,83 @@ The remote M3B job consumes the already accepted compact M3A dataset; it does
 not start ManiSkill, LangMani, a VLM, or any online simulator rollout. The fixed
 models run sequentially on one GPU rather than distributed or multi-GPU
 training.
+
+## M3C single-GPU blind selection and replay
+
+M3C begins from a clean pushed implementation revision. Persistent storage is
+audited for the accepted M3A dataset and the 15 required M3B checkpoints plus
+preprocessing, calibration, and threshold artifacts. Every available artifact
+is digest-validated before use. If checkpoints are absent, only the three fixed
+five-seed families are reconstructed from the exact M3B configurations and
+accepted M3A data; architecture selection is not rerun and no M3C outcome is
+read. If the accepted dataset is absent, the accepted M3A pipeline is rerun and
+must reproduce its digest.
+
+The committed compact M3B benchmark summary authorizes the outer strict-report
+digest of every calibration and threshold artifact. A runtime file that was
+changed and then made internally self-consistent still fails this gate. Each
+seed's complete ordered validation logits and labels must also reproduce its
+stored validation-prediction digest before the six temporal ensemble policies
+are prepared. The accepted Stage A inventory is exactly eleven selectors backed
+by exactly three five-seed bundles; the oracle is created only after Stage C.
+
+Remote gates are sequential on one RTX 5090: exact SHA synchronization,
+artifact validation/reconstruction, CPU and GPU inference smoke, six-trajectory
+mechanics smoke, local configuration freeze if required, 60 untouched full
+sources, candidate pool construction, blind manifest finalization, selected
+union replay, complementary full-pool replay, metrics/bootstrap, and
+zero-duplicate resume. No full outcome may exist before the full Stage A
+manifest is final.
+
+The CPU and GPU gates use `prepare-selection-checkpoints
+--inference-smoke-output <path>` to execute the fixed outcome-free forward
+fixture before source collection. A successful checkpoint load without a
+forward pass is not an inference smoke.
+
+Stage A runs with a capability allowlist, not merely a directory convention.
+Its command accepts only the safely serialized blinded pool and frozen-selector
+inputs—not the full pool and not any evidence, outcome, or replay path.
+Complete-pool replay/evidence/outcome artifacts are first generated or loaded
+by Stage B/C. Stage C is not allowed to create a
+simulator session until the selected-union dataset has been strictly reloaded as
+complete, strong, error-free, and bound to the same envelope, pool, source,
+configuration, and seed.
+
+Smoke and full collection use different fixed seed windows and output roots.
+Full construction must load the smoke pool and prove no overlap in reset seed,
+trajectory ID, split-group ID, or complete state-tree digest. If smoke changes a
+configuration, the fix is made locally, committed and pushed, and the full run
+uses a new untouched source set at the new exact SHA.
+
+CPU and GPU inference/profile gates each write a compact report containing
+per-candidate/group p50/p95/p99, throughput, peak allocated memory, bundle/model
+loading time, and joint-versus-temporal cost differences. Raw predictions stay
+outside Git and profiling cannot alter selections. Final result binding uses
+only persisted phase timestamps and requires
+`selection < selected start <= selected finish < remainder start <= remainder
+finish`.
+`evaluate-candidate-selection` requires both compact reports through
+`--cpu-latency-report` and `--gpu-latency-report`; the result binds their strict
+report digests and summaries.
+
+Large checkpoints, datasets, state/action arrays, raw simulator states, and raw
+predictions stay under the external run root. Only compact bundle, pool,
+selection, metric, ranking, coverage, latency, bootstrap, evidence-digest,
+resume, and human-review reports return to `reports/m3c/<run-id>/`. The paid
+server is shut down only after those artifacts are reloaded, committed, pushed,
+and local/upstream SHA equality is confirmed.
+
+Stage A always retains its own validated latency report and atomically publishes
+the manifest, selector configuration, and latency file together. External
+latency copies are made afterward and can be recreated by `--resume`. Selected
+and remainder replay resumes write sibling strict reports with zero evaluated,
+recovered, and retried attempts; final evaluation requires both reports before
+publishing `resume-summary.json`. It also emits `review.md`, whose exact bytes
+are bound by the compact candidate-selection report.
+
+M3C uses one RTX 5090 sequentially. It starts no VLM/LLM, image encoder,
+LangMani job, distributed process, multi-GPU job, or new model training. Exact
+checkpoint reconstruction, if required by missing artifacts, is limited to the
+already authorized M3B families and is not architecture search. As of this plan
+update, these M3C remote gates have not run and no M3C physical-result or GPU
+latency claim has been made.

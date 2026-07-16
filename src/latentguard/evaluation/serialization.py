@@ -1472,6 +1472,24 @@ def _encode_evidence(evidence: EvaluationEvidence) -> dict[str, object]:
     }
 
 
+def compute_evaluation_evidence_content_digest(
+    evidence: EvaluationEvidence,
+) -> str:
+    """Hash every persisted evidence field, including task values and metrics."""
+
+    validate_evaluation_evidence(evidence)
+    encoded = _canonical_json_bytes(_encode_evidence(evidence))
+    return f"sha256:{hashlib.sha256(encoded).hexdigest()}"
+
+
+def compute_evaluation_dataset_content_digest(dataset: EvaluationDataset) -> str:
+    """Hash the complete path-independent persisted run, ledger, and evidence."""
+
+    validate_evaluation_dataset(dataset)
+    encoded = _canonical_json_bytes(_encode_dataset(dataset))
+    return f"sha256:{hashlib.sha256(encoded).hexdigest()}"
+
+
 def _encode_ledger_entry(entry: LedgerEntry) -> dict[str, object]:
     return {
         "proposal_id": entry.proposal_id,
@@ -2141,6 +2159,8 @@ __all__ = [
     "UnsupportedEvaluationSerializationVersionError",
     "compute_corruption_dataset_content_digest",
     "compute_corruption_dataset_digest",
+    "compute_evaluation_dataset_content_digest",
+    "compute_evaluation_evidence_content_digest",
     "compute_evaluation_seed",
     "compute_run_identifier",
     "load_evaluation_dataset",

@@ -77,6 +77,25 @@ Before a full remote run, pass these gates in order: configuration validation; C
   scope and do not imply visual, language, cross-task, general safety, or
   real-robot performance.
 
+## Blind candidate-selection rules
+
+- Finalize and content-bind every action-selection manifest before simulator
+  outcomes are generated or loaded. A blind selection run must prove that its
+  process had no outcome dataset, evidence, or replay output available.
+- Keep candidate-pool generation and selection as separate phases. The original
+  source action is prohibited from selectable pools unless a future deployment
+  contract explicitly authorizes it. Stage A receives only opaque IDs and the
+  allowlisted state, action, and mask tensors, never full candidate provenance,
+  family, severity, or distribution metadata.
+- Freeze selector configurations, checkpoint identities, calibration, and
+  thresholds before full evaluation. All selectors compare identical candidate
+  pools.
+- Smoke trajectories may validate mechanics only; full-evaluation trajectories
+  remain untouched. Once full outcomes exist, any configuration change requires
+  a new local commit and a new untouched trajectory set.
+- Report abstention as reduced coverage, never as success or task failure.
+  Simulator outcomes must not trigger remote-only configuration changes.
+
 Runtime state-restoration verification
 
 Serialized and archived simulator state remains subject to exact structural and

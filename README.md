@@ -17,6 +17,12 @@ records official Panda motion-planning sources, independently replays every
 accepted source, and keeps exact runtime state archives outside Git. It does not
 use LangMani or train a model.
 
+Milestone M3C adds a blind, one-shot candidate-selection protocol around the
+frozen M3B verifiers. It finalizes immutable rankings before simulator outcomes
+exist, excludes the original source action, and reuses the exact-state replay
+ledger to evaluate selected candidates before the complete pool. See
+[the blind candidate-selection contract](docs/blind_candidate_selection.md).
+
 The current M2C checkout has passed a trusted real-runtime probe and accepted
 six official ManiSkill source trajectories with six independent successful
 baseline replays. The first 12-proposal paired-replay smoke was rejected because
@@ -85,6 +91,75 @@ predictions belong outside the repository and require the exact accepted M3A
 dataset digest. M3B performs no simulator rollout, LangMani execution, or VLM
 training. Completed benchmarks revalidate all run and evaluation artifacts and
 emit a compact content-bound Markdown result summary.
+
+## Evaluate blind candidate selection
+
+M3C exposes six strict orchestration commands:
+
+```text
+latentguard prepare-selection-checkpoints --help
+latentguard build-blind-candidate-pools --help
+latentguard select-action-candidates --help
+latentguard replay-selected-candidates --help
+latentguard replay-complete-candidate-pools --help
+latentguard evaluate-candidate-selection --help
+```
+
+`select-action-candidates` deliberately accepts no evidence, outcome, or replay
+path. The candidate pool, selector configuration, checkpoint bundles, ensemble
+validation thresholds, and full seed range are frozen before full evaluation.
+Simulator execution remains a single-GPU remote operation after exact revision
+synchronization; ordinary tests are CPU-only and network-free.
+
+Stage A is isolated at the capability boundary: its process receives only a
+strict blinded pool containing opaque group/candidate IDs and the deployable
+state/action/mask tensors. It receives neither the full pool's corruption,
+severity, distribution, or source provenance nor any evidence manifest, replay
+output, or outcome-dataset capability. This is more precise than assuming the
+whole machine contains no unrelated outcome file.
+Complete-pool replay evidence and outcomes are first generated or loaded by
+Stage B/C, after the immutable Stage A envelope exists.
+
+The frozen Stage A inventory is exactly eleven selectors: deterministic random,
+the M3B action-magnitude heuristic, three learned five-seed ensembles
+(action-only, state+action MLP, and temporal), and six temporal policies (two
+validation operating points plus approximately 90/80/70/50 percent coverage).
+Only those three learned families form verifier bundles, for 15 checkpoints in
+total. Oracle is not one of the eleven; it is analysis-only after Stage C.
+
+Preparation validates calibration and threshold strict-report envelope digests
+against the committed M3B compact benchmark summary, rather than trusting a
+self-consistent rewritten runtime file. It also recomputes each ordered M3B
+validation prediction digest before fitting the frozen ensemble policies.
+Selector configuration, policy report, pool, bundle, and preparation-report
+digests are reloaded before replay.
+
+Preparation additionally executes a fixed outcome-free CPU/GPU forward smoke
+before new source collection and can persist its digest-only proof with
+`--inference-smoke-output`. Loading checkpoints without running a forward pass
+does not satisfy that gate.
+
+Stage ordering is proven with persisted timestamps, requiring selection before
+the selected-union run and that completed run before the complementary run; the
+bound outcome time is the actual remainder-run completion time, never a
+synthesized timestamp. CPU and GPU inference runs emit compact latency reports
+with per-candidate/group p50/p95/p99, throughput, peak allocated memory, bundle
+loading time, and the joint-versus-temporal difference, without raw
+predictions.
+
+Stage A is atomically published only after its manifest, selector
+configuration, and internal latency report all reload. Replay identity excludes
+host/path/time metadata while a separate archive-audit digest still binds the
+exact selected/remainder datasets. Completed resumes produce zero-work strict
+reports, and final evaluation emits a byte-bound `review.md` plus a combined
+`resume-summary.json`.
+
+M3C remote collection and physical replay have not yet been performed for this
+implementation revision. They remain gated on a clean pushed SHA, one RTX 5090,
+the six-trajectory smoke, a frozen configuration, and a new disjoint
+60-trajectory full set. M3C is still one-shot selection followed by the archived
+fixed continuation, not receding-horizon control. VLM and LangMani work remains
+deferred until this controlled verifier demonstrates intervention value.
 
 Generate, validate, save, reload, and compare a small deterministic dataset:
 

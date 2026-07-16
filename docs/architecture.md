@@ -269,3 +269,78 @@ test evaluation first validates the complete frozen selection and recomputes the
 authorized validation predictions. Training-run completion and benchmark
 orchestration are independently digested, completed directories are immutable,
 and post-selection evaluation artifacts live outside them.
+
+## Blind candidate selection (M3C)
+
+M3C adds a simulator-independent selection layer above the accepted M3B models
+and below the existing replay boundary:
+
+```text
+verified state + immutable eight-candidate pool + frozen verifier bundles
+    -> label-free five-seed inference and deterministic rankings
+    -> finalized blind selection manifest
+    -> selected-union replay through the existing M2A/M2B/M2C ledger
+    -> complementary full-pool replay
+    -> content-bound metrics, oracle analysis, and trajectory bootstrap
+```
+
+Candidate generation, selection, and outcome evaluation are different
+capabilities and output roots. Selection cannot receive replay or evidence
+paths. Reporting-only candidate metadata does not cross the inference boundary.
+The source action is absent from the candidate inventory, while the unchanged
+source continuation and baseline gate retain their exact M3A/M2C identities.
+
+Selected and remainder phases wrap the existing evaluator with complementary
+content-bound executable inventories; they do not introduce a second ledger or
+change proposal identity. Only the wrapper evidence identity changes to bind
+the phase, pool, and finalized manifest. Complete-pool labels are joined after
+selection and cannot mutate the earlier ranking.
+
+Stage A is a capability-restricted, outcome-declassified process. It can load
+the immutable candidate pool, but its API has no evidence, outcome, or replay
+path and its selector projection contains only state vectors, action chunks,
+masks, and opaque candidate IDs. The guarantee is about capabilities and
+content-bound inputs; it does not assert that every other filesystem location
+on the host is empty. Full-pool replay, evidence, and outcome artifacts enter
+the workflow only through Stage B and Stage C.
+
+The Stage A selector inventory is closed and versioned: deterministic random,
+frozen action magnitude, action-only ensemble, state+action MLP ensemble,
+temporal ensemble, and six temporal abstention/coverage variants. The learned
+selectors reference exactly three five-seed bundles. The post-Stage-C oracle is
+deliberately outside this eleven-selector inventory.
+
+The trust chain begins at the committed M3B compact benchmark summary. Its
+recorded outer strict-report digests authorize each runtime calibration and
+threshold report; inner calibration/threshold bindings alone are insufficient.
+Ordered validation logits and labels are rehashed against every seed's frozen
+validation-prediction identity before corrupted-candidate rows are used to fit
+ensemble policies. A preparation summary then binds the bundle, baseline,
+policy-report, selector-configuration, and source-summary identities.
+
+Smoke and full source sets use distinct fixed seed windows and are checked for
+disjoint reset seeds, trajectory IDs, split-group IDs, and complete state-tree
+digests. Full construction loads the smoke pool as an exclusion artifact. A
+post-smoke configuration change therefore requires a new pushed revision and a
+new untouched full source range.
+
+Operational time is audit evidence, not semantic identity. Nevertheless, final
+binding requires the persisted order
+`selection < selected start <= selected finish < remainder start <= remainder
+finish`; the final outcome timestamp is the recorded remainder finish. CPU and
+GPU profiling produces compact p50/p95/p99, throughput, peak-memory, and model
+loading summaries while keeping raw predictions outside Git.
+
+The joined replay therefore has two digests. Its semantic evidence digest
+excludes envelope timestamps, host/platform data, launch paths, evidence IDs,
+and other ledger mechanics while retaining complete task and strong-restoration
+content. Its archive-audit digest separately binds the timestamped manifest
+envelope and byte-complete selected/remainder dataset digests. Stage A itself is
+published by an atomic directory rename only after the manifest, selector
+configuration, and internal latency report all reload successfully.
+
+This architecture chooses one 16-step prefix once and then executes the
+byte-identical archived source continuation. It has no observation/update loop,
+policy recall, or replanning boundary, so it is not receding-horizon control.
+Visual/language adapters remain deferred until the structured-state selector
+shows outcome-level intervention value under the blind protocol.

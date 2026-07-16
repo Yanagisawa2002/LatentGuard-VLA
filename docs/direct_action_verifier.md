@@ -153,3 +153,61 @@ language understanding, cross-task transfer, open-world safety, causal failure
 diagnosis, or real-robot validity. LangMani and VLM integration are intentionally
 deferred until this small controlled baseline and its leakage-resistant
 evaluation are understood.
+
+## M3C deployment-evaluation boundary
+
+M3C loads only the fixed action-only, state+action MLP, and temporal five-seed
+families. Each selector averages the five validation-calibrated failure
+probabilities. Checkpoint bytes, model and training configuration,
+preprocessing, calibration, accepted M3A dataset, and split are all verified by
+content digest before inference. Runtime checkpoint paths do not participate in
+bundle identity.
+
+The M3C model call receives one verified 38-component state, candidate actions
+with shape `[K, 16, 8]`, and masks with shape `[K, 16]`. It cannot receive
+candidate distribution, corruption family, severity, source/corrupted marker,
+trajectory identity, anchor reason, evidence, or outcome. Stable candidate IDs
+break score ties outside the model.
+
+Ensemble abstention thresholds are newly derived from M3B validation ensemble
+scores because the existing thresholds are per seed. This is a frozen
+validation-only deployment transformation, not model or architecture
+reselection. M3C full outcomes neither fit nor change calibration, thresholds,
+preprocessing, checkpoints, candidate definitions, or primary-selector status.
+
+The deployment inventory is exactly three learned bundle families, each with
+seeds 0 through 4. Stage A evaluates those action-only, state+action MLP, and
+temporal ensembles alongside deterministic random, frozen action magnitude, and
+six frozen temporal abstention/coverage variants, yielding exactly eleven blind
+selectors. Oracle is intentionally excluded and can only be constructed after
+complete Stage C outcomes exist.
+
+Runtime artifact trust is anchored to the committed M3B compact benchmark
+summary. For every architecture/seed, the calibration and threshold file must
+match the outer strict-report digest recorded there; changing a temperature or
+threshold and recomputing a locally self-consistent report is rejected. The
+complete ordered validation logits/labels must also reproduce the checkpoint's
+validation-prediction digest before corrupted rows are used for the five-seed
+ensemble abstention policies. A preparation summary binds the resulting policy
+report and three bundle reports before Stage A.
+
+Inference profiling is evidence about deployment cost, not a model input or
+selection feature. CPU and GPU runs record per-candidate and per-group
+p50/p95/p99 latency, throughput, peak allocated device memory, bundle/model
+loading time, and an explicit joint-MLP versus temporal comparison. Raw
+predictions remain outside compact reports.
+
+Checkpoint preparation also performs a fixed pre-collection forward smoke on
+the selected device. It uses only a synthetic 38-vector and eight synthetic
+`[16, 8]` chunks, records content digests rather than raw outputs, and explicitly
+proves that no M3C source trajectory or candidate outcome was loaded. CPU and
+GPU gates can thus finish before simulator collection begins.
+
+M3C preserves the M3B limitations: the verifier sees privileged structured
+PickCube state and ranks one fixed 16-step pool once. The archived continuation
+is held constant to isolate selection effects, but it prevents closed-loop
+replanning and may dominate late-trajectory outcomes. This is not
+receding-horizon control, visual/language verification, or evidence for
+cross-task or real-robot deployment. VLM and LangMani integration remains
+deferred until the blind structured-state experiment demonstrates intervention
+value.

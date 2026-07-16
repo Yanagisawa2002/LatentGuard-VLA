@@ -108,7 +108,7 @@ class EvaluationRunResult:
 
 def utc_timestamp() -> str:
     """Return one timezone-aware UTC timestamp for operational audit only."""
-    return datetime.now(UTC).isoformat(timespec="seconds").replace("+00:00", "Z")
+    return datetime.now(UTC).isoformat(timespec="microseconds").replace("+00:00", "Z")
 
 
 def _parse_audit_timestamp(value: object) -> tuple[datetime, str]:
