@@ -285,7 +285,7 @@ sample dataclass:
 
 ```text
 state_vector: float32[38]
-candidate_action_chunk: float32[16, 8]
+candidate_action_chunk: float64[16, 8]
 action_mask: bool[16]
 failure_target: binary scalar (loss and metrics only)
 sample_index: internal reporting join key
@@ -294,7 +294,9 @@ sample_index: internal reporting join key
 Model `forward` receives only the first three tensors. Every identifier,
 provenance field, corruption descriptor, candidate type, split label, evidence
 field, source ordering value, and post-execution outcome remains in a separate
-reporting record. Missing, additional, non-finite, wrong-dtype, or wrong-shape
+reporting record. The accepted float64 action archive is converted explicitly
+to float32 only when forming a detached NumPy/Torch training batch. Missing,
+additional, non-finite, wrong-dtype, or wrong-shape
 model fields fail validation; no silent casting or repair is permitted before
 the explicit NumPy-to-PyTorch conversion boundary.
 

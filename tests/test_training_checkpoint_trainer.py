@@ -61,7 +61,7 @@ def _projected_dataset() -> AcceptedActionVerifierDatasetV1:
             actions = np.full(
                 (16, 8),
                 float(group_index + target * 4 + member_index / 10),
-                dtype=np.float32,
+                dtype=np.float64,
             )
             examples.append(
                 ActionVerifierModelExampleV1(

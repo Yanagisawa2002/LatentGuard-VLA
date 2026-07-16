@@ -22,6 +22,12 @@ methods. Sample, group, trajectory, evidence, adapter, corruption, severity,
 candidate-type, split, filesystem, and outcome-derived fields remain in a
 separate reporting table. They cannot be supplied as learned features.
 
+The accepted archive contract is float32 for state and float64 for actions,
+matching the authoritative M3A serialization exactly. After dtype, shape, and
+finiteness validation, batching performs the sole controlled conversion of
+actions to float32 for the configured models; malformed arrays are never cast
+into compliance.
+
 ## Training-only preprocessing
 
 State mean and standard deviation are fitted per state component using training

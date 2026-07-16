@@ -58,7 +58,8 @@ _EXPECTED_SAMPLES = MappingProxyType(
         DatasetSplit.TEST: 324,
     }
 )
-_FLOAT32 = np.dtype("<f4")
+_STATE_FLOAT32 = np.dtype("<f4")
+_ACTION_FLOAT64 = np.dtype("<f8")
 _BOOL = np.dtype(np.bool_)
 _MAX_REPORT_BYTES = 1024 * 1024
 
@@ -112,13 +113,13 @@ class ActionVerifierModelExampleV1:
 
         state = _validate_model_array(
             self.state_vector,
-            dtype=_FLOAT32,
+            dtype=_STATE_FLOAT32,
             shape=(ACCEPTED_STATE_DIMENSION,),
             context="ActionVerifierModelExampleV1.state_vector",
         )
         actions = _validate_model_array(
             self.action_chunk,
-            dtype=_FLOAT32,
+            dtype=_ACTION_FLOAT64,
             shape=(ACCEPTED_ACTION_HORIZON, ACCEPTED_ACTION_DIMENSION),
             context="ActionVerifierModelExampleV1.action_chunk",
         )
@@ -582,13 +583,13 @@ def _validate_accepted_dataset(
     for index, sample in enumerate(dataset.samples):
         _validate_model_array(
             sample.state_vector,
-            dtype=_FLOAT32,
+            dtype=_STATE_FLOAT32,
             shape=(ACCEPTED_STATE_DIMENSION,),
             context=f"AcceptedM3ADataset.samples[{index}].state_vector",
         )
         _validate_model_array(
             sample.candidate_action_chunk,
-            dtype=_FLOAT32,
+            dtype=_ACTION_FLOAT64,
             shape=(ACCEPTED_ACTION_HORIZON, ACCEPTED_ACTION_DIMENSION),
             context=f"AcceptedM3ADataset.samples[{index}].candidate_action_chunk",
         )

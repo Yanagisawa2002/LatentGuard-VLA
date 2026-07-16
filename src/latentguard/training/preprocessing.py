@@ -299,7 +299,7 @@ def normalize_example(
         example.action_chunk.astype(np.float64) - state.action_mean
     ) / state.action_standard_deviation
     normalized_actions[~example.action_mask] = 0.0
-    converted_actions = normalized_actions.astype(np.float32)
+    converted_actions = np.asarray(normalized_actions, dtype=np.float64)
     if not bool(np.all(np.isfinite(normalized_state))) or not bool(
         np.all(np.isfinite(converted_actions))
     ):

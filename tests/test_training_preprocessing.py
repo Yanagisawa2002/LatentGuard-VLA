@@ -44,7 +44,7 @@ def _example(
     resolved_mask = np.ones(16, dtype=np.bool_) if mask is None else mask
     return ActionVerifierModelExampleV1(
         state_vector=np.full(38, value, dtype=np.float32),
-        action_chunk=np.full((16, 8), value, dtype=np.float32),
+        action_chunk=np.full((16, 8), value, dtype=np.float64),
         action_mask=resolved_mask,
         failure_target=target,
         sample_index=index,
@@ -137,6 +137,7 @@ def test_masked_steps_do_not_affect_fit_and_normalize_to_zero() -> None:
     assert state.valid_action_step_count == 30
     normalized = normalize_example(second, state)
     np.testing.assert_array_equal(normalized.action_chunk[-1], np.zeros(8))
+    assert normalized.action_chunk.dtype == np.dtype("<f8")
     assert not normalized.action_chunk.flags.writeable
 
 
@@ -166,6 +167,8 @@ def test_numpy_batch_contains_no_reporting_metadata() -> None:
     )
     assert batch.state_vectors.shape == (2, 38)
     assert batch.action_chunks.shape == (2, 16, 8)
+    assert dataset[0].action_chunk.dtype == np.dtype("<f8")
+    assert batch.action_chunks.dtype == np.dtype("<f4")
     assert batch.model_inputs() == (
         batch.state_vectors,
         batch.action_chunks,

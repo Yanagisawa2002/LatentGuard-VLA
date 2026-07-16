@@ -50,7 +50,7 @@ def _sample(*, corrupted: bool, success: bool) -> ActionVerifierSampleV1:
         state_vector_semantic="PickCubeVerifierStateV1",
         state_vector_schema_digest=_digest("state-schema"),
         state_vector=np.arange(38, dtype=np.float32),
-        candidate_action_chunk=np.full((16, 8), 0.25, dtype=np.float32),
+        candidate_action_chunk=np.full((16, 8), 0.25, dtype=np.float64),
         action_mask=np.ones(16, dtype=np.bool_),
         continuation_identity=_digest("continuation"),
         candidate_type=(CandidateType.CORRUPTED if corrupted else CandidateType.SOURCE),
@@ -282,7 +282,12 @@ def test_dataset_digest_gate_precedes_fixed_inventory_acceptance() -> None:
         ),
         (
             "action_chunk",
-            np.zeros((15, 8), dtype=np.float32),
+            np.zeros((16, 8), dtype=np.float32),
+            "expected dtype <f8",
+        ),
+        (
+            "action_chunk",
+            np.zeros((15, 8), dtype=np.float64),
             "expected shape",
         ),
         (
@@ -304,7 +309,7 @@ def test_model_boundary_rejects_dtype_shape_and_nonfinite_drift(
 
     values = {
         "state_vector": np.zeros(38, dtype=np.float32),
-        "action_chunk": np.zeros((16, 8), dtype=np.float32),
+        "action_chunk": np.zeros((16, 8), dtype=np.float64),
         "action_mask": np.ones(16, dtype=np.bool_),
         "failure_target": 0,
         "sample_index": 0,
@@ -318,7 +323,7 @@ def test_model_boundary_detaches_caller_owned_arrays() -> None:
     """Later caller mutation cannot alter an accepted training example."""
 
     state = np.arange(38, dtype=np.float32)
-    action = np.ones((16, 8), dtype=np.float32)
+    action = np.ones((16, 8), dtype=np.float64)
     mask = np.ones(16, dtype=np.bool_)
     example = ActionVerifierModelExampleV1(
         state_vector=state,
