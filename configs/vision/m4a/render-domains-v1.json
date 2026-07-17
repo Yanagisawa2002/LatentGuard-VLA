@@ -1,0 +1,90 @@
+{
+  "schema_version": "1.0",
+  "configuration_id": "pickcube_render_domains_v1",
+  "seed_derivation": "sha256_anchor_domain_base_seed_v1",
+  "shader_configuration": "minimal",
+  "image_resolution": [224, 224],
+  "color_format": "rgb_uint8",
+  "domains": [
+    {
+      "domain_id": "canonical",
+      "semantic_version": "1.0.0",
+      "camera_translation_min": [0.0, 0.0, 0.0],
+      "camera_translation_max": [0.0, 0.0, 0.0],
+      "camera_rotation_rpy_min_degrees": [0.0, 0.0, 0.0],
+      "camera_rotation_rpy_max_degrees": [0.0, 0.0, 0.0],
+      "lighting": {
+        "ambient_intensity": 0.3,
+        "key_intensity": 1.0,
+        "key_color_rgb": [1.0, 1.0, 1.0],
+        "key_direction": [-1.0, -1.0, -2.0]
+      },
+      "allowed_collections": ["m3a_development", "m3c_external"],
+      "allowed_splits": ["train", "validation", "test", "external"]
+    },
+    {
+      "domain_id": "mild_camera_shift",
+      "semantic_version": "1.0.0",
+      "camera_translation_min": [-0.015, -0.015, -0.01],
+      "camera_translation_max": [0.015, 0.015, 0.01],
+      "camera_rotation_rpy_min_degrees": [-2.0, -2.0, -3.0],
+      "camera_rotation_rpy_max_degrees": [2.0, 2.0, 3.0],
+      "lighting": {
+        "ambient_intensity": 0.3,
+        "key_intensity": 1.0,
+        "key_color_rgb": [1.0, 1.0, 1.0],
+        "key_direction": [-1.0, -1.0, -2.0]
+      },
+      "allowed_collections": ["m3a_development"],
+      "allowed_splits": ["train", "validation"]
+    },
+    {
+      "domain_id": "mild_lighting_shift",
+      "semantic_version": "1.0.0",
+      "camera_translation_min": [0.0, 0.0, 0.0],
+      "camera_translation_max": [0.0, 0.0, 0.0],
+      "camera_rotation_rpy_min_degrees": [0.0, 0.0, 0.0],
+      "camera_rotation_rpy_max_degrees": [0.0, 0.0, 0.0],
+      "lighting": {
+        "ambient_intensity": 0.22,
+        "key_intensity": 0.82,
+        "key_color_rgb": [1.0, 0.96, 0.9],
+        "key_direction": [-0.8, -1.0, -2.0]
+      },
+      "allowed_collections": ["m3a_development"],
+      "allowed_splits": ["train", "validation"]
+    },
+    {
+      "domain_id": "strong_camera_shift",
+      "semantic_version": "1.0.0",
+      "camera_translation_min": [-0.05, -0.05, -0.03],
+      "camera_translation_max": [0.05, 0.05, 0.03],
+      "camera_rotation_rpy_min_degrees": [-7.0, -7.0, -10.0],
+      "camera_rotation_rpy_max_degrees": [7.0, 7.0, 10.0],
+      "lighting": {
+        "ambient_intensity": 0.3,
+        "key_intensity": 1.0,
+        "key_color_rgb": [1.0, 1.0, 1.0],
+        "key_direction": [-1.0, -1.0, -2.0]
+      },
+      "allowed_collections": ["m3a_development", "m3c_external"],
+      "allowed_splits": ["test", "external"]
+    },
+    {
+      "domain_id": "strong_lighting_shift",
+      "semantic_version": "1.0.0",
+      "camera_translation_min": [0.0, 0.0, 0.0],
+      "camera_translation_max": [0.0, 0.0, 0.0],
+      "camera_rotation_rpy_min_degrees": [0.0, 0.0, 0.0],
+      "camera_rotation_rpy_max_degrees": [0.0, 0.0, 0.0],
+      "lighting": {
+        "ambient_intensity": 0.12,
+        "key_intensity": 0.62,
+        "key_color_rgb": [0.82, 0.9, 1.0],
+        "key_direction": [0.6, -1.0, -1.4]
+      },
+      "allowed_collections": ["m3a_development", "m3c_external"],
+      "allowed_splits": ["test", "external"]
+    }
+  ]
+}

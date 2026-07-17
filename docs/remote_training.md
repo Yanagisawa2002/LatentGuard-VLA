@@ -284,3 +284,50 @@ independent selected/remainder zero-work resumes plus a final strict reload.
 Compact CPU/GPU latency and outcome reports are stored under
 `reports/m3c/20260716T152012Z_m3c-full_a632a70_seed271828/`; arrays, raw states,
 datasets, evidence payloads, and checkpoints remain outside Git.
+
+## M4A single-GPU visual rendering
+
+M4A is rendering and data validation, not training. A remote run uses exactly
+one RTX 5090 and begins only from a clean pushed M4A revision. Before full
+rendering it validates the persistent M3A/M3C source artifacts, runs the visual
+compatibility probe, proves repeated and fresh-environment pixel equality, and
+passes one-state plus six-trajectory smoke gates. A failed gate stops the
+sequence.
+
+The probe report records the exact source archive/episode/state digests and the
+single observed intrinsics/extrinsics dtypes. Subsequent validation uses those
+facts as reviewed trust roots; it does not accept a coherently rewritten render
+manifest or search across alternate calibration dtypes.
+
+The probe publishes an immutable output directory containing
+`visual-compatibility-report.json` and `run-manifest.json` as one staged
+transaction. Each render root stages its ledger, full render-job inventory,
+and the same versioned operational manifest before publication. The manifest
+rejects tracked and untracked checkout drift and records the clean full Git SHA
+and branch, hostname, Python, one RTX 5090 and
+driver, CUDA, PyTorch, ManiSkill, SAPIEN, renderer backend, visual/rig/domain
+identities, fixed seed, exact accepted source identities, the canonical source
+identity shared with the full job inventory, its digest, and the ordered
+selected-packet digest. Runtime paths and credentials are redacted and the
+operational manifest is deliberately excluded from packet and dataset semantic
+identities.
+
+On resume, current Git, hardware/runtime, source, seed, job inventory, and
+selected-packet facts must reconstruct the original manifest exactly before
+any interrupted staging cleanup or ledger update. The original start time and
+sanitized initial launch command remain immutable. Dry runs do not query GPU or
+Git operational facts and create no output. A complete zero-work resume writes
+an immutable report bound to the unchanged ledger/source/rig/domain facts.
+Compact report retrieval may include the sanitized manifest, that live-bound
+resume evidence, camera/domain summaries, split-by-domain counts, the exact
+image-inventory digest, and fixed nearest-rank physical/verifier state error
+statistics, but never the raw render root. Only a full-target validation may
+publish this acceptance inventory; partial validation remains mechanics-only.
+
+The rig and all five rendering domains are edited only locally and frozen by a
+new pushed revision before full M3A generation. M3C external rendering starts
+only after that freeze and cannot tune rendering from external images or
+outcomes. Remote outputs record runtime/config/source identities outside the
+checkout. Only compact sanitized reports return to Git; NPY/PNG images, state
+archives, action arrays, datasets, caches, and videos remain remote. After
+final report synchronization the paid server is shut down.

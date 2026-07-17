@@ -558,6 +558,32 @@ def test_sanitizers_remove_credentials_paths_and_path_arguments() -> None:
 
 
 @pytest.mark.parametrize(
+    ("arguments", "private_path"),
+    [
+        (
+            ("--camera-rig", "relative/private/camera-rig.json"),
+            "relative/private/camera-rig.json",
+        ),
+        (
+            (r"--render-domains=C:\private\render-domains.json",),
+            r"C:\private\render-domains.json",
+        ),
+        (
+            ("--output=/srv/private/visual-probe.json",),
+            "/srv/private/visual-probe.json",
+        ),
+    ],
+)
+def test_launch_sanitizer_redacts_m4a_relative_windows_and_posix_paths(
+    arguments: tuple[str, ...], private_path: str
+) -> None:
+    command = sanitize_launch_command(("latentguard", "m4a-command", *arguments))
+
+    assert private_path not in command
+    assert "<path>" in command
+
+
+@pytest.mark.parametrize(
     "option",
     [
         "--credential",

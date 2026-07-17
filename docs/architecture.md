@@ -344,3 +344,28 @@ byte-identical archived source continuation. It has no observation/update loop,
 policy recall, or replanning boundary, so it is not receding-horizon control.
 Visual/language adapters remain deferred until the structured-state selector
 shows outcome-level intervention value under the blind protocol.
+
+## M4A visual-data boundary
+
+The simulator-independent `latentguard.vision_data` package owns camera/domain
+configuration, immutable packet and dataset models, canonical identities, safe
+NPY publication, source bindings, split/cross-dataset leakage checks, and the
+render ledger. It never imports ManiSkill, SAPIEN, CUDA, or Vulkan.
+
+ManiSkill-specific environment creation, exact restoration, public verifier
+capture, world-camera configuration, sensor updates, RGB extraction, and visual
+compatibility probing live under
+`latentguard.integrations.maniskill_pickcube`. Simulator-native objects do not
+cross that boundary. A render session exposes images and project-owned audit
+records only after the 70-component state, 38-component verifier, task
+projection, and no-step gates pass.
+
+The compatibility report is hardware- and source-evidence-bound: it records the
+exact archived episode/state used for the probe together with observed renderer
+and calibration dtypes. Core packet records retain enough exact verifier,
+elapsed-step, close, and calibration evidence to build compact integrity reports
+without reopening simulator-native objects.
+
+Visual packets share images across candidate references. The M3A development
+binding extends the accepted trajectory split; the independent M3C external
+binding is evaluation-only and cannot flow into training loaders.

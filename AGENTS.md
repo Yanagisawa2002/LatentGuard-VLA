@@ -146,6 +146,28 @@ schema coercion, inferred defaults, and unbound or dynamically relaxed
 tolerances remain invalid and must never be described as verified simulator
 restoration.
 
+## Visual data rules
+
+- Render visual observations only from content-bound exact states, without
+  advancing physics, and reject any render whose complete post-render state or
+  restored-boundary task projection changes.
+- Follow every render with the adapter-bound complete-state comparison and
+  exact verifier-state verification; visual validity never overrides a failed
+  physical-integrity gate.
+- Keep every image variant for one physical anchor in the source trajectory's
+  existing split. Camera IDs and render-domain IDs are reporting metadata, not
+  deployable model inputs unless a later milestone explicitly authorizes them.
+- Treat M3C-derived visual observations as external evaluation-only data. Freeze
+  the camera rig and rendering domains before external rendering and never tune
+  them from external images or outcomes.
+- Content-bind visual packets and exact image bytes while excluding runtime
+  paths, hosts, process IDs, and timestamps from semantic identities. Keep raw
+  RGB datasets outside Git.
+- Do not train a visual model until the complete M4A dataset reload, integrity,
+  split, and cross-dataset leakage gates pass.
+- Report repeated-render nondeterminism exactly. Do not hide pixel drift behind
+  an unreviewed tolerance.
+
 ## Engineering and data rules
 
 - Use Python 3.11 and a `src`-layout package.

@@ -23,6 +23,14 @@ exist, excludes the original source action, and reuses the exact-state replay
 ledger to evaluate selected candidates before the complete pool. See
 [the blind candidate-selection contract](docs/blind_candidate_selection.md).
 
+Milestone M4A adds a content-bound three-view RGB data layer at the exact
+restored, pre-action boundary. Images are lossless NPY files outside Git;
+rendering advances no physics and is rejected unless the complete state,
+38-component verifier state, and restored task projection remain valid. M3A
+visual data preserves the 48/6/6 split, while M3C visual data is external
+evaluation-only. M4A performs no model training or VLM/LangMani work. See
+[the visual data contract](docs/visual_action_verifier_data.md).
+
 The current M2C checkout has passed a trusted real-runtime probe and accepted
 six official ManiSkill source trajectories with six independent successful
 baseline replays. The first 12-proposal paired-replay smoke was rejected because
@@ -165,6 +173,37 @@ are under
 [`reports/m3c/20260716T152012Z_m3c-full_a632a70_seed271828`](reports/m3c/20260716T152012Z_m3c-full_a632a70_seed271828).
 M3C remains one-shot selection followed by the archived fixed continuation, not
 receding-horizon control; VLM and LangMani remain outside this milestone.
+
+## Generate multi-view visual verifier data
+
+M4A exposes a strict discovery/render/validation interface:
+
+```text
+latentguard probe-maniskill-pickcube-visual --help
+latentguard render-m3a-visual-dataset --help
+latentguard render-m3c-external-visual-dataset --help
+latentguard validate-visual-verifier-dataset --help
+latentguard inspect-visual-packet --help
+```
+
+Ordinary tests use fake render sessions and require no simulator or GPU. Real
+RGB rendering is single-GPU remote work from an exact pushed revision. The
+camera rig and render domains are frozen after a successful compatibility
+probe; raw images and full visual datasets are never committed.
+
+Formal probe runs use an absent `--output-root` and atomically publish
+`visual-compatibility-report.json` plus a sanitized `run-manifest.json`.
+Render roots bind the same operational evidence to a Git revision with no
+tracked or untracked drift, one RTX 5090 runtime, fixed seed, the complete
+canonical accepted-source identity, job inventory, and ordered packet
+selection. A completed zero-work resume publishes a content-bound immutable
+resume report beside the run. `validate-visual-verifier-dataset --report-dir`
+publishes a fixed, strictly reloaded compact JSON inventory only after
+full-target validation. Partial validation cannot publish acceptance reports.
+The inventory covers camera/domain summaries, split-by-domain counts,
+image-inventory digests, determinism, fixed nearest-rank physical/verifier state
+error statistics, leakage, training prohibition, and observed resume evidence;
+it never copies raw images, actions, states, or evidence payloads.
 
 Generate, validate, save, reload, and compare a small deterministic dataset:
 

@@ -345,3 +345,25 @@ Panda active-joint names and a versioned qpos-then-qvel semantic: N real joint
 names bind a length-2N vector of ordered qpos followed by ordered qvel. Subsequent
 M1 corruptions remain unlabeled until the standard M2A/M2B pipeline evaluates
 them.
+
+## M4A visual observation contract
+
+An authoritative visual observation is one `VisualObservationPacketV1` for a
+content-bound anchor and render domain. Its three ordered view records identify
+the fixed cameras, exact uint8 `[224,224,3]` pixel bytes, safe NPY bytes,
+intrinsics/extrinsics, and pre/post render state/task audits. Semantic packet
+identity is path-independent; the enclosing dataset digest additionally binds
+the exact image content.
+
+Packet content also binds the fixed 38-component verifier comparison and zero
+error, unchanged non-negative elapsed-step values, a successful environment
+close, and the actual runtime calibration dtypes. A successful reviewed probe
+must fix one intrinsics dtype and one extrinsics dtype; independent validation
+casts planned calibration only to those declared dtypes and requires exact
+equality.
+
+The visual dataset stores no state tree, action array, or evidence object.
+Candidate bindings are foreign keys into the accepted M3A/M3C datasets and into
+shared packet IDs. Loading fails on source identity drift, missing or extra
+images, duplicate references, path traversal, links, byte tampering, split or
+domain violations, or an external dataset opened for training.

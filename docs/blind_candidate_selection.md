@@ -204,3 +204,9 @@ joint interval [-0.02500, 0.00000] does not support temporal superiority. All
 predeclared quality targets passed without full-outcome tuning. The compact
 review and content-bound reports are stored under
 `reports/m3c/20260716T152012Z_m3c-full_a632a70_seed271828/`.
+
+M4A may render the same M3C anchors only after the camera/domain configuration
+is frozen without outcomes. Its visual dataset remains external
+evaluation-only and preserves the candidate-pool, blind-manifest, full-outcome,
+and replay-evidence identities. Images, domain IDs, and camera IDs cannot be
+introduced retroactively into the completed M3C Stage A selection.

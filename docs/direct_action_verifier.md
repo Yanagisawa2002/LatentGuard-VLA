@@ -216,3 +216,9 @@ cross-task or real-robot deployment. The blind full experiment met its
 predeclared structured-state intervention targets, but that result does not
 authorize visual/language scope automatically; VLM and LangMani integration
 remains deferred to a separately reviewed milestone.
+
+M4A preserves these structured-state outcomes while adding separately
+content-bound RGB packets. The 38D verifier state remains privileged teacher
+metadata and is not a visual-student input. Visual candidate records reference
+the accepted action chunks, masks, labels, and evidence without duplicating or
+relabeling them. No visual model is trained in M4A.
