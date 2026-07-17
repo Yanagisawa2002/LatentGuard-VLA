@@ -1,0 +1,95 @@
+{
+  "content_digest": "sha256:201f721cc2be979b627dde9abe5fc9d40cd019dc6592c2459e1744f4dbcb3e51",
+  "payload": {
+    "accepted_m3b_result_revision": "66eaee0f69a8f5dfe4bc7a53a777e08b5ce51b88",
+    "action_dimension": 8,
+    "action_horizon": 16,
+    "architecture": "state_action_mlp",
+    "checkpoints": [
+      {
+        "calibration_digest": "sha256:917807e49882af3a130177f640745797c38985214af233a2796da9492cbf0148",
+        "calibration_report_digest": "sha256:a40e46faafe766e77fb7f25c8749ae2cd249dd10441478a52e3a2fd2ebde9ed8",
+        "checkpoint_content_digest": "sha256:0875bacd296150b89229db44100856d1da711b633aa50944bd0537f5e54f2b42",
+        "checkpoint_epoch": 7,
+        "checkpoint_identity": "m3b-run-sha256-c6f110c3af31294bbdde46490d41b44f9c0692ef44e1483510b0254968b6ca60",
+        "checkpoint_kind": "best",
+        "schema_version": "1.0",
+        "seed": 0,
+        "threshold_digest": "sha256:afaa7b2c2c98b89d5e5442c56276947c4c9ba933fdf643c6714268f3bdd009e6",
+        "threshold_report_digest": "sha256:49ead8a54544bdf3c09c89dab206991aa6aaf510ec8ab2398b3d96a2a752abc2",
+        "validation_prediction_digest": "sha256:8426c3cb4114640ff7e655f9cb0fc19135bdf0be840684646e73b9aa5593c544"
+      },
+      {
+        "calibration_digest": "sha256:7d8e9c0eaf30a4bc6a1581a78f35eb5e60bf66a18c6adf8c4a0771125ca7324d",
+        "calibration_report_digest": "sha256:a5a65b3565e3e857284e51ae1f47b02b1cfa07566b8ac387397f981fe1a16a2c",
+        "checkpoint_content_digest": "sha256:5b83946062356c4c53cb1ecffd5974654cab6e878bff5912b34f1a2f59ea826c",
+        "checkpoint_epoch": 11,
+        "checkpoint_identity": "m3b-run-sha256-a51de25114bcae47655d02406b5563de908bd00397b426e64b27fb377823215f",
+        "checkpoint_kind": "best",
+        "schema_version": "1.0",
+        "seed": 1,
+        "threshold_digest": "sha256:e516c74ea02389d325de9c62b3458365b9f8c86991a17cf36b6d0e1dd632aa71",
+        "threshold_report_digest": "sha256:f15d3c70b7d54905c3a4a1e5ee49fea250f6e69598332056c3c2804f27edbe32",
+        "validation_prediction_digest": "sha256:e90fcded9239f0dbca684073efce0806e278bc22624559054589dcc173539a46"
+      },
+      {
+        "calibration_digest": "sha256:aacbeafd02726fcf10dde143a0e40d4a789dab781e07258a63e83b56b26a9ef1",
+        "calibration_report_digest": "sha256:b6cff350f72ece3263c758001e887f1d6ae2045b83523dc4c63edd93cef14990",
+        "checkpoint_content_digest": "sha256:e3280c2ffc71420572f4a622f13b105d906088386383a72e78143a68bae08d75",
+        "checkpoint_epoch": 11,
+        "checkpoint_identity": "m3b-run-sha256-47dd39a7c96402251f2b0de30889cdb420f1189491df87b9f70a04f49fc5ef44",
+        "checkpoint_kind": "best",
+        "schema_version": "1.0",
+        "seed": 2,
+        "threshold_digest": "sha256:9140860dd891b90c634cb1355da9ca7cb3969b9d387bc025ad59647bae437523",
+        "threshold_report_digest": "sha256:9010bf6c6fa211c01f6c6ad77ee7b943d8e837cdeda270fd3ca79f264f5b7750",
+        "validation_prediction_digest": "sha256:0a0c0e71c9f992d052f685c36e44a2c33347b5f44c69a693516dffb456d7912d"
+      },
+      {
+        "calibration_digest": "sha256:359cc1e39099225062a697383b6927c54cd989d06d0aacf417b40cf3e71eb766",
+        "calibration_report_digest": "sha256:63135bf6cf6f5a23adae291ab3264252cc6759d387e22f1834c4c46e6f51a2a5",
+        "checkpoint_content_digest": "sha256:8792b4c2b4cdac9a6325aa20de76a3541dcd23f089ef4ef48a18c029940c4c1a",
+        "checkpoint_epoch": 4,
+        "checkpoint_identity": "m3b-run-sha256-0eb4f5615ba17a078ec5a37c2955ca7bbc4bc70bc34e16bc2188885bfee2bb81",
+        "checkpoint_kind": "best",
+        "schema_version": "1.0",
+        "seed": 3,
+        "threshold_digest": "sha256:fc528188f35030f1d885eafb909c0f12790f063d4188fc8c840adddf30f19e09",
+        "threshold_report_digest": "sha256:bf729c33a5be0b086b9b5f190cfd20eddb2ae37fbf8e2692059f38f4daee36e7",
+        "validation_prediction_digest": "sha256:d59392caed58fab74ef35e9a57894550808e8995ad49372e5364e1459f085111"
+      },
+      {
+        "calibration_digest": "sha256:de929f16d6368edf6699d728f708761836d5c5b59d44b148e4d2a7003a696478",
+        "calibration_report_digest": "sha256:5b6281248ec99d93cfb79856906828d76aa86c0fe7241339fe003a065cb291d0",
+        "checkpoint_content_digest": "sha256:485f48a752244d9199e8f1db01c2d97477c3ffbcb1cdf2b0975526c410c6a710",
+        "checkpoint_epoch": 6,
+        "checkpoint_identity": "m3b-run-sha256-0846e6073f552291b11b420506710531030a0fc4b806bb49f971474f2940fb42",
+        "checkpoint_kind": "best",
+        "schema_version": "1.0",
+        "seed": 4,
+        "threshold_digest": "sha256:02a50487de26bca8c6eeb9689afa5a59fb1a114cd848786186978f18497b25dc",
+        "threshold_report_digest": "sha256:b531d2bd7fbae8b81022564e30c05e9e1d68ced462cc4e243643c14d1d328d25",
+        "validation_prediction_digest": "sha256:cffaff232fcb865dd9a974e90be831789bc3e1da72650b80cbe707a11d746abe"
+      }
+    ],
+    "content_digest": "sha256:ea470441db2c5b5e98fe0a97ef66df354888674218445ec0f663873f28cb41b8",
+    "dataset_digest": "sha256:7847c9d0e09170531e13ba07531fabb3ea6f0aa6b0122298b733726d2055856d",
+    "input_state_semantic": "PickCubeVerifierStateV1",
+    "model_configuration_digest": "sha256:6538d6a8c248c3ef682be606a4dbcd8a3e7635545f26a8548ffebe123cb66fdc",
+    "preprocessing_digest": "sha256:ee3353b81609d489a0cc654ded70e2db777db863d9c12c4b9e4cca96f51b6de6",
+    "probability_ensemble_semantic": "arithmetic_mean_of_five_validation_calibrated_failure_probabilities_v1",
+    "schema_version": "1.0",
+    "split_digest": "sha256:173ca40a072a1977cc65dbcccedb4684ae573e97f3984c176e3f91bba09f940a",
+    "state_dimension": 38,
+    "training_configuration_digest": "sha256:a5d9245d33f8d89f1075e8e2b6ba467897ce5bdd20a0feb96169de75a9f996cb",
+    "training_seeds": [
+      0,
+      1,
+      2,
+      3,
+      4
+    ]
+  },
+  "report_type": "m3c_verifier_bundle_v1",
+  "schema_version": "1.0"
+}

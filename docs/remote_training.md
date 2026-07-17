@@ -275,8 +275,12 @@ publishing `resume-summary.json`. It also emits `review.md`, whose exact bytes
 are bound by the compact candidate-selection report.
 
 M3C uses one RTX 5090 sequentially. It starts no VLM/LLM, image encoder,
-LangMani job, distributed process, multi-GPU job, or new model training. Exact
-checkpoint reconstruction, if required by missing artifacts, is limited to the
-already authorized M3B families and is not architecture search. As of this plan
-update, these M3C remote gates have not run and no M3C physical-result or GPU
-latency claim has been made.
+LangMani job, distributed process, multi-GPU job, or new model training. The
+completed full run `20260716T152012Z_m3c-full_a632a70_seed271828` found all 15
+accepted M3B checkpoints and validated their digests, so no checkpoint
+reconstruction occurred. It finalized Stage A before outcomes, replayed 1,168
+selected and 1,712 remainder candidates, bound all 2,880 outcomes, and completed
+independent selected/remainder zero-work resumes plus a final strict reload.
+Compact CPU/GPU latency and outcome reports are stored under
+`reports/m3c/20260716T152012Z_m3c-full_a632a70_seed271828/`; arrays, raw states,
+datasets, evidence payloads, and checkpoints remain outside Git.

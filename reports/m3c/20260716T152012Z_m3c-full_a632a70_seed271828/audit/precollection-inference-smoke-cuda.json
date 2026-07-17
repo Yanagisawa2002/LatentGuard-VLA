@@ -1,0 +1,52 @@
+{
+  "content_digest": "sha256:082411b4660bb927484b6c412114c37b17a1241d5332142f4bfe0d35cbc2dac6",
+  "payload": {
+    "action_dimension": 8,
+    "action_horizon": 16,
+    "architecture_count": 3,
+    "architectures": {
+      "action_only_mlp": {
+        "bundle_digest": "sha256:f4c28ec414e7b68abb4f49cd395572a2f52f1ee6e6fc110d41c13ffbcc30affb",
+        "candidate_ranking_digest": "sha256:fcfdb651a017acf5fc83af7b3ed69312c5f9e08c232a80a862bb6cef3c60a537",
+        "ensemble_failure_probability_digest": "sha256:88623f786a9df83ba5e59e08793c8eab1c1e4b6d7ba9628e47bf6fb0d6d43202",
+        "finite_output_verified": true,
+        "per_seed_calibrated_probability_digest": "sha256:1aabeaa583a51f5162314e57b6413b436008a039ef5699ada0dd639aff37cf5d",
+        "per_seed_raw_logit_digest": "sha256:05d43c6ced4121699960f27573891e2cef1b8e3da806d8b07aa0ebc9b6e45e3d",
+        "selected_candidate_id": "m3c-inference-smoke-01"
+      },
+      "state_action_mlp": {
+        "bundle_digest": "sha256:ea470441db2c5b5e98fe0a97ef66df354888674218445ec0f663873f28cb41b8",
+        "candidate_ranking_digest": "sha256:086acd480fd8ef340aa78d74f9881171c3d77cd47a0873c93a54662578f53360",
+        "ensemble_failure_probability_digest": "sha256:e815c012206bded31b93d223b95f63a3a6f2012964dd536215583217668bc782",
+        "finite_output_verified": true,
+        "per_seed_calibrated_probability_digest": "sha256:aa45b53e314d7c582b23741ffbe44b5b5ad7e304a4ab45c2c42312c8d5dc5b82",
+        "per_seed_raw_logit_digest": "sha256:99cc1dcf3e047d072c61e383bbe64c2379cb8f7d93da6a69fa39c54bafa481e8",
+        "selected_candidate_id": "m3c-inference-smoke-07"
+      },
+      "temporal_state_action_verifier": {
+        "bundle_digest": "sha256:3f58fb6b87a444f74439b93e78693e9f7bdf07bbfaf89278a3e7eaa04a01bd32",
+        "candidate_ranking_digest": "sha256:8e579bf1bdd6cc7c1468e4fccb7d797d6deb338abf4008f30edd15a3ec944fe5",
+        "ensemble_failure_probability_digest": "sha256:b701204b5f1da386eb6a40385837ac165ce6759771d08975bb70e39bc89ca0fb",
+        "finite_output_verified": true,
+        "per_seed_calibrated_probability_digest": "sha256:703d887e66917a89fcd641fd1cabdcccca99bbb0da8a3ec2ef8620b8521fca82",
+        "per_seed_raw_logit_digest": "sha256:dea9a3cee7ed980d6fcd263914e97c4fe65a45a7e880f3e6bb9f4dba7b348643",
+        "selected_candidate_id": "m3c-inference-smoke-00"
+      }
+    },
+    "candidate_count": 8,
+    "candidate_input_digest": "sha256:83e447e2b032499db11fd0d4dcc7842b8c47b015895d4c354e18da4c63f058cd",
+    "device": "cuda",
+    "device_kind": "cuda",
+    "m3c_candidate_outcomes_loaded": false,
+    "m3c_source_trajectories_loaded": false,
+    "measurement_iterations": 5,
+    "outcome_free_synthetic_fixture": true,
+    "raw_prediction_values_persisted": false,
+    "schema_version": "1.0",
+    "semantic": "fixed_outcome_free_three_ensemble_forward_gate_v1",
+    "state_dimension": 38,
+    "warmup_iterations": 2
+  },
+  "report_type": "m3c_precollection_inference_smoke_v1",
+  "schema_version": "1.0"
+}

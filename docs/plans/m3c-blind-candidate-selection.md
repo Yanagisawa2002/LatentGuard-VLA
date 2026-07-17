@@ -158,7 +158,7 @@ trajectory IDs, split-group IDs, and every complete state-tree digest. Smoke
 and full use separate fixed seed windows and output roots; smoke data cannot be
 promoted into the full benchmark.
 
-## Current local status
+## Implementation and execution status
 
 The M3C implementation and CLI are present locally, including the six command
 entry points, capability-level blinded Stage A input, strict manifest/report
@@ -181,7 +181,8 @@ with the distinct source-solver serialization contract. No Stage A manifest,
 replay evidence, or candidate outcome was created. The local correction keeps
 the trusted `sha256:028d8c2cbb10e867d709f1c5d4c31e07ef1e084f1a8ad8370f96185ba892f0eb`
 runtime binding and preserves the source `<f8` contract independently in the
-anchor manifest. No M3C full benchmark or result claim has yet been made.
+anchor manifest. At that revision no M3C full benchmark or result claim had yet
+been made.
 
 The corrected smoke at revision
 `70a608ff062210ee4c5541eec4f78939f1283fb8` completed the full blind mechanics
@@ -196,7 +197,105 @@ Stage A manifest, replay evidence, or outcome was created. The local correction
 therefore changes only process containment around the same source collector and
 fresh-restoration audit. It does not change seeds, source policy, simulator
 contract, candidate configuration, selectors, labels, or evaluation semantics.
-The full benchmark must restart under the new exact pushed revision.
+The full benchmark subsequently restarted under exact pushed revision
+`a632a702c709edb1fc21e702c83e30964652ff79`.
+
+## Full remote result
+
+Run `20260716T152012Z_m3c-full_a632a70_seed271828` completed on one RTX 5090.
+All 15 accepted M3B checkpoints were present and digest-validated; no checkpoint
+reconstruction, new training, architecture selection, or threshold fitting was
+performed. The run accepted 60/60 source trajectories in 60 attempts, containing
+4,479 source actions and 4,539 T+1 states. It built 360 anchors with 360 successful
+independent baselines, then 360 eight-candidate groups (2,880 candidates). The
+smoke and full pools passed the reset-seed, trajectory-ID, split-group-ID, and
+complete-state-digest disjointness gate.
+
+The fixed ID-like candidates were arm Gaussian noise at 0.005, arm bias at 0.01,
+arm Gaussian noise at 0.05, and an all-dimension hold beginning at step 1. The
+shifted candidates were arm Gaussian noise at 0.02, arm bias at 0.05, an
+all-dimension hold over `[4, 12)`, and an arm permutation over `[2, 10)`. The
+candidate-pool identity is
+`sha256:e2982acd30297fb81f000ea53081afdb4e2ca9ad5dc2f16c6aa71d199c8ef1b7`;
+the source-set identity is
+`sha256:db1f3ece9576850c09a9f95b8c4aee483d11d71ebbbe0772b695db2d60321123`.
+
+Stage A finalized 3,960 decisions from 11 selectors at
+`2026-07-16T17:49:21.544698Z`, before any outcome was available. Its semantic
+manifest digest is
+`sha256:c5aa3798d0d1797a1714f8de6ad76954f6aa1b31835a3aae8d0abbd7e52dcbcc`;
+`outcomes_available_during_selection` is false and `outcome_input_paths` is
+empty. Persisted chronology proves selection preceded selected replay, which
+preceded remainder replay. Stage B replayed the 1,168-candidate selected union;
+Stage C replayed the exact 1,712-candidate complement. Both phases initially
+encountered native `SIGSEGV` exits after atomically persisted progress. Their
+failure manifests and logs were content-hashed, and strict same-SHA resumes
+completed without invalid, indeterminate, retried, or execution-error outcomes.
+
+The complete join contains 2,880 strong simulator-verified outcomes and zero
+unexplained execution errors. Its semantic replay digest is
+`sha256:c44bb6631243c78b0c8d7db8f573454613ee04f919293c0b9b37d561502cbdd4`;
+the separate archive-audit digest is
+`sha256:048f0ffc784bcf763aa6c89d61ffb84638dff6543f44e5c84a26fd5624fb40dd`.
+Independent selected and remainder resumes each evaluated, recovered, and
+retried zero attempts. The final strict evaluation resume bound both proofs and
+reported `zero_duplicate_replay_work=true`.
+
+| Selector | Coverage | Selected success | Task failure |
+|---|---:|---:|---:|
+| Deterministic random | 1.000000 | 0.888889 | 0.111111 |
+| Frozen action magnitude | 1.000000 | 0.869444 | 0.130556 |
+| Action-only ensemble | 1.000000 | 0.986111 | 0.013889 |
+| State+Action MLP ensemble | 1.000000 | 0.994444 | 0.005556 |
+| Temporal ensemble | 1.000000 | 0.983333 | 0.016667 |
+| Oracle, analysis only | 1.000000 | 1.000000 | 0.000000 |
+
+All 360 groups were solvable: 235 were all-success, 125 mixed, and none
+all-failure. Temporal improved selected success over random by 0.094444; the
+60-trajectory paired-bootstrap 95% interval was `[0.063889, 0.125000]`. Its
+relative task-failure reduction was 85%, pairwise success-over-failure
+concordance was 0.926502, top-1 success was 0.983333, and top-2 success was 1.0.
+The validation-frozen approximately-70% policy executed 272/360 groups
+(coverage 0.755556) with failure rate 0.011029. All predeclared quality targets
+passed without full-outcome tuning.
+
+The joint MLP point estimate was higher than temporal and its efficiency was
+better. Temporal-minus-joint selected success was -0.011111 with 95% interval
+`[-0.025000, 0.000000]`; temporal superiority is therefore not claimed. CPU
+eight-candidate group p50 latency was 2.253 ms for joint versus 7.074 ms for
+temporal. CUDA group p50 was 2.467 ms versus 4.958 ms, with peak allocated
+memory 18,105,856 versus 18,610,688 bytes. Full outcomes did not change the
+predeclared temporal-primary or joint-efficiency-challenger roles.
+
+The collection summary contains 65 fresh-state audits, each comparing all 70
+runtime-state components; their maximum absolute error was
+`1.1920928955078125e-7`, below the fixed `1e-6` contract. The corresponding
+38-component restored verifier vectors were exact. These are collection/fresh
+audit statistics, not an aggregate maximum over all 2,880 replay attempts. The
+strong replay evidence and archive digests separately bind the complete replay
+gate. Twenty-six source/restored task snapshots differed only on `is_grasped`;
+the restored pre-action verifier vector remained exact, and no value was
+silently repaired or substituted.
+
+The 24 reviewed files under
+`reports/m3c/20260716T152012Z_m3c-full_a632a70_seed271828/` total 7,541,112
+bytes. They include bundle summaries, precollection smokes, pool/build/collection
+summaries, the outcome-free blind manifest, selector configuration, CPU/CUDA
+latency, two phase-resume proofs, bound result, combined metrics, final resume,
+human review, execution summary, and byte-exact retrieval manifest. Checkpoints,
+arrays, raw states, full replay datasets/evidence, and raw prediction streams
+remain outside Git.
+
+Final local closeout reloaded all 17 strict reports, recomputed the complete
+cross-artifact digest graph, checked all 24 retrieved/derived files against the
+retrieval inventory, and independently recomputed the predeclared target and
+bootstrap interpretations. `python -m pytest` passed 1,215 tests with the three
+expected Windows symlink-privilege skips. `ruff check .`,
+`ruff format --check .`, `mypy src`, all six M3C CLI help smokes, the
+sanitization scan, and
+`git diff --check` also passed. The compact-only local check does not reload the
+external raw arrays or replay evidence payloads; that stronger gate was run on
+the execution server by the final exact-SHA evaluation resume before retrieval.
 
 ## Ordered local gates
 

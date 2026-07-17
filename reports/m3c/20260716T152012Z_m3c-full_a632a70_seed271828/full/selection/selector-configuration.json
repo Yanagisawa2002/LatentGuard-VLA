@@ -1,0 +1,43 @@
+{
+  "content_digest": "sha256:b07601a29b618b0b06723d8fb66b5f44c969077cd3f80ca8b6954b47a5e88f66",
+  "payload": {
+    "action_magnitude_baseline_digest": "sha256:370d417bc80d68dcb60076a4bcf2b02f27d8f4e7ba82b7e7cb2946e342f7cf53",
+    "blind_input_digest": "sha256:8725bca999fe3b2c1aacfb2a724e9349ef92d3d4994e009e1679c4e974c8199c",
+    "candidate_pool_configuration_digest": "sha256:b6a532550ba27e3ecc6acf16ccae0138fce97dd0fd8533724bd74dce2c3a714f",
+    "candidate_pool_digest": "sha256:e2982acd30297fb81f000ea53081afdb4e2ca9ad5dc2f16c6aa71d199c8ef1b7",
+    "inference_measurement_iterations": 5,
+    "inference_warmup_iterations": 2,
+    "protocol_digest": "sha256:af3c7c190b495095f6f045a7d16c3de9ae5171a50823de5202fec5c859ba3708",
+    "random_selector_seed": 6992483686840797746,
+    "schema_version": "1.0",
+    "selector_ids": [
+      "deterministic_random_v1",
+      "frozen_m3b_action_magnitude_v1",
+      "action_only_ensemble_v1",
+      "state_action_mlp_ensemble_v1",
+      "temporal_ensemble_v1",
+      "temporal_ensemble_abstention_maximum_validation_balanced_accuracy_v1",
+      "temporal_ensemble_abstention_target_validation_failure_recall_v1",
+      "temporal_ensemble_abstention_target_validation_coverage_90_v1",
+      "temporal_ensemble_abstention_target_validation_coverage_80_v1",
+      "temporal_ensemble_abstention_target_validation_coverage_70_v1",
+      "temporal_ensemble_abstention_target_validation_coverage_50_v1"
+    ],
+    "selector_semantic": "blind_identical_pool_selection_v1",
+    "temporal_abstention_policy_digests": [
+      "sha256:38465d8e1a856886d6c5c2b5f018eb71985e458d61fba58f33c3ca2acbc21f1c",
+      "sha256:f41eb5f6e2a5bee743f4ae980d01b1605b5fb661e8ebc7b249d44f6d72797ab4",
+      "sha256:a7c7834a713f98ef61eb34b7589bce765b65505bc5bf408c6599a05a03aa9bfa",
+      "sha256:d30a1721b7391b60b1af61898e0a89b9265c42ae4e3789eabc65bcbd92b1b03d",
+      "sha256:f1156d05d0ca183ff4d7643938fd8b5d42b8034a3a31a7766c685aaab08bf17a",
+      "sha256:a6f201b2b3c4d97e3888c55c6572de5e85426eb81cf9904cfda9dfb178911fa4"
+    ],
+    "verifier_bundle_digests": {
+      "action_only_mlp": "sha256:f4c28ec414e7b68abb4f49cd395572a2f52f1ee6e6fc110d41c13ffbcc30affb",
+      "state_action_mlp": "sha256:ea470441db2c5b5e98fe0a97ef66df354888674218445ec0f663873f28cb41b8",
+      "temporal_state_action_verifier": "sha256:3f58fb6b87a444f74439b93e78693e9f7bdf07bbfaf89278a3e7eaa04a01bd32"
+    }
+  },
+  "report_type": "m3c_selector_configuration_v1",
+  "schema_version": "1.0"
+}

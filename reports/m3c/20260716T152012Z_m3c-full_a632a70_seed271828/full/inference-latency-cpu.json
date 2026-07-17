@@ -1,0 +1,126 @@
+{
+  "content_digest": "sha256:64863023fc368c10ab2802ba5db87cf5ddca9a9cf220867ca719025bdee5d584",
+  "payload": {
+    "architectures": {
+      "action_only_mlp": {
+        "bundle_loading_per_seed_model_seconds": [
+          0.03029697760939598,
+          0.007735688239336014,
+          0.0057006217539310455,
+          0.0057373046875,
+          0.005608327686786652
+        ],
+        "bundle_loading_total_seconds": 0.9674763008952141,
+        "candidate_count_per_group": 8,
+        "candidates_per_second": 892.6826992283831,
+        "device": "cpu",
+        "group_count": 360,
+        "measured_candidate_executions": 14400,
+        "measured_group_repetition_count": 1800,
+        "measurement_iterations_per_group": 5,
+        "measurement_scope": "normalize_five_seed_forward_calibration_mean_stable_ranking_v1",
+        "model_loading_total_seconds": 0.05507891997694969,
+        "peak_allocated_device_memory_bytes": 0,
+        "per_candidate_seconds_p50": 0.0002368902787566185,
+        "per_candidate_seconds_p95": 0.010236172145232559,
+        "per_candidate_seconds_p99": 0.010323076145723462,
+        "per_group_seconds_p50": 0.001895122230052948,
+        "per_group_seconds_p95": 0.08188937716186047,
+        "per_group_seconds_p99": 0.08258460916578769,
+        "raw_duration_values_persisted": false,
+        "warmup_iterations_per_group": 2
+      },
+      "state_action_mlp": {
+        "bundle_loading_per_seed_model_seconds": [
+          0.006625909358263016,
+          0.006541058421134949,
+          0.006549101322889328,
+          0.0064742229878902435,
+          0.006497923284769058
+        ],
+        "bundle_loading_total_seconds": 0.04281529039144516,
+        "candidate_count_per_group": 8,
+        "candidates_per_second": 712.1727681672014,
+        "device": "cpu",
+        "group_count": 360,
+        "measured_candidate_executions": 14400,
+        "measured_group_repetition_count": 1800,
+        "measurement_iterations_per_group": 5,
+        "measurement_scope": "normalize_five_seed_forward_calibration_mean_stable_ranking_v1",
+        "model_loading_total_seconds": 0.032688215374946594,
+        "peak_allocated_device_memory_bytes": 0,
+        "per_candidate_seconds_p50": 0.0002816056367009878,
+        "per_candidate_seconds_p95": 0.010302236187271774,
+        "per_candidate_seconds_p99": 0.010433125146664678,
+        "per_group_seconds_p50": 0.0022528450936079025,
+        "per_group_seconds_p95": 0.08241788949817419,
+        "per_group_seconds_p99": 0.08346500117331743,
+        "raw_duration_values_persisted": false,
+        "warmup_iterations_per_group": 2
+      },
+      "temporal_state_action_verifier": {
+        "bundle_loading_per_seed_model_seconds": [
+          0.01888817548751831,
+          0.017706211656332016,
+          0.07444870471954346,
+          0.08589732274413109,
+          0.01774800941348076
+        ],
+        "bundle_loading_total_seconds": 0.23927124217152596,
+        "candidate_count_per_group": 8,
+        "candidates_per_second": 253.28700090501695,
+        "device": "cpu",
+        "group_count": 360,
+        "measured_candidate_executions": 14400,
+        "measured_group_repetition_count": 1800,
+        "measurement_iterations_per_group": 5,
+        "measurement_scope": "normalize_five_seed_forward_calibration_mean_stable_ranking_v1",
+        "model_loading_total_seconds": 0.21468842402100563,
+        "peak_allocated_device_memory_bytes": 0,
+        "per_candidate_seconds_p50": 0.0008842942770570517,
+        "per_candidate_seconds_p95": 0.010969639569520951,
+        "per_candidate_seconds_p99": 0.01133594905026257,
+        "per_group_seconds_p50": 0.007074354216456413,
+        "per_group_seconds_p95": 0.08775711655616761,
+        "per_group_seconds_p99": 0.09068759240210056,
+        "raw_duration_values_persisted": false,
+        "warmup_iterations_per_group": 2
+      }
+    },
+    "blind_input_digest": "sha256:8725bca999fe3b2c1aacfb2a724e9349ef92d3d4994e009e1679c4e974c8199c",
+    "candidate_pool_digest": "sha256:e2982acd30297fb81f000ea53081afdb4e2ca9ad5dc2f16c6aa71d199c8ef1b7",
+    "device": "cpu",
+    "joint_minus_temporal": {
+      "bundle_loading_total_seconds": -0.1964559517800808,
+      "candidates_per_second": 458.88576726218446,
+      "model_loading_total_seconds": -0.18200020864605904,
+      "peak_allocated_device_memory_bytes": 0,
+      "per_candidate_seconds_p50": -0.0006026886403560638,
+      "per_candidate_seconds_p95": -0.0006674033822491772,
+      "per_candidate_seconds_p99": -0.0009028239035978915,
+      "per_group_seconds_p50": -0.004821509122848511,
+      "per_group_seconds_p95": -0.005339227057993418,
+      "per_group_seconds_p99": -0.007222591228783132,
+      "per_seed_model_loading_seconds": [
+        -0.012262266129255295,
+        -0.011165153235197067,
+        -0.06789960339665413,
+        -0.07942309975624084,
+        -0.0112500861287117
+      ]
+    },
+    "prediction_values_persisted": false,
+    "protocol_digest": "sha256:af3c7c190b495095f6f045a7d16c3de9ae5171a50823de5202fec5c859ba3708",
+    "quantile_aggregation_semantic": "linear_quantile_of_all_end_to_end_group_repetitions_v1",
+    "raw_duration_values_persisted": false,
+    "schema_version": "1.0",
+    "selector_configuration_digest": "sha256:b07601a29b618b0b06723d8fb66b5f44c969077cd3f80ca8b6954b47a5e88f66",
+    "verifier_bundle_digests": {
+      "action_only_mlp": "sha256:f4c28ec414e7b68abb4f49cd395572a2f52f1ee6e6fc110d41c13ffbcc30affb",
+      "state_action_mlp": "sha256:ea470441db2c5b5e98fe0a97ef66df354888674218445ec0f663873f28cb41b8",
+      "temporal_state_action_verifier": "sha256:3f58fb6b87a444f74439b93e78693e9f7bdf07bbfaf89278a3e7eaa04a01bd32"
+    }
+  },
+  "report_type": "m3c_inference_latency_v1",
+  "schema_version": "1.0"
+}

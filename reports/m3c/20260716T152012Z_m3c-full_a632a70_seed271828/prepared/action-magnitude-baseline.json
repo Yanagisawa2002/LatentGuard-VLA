@@ -1,0 +1,35 @@
+{
+  "content_digest": "sha256:f6a19da1a2cc4724c148ab2934755d16d2be8cfc54c5492f91333a47a50ad97d",
+  "payload": {
+    "action_mean": [
+      0.02483436756755116,
+      0.5076755679969372,
+      0.018081796045139008,
+      -1.9257092170992647,
+      0.0177175265469857,
+      2.2317791503725215,
+      0.7238008111563962,
+      -0.24951774691358025
+    ],
+    "content_digest": "sha256:370d417bc80d68dcb60076a4bcf2b02f27d8f4e7ba82b7e7cb2946e342f7cf53",
+    "dataset_digest": "sha256:7847c9d0e09170531e13ba07531fabb3ea6f0aa6b0122298b733726d2055856d",
+    "feature_mean": [
+      0.8010165108110646,
+      0.07606491234818447,
+      0.2567233840182813
+    ],
+    "feature_standard_deviation": [
+      0.20278439773345805,
+      0.2645947317697984,
+      0.09283737664186202
+    ],
+    "minimum_standard_deviation": 1e-06,
+    "schema_version": "1.0",
+    "semantic": "training_action_magnitude_score_v1",
+    "training_sample_count": 2592,
+    "training_split_digest": "sha256:6c369b48a09602920d78985eeda3dbec582c71b69f1edf5fc20fc3e34add0e07",
+    "valid_action_step_count": 41472
+  },
+  "report_type": "m3c_action_magnitude_v1",
+  "schema_version": "1.0"
+}

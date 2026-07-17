@@ -194,7 +194,13 @@ byte-identical archived continuation. Consequently later success or failure can
 depend strongly on that continuation. M3C therefore makes no receding-horizon,
 online intervention, or policy-improvement claim.
 
-The implementation and CPU-only local protocol tests are complete at this
-stage, but no M3C remote collection, GPU inference, or physical simulator replay
-result is claimed yet. Those steps require the exact pushed implementation SHA
-and the ordered one-RTX-5090 gates in the remote workflow.
+The ordered one-RTX-5090 gates completed at
+`a632a702c709edb1fc21e702c83e30964652ff79`. The untouched full set contains 60
+source trajectories, 360 groups, and 2,880 complete strong simulator-verified
+outcomes. Temporal selected success was 0.98333 versus 0.88889 for deterministic
+random, with a trajectory-bootstrap difference of 0.09444 and 95% interval
+[0.06389, 0.12500]. Joint MLP selected success was 0.99444; the temporal-minus-
+joint interval [-0.02500, 0.00000] does not support temporal superiority. All
+predeclared quality targets passed without full-outcome tuning. The compact
+review and content-bound reports are stored under
+`reports/m3c/20260716T152012Z_m3c-full_a632a70_seed271828/`.

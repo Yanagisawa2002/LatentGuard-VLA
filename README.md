@@ -154,12 +154,17 @@ exact selected/remainder datasets. Completed resumes produce zero-work strict
 reports, and final evaluation emits a byte-bound `review.md` plus a combined
 `resume-summary.json`.
 
-M3C remote collection and physical replay have not yet been performed for this
-implementation revision. They remain gated on a clean pushed SHA, one RTX 5090,
-the six-trajectory smoke, a frozen configuration, and a new disjoint
-60-trajectory full set. M3C is still one-shot selection followed by the archived
-fixed continuation, not receding-horizon control. VLM and LangMani work remains
-deferred until this controlled verifier demonstrates intervention value.
+The one-RTX-5090 M3C run at `a632a702c709edb1fc21e702c83e30964652ff79`
+completed 60 disjoint source trajectories, 360 blind groups, and all 2,880
+strong simulator-verified outcomes. The frozen temporal ensemble selected a
+successful candidate in 354/360 groups versus 320/360 for deterministic random;
+its trajectory-bootstrap success difference was 0.09444 with a 95% interval of
+[0.06389, 0.12500]. The joint MLP reached 358/360 and was not statistically
+inferior to temporal, so no temporal-over-joint claim is made. Compact results
+are under
+[`reports/m3c/20260716T152012Z_m3c-full_a632a70_seed271828`](reports/m3c/20260716T152012Z_m3c-full_a632a70_seed271828).
+M3C remains one-shot selection followed by the archived fixed continuation, not
+receding-horizon control; VLM and LangMani remain outside this milestone.
 
 Generate, validate, save, reload, and compare a small deterministic dataset:
 

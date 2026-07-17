@@ -1,0 +1,126 @@
+{
+  "content_digest": "sha256:35dc9b55b586c908f97e69858dcac27264da1961c52949e5288f53d07fc9f8b7",
+  "payload": {
+    "architectures": {
+      "action_only_mlp": {
+        "bundle_loading_per_seed_model_seconds": [
+          0.1508292630314827,
+          0.007393695414066315,
+          0.005868006497621536,
+          0.005929499864578247,
+          0.005776748061180115
+        ],
+        "bundle_loading_total_seconds": 1.2595941685140133,
+        "candidate_count_per_group": 8,
+        "candidates_per_second": 3566.8308514185487,
+        "device": "cuda",
+        "group_count": 360,
+        "measured_candidate_executions": 14400,
+        "measured_group_repetition_count": 1800,
+        "measurement_iterations_per_group": 5,
+        "measurement_scope": "normalize_five_seed_forward_calibration_mean_stable_ranking_v1",
+        "model_loading_total_seconds": 0.1757972128689289,
+        "peak_allocated_device_memory_bytes": 18097664,
+        "per_candidate_seconds_p50": 0.00027846917510032654,
+        "per_candidate_seconds_p95": 0.0002857321873307228,
+        "per_candidate_seconds_p99": 0.0003045051917433739,
+        "per_group_seconds_p50": 0.0022277534008026123,
+        "per_group_seconds_p95": 0.0022858574986457823,
+        "per_group_seconds_p99": 0.002436041533946991,
+        "raw_duration_values_persisted": false,
+        "warmup_iterations_per_group": 2
+      },
+      "state_action_mlp": {
+        "bundle_loading_per_seed_model_seconds": [
+          0.006797116249799728,
+          0.006775900721549988,
+          0.006727036088705063,
+          0.006694246083498001,
+          0.006892859935760498
+        ],
+        "bundle_loading_total_seconds": 0.04388229176402092,
+        "candidate_count_per_group": 8,
+        "candidates_per_second": 3221.209712231483,
+        "device": "cuda",
+        "group_count": 360,
+        "measured_candidate_executions": 14400,
+        "measured_group_repetition_count": 1800,
+        "measurement_iterations_per_group": 5,
+        "measurement_scope": "normalize_five_seed_forward_calibration_mean_stable_ranking_v1",
+        "model_loading_total_seconds": 0.03388715907931328,
+        "peak_allocated_device_memory_bytes": 18105856,
+        "per_candidate_seconds_p50": 0.0003084060736000538,
+        "per_candidate_seconds_p95": 0.0003155924845486879,
+        "per_candidate_seconds_p99": 0.0003528463747352361,
+        "per_group_seconds_p50": 0.0024672485888004303,
+        "per_group_seconds_p95": 0.0025247398763895033,
+        "per_group_seconds_p99": 0.0028227709978818887,
+        "raw_duration_values_persisted": false,
+        "warmup_iterations_per_group": 2
+      },
+      "temporal_state_action_verifier": {
+        "bundle_loading_per_seed_model_seconds": [
+          0.018687404692173004,
+          0.016404304653406143,
+          0.07228731736540794,
+          0.08550321310758591,
+          0.01632249355316162
+        ],
+        "bundle_loading_total_seconds": 0.2320326790213585,
+        "candidate_count_per_group": 8,
+        "candidates_per_second": 1605.373057874409,
+        "device": "cuda",
+        "group_count": 360,
+        "measured_candidate_executions": 14400,
+        "measured_group_repetition_count": 1800,
+        "measurement_iterations_per_group": 5,
+        "measurement_scope": "normalize_five_seed_forward_calibration_mean_stable_ranking_v1",
+        "model_loading_total_seconds": 0.20920473337173462,
+        "peak_allocated_device_memory_bytes": 18610688,
+        "per_candidate_seconds_p50": 0.0006197455804795027,
+        "per_candidate_seconds_p95": 0.0006276314379647374,
+        "per_candidate_seconds_p99": 0.0007265863195061684,
+        "per_group_seconds_p50": 0.004957964643836021,
+        "per_group_seconds_p95": 0.005021051503717899,
+        "per_group_seconds_p99": 0.005812690556049347,
+        "raw_duration_values_persisted": false,
+        "warmup_iterations_per_group": 2
+      }
+    },
+    "blind_input_digest": "sha256:8725bca999fe3b2c1aacfb2a724e9349ef92d3d4994e009e1679c4e974c8199c",
+    "candidate_pool_digest": "sha256:e2982acd30297fb81f000ea53081afdb4e2ca9ad5dc2f16c6aa71d199c8ef1b7",
+    "device": "cuda",
+    "joint_minus_temporal": {
+      "bundle_loading_total_seconds": -0.18815038725733757,
+      "candidates_per_second": 1615.8366543570742,
+      "model_loading_total_seconds": -0.17531757429242134,
+      "peak_allocated_device_memory_bytes": -504832,
+      "per_candidate_seconds_p50": -0.0003113395068794489,
+      "per_candidate_seconds_p95": -0.0003120389534160495,
+      "per_candidate_seconds_p99": -0.00037373994477093227,
+      "per_group_seconds_p50": -0.002490716055035591,
+      "per_group_seconds_p95": -0.002496311627328396,
+      "per_group_seconds_p99": -0.002989919558167458,
+      "per_seed_model_loading_seconds": [
+        -0.011890288442373276,
+        -0.009628403931856155,
+        -0.06556028127670288,
+        -0.0788089670240879,
+        -0.009429633617401123
+      ]
+    },
+    "prediction_values_persisted": false,
+    "protocol_digest": "sha256:af3c7c190b495095f6f045a7d16c3de9ae5171a50823de5202fec5c859ba3708",
+    "quantile_aggregation_semantic": "linear_quantile_of_all_end_to_end_group_repetitions_v1",
+    "raw_duration_values_persisted": false,
+    "schema_version": "1.0",
+    "selector_configuration_digest": "sha256:b07601a29b618b0b06723d8fb66b5f44c969077cd3f80ca8b6954b47a5e88f66",
+    "verifier_bundle_digests": {
+      "action_only_mlp": "sha256:f4c28ec414e7b68abb4f49cd395572a2f52f1ee6e6fc110d41c13ffbcc30affb",
+      "state_action_mlp": "sha256:ea470441db2c5b5e98fe0a97ef66df354888674218445ec0f663873f28cb41b8",
+      "temporal_state_action_verifier": "sha256:3f58fb6b87a444f74439b93e78693e9f7bdf07bbfaf89278a3e7eaa04a01bd32"
+    }
+  },
+  "report_type": "m3c_inference_latency_v1",
+  "schema_version": "1.0"
+}

@@ -212,6 +212,7 @@ PickCube state and ranks one fixed 16-step pool once. The archived continuation
 is held constant to isolate selection effects, but it prevents closed-loop
 replanning and may dominate late-trajectory outcomes. This is not
 receding-horizon control, visual/language verification, or evidence for
-cross-task or real-robot deployment. VLM and LangMani integration remains
-deferred until the blind structured-state experiment demonstrates intervention
-value.
+cross-task or real-robot deployment. The blind full experiment met its
+predeclared structured-state intervention targets, but that result does not
+authorize visual/language scope automatically; VLM and LangMani integration
+remains deferred to a separately reviewed milestone.

@@ -1,0 +1,61 @@
+{
+  "accepted_source_trajectories": 60,
+  "archive_content_digest": "sha256:f2423eb1f0b890b0b2c029d3dc52c328d0d3d3464bde1ee54d8ec7ac1d7c6af0",
+  "attempt_count": 60,
+  "attempt_failure_categories": {},
+  "compatibility_identity": "sha256:05a560fd89e0989b6d94017c6456efc535de4a0bf87ededaf468f5e2d9ef71f7",
+  "fresh_state_compared_component_counts": [
+    70
+  ],
+  "fresh_state_maximum_absolute_error": 1.1920928955078125e-07,
+  "fresh_state_restoration_error_distribution": {
+    "count": 65,
+    "fixed_bin_counts": {
+      "equal_zero": 0,
+      "gt_1e-6": 0,
+      "gt_1e-7_le_5e-7": 65,
+      "gt_1e-8_le_1e-7": 0,
+      "gt_5e-7_le_1e-6": 0,
+      "gt_zero_le_1e-8": 0
+    },
+    "maximum": 1.1920928955078125e-07,
+    "minimum": 1.1920928955078125e-07,
+    "p50": 1.1920928955078125e-07,
+    "p95": 1.1920928955078125e-07,
+    "p99": 1.1920928955078125e-07,
+    "quantile_semantic": "nearest_rank_v1"
+  },
+  "fresh_state_verification_count": 65,
+  "fresh_verifier_state_compared_component_counts": [
+    38
+  ],
+  "fresh_verifier_state_maximum_absolute_error": 0.0,
+  "fresh_verifier_state_restoration_error_distribution": {
+    "count": 65,
+    "fixed_bin_counts": {
+      "equal_zero": 65,
+      "gt_1e-6": 0,
+      "gt_1e-7_le_5e-7": 0,
+      "gt_1e-8_le_1e-7": 0,
+      "gt_5e-7_le_1e-6": 0,
+      "gt_zero_le_1e-8": 0
+    },
+    "maximum": 0.0,
+    "minimum": 0.0,
+    "p50": 0.0,
+    "p95": 0.0,
+    "p99": 0.0,
+    "quantile_semantic": "nearest_rank_v1"
+  },
+  "requested_source_trajectories": 60,
+  "schema_version": "1.1",
+  "source_action_count": 4479,
+  "source_to_restored_task_mismatch_field_counts": {
+    "is_grasped": 26
+  },
+  "source_to_restored_task_mismatch_state_count": 26,
+  "state_indexed_archive_serialization_version": 2,
+  "t_plus_one_state_count": 4539,
+  "verifier_state_extraction_boundary": "after_verified_restore_before_action_v1",
+  "verifier_state_semantic": "PickCubeVerifierStateV1"
+}

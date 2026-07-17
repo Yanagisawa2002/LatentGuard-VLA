@@ -1,0 +1,22 @@
+{
+  "content_digest": "sha256:f6c5aaac2375f1133e7d58a065c44792a73c5f90c65ffa0152f1ea44c327e7be",
+  "payload": {
+    "candidate_pool_digest": "sha256:e2982acd30297fb81f000ea53081afdb4e2ca9ad5dc2f16c6aa71d199c8ef1b7",
+    "evaluated_attempts": 0,
+    "evaluation_dataset_archive_digest": "sha256:5aed9e8dc59a06e762b39a44af8dca5e4bf5e7836bdfa8211585b73389d54bd2",
+    "evidence_count": 2880,
+    "ledger_count": 2880,
+    "phase": "selected",
+    "protocol_digest": "sha256:af3c7c190b495095f6f045a7d16c3de9ae5171a50823de5202fec5c859ba3708",
+    "recovered_attempts": 0,
+    "retried_attempts": 0,
+    "run_id": "evr-sha256-44caba78279f61c1f9383c2aa85f389edb510fc142b4e016a33ccef660c7b5a2",
+    "schema_version": "1.0",
+    "selection_manifest_digest": "sha256:c5aa3798d0d1797a1714f8de6ad76954f6aa1b31835a3aae8d0abbd7e52dcbcc",
+    "selection_manifest_envelope_digest": "sha256:55e077a9818fc13b4a966081c7cbd57d4fb86bdcea447053e8349c62a9f6a37f",
+    "semantic": "complete_phase_zero_duplicate_work_resume_v1",
+    "zero_duplicate_work": true
+  },
+  "report_type": "m3c_replay_resume_v1",
+  "schema_version": "1.0"
+}

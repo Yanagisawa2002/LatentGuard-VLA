@@ -1,0 +1,20 @@
+{
+  "content_digest": "sha256:c8b89bf1f02dd9f730c36afcfcef33082d3618dd4d7b4f4991ffce36e5b84dd8",
+  "payload": {
+    "bound_result_digest": "sha256:e3cee839f5df10dd47578f214d02e0aee089a65bed37dad290f6a554b4aceaae",
+    "candidate_pool_reload_verified": true,
+    "candidate_selection_report_digest": "sha256:596d104f2ecea17304f56d2a2b65f9677e3799f79a0b6288623a422ed308ec48",
+    "evaluation_reload_verified": true,
+    "human_review_content_digest": "sha256:c70cf9c0dcf86b222d5153fa3796a0f98b0ea6150047f2c7df32cafe2fed1f87",
+    "remainder_phase_resume_report_digest": "sha256:02c95295b988e86105ffddd0bb6787376a99406a613a7d7a70ca7b1b4e1e6022",
+    "replay_archive_audit_digest": "sha256:048f0ffc784bcf763aa6c89d61ffb84638dff6543f44e5c84a26fd5624fb40dd",
+    "replay_evidence_digest": "sha256:c44bb6631243c78b0c8d7db8f573454613ee04f919293c0b9b37d561502cbdd4",
+    "schema_version": "1.0",
+    "selected_phase_resume_report_digest": "sha256:f6c5aaac2375f1133e7d58a065c44792a73c5f90c65ffa0152f1ea44c327e7be",
+    "selection_manifest_reload_verified": true,
+    "semantic": "m3c_all_phases_strict_reload_zero_duplicate_work_v1",
+    "zero_duplicate_replay_work": true
+  },
+  "report_type": "m3c_complete_resume_v1",
+  "schema_version": "1.0"
+}

@@ -1,0 +1,52 @@
+{
+  "content_digest": "sha256:4ecc23e9cdb223352067848dafe9d8f7d2ed275f2186cef7d25efd07e13a5eab",
+  "payload": {
+    "action_dimension": 8,
+    "action_horizon": 16,
+    "architecture_count": 3,
+    "architectures": {
+      "action_only_mlp": {
+        "bundle_digest": "sha256:f4c28ec414e7b68abb4f49cd395572a2f52f1ee6e6fc110d41c13ffbcc30affb",
+        "candidate_ranking_digest": "sha256:fcfdb651a017acf5fc83af7b3ed69312c5f9e08c232a80a862bb6cef3c60a537",
+        "ensemble_failure_probability_digest": "sha256:a98955844e4b738efffac2b60984d14fa8f49fd1ff41de0df34ec0b48a8e1a79",
+        "finite_output_verified": true,
+        "per_seed_calibrated_probability_digest": "sha256:8a235ebffe6769c8d14ac647ffb6173c19bca712366d4052590c8d2636617e80",
+        "per_seed_raw_logit_digest": "sha256:5a4f03d5e8c2e51c8aa4856be8f600328083bc9ccfc8c0e7896dadb6a21e8415",
+        "selected_candidate_id": "m3c-inference-smoke-01"
+      },
+      "state_action_mlp": {
+        "bundle_digest": "sha256:ea470441db2c5b5e98fe0a97ef66df354888674218445ec0f663873f28cb41b8",
+        "candidate_ranking_digest": "sha256:086acd480fd8ef340aa78d74f9881171c3d77cd47a0873c93a54662578f53360",
+        "ensemble_failure_probability_digest": "sha256:d510b754b8b2801aa3f75f8787e49ae2f0725680d8a34c1a3a9990f04709cadd",
+        "finite_output_verified": true,
+        "per_seed_calibrated_probability_digest": "sha256:09ec593c71419a884b9dd4b33a4b818360fb3b5857772fb3c6d8204d0a7a6242",
+        "per_seed_raw_logit_digest": "sha256:f574f8526e2c30e8b497c5f84aed5e422b6c9e94fe54caeec231eead98de952d",
+        "selected_candidate_id": "m3c-inference-smoke-07"
+      },
+      "temporal_state_action_verifier": {
+        "bundle_digest": "sha256:3f58fb6b87a444f74439b93e78693e9f7bdf07bbfaf89278a3e7eaa04a01bd32",
+        "candidate_ranking_digest": "sha256:8e579bf1bdd6cc7c1468e4fccb7d797d6deb338abf4008f30edd15a3ec944fe5",
+        "ensemble_failure_probability_digest": "sha256:a111bea9463dc7f59feace27d78b5ed9d17ea34cc0ff15fbced76308a6a65497",
+        "finite_output_verified": true,
+        "per_seed_calibrated_probability_digest": "sha256:a510c3ed8c0c29b97da62de9d8dc89f689c6e8791aafe50410a481ec7093a985",
+        "per_seed_raw_logit_digest": "sha256:54129a5cd724f67766d8d281540c07a451f92c0257d6d619f29e0231f387a4b2",
+        "selected_candidate_id": "m3c-inference-smoke-00"
+      }
+    },
+    "candidate_count": 8,
+    "candidate_input_digest": "sha256:83e447e2b032499db11fd0d4dcc7842b8c47b015895d4c354e18da4c63f058cd",
+    "device": "cpu",
+    "device_kind": "cpu",
+    "m3c_candidate_outcomes_loaded": false,
+    "m3c_source_trajectories_loaded": false,
+    "measurement_iterations": 5,
+    "outcome_free_synthetic_fixture": true,
+    "raw_prediction_values_persisted": false,
+    "schema_version": "1.0",
+    "semantic": "fixed_outcome_free_three_ensemble_forward_gate_v1",
+    "state_dimension": 38,
+    "warmup_iterations": 2
+  },
+  "report_type": "m3c_precollection_inference_smoke_v1",
+  "schema_version": "1.0"
+}

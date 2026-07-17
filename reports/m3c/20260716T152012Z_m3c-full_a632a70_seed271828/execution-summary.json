@@ -1,0 +1,206 @@
+{
+  "schema_version": "1.0",
+  "report_type": "m3c_remote_execution_summary_v1",
+  "run_id": "20260716T152012Z_m3c-full_a632a70_seed271828",
+  "branch": "codex/m3c-blind-candidate-selection",
+  "execution_git_sha": "a632a702c709edb1fc21e702c83e30964652ff79",
+  "implementation_commits": [
+    "488c628d1409d25557e09e70b87553ef3935fac8",
+    "93dd0e2a7e989cecc47bf72de1a09fd68d8b9d8d",
+    "70a608ff062210ee4c5541eec4f78939f1283fb8",
+    "a632a702c709edb1fc21e702c83e30964652ff79"
+  ],
+  "superseded_remote_run_ids": [
+    "20260716T124132Z_m3c-full_488c628_seed271828",
+    "20260716T125343Z_m3c-full_93dd0e2_seed271828",
+    "20260716T132804Z_m3c-full_70a608f_seed271828"
+  ],
+  "accepted_inputs": {
+    "m3a_dataset_digest": "sha256:7847c9d0e09170531e13ba07531fabb3ea6f0aa6b0122298b733726d2055856d",
+    "m3b_result_git_sha": "66eaee0f69a8f5dfe4bc7a53a777e08b5ce51b88",
+    "m3b_split_digest": "sha256:173ca40a072a1977cc65dbcccedb4684ae573e97f3984c176e3f91bba09f940a",
+    "checkpoint_count": 15,
+    "checkpoint_reconstruction_performed": false,
+    "all_checkpoint_digests_loaded_and_validated": true
+  },
+  "runtime": {
+    "gpu_count": 1,
+    "gpu_model": "NVIDIA GeForce RTX 5090",
+    "gpu_memory_mib": 32607,
+    "nvidia_driver_version": "580.76.05",
+    "python_version": "3.11.15",
+    "numpy_version": "1.26.4",
+    "torch_version": "2.8.0+cu128",
+    "torch_cuda_version": "12.8"
+  },
+  "timeline_utc": {
+    "run_started_at": "2026-07-16T15:20:12Z",
+    "selection_finalized_at": "2026-07-16T17:49:21.544698Z",
+    "selected_replay_started_at": "2026-07-16T18:06:47.007894Z",
+    "selected_replay_finished_at": "2026-07-17T01:30:58.801061Z",
+    "remainder_replay_started_at": "2026-07-17T01:38:46.460345Z",
+    "remainder_replay_finished_at": "2026-07-17T11:08:11.155069Z",
+    "final_strict_resume_finished_at": "2026-07-17T12:03:52Z"
+  },
+  "full_evaluation": {
+    "source_trajectory_count": 60,
+    "anchor_count": 360,
+    "candidate_group_count": 360,
+    "candidate_count": 2880,
+    "stage_a_selector_count": 11,
+    "stage_a_decision_count": 3960,
+    "selected_physical_replay_count": 1168,
+    "remainder_physical_replay_count": 1712,
+    "complete_outcome_count": 2880,
+    "execution_error_count": 0,
+    "all_conclusive_evidence_strong_and_simulator_verified": true,
+    "all_success_group_count": 235,
+    "all_failure_group_count": 0,
+    "mixed_outcome_group_count": 125,
+    "solvable_group_count": 360
+  },
+  "outcome_isolation": {
+    "outcomes_available_during_selection": false,
+    "outcome_input_paths": [],
+    "selection_manifest_digest": "sha256:c5aa3798d0d1797a1714f8de6ad76954f6aa1b31835a3aae8d0abbd7e52dcbcc",
+    "selection_manifest_envelope_digest": "sha256:55e077a9818fc13b4a966081c7cbd57d4fb86bdcea447053e8349c62a9f6a37f",
+    "selection_preceded_selected_and_remainder_replay": true,
+    "source_action_selectable": false,
+    "full_outcome_tuning_performed": false
+  },
+  "content_identities": {
+    "candidate_pool_digest": "sha256:e2982acd30297fb81f000ea53081afdb4e2ca9ad5dc2f16c6aa71d199c8ef1b7",
+    "source_set_digest": "sha256:db1f3ece9576850c09a9f95b8c4aee483d11d71ebbbe0772b695db2d60321123",
+    "semantic_replay_evidence_digest": "sha256:c44bb6631243c78b0c8d7db8f573454613ee04f919293c0b9b37d561502cbdd4",
+    "replay_archive_audit_digest": "sha256:048f0ffc784bcf763aa6c89d61ffb84638dff6543f44e5c84a26fd5624fb40dd",
+    "full_pool_outcome_digest": "sha256:06ac372236586ed7e4dcf3af8fc8d09e05e063f24cdaa687ee6bcdcd8e51d05c",
+    "simulator_compatibility_identity": "sha256:05a560fd89e0989b6d94017c6456efc535de4a0bf87ededaf468f5e2d9ef71f7",
+    "bound_result_digest": "sha256:e3cee839f5df10dd47578f214d02e0aee089a65bed37dad290f6a554b4aceaae",
+    "candidate_selection_report_digest": "sha256:596d104f2ecea17304f56d2a2b65f9677e3799f79a0b6288623a422ed308ec48"
+  },
+  "primary_results": {
+    "deterministic_random": {
+      "coverage": 1.0,
+      "selected_success_rate": 0.8888888888888888,
+      "task_failure_rate": 0.1111111111111111
+    },
+    "frozen_action_magnitude": {
+      "coverage": 1.0,
+      "selected_success_rate": 0.8694444444444445,
+      "task_failure_rate": 0.13055555555555556
+    },
+    "action_only_ensemble": {
+      "coverage": 1.0,
+      "selected_success_rate": 0.9861111111111112,
+      "task_failure_rate": 0.013888888888888888
+    },
+    "state_action_mlp_ensemble": {
+      "coverage": 1.0,
+      "selected_success_rate": 0.9944444444444445,
+      "task_failure_rate": 0.005555555555555556
+    },
+    "temporal_ensemble": {
+      "coverage": 1.0,
+      "selected_success_rate": 0.9833333333333333,
+      "task_failure_rate": 0.016666666666666666,
+      "unsafe_rate": 0.0,
+      "pairwise_success_failure_concordance": 0.9265017667844523,
+      "top1_success": 0.9833333333333333,
+      "top2_success": 1.0,
+      "mean_reciprocal_rank_first_success": 0.9916666666666667,
+      "mean_binary_ndcg": 0.9910485244099947
+    },
+    "oracle_analysis_only": {
+      "coverage": 1.0,
+      "selected_success_rate": 1.0,
+      "task_failure_rate": 0.0
+    },
+    "temporal_validation_coverage_70_policy": {
+      "executed_count": 272,
+      "coverage": 0.7555555555555555,
+      "selected_success_rate": 0.9889705882352942,
+      "task_failure_rate": 0.011029411764705883
+    }
+  },
+  "trajectory_bootstrap": {
+    "sampling_unit": "original_m3c_source_trajectory_v1",
+    "requested_resamples": 2000,
+    "temporal_minus_random_selected_success": {
+      "observed_difference": 0.09444444444444444,
+      "confidence_lower": 0.06388888888888888,
+      "confidence_upper": 0.125
+    },
+    "temporal_minus_joint_mlp_selected_success": {
+      "observed_difference": -0.011111111111111183,
+      "confidence_lower": -0.025000000000000022,
+      "confidence_upper": 0.0
+    },
+    "temporal_superiority_over_joint_supported": false
+  },
+  "inference_latency": {
+    "cpu": {
+      "joint_mlp_group_p50_seconds": 0.0022528450936079025,
+      "temporal_group_p50_seconds": 0.007074354216456413,
+      "joint_mlp_candidates_per_second": 712.1727681672014,
+      "temporal_candidates_per_second": 253.28700090501695
+    },
+    "cuda": {
+      "joint_mlp_group_p50_seconds": 0.0024672485888004303,
+      "temporal_group_p50_seconds": 0.004957964643836021,
+      "joint_mlp_candidates_per_second": 3221.209712231483,
+      "temporal_candidates_per_second": 1605.373057874409,
+      "joint_mlp_peak_allocated_memory_bytes": 18105856,
+      "temporal_peak_allocated_memory_bytes": 18610688
+    },
+    "winner_selected_from_full_outcomes": false
+  },
+  "state_restoration_collection_audit": {
+    "fresh_state_verification_count": 65,
+    "full_state_component_count": 70,
+    "full_state_maximum_absolute_error": 1.1920928955078125e-07,
+    "authorized_tolerance": 1e-06,
+    "verifier_state_component_count": 38,
+    "verifier_state_maximum_absolute_error": 0.0,
+    "scope_note": "These maxima summarize the 65 collection/fresh-state audits; complete replay trust is separately bound by the strong simulator-evidence and archive digests."
+  },
+  "resume": {
+    "selected_evaluated_attempts": 0,
+    "selected_recovered_attempts": 0,
+    "selected_retried_attempts": 0,
+    "selected_resume_report_digest": "sha256:f6c5aaac2375f1133e7d58a065c44792a73c5f90c65ffa0152f1ea44c327e7be",
+    "remainder_evaluated_attempts": 0,
+    "remainder_recovered_attempts": 0,
+    "remainder_retried_attempts": 0,
+    "remainder_resume_report_digest": "sha256:02c95295b988e86105ffddd0bb6787376a99406a613a7d7a70ca7b1b4e1e6022",
+    "zero_duplicate_replay_work": true,
+    "final_resume_report_digest": "sha256:c8b89bf1f02dd9f730c36afcfcef33082d3618dd4d7b4f4991ffce36e5b84dd8"
+  },
+  "native_failure_recovery": [
+    {
+      "phase": "selected",
+      "initial_exit_code": 139,
+      "preserved_manifest_sha256": "8c55f9910c67a6d106f5a5bb2225b9642e3aaa81a0bfda8a2a138ff448536c28",
+      "preserved_log_sha256": "b349531ae45b281ae9c6e364e15e1c6d50bbda6d6eb323971d174cd164be2d9d",
+      "resume_completed": true
+    },
+    {
+      "phase": "remainder",
+      "initial_exit_code": 139,
+      "preserved_manifest_sha256": "7dccfb7b1d178047624266bb91ce50c10f02d0c641d484385ec6e34a2352bea1",
+      "preserved_log_sha256": "e38c56a3904e5229a980c73a0d14c4582b9bc2eba564499356c5accf3a84592e",
+      "resume_completed": true
+    }
+  ],
+  "result_disposition": "quality_targets_met_without_full_outcome_tuning",
+  "scope": {
+    "training_performed": false,
+    "checkpoint_reconstruction_performed": false,
+    "vlm_or_llm_used": false,
+    "langmani_used": false,
+    "source_action_fallback_used": false,
+    "distributed_or_multi_gpu_used": false,
+    "receding_horizon_control_claimed": false,
+    "cross_task_or_real_robot_claimed": false
+  },
+  "shutdown_policy": "Shut down the paid server only after compact artifacts pass local validation, the result commit is pushed, and local/upstream/remote execution SHA checks pass."
+}
