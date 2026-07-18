@@ -337,18 +337,28 @@ def _run_extract_features(args: argparse.Namespace) -> int:
         load_backbone_manifest,
         prepare_backbone,
     )
-    from latentguard.visual_training.cache import extract_feature_cache
+    from latentguard.visual_training.cache import (
+        extract_feature_cache,
+        load_feature_cache,
+    )
 
     expected = load_backbone_manifest(args.backbone_manifest)
     runtime = prepare_backbone(config, args.backbone_manifest, device=args.device)
     if runtime.manifest != expected:
         _fail("external feature cache", "backbone identity changed")
+    invocation_git_sha = _git_sha()
+    completed_manifest = args.output_dir / "manifest.json"
+    if args.resume and completed_manifest.is_file():
+        invocation_git_sha = _completed_resume_git_sha(
+            invocation_git_sha,
+            artifact_git_sha=load_feature_cache(args.output_dir).git_sha,
+        )
     loaded, extracted = extract_feature_cache(
         dataset,
         args.dataset_dir,
         runtime,
         args.output_dir,
-        git_sha=_git_sha(),
+        git_sha=invocation_git_sha,
         model_freeze_digest=model_freeze_digest,
         batch_size=args.batch_size,
         limit_images=args.limit_images,
@@ -380,6 +390,7 @@ def _run_prepare_teacher(args: argparse.Namespace) -> int:
         )
         return 0
     dataset = _load_accepted_dataset(args)
+    from latentguard.visual_training.cache import load_teacher_cache
     from latentguard.visual_training.teacher import (
         load_accepted_teacher_bundle,
         prepare_teacher_targets,
@@ -393,11 +404,18 @@ def _run_prepare_teacher(args: argparse.Namespace) -> int:
         thresholds=_five_paths(args.teacher_thresholds, "teacher thresholds"),
         device=args.device,
     )
+    invocation_git_sha = _git_sha()
+    completed_manifest = args.output_dir / "manifest.json"
+    if args.resume and completed_manifest.is_file():
+        invocation_git_sha = _completed_resume_git_sha(
+            invocation_git_sha,
+            artifact_git_sha=load_teacher_cache(args.output_dir).git_sha,
+        )
     loaded, computed = prepare_teacher_targets(
         bundle,
         dataset,
         args.output_dir,
-        git_sha=_git_sha(),
+        git_sha=invocation_git_sha,
         device=args.device,
         batch_size=args.batch_size,
         limit_samples=args.limit_samples,
@@ -441,7 +459,6 @@ def _run_train(args: argparse.Namespace) -> int:
         metadata = inspect_visual_checkpoint(completed_checkpoint)
         if (
             not metadata.progress.complete
-            or metadata.progress.binding.git_sha != _git_sha()
             or metadata.progress.binding.seed != args.seed
             or metadata.progress.binding.model_config_digest
             != model_config.content_digest
@@ -517,6 +534,25 @@ def _run_train(args: argparse.Namespace) -> int:
         f"zero_work_resume={str(result.zero_work_resume).lower()}"
     )
     return 0
+
+
+def _completed_resume_git_sha(
+    current_git_sha: str,
+    *,
+    artifact_git_sha: str,
+) -> str:
+    """Retain a verified completed artifact's source SHA for zero-work resume."""
+    for name, value in (
+        ("current_git_sha", current_git_sha),
+        ("artifact_git_sha", artifact_git_sha),
+    ):
+        if (
+            not isinstance(value, str)
+            or len(value) != 40
+            or any(character not in "0123456789abcdef" for character in value)
+        ):
+            _fail("completed resume", f"{name} is not a full Git SHA")
+    return artifact_git_sha
 
 
 def _load_result(path: Path) -> object:

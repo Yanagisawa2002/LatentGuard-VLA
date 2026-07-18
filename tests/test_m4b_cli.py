@@ -5,7 +5,15 @@ from __future__ import annotations
 import argparse
 from pathlib import Path
 
-from latentguard.m4b_cli import M4B_COMMANDS, add_m4b_subparsers, run_m4b_command
+import pytest
+
+from latentguard.m4b_cli import (
+    M4B_COMMANDS,
+    M4BCommandError,
+    _completed_resume_git_sha,
+    add_m4b_subparsers,
+    run_m4b_command,
+)
 
 
 def _parser() -> argparse.ArgumentParser:
@@ -89,3 +97,13 @@ def test_five_seed_benchmark_is_refused_even_with_flag(tmp_path: Path) -> None:
     )
     assert run_m4b_command(args) == 1
     assert not (tmp_path / "output.json").exists()
+
+
+def test_completed_resume_retains_artifact_source_sha() -> None:
+    """A verified complete cache remains zero-work across later execution fixes."""
+    original = "a" * 40
+    verifier = "b" * 40
+
+    assert _completed_resume_git_sha(verifier, artifact_git_sha=original) == original
+    with pytest.raises(M4BCommandError, match="full Git SHA"):
+        _completed_resume_git_sha(verifier, artifact_git_sha="not-a-sha")
