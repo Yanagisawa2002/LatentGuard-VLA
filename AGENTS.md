@@ -58,6 +58,21 @@ Every training entry point must support `--dry-run`, `--max-steps`, `--limit-sam
 
 Before a full remote run, pass these gates in order: configuration validation; CPU data-loading smoke test; one-batch GPU forward pass; one-batch forward/backward pass; short overfit or max-steps run; checkpoint save/resume test; then full training. Do not start an expensive run if an earlier gate fails. Never silently shrink model/data settings to make a run succeed; record and justify changes.
 
+## Cost-aware model screening
+
+Future model milestones screen each proposed architecture once with seed `0`,
+full training data, validation-only selection, ordinary early stopping, and
+checkpoint/resume validation. Only the best validation model, strongest direct
+baseline, and one technically essential ablation may advance to final seeds
+`0, 1, 2`. Add seeds `3` and `4` only when the top validation gap is below
+`0.02`, three-seed standard deviation exceeds `0.03`, rankings change across
+seeds, a seed collapses, or a publication-level statistical claim requires it.
+Poor external-test performance must never trigger extra seeds or test tuning.
+Cache reusable frozen embeddings and teacher logits once when a milestone
+authorizes them; retain a raw-input end-to-end inference check. This policy
+reduces redundant execution without reducing required baselines, ablations, or
+external evaluation.
+
 ## Learned-model evaluation rules
 
 - Begin training only from an independently validated accepted dataset. Bind the

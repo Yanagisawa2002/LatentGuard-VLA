@@ -172,6 +172,62 @@ root.
 No later gate may run after an earlier failure. Visual configuration is never
 edited remotely.
 
+## Cost-aware execution amendment
+
+This amendment changes execution strategy only. It does not reduce the visual,
+physical-integrity, evidence, serialization, reload, leakage, or resume
+contracts above. Accepted M3A/M3C states, anchors, candidates, evidence,
+outcomes, splits, blind selection, and pool bindings are reused; M4A renders
+anchor-level observations once and never regenerates physical outcomes.
+
+Remote execution is limited to three phases from one clean pushed SHA per
+accepted implementation revision:
+
+1. **Discovery:** one archived state, all three cameras, three repeated renders
+   in one initialized environment, two separately initialized fresh-environment
+   renders, and all complete state/verifier/task integrity checks. Pixel drift
+   stops the phase without remote shader, driver, tolerance, rig, or lighting
+   experimentation.
+2. **Smoke:** after the visual configuration is frozen and pushed, exactly six
+   M3A trajectories and six disjoint M3C trajectories across all assigned
+   domains and three views, followed by publication, reload, leakage,
+   integrity, and zero-work resume validation. A rerun requires a material
+   locally fixed, tested, committed, and pushed defect plus a new run ID.
+3. **Full:** exactly one full M3A development render, one full M3C external
+   render, one independent combined validation, and one strict zero-work resume
+   validation. Cosmetic preference cannot trigger rerendering.
+
+Each render worker may reuse its initialized environment, but every packet must
+independently reset with its bound seed, restore its bound anchor state, verify
+the complete state, extract verifier state, configure exactly one domain,
+render all three cameras without stepping physics, and repeat the complete
+state/verifier/task checks afterward. Cross-packet drift fails closed; smoke
+failure falls back to fresh environment creation per packet without weakening
+the contract. Images are stored once per anchor/domain packet and referenced by
+candidate records; no candidate-level rerendering or extra random variants are
+allowed.
+
+Compact operational reports record environment initialization count, packet and
+image counts, average and nearest-rank percentile packet render time, total
+rendering and validation time, resume-reused packets, peak GPU memory when
+available, and reliably measured server-active execution duration. These facts
+are reporting-only and never enter semantic identities. Paid-server preflight
+must check source digests, output resumability, exact Git SHA, configuration
+digests, disk, renderer initialization, and one complete packet. A blocker
+flushes transactional state, preserves a compact diagnostic, retrieves it, and
+shuts the server down.
+
+M4A performs no model training, backbone or teacher feature extraction,
+augmentation job, normalization fitting, M4B smoke, or architecture selection,
+and it does not begin M4B automatically. Future M4B should start with one seed,
+prefer and cache a frozen backbone once, cache privileged teacher logits once,
+reuse both caches across permitted heads/seeds, retain one raw-RGB end-to-end
+inference check, expand only selected models to seeds `0, 1, 2`, apply the
+project-wide five-seed escalation rule, and run the frozen M3C external visual
+evaluation exactly once. Required future comparisons remain visual-only,
+RGB+action fusion, teacher-distilled RGB+action, strongest structured-state
+teacher, canonical/shifted domains, and blind selection after model freeze.
+
 ## Remote outputs and closeout
 
 Raw NPY images, state archives, action arrays, datasets, caches, and inspection
@@ -190,6 +246,7 @@ directory-symlink tests skipped for missing host privilege. `ruff check .`,
 `ruff format --check .`, `mypy src`, all five installed CLI help paths, and the
 CPU-import boundary also pass. No visual compatibility probe, trusted render,
 raw visual dataset, model training, VLM, LangMani, video, or remote M4A
-execution has yet occurred. The paid server remains off; remote source gates
-and the visual compatibility probe await power-on after this exact revision is
-pushed and confirmed upstream.
+execution has yet occurred. The paid server is currently available. Its clean
+checkout has been synchronized to the pushed discovery commit and the complete
+accepted M3A/M3C source bindings have passed. The next gate is the single
+bounded visual compatibility discovery probe; no training process has run.
