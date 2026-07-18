@@ -8,7 +8,7 @@ from __future__ import annotations
 
 import importlib
 import math
-from collections.abc import Iterable, Mapping, Sequence
+from collections.abc import Iterable, Mapping, MutableMapping, Sequence
 from dataclasses import dataclass, field, replace
 from types import MappingProxyType
 from typing import Any, Protocol, cast, runtime_checkable
@@ -29,7 +29,10 @@ from latentguard.vision_data.domains import (
     RenderDomainV1,
 )
 
-VISUAL_RENDERER_SEMANTIC_VERSION = "maniskill_pickcube_multiview_rgb_v1"
+VISUAL_RENDERER_SEMANTIC_VERSION = "maniskill_pickcube_multiview_rgb_v2"
+GPU_CAMERA_GROUP_INITIALIZATION_SEMANTIC = (
+    "sapien_render_system_3_0_one_group_per_runtime_camera_v1"
+)
 VISUAL_CAMERA_RESOLUTION_SEMANTIC = "world_pose_rpy_pcg64_per_camera_v1"
 CAMERA_POSE_APPLICATION_SEMANTIC = "explicit_world_pose_wxyz_v1"
 LIGHTING_APPLICATION_SEMANTIC = "ambient_plus_directional_key_v1"
@@ -317,6 +320,11 @@ class VisualRendererApiObservation:
     camera_type: str
     shader_configuration: str
     camera_configuration_api: str
+    camera_group_initialization_semantic: str
+    camera_group_texture_names: tuple[str, ...]
+    camera_group_count: int
+    underlying_camera_count_per_group: int
+    camera_groups_ready: bool
     world_camera_pose_representation: str
     sensor_update_calls: tuple[str, ...]
     image_dtype: str = "uint8"
@@ -342,6 +350,7 @@ class VisualRendererApiObservation:
             "camera_type",
             "shader_configuration",
             "camera_configuration_api",
+            "camera_group_initialization_semantic",
             "calibration_comparison_semantic",
             "world_camera_pose_representation",
             "image_dtype",
@@ -369,6 +378,45 @@ class VisualRendererApiObservation:
                 raise ManiSkillVisualRenderingError(
                     f"renderer API {name} must be sanitized text"
                 )
+        if (
+            self.camera_group_initialization_semantic
+            != GPU_CAMERA_GROUP_INITIALIZATION_SEMANTIC
+        ):
+            raise ManiSkillVisualRenderingError(
+                "renderer API camera-group initialization semantic is unsupported"
+            )
+        texture_names = tuple(self.camera_group_texture_names)
+        if (
+            not texture_names
+            or "Color" not in texture_names
+            or len(texture_names) != len(set(texture_names))
+            or any(
+                not isinstance(name, str)
+                or not name
+                or name != name.strip()
+                or len(name) > 128
+                or any(ord(character) < 32 for character in name)
+                for name in texture_names
+            )
+        ):
+            raise ManiSkillVisualRenderingError(
+                "renderer API camera-group texture names are invalid"
+            )
+        if type(self.camera_group_count) is not int or self.camera_group_count != 3:
+            raise ManiSkillVisualRenderingError(
+                "renderer API must initialize exactly three camera groups"
+            )
+        if (
+            type(self.underlying_camera_count_per_group) is not int
+            or self.underlying_camera_count_per_group != 1
+        ):
+            raise ManiSkillVisualRenderingError(
+                "renderer API must bind exactly one underlying camera per group"
+            )
+        if type(self.camera_groups_ready) is not bool or not self.camera_groups_ready:
+            raise ManiSkillVisualRenderingError(
+                "renderer API camera groups must be ready"
+            )
         valid_color_contracts = {
             ("unobserved", "unobserved"),
             ("uint8", UINT8_COLOR_TO_RGB_UINT8_SEMANTIC),
@@ -450,6 +498,7 @@ class VisualRendererApiObservation:
                     f"renderer API {name} must be boolean"
                 )
         object.__setattr__(self, "sensor_update_calls", calls)
+        object.__setattr__(self, "camera_group_texture_names", texture_names)
 
     def as_mapping(self) -> MappingProxyType[str, object]:
         """Return a JSON-native sanitized observation."""
@@ -459,6 +508,12 @@ class VisualRendererApiObservation:
                     self.calibration_comparison_semantic
                 ),
                 "camera_configuration_api": self.camera_configuration_api,
+                "camera_group_count": self.camera_group_count,
+                "camera_group_initialization_semantic": (
+                    self.camera_group_initialization_semantic
+                ),
+                "camera_group_texture_names": list(self.camera_group_texture_names),
+                "camera_groups_ready": self.camera_groups_ready,
                 "camera_extrinsics_available": self.camera_extrinsics_available,
                 "camera_intrinsics_available": self.camera_intrinsics_available,
                 "camera_type": self.camera_type,
@@ -479,6 +534,9 @@ class VisualRendererApiObservation:
                 "sensor_update_calls": list(self.sensor_update_calls),
                 "shader_configuration": self.shader_configuration,
                 "vertical_orientation": self.vertical_orientation,
+                "underlying_camera_count_per_group": (
+                    self.underlying_camera_count_per_group
+                ),
                 "world_camera_pose_representation": (
                     self.world_camera_pose_representation
                 ),
@@ -647,13 +705,49 @@ class LazyManiSkillPickCubeVisualRenderer:
             raise ManiSkillVisualRenderingError(
                 "configured prebuilt shader is unavailable or has an unexpected type"
             )
+        render_system = getattr(render_module, "SAPIEN_RENDER_SYSTEM", None)
+        if render_system != "3.0":
+            raise ManiSkillVisualRenderingError(
+                "installed renderer does not use the pinned SAPIEN render system 3.0"
+            )
+        raw_texture_names = getattr(shader_config, "texture_names", None)
+        if not isinstance(raw_texture_names, Mapping):
+            raise ManiSkillVisualRenderingError(
+                "configured shader lacks a texture-name mapping"
+            )
+        texture_names = tuple(raw_texture_names.keys())
+        if (
+            not texture_names
+            or "Color" not in texture_names
+            or len(texture_names) != len(set(texture_names))
+            or any(
+                not isinstance(name, str)
+                or not name
+                or name != name.strip()
+                or len(name) > 128
+                or any(ord(character) < 32 for character in name)
+                for name in texture_names
+            )
+        ):
+            raise ManiSkillVisualRenderingError(
+                "configured shader has an invalid ordered texture inventory"
+            )
+        scene_num_envs = getattr(scene, "num_envs", None)
+        if (
+            getattr(scene, "gpu_sim_enabled", None) is not True
+            or getattr(scene, "parallel_in_single_scene", None) is not False
+            or type(scene_num_envs) is not int
+            or scene_num_envs != 1
+        ):
+            raise ManiSkillVisualRenderingError(
+                "visual cameras require pinned single-environment GPU scene semantics"
+            )
         try:
             set_shader_pack(shader_config)
         except Exception as exc:
             raise ManiSkillVisualRenderingError(
                 "could not apply the configured prebuilt shader"
             ) from exc
-        self._apply_lighting(scene, plan.lighting)
         cameras: list[tuple[VisualCameraRenderPlan, object]] = []
         for camera in plan.cameras:
             pose = pose_type(camera.position, camera.quaternion_wxyz)
@@ -673,6 +767,12 @@ class LazyManiSkillPickCubeVisualRenderer:
                     f"could not add world camera {camera.camera_id!r}"
                 ) from exc
             cameras.append((camera, runtime_camera))
+        self._initialize_gpu_camera_groups(
+            scene=scene,
+            cameras=cameras,
+            texture_names=texture_names,
+        )
+        self._apply_lighting(scene, plan.lighting)
         backend = getattr(scene, "backend", None)
         observation = VisualRendererApiObservation(
             renderer_backend=_safe_runtime_name(backend),
@@ -680,17 +780,127 @@ class LazyManiSkillPickCubeVisualRenderer:
             camera_type=_qualified_type_name(cameras[0][1]),
             shader_configuration=plan.shader_configuration,
             camera_configuration_api=(
-                "ManiSkillScene.add_camera(intrinsic,world_pose)+RenderCamera"
+                "ManiSkillScene.add_camera(intrinsic,world_pose)+"
+                "RenderSystemGroup.create_camera_group(RenderCamera._render_cameras)"
             ),
+            camera_group_initialization_semantic=(
+                GPU_CAMERA_GROUP_INITIALIZATION_SEMANTIC
+            ),
+            camera_group_texture_names=texture_names,
+            camera_group_count=len(cameras),
+            underlying_camera_count_per_group=1,
+            camera_groups_ready=True,
             world_camera_pose_representation="sapien.Pose(position,quaternion_wxyz)",
             sensor_update_calls=(
                 "scene.update_render(update_sensors=False,"
-                "update_human_render_cameras=False)",
+                "update_human_render_cameras=False) for group initialization",
+                "render_system_group.create_camera_group("
+                "camera._render_cameras,shader_texture_names)",
+                "scene.update_render(update_sensors=False,"
+                "update_human_render_cameras=False) for capture",
                 "camera.take_picture()",
                 "camera.get_picture(['Color'])",
             ),
         )
         return _InstalledRenderHandle(scene, tuple(cameras), observation)
+
+    @staticmethod
+    def _initialize_gpu_camera_groups(
+        *,
+        scene: object,
+        cameras: Sequence[tuple[VisualCameraRenderPlan, object]],
+        texture_names: tuple[str, ...],
+    ) -> None:
+        """Bind late-added GPU cameras to pinned SAPIEN 3.0 render groups."""
+        update_render = getattr(scene, "update_render", None)
+        camera_groups = getattr(scene, "camera_groups", None)
+        if not callable(update_render) or not isinstance(camera_groups, MutableMapping):
+            raise ManiSkillVisualRenderingError(
+                "GPU scene lacks camera-group initialization APIs"
+            )
+        camera_ids = tuple(plan.camera_id for plan, _ in cameras)
+        if any(camera_id in camera_groups for camera_id in camera_ids):
+            raise ManiSkillVisualRenderingError(
+                "GPU scene already contains an M4A camera-group identity"
+            )
+        prepared_cameras: list[tuple[object, list[object]]] = []
+        missing = object()
+        for plan, camera in cameras:
+            existing_camera_group = getattr(camera, "camera_group", missing)
+            if existing_camera_group is missing or existing_camera_group is not None:
+                raise ManiSkillVisualRenderingError(
+                    f"camera {plan.camera_id!r} lacks an unbound GPU camera-group slot"
+                )
+            render_cameras = getattr(camera, "_render_cameras", None)
+            if not isinstance(render_cameras, list) or len(render_cameras) != 1:
+                raise ManiSkillVisualRenderingError(
+                    f"camera {plan.camera_id!r} must expose exactly one pinned "
+                    "underlying render camera"
+                )
+            prepared_cameras.append((camera, render_cameras))
+        try:
+            update_render(
+                update_sensors=False,
+                update_human_render_cameras=False,
+            )
+        except Exception as exc:
+            raise ManiSkillVisualRenderingError(
+                "could not initialize the GPU render system group"
+            ) from exc
+        render_system_group = getattr(scene, "render_system_group", None)
+        create_camera_group = getattr(render_system_group, "create_camera_group", None)
+        if not callable(create_camera_group):
+            raise ManiSkillVisualRenderingError(
+                "GPU render system lacks the camera-group factory"
+            )
+        created_groups: list[object] = []
+        for (plan, _), (_, render_cameras) in zip(
+            cameras, prepared_cameras, strict=True
+        ):
+            try:
+                group = create_camera_group(render_cameras, list(texture_names))
+            except Exception as exc:
+                raise ManiSkillVisualRenderingError(
+                    f"could not create GPU camera group for {plan.camera_id!r}"
+                ) from exc
+            if (
+                group is None
+                or any(group is existing for existing in created_groups)
+                or not callable(getattr(group, "take_picture", None))
+                or not callable(getattr(group, "get_picture_cuda", None))
+            ):
+                raise ManiSkillVisualRenderingError(
+                    f"GPU camera group for {plan.camera_id!r} is invalid"
+                )
+            created_groups.append(group)
+        assigned: list[tuple[str, object]] = []
+        try:
+            for (plan, camera), group in zip(cameras, created_groups, strict=True):
+                runtime_camera = cast(Any, camera)
+                runtime_camera.camera_group = group
+                if getattr(camera, "camera_group", None) is not group:
+                    raise ManiSkillVisualRenderingError(
+                        f"GPU camera group assignment for {plan.camera_id!r} failed"
+                    )
+                assigned.append((plan.camera_id, camera))
+                camera_groups[plan.camera_id] = group
+                if camera_groups.get(plan.camera_id) is not group:
+                    raise ManiSkillVisualRenderingError(
+                        f"GPU camera group registry for {plan.camera_id!r} failed"
+                    )
+        except Exception as exc:
+            for camera_id, camera in assigned:
+                camera_groups.pop(camera_id, None)
+                try:
+                    runtime_camera = cast(Any, camera)
+                    runtime_camera.camera_group = None
+                except Exception:
+                    pass
+            if isinstance(exc, ManiSkillVisualRenderingError):
+                raise
+            raise ManiSkillVisualRenderingError(
+                "could not bind GPU camera groups to runtime cameras"
+            ) from exc
 
     @staticmethod
     def _apply_lighting(scene: object, plan: VisualLightingRenderPlan) -> None:
@@ -1005,6 +1215,7 @@ __all__ = [
     "EXTRINSIC_3X4_TO_4X4_SEMANTIC",
     "EXTRINSIC_4X4_SEMANTIC",
     "FLOAT_COLOR_TO_RGB_UINT8_SEMANTIC",
+    "GPU_CAMERA_GROUP_INITIALIZATION_SEMANTIC",
     "LIGHTING_APPLICATION_SEMANTIC",
     "LazyManiSkillPickCubeVisualRenderer",
     "ManiSkillVisualContractError",

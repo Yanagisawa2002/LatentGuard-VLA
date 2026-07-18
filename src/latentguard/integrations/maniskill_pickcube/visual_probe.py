@@ -41,7 +41,7 @@ from .visual_rendering import (
 )
 from .visual_session import PickCubeVisualSession, PickCubeVisualSessionResult
 
-VISUAL_COMPATIBILITY_REPORT_SCHEMA_VERSION = "2.0"
+VISUAL_COMPATIBILITY_REPORT_SCHEMA_VERSION = "3.0"
 VISUAL_PROBE_SOURCE_SCHEMA_VERSION = "1.0"
 VISUAL_RENDER_OUTPUT_SHAPE = (224, 224, 3)
 VISUAL_PROBE_SAME_ENVIRONMENT_RENDER_COUNT = 3
@@ -514,6 +514,7 @@ class VisualCompatibilityReport:
             and self.camera_calibration_stable
             and self.renderer_api.camera_intrinsics_available
             and self.renderer_api.camera_extrinsics_available
+            and self.renderer_api.camera_groups_ready
             and self.renderer_api.raw_color_texture_dtype != "unobserved"
             and self.renderer_api.runtime_intrinsics_dtype != "unobserved"
             and self.renderer_api.runtime_extrinsics_dtype != "unobserved"
@@ -1130,6 +1131,10 @@ def _decode_renderer_api(value: object) -> VisualRendererApiObservation:
     fields = {
         "calibration_comparison_semantic",
         "camera_configuration_api",
+        "camera_group_count",
+        "camera_group_initialization_semantic",
+        "camera_group_texture_names",
+        "camera_groups_ready",
         "camera_extrinsics_available",
         "camera_intrinsics_available",
         "camera_type",
@@ -1148,11 +1153,16 @@ def _decode_renderer_api(value: object) -> VisualRendererApiObservation:
         "sensor_update_calls",
         "shader_configuration",
         "vertical_orientation",
+        "underlying_camera_count_per_group",
         "world_camera_pose_representation",
     }
     _exact_fields(item, fields, "VisualRendererApiObservation")
     raw_calls = _load_sequence(
         item["sensor_update_calls"], "VisualRendererApiObservation.sensor_update_calls"
+    )
+    raw_texture_names = _load_sequence(
+        item["camera_group_texture_names"],
+        "VisualRendererApiObservation.camera_group_texture_names",
     )
     return VisualRendererApiObservation(
         calibration_comparison_semantic=_load_text(
@@ -1175,6 +1185,29 @@ def _decode_renderer_api(value: object) -> VisualRendererApiObservation:
         camera_configuration_api=_load_text(
             item["camera_configuration_api"],
             "VisualRendererApiObservation.camera_configuration_api",
+        ),
+        camera_group_initialization_semantic=_load_text(
+            item["camera_group_initialization_semantic"],
+            "VisualRendererApiObservation.camera_group_initialization_semantic",
+        ),
+        camera_group_texture_names=tuple(
+            _load_text(
+                name,
+                f"VisualRendererApiObservation.camera_group_texture_names[{index}]",
+            )
+            for index, name in enumerate(raw_texture_names)
+        ),
+        camera_group_count=_load_integer(
+            item["camera_group_count"],
+            "VisualRendererApiObservation.camera_group_count",
+        ),
+        underlying_camera_count_per_group=_load_integer(
+            item["underlying_camera_count_per_group"],
+            "VisualRendererApiObservation.underlying_camera_count_per_group",
+        ),
+        camera_groups_ready=_load_boolean(
+            item["camera_groups_ready"],
+            "VisualRendererApiObservation.camera_groups_ready",
         ),
         world_camera_pose_representation=_load_text(
             item["world_camera_pose_representation"],

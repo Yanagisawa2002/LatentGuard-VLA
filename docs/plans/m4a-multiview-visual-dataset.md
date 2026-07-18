@@ -146,8 +146,8 @@ candidate-by-domain association count.
 
 ## Remote discovery and freeze gates
 
-The prior paid server is shut down. Remote work begins only after the discovery
-commit is pushed and an exact one-RTX-5090 checkout is synchronized. The
+Remote work begins only after the discovery commit is pushed and an exact
+one-RTX-5090 checkout is synchronized. The
 authoritative execution schedule is exactly Phase A, Phase B, and Phase C under
 the cost-aware amendment below; it replaces the earlier expanded gate list.
 Before Phase A, a fail-fast preflight validates the persistent source artifacts
@@ -216,7 +216,8 @@ are reporting-only and never enter semantic identities. Paid-server preflight
 must check source digests, output resumability, exact Git SHA, configuration
 digests, disk, renderer initialization, and one complete packet. A blocker
 flushes transactional state, preserves a compact diagnostic, retrieves it, and
-shuts the server down.
+stops only the related process. The server remains online unless the user
+separately and explicitly requests shutdown.
 
 M4A performs no model training, backbone or teacher feature extraction,
 augmentation job, normalization fitting, M4B smoke, or architecture selection,
@@ -259,9 +260,9 @@ images remain outside Git. Only compact sanitized compatibility, identity,
 count, determinism, integrity, domain, leakage, training-prohibition, resume,
 manifest-summary, and human-review reports are retrieved under `reports/m4a/`.
 After full acceptance, update this plan, rerun local checks, commit
-`docs(m4a): record multi-view visual dataset acceptance`, push, verify clean
-local/upstream/remote SHA equality, and shut down the paid server immediately;
-do not leave it running while awaiting review.
+`docs(m4a): record multi-view visual dataset acceptance`, push, and verify clean
+local/upstream/remote SHA equality. Do not shut down the server automatically;
+leave it online unless the user separately and explicitly requests shutdown.
 
 The final completion report records observed facts only and must state:
 
@@ -273,7 +274,7 @@ The final completion report records observed facts only and must state:
 - the cross-dataset leakage result and strict zero-work resume result;
 - total reliably measured remote execution time;
 - confirmation that no model training or feature extraction occurred;
-- paid-server shutdown status;
+- paid-server running/shutdown status and whether the user requested a change;
 - branch and commits;
 - local, upstream, and GitHub SHA equality; and
 - clean working-tree status.
@@ -298,18 +299,37 @@ The final completion report records observed facts only and must state:
 - This platform defect is the material reason authorizing one new Phase A run
   ID after a narrow local fix passes the complete suite, is committed and
   pushed, and the server is restarted and synchronized to that exact new SHA.
+- Phase A attempt 2 used run ID
+  `20260718T072457Z_m4a-phase-a-discovery_be5bb0a_seed271828` from clean pushed
+  SHA `be5bb0ac2127085ed64aa77993a52d747c9ac9ad`. It passed the shader-selection
+  boundary fixed after attempt 1, then failed after 30 seconds at the first
+  `RenderCamera.take_picture()` call, before an output root, packet, or image
+  was created.
+- The pinned ManiSkill 3.0.1 GPU path requires a render camera group for each
+  late-added `RenderCamera`. `ManiSkillScene.add_camera` returns the wrapper
+  without that group after environment setup, so the wrapper attempted to call
+  `take_picture` on `None`. The raw log and wrapper status were retrieved into
+  ignored temporary storage and content-bound by the second compact sanitized
+  failure summary. No training or feature extraction began.
+- The server was deliberately retained online under the user's updated
+  operational instruction. This material platform defect authorizes one new
+  Phase A run only after a version-bound, fail-closed camera-group fix passes
+  the complete local suite, is committed, pushed, and synchronized exactly.
 
 ## Current status
 
-The cost-aware implementation was pushed and synchronized exactly, and the
-first bounded Phase A command exposed the shader-object integration defect
-recorded above before rendering. A narrow local fix now resolves the bound
-prebuilt shader object and fails closed on a missing, unknown, or wrong-type
-registry entry while preserving the configuration string in semantic evidence.
-The narrow fix passed the complete local gate with 1,424 tests passing and the
-three expected Windows directory-symlink privilege skips, plus Ruff, format,
-mypy, and diff checks. The paid server is shut down. No trusted visual probe,
-raw visual dataset, model training, feature extraction, VLM, LangMani, video,
-or M4A smoke/full render has completed. The next gate is push of the fix,
-followed by one material-reason Phase A rerun after the server is restarted and
-synchronized to the new exact SHA.
+The cost-aware implementation and shader-object fix were pushed and
+synchronized exactly. The second bounded Phase A command reached first camera
+capture and exposed the missing GPU camera-group initialization recorded above.
+A narrow local candidate now binds exactly three late-added cameras to three
+SAPIEN render-system 3.0 groups, one underlying camera each, using the ordered
+shader texture inventory. It stages all group creation before assignment,
+records the private compatibility boundary in renderer evidence, and fails
+closed without lighting or a render handle on initialization error. Local
+validation passed with 1,429 tests and the three expected Windows
+directory-symlink privilege skips, plus full-repository Ruff, format, mypy,
+five-command help smoke, and diff checks. Publication of this candidate is
+pending. The paid server remains online. No trusted visual probe, raw visual
+dataset, model training, feature extraction, VLM, LangMani, video, or M4A
+smoke/full render has completed. The next gates are commit/push, exact remote
+synchronization, and one material-reason Phase A rerun.

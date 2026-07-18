@@ -38,6 +38,7 @@ from latentguard.integrations.maniskill_pickcube.visual_probe import (
 )
 from latentguard.integrations.maniskill_pickcube.visual_rendering import (
     EXTRINSIC_4X4_SEMANTIC,
+    GPU_CAMERA_GROUP_INITIALIZATION_SEMANTIC,
     UINT8_COLOR_TO_RGB_UINT8_SEMANTIC,
     LazyManiSkillPickCubeVisualRenderer,
     ManiSkillVisualRenderingError,
@@ -274,6 +275,13 @@ class _FakeRenderHandle:
             camera_type="fake.Camera",
             shader_configuration=self.plan.shader_configuration,
             camera_configuration_api="fake.add_camera",
+            camera_group_initialization_semantic=(
+                GPU_CAMERA_GROUP_INITIALIZATION_SEMANTIC
+            ),
+            camera_group_texture_names=("Color",),
+            camera_group_count=3,
+            underlying_camera_count_per_group=1,
+            camera_groups_ready=True,
             world_camera_pose_representation="fake.Pose",
             sensor_update_calls=("fake.take_picture",),
             raw_color_texture_dtype="uint8",
@@ -467,6 +475,11 @@ def test_render_plan_is_deterministic_and_lighting_keeps_camera_identity() -> No
 @dataclass(frozen=True)
 class _InstalledShaderConfig:
     shader_pack: str
+    texture_names: MappingProxyType[str, object] = field(
+        default_factory=lambda: MappingProxyType(
+            {"Color": object(), "PositionSegmentation": object()}
+        )
+    )
 
 
 class _InstalledPose:
@@ -475,30 +488,97 @@ class _InstalledPose:
         self.quaternion = quaternion
 
 
+class _InstalledCameraGroup:
+    def take_picture(self) -> None:
+        raise AssertionError("prepare must not capture an image")
+
+    def get_picture_cuda(self, name: str) -> object:
+        del name
+        raise AssertionError("prepare must not fetch an image")
+
+
+class _InstalledRenderSystemGroup:
+    def __init__(self, *, fail_at: int | None = None) -> None:
+        self.fail_at = fail_at
+        self.calls: list[tuple[list[object], list[str]]] = []
+        self.groups: list[_InstalledCameraGroup] = []
+
+    def create_camera_group(
+        self, render_cameras: list[object], texture_names: list[str]
+    ) -> _InstalledCameraGroup:
+        self.calls.append((render_cameras, texture_names))
+        if self.fail_at == len(self.calls):
+            raise RuntimeError("synthetic camera-group failure")
+        group = _InstalledCameraGroup()
+        self.groups.append(group)
+        return group
+
+
+class _RejectingCameraGroupRegistry(dict[str, object]):
+    def __setitem__(self, key: str, value: object) -> None:
+        del key, value
+        raise RuntimeError("synthetic camera-group registry failure")
+
+
 class _InstalledScene:
     backend = "fake_gpu"
+    gpu_sim_enabled = True
+    parallel_in_single_scene = False
+    num_envs = 1
 
-    def __init__(self) -> None:
+    def __init__(
+        self,
+        *,
+        update_error: bool = False,
+        group_fail_at: int | None = None,
+        reject_registry_write: bool = False,
+    ) -> None:
         self.camera_calls: list[dict[str, object]] = []
+        self.runtime_cameras: list[SimpleNamespace] = []
         self.ambient: object = None
         self.directional: object = None
+        self.camera_groups: dict[str, object] = (
+            _RejectingCameraGroupRegistry() if reject_registry_write else {}
+        )
+        self.render_system_group: _InstalledRenderSystemGroup | None = None
+        self.update_error = update_error
+        self.group_fail_at = group_fail_at
+        self.events: list[str] = []
 
     def can_render(self) -> bool:
         return True
 
     def add_camera(self, **kwargs: object) -> object:
         self.camera_calls.append(kwargs)
-        return SimpleNamespace()
+        self.events.append(f"add_camera:{kwargs['name']}")
+        camera = SimpleNamespace(_render_cameras=[object()], camera_group=None)
+        self.runtime_cameras.append(camera)
+        return camera
+
+    def update_render(
+        self, *, update_sensors: bool, update_human_render_cameras: bool
+    ) -> None:
+        assert update_sensors is False
+        assert update_human_render_cameras is False
+        self.events.append("update_render")
+        if self.update_error:
+            raise RuntimeError("synthetic update-render failure")
+        if self.render_system_group is None:
+            self.render_system_group = _InstalledRenderSystemGroup(
+                fail_at=self.group_fail_at
+            )
 
     def set_ambient_light(self, value: object) -> None:
+        self.events.append("ambient")
         self.ambient = value
 
     def add_directional_light(self, **kwargs: object) -> None:
+        self.events.append("directional")
         self.directional = kwargs
 
 
 def _installed_renderer_modules(
-    registry: object,
+    registry: object, *, render_system: object = "3.0"
 ) -> tuple[Callable[[str], object], list[object]]:
     applied: list[object] = []
 
@@ -508,6 +588,7 @@ def _installed_renderer_modules(
         if name == "mani_skill.render":
             return SimpleNamespace(
                 PREBUILT_SHADER_CONFIGS=registry,
+                SAPIEN_RENDER_SYSTEM=render_system,
                 ShaderConfig=_InstalledShaderConfig,
                 set_shader_pack=applied.append,
             )
@@ -533,7 +614,39 @@ def test_installed_renderer_resolves_the_bound_prebuilt_shader_object() -> None:
     assert len(applied) == 1
     assert applied[0] is shader_config
     assert handle.api_observation.shader_configuration == "minimal"
+    assert (
+        handle.api_observation.camera_group_initialization_semantic
+        == GPU_CAMERA_GROUP_INITIALIZATION_SEMANTIC
+    )
+    assert handle.api_observation.camera_group_texture_names == (
+        "Color",
+        "PositionSegmentation",
+    )
+    assert handle.api_observation.camera_group_count == 3
+    assert handle.api_observation.underlying_camera_count_per_group == 1
+    assert handle.api_observation.camera_groups_ready
     assert len(scene.camera_calls) == 3
+    assert scene.render_system_group is not None
+    assert len(scene.render_system_group.calls) == 3
+    for index, (render_cameras, texture_names) in enumerate(
+        scene.render_system_group.calls
+    ):
+        assert render_cameras is scene.runtime_cameras[index]._render_cameras
+        assert texture_names == list(shader_config.texture_names)
+        assert (
+            scene.runtime_cameras[index].camera_group
+            is scene.render_system_group.groups[index]
+        )
+        camera_id = str(scene.camera_calls[index]["name"])
+        assert scene.camera_groups[camera_id] is scene.render_system_group.groups[index]
+    assert scene.events == [
+        "add_camera:front_oblique",
+        "add_camera:overhead",
+        "add_camera:side_oblique",
+        "update_render",
+        "ambient",
+        "directional",
+    ]
     assert scene.ambient == [0.3, 0.3, 0.3]
 
 
@@ -561,6 +674,63 @@ def test_installed_renderer_rejects_unbound_prebuilt_shader_registries(
     assert scene.ambient is None
     assert scene.directional is None
     assert scene.camera_calls == []
+
+
+@pytest.mark.parametrize(
+    ("scene", "message"),
+    (
+        (_InstalledScene(update_error=True), "initialize the GPU render system"),
+        (_InstalledScene(group_fail_at=2), "create GPU camera group"),
+        (_InstalledScene(reject_registry_write=True), "bind GPU camera groups"),
+    ),
+)
+def test_installed_renderer_camera_group_initialization_fails_closed(
+    scene: _InstalledScene, message: str
+) -> None:
+    rig, configuration = _configuration()
+    plan = build_pickcube_visual_render_plan(
+        rig, configuration.domain("canonical"), configuration, 30
+    )
+    shader_config = _InstalledShaderConfig(shader_pack="minimal")
+    module_importer, _ = _installed_renderer_modules({"minimal": shader_config})
+    renderer = LazyManiSkillPickCubeVisualRenderer(module_importer=module_importer)
+
+    with pytest.raises(ManiSkillVisualRenderingError, match=message):
+        renderer.prepare(SimpleNamespace(unwrapped=SimpleNamespace(scene=scene)), plan)
+    assert scene.ambient is None
+    assert scene.directional is None
+    assert scene.camera_groups == {}
+    assert all(camera.camera_group is None for camera in scene.runtime_cameras)
+
+
+@pytest.mark.parametrize(
+    ("render_system", "texture_names", "message"),
+    (
+        ("3.1", ("Color",), "pinned SAPIEN render system 3.0"),
+        ("3.0", ("PositionSegmentation",), "invalid ordered texture inventory"),
+    ),
+)
+def test_installed_renderer_rejects_unbound_gpu_group_contracts(
+    render_system: object, texture_names: tuple[str, ...], message: str
+) -> None:
+    rig, configuration = _configuration()
+    plan = build_pickcube_visual_render_plan(
+        rig, configuration.domain("canonical"), configuration, 30
+    )
+    shader_config = _InstalledShaderConfig(
+        shader_pack="minimal",
+        texture_names=MappingProxyType({name: object() for name in texture_names}),
+    )
+    module_importer, _ = _installed_renderer_modules(
+        {"minimal": shader_config}, render_system=render_system
+    )
+    scene = _InstalledScene()
+    renderer = LazyManiSkillPickCubeVisualRenderer(module_importer=module_importer)
+
+    with pytest.raises(ManiSkillVisualRenderingError, match=message):
+        renderer.prepare(SimpleNamespace(unwrapped=SimpleNamespace(scene=scene)), plan)
+    assert scene.camera_calls == []
+    assert scene.ambient is None
 
 
 def test_visual_session_has_no_step_path_and_checks_every_repetition() -> None:
@@ -707,6 +877,16 @@ def test_probe_reports_exact_and_controlled_nondeterminism(tmp_path: Path) -> No
         ),
     )
     assert changed_dtype.visual_compatibility_identity != (
+        exact.visual_compatibility_identity
+    )
+    changed_camera_group_inventory = replace(
+        exact,
+        renderer_api=replace(
+            exact.renderer_api,
+            camera_group_texture_names=("PositionSegmentation", "Color"),
+        ),
+    )
+    assert changed_camera_group_inventory.visual_compatibility_identity != (
         exact.visual_compatibility_identity
     )
 
