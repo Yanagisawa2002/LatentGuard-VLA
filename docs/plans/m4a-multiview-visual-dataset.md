@@ -421,17 +421,48 @@ The final completion report records observed facts only and must state:
   `git diff --check` also passed. The three skips are the existing Windows
   symbolic-link privilege cases. Independent review found no remaining
   M3A/M3C state-digest semantic mismatch or P0/P1/P2 blocker.
+- Corrected Phase B dry-run completed in 229 seconds from clean pushed SHA
+  `2c8da8d8658b4edece298fa9a2e399483f196d7f`. Each source selected exactly six
+  trajectories, 108 packets, and 324 images across all three domains. M3A bound
+  324 candidates; M3C bound 288 candidates and retained
+  `training_allowed=false`. Dry-run created no output root.
+- The one M3A smoke render completed in 331 seconds with dataset digest
+  `sha256:d04bc3ab753ec18bcf6f866ecffae4b52314f1e44b9b97622899fda0abc01124`;
+  the one M3C smoke render completed in 297 seconds with dataset digest
+  `sha256:9fe07297a94ebb63f99e16b28d0205ef9861a5e0c3e8ff97543c89d33fc84166`.
+  Each published 108 packets and 324 images with zero execution errors. No
+  training, feature extraction, VLM, LangMani, video, or multi-GPU work ran.
+- The first combined read-only validation stopped after 119 seconds on an M3A
+  `failure_events` projection mismatch. Exact diagnostic reload of the named
+  source candidate and all three visual samples showed identical ordered event
+  counts and identical values for failure type, timestamp, probability,
+  description, and schema version. Only Python object equality differed because
+  `FailureEvent` intentionally has `eq=False` and reload creates independent
+  objects. The validator had compared object identity instead of serialized
+  event content.
+- The local correction compares the complete ordered five-field event
+  projection exactly and continues to reject any value or order drift. It is a
+  validation-only fix: both immutable smoke datasets remain content-valid and
+  will be reloaded without rerendering after complete local validation,
+  commit/push, and exact remote synchronization.
+- The validation-only correction passed the complete local gate: 1465 tests
+  passed and three existing Windows symbolic-link privilege cases were skipped;
+  Ruff lint, Ruff format checking, mypy across 141 source files, all five M4A
+  CLI help smokes, and `git diff --check` also passed. Independent read-only
+  review found no P0/P1/P2 issue and confirmed that both M3A and M3C compare all
+  five serialized event fields with exact count and ordering.
 
 ## Current status
 
 The fifth and final Phase A probe passed every strict trust gate, and its two
-compact artifacts passed independent local reload and were frozen at pushed
-SHA `1ae23f8796a20cf73cfce11b0eabc55b3fb0e837`. Phase B has not rendered: its
-dry-run preflight exposed the narrowly scoped M3A legacy-field comparison
-defect recorded above. The paid server remains online. No raw visual dataset,
-model training, feature extraction, VLM, LangMani, video, or M4A smoke/full
-render has completed. The next gates are complete local validation,
-commit/push, exact remote synchronization, corrected dual dry-run, then one
-Phase B smoke render of exactly six M3A development trajectories and six M3C
-external trajectories followed by strict reload, leakage, resume, and
-physical-integrity validation.
+compact artifacts passed independent local reload. Both bounded Phase B smoke
+datasets have now rendered and published exactly once from pushed SHA
+`2c8da8d8658b4edece298fa9a2e399483f196d7f`. The reload-only `FailureEvent`
+comparison defect recorded above is corrected and fully validated locally;
+Phase B acceptance now awaits its commit/push and remote revalidation. The paid
+server remains online. No model training, feature extraction, VLM, LangMani,
+video, multi-GPU work, or M4A full render has run. The next gates are
+commit/push, combined strict reload/leakage/integrity validation of the existing
+smoke datasets from the corrected revision, one exact-manifest zero-work resume
+per dataset from the original rendering revision, a final read-only combined
+validation, and only then exact remote fast-forward synchronization.

@@ -385,6 +385,88 @@ def test_m3a_visual_validation_uses_exported_simulator_state_digest(
         )
 
 
+def test_visual_sample_projection_compares_failure_event_content() -> None:
+    import latentguard.vision_data.source_binding as source_binding
+    from latentguard.models import FailureEvent
+    from latentguard.vision_data.models import SourceCollection
+
+    expected_events = (
+        FailureEvent(
+            failure_type="task_not_completed",
+            description="Official terminal success was false.",
+        ),
+        FailureEvent(
+            failure_type="cube_not_at_goal",
+            description="Official object-placed status was false.",
+        ),
+    )
+    packet_ids = ("packet-0", "packet-1", "packet-2")
+
+    def sample(packet_id: str, *, drift: bool = False) -> SimpleNamespace:
+        observed_events = tuple(
+            FailureEvent(
+                failure_type=event.failure_type,
+                timestamp_s=event.timestamp_s,
+                probability=event.probability,
+                description=("drifted" if drift and index == 0 else event.description),
+                schema_version=event.schema_version,
+            )
+            for index, event in enumerate(expected_events)
+        )
+        return SimpleNamespace(
+            packet_id=packet_id,
+            candidate_sample_id="candidate-0",
+            task_id="maniskill/PickCube-v1",
+            canonical_task_text="Pick up the cube and place it at the goal.",
+            candidate_action_chunk_reference=(
+                visual_candidate_array_reference("candidate-0", "action-chunk")
+            ),
+            action_mask_reference=visual_candidate_array_reference(
+                "candidate-0", "action-mask"
+            ),
+            final_success=False,
+            final_unsafe=False,
+            failure_events=observed_events,
+            evidence_id="evidence-0",
+            source_dataset_digest=_digest("source"),
+            candidate_dataset_digest=_digest("candidate"),
+            source_collection=SourceCollection.M3A_DEVELOPMENT,
+        )
+
+    observed = tuple(sample(packet_id) for packet_id in packet_ids)
+    source_binding._require_visual_sample_projection(
+        observed,
+        candidate_id="candidate-0",
+        packet_ids=packet_ids,
+        task_id="maniskill/PickCube-v1",
+        task_text="Pick up the cube and place it at the goal.",
+        final_success=False,
+        final_unsafe=False,
+        failure_events=expected_events,
+        evidence_id="evidence-0",
+        source_dataset_digest=_digest("source"),
+        candidate_dataset_digest=_digest("candidate"),
+        source_collection=SourceCollection.M3A_DEVELOPMENT,
+    )
+
+    drifted = (sample(packet_ids[0], drift=True), *observed[1:])
+    with pytest.raises(VisualSourceBindingError, match="failure_events"):
+        source_binding._require_visual_sample_projection(
+            drifted,
+            candidate_id="candidate-0",
+            packet_ids=packet_ids,
+            task_id="maniskill/PickCube-v1",
+            task_text="Pick up the cube and place it at the goal.",
+            final_success=False,
+            final_unsafe=False,
+            failure_events=expected_events,
+            evidence_id="evidence-0",
+            source_dataset_digest=_digest("source"),
+            candidate_dataset_digest=_digest("candidate"),
+            source_collection=SourceCollection.M3A_DEVELOPMENT,
+        )
+
+
 def test_m3a_loader_rejects_accepted_dataset_identity_tampering(
     tmp_path: Path,
     monkeypatch: pytest.MonkeyPatch,

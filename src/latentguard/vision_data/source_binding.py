@@ -355,23 +355,47 @@ def _require_visual_sample_projection(
         ),
         "final_success": final_success,
         "final_unsafe": final_unsafe,
-        "failure_events": failure_events,
         "evidence_id": evidence_id,
         "source_dataset_digest": source_dataset_digest,
         "candidate_dataset_digest": candidate_dataset_digest,
         "source_collection": source_collection,
     }
+    expected_failure_events = _failure_event_projection(failure_events)
     for sample in visual_samples:
         changed = [
             name
             for name, value in expected.items()
             if getattr(sample, name, None) != value
         ]
+        observed_failure_events = getattr(sample, "failure_events", None)
+        if (
+            not isinstance(observed_failure_events, tuple)
+            or _failure_event_projection(observed_failure_events)
+            != expected_failure_events
+        ):
+            changed.append("failure_events")
         if changed:
             _fail(
                 candidate_id,
                 "visual label projection differs: " + ", ".join(changed),
             )
+
+
+def _failure_event_projection(
+    events: tuple[object, ...],
+) -> tuple[tuple[object, ...], ...]:
+    """Return ordered serialized FailureEvent content, independent of identity."""
+
+    return tuple(
+        (
+            getattr(event, "failure_type", None),
+            getattr(event, "timestamp_s", None),
+            getattr(event, "probability", None),
+            getattr(event, "description", None),
+            getattr(event, "schema_version", None),
+        )
+        for event in events
+    )
 
 
 def validate_visual_development_source_binding(
