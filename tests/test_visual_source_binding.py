@@ -47,6 +47,7 @@ from latentguard.vision_data.source_binding import (
     VisualSourceBindingError,
     load_m3a_development_source_binding,
     load_m3c_external_source_binding,
+    validate_visual_development_source_binding,
     visual_candidate_array_reference,
 )
 
@@ -281,6 +282,107 @@ def test_m3a_loader_content_binds_the_accepted_source_chain(
     assert (
         binding.compatibility_identity == ACCEPTED_M3A_SIMULATOR_COMPATIBILITY_IDENTITY
     )
+
+
+def test_m3a_visual_validation_uses_exported_simulator_state_digest(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    import latentguard.action_verifier.models as action_models
+    import latentguard.vision_data.models as visual_models
+    from latentguard.action_verifier.models import DatasetSplit
+    from latentguard.vision_data.models import SourceCollection, VisualDatasetSplit
+
+    archived_record_digest = _digest("archived-record")
+    simulator_state_digest = _digest("simulator-state-bytes")
+    verifier_digest = _digest("verifier")
+    compatibility = _digest("compatibility")
+    dataset_digest = _digest("dataset")
+    split_digest = _digest("split")
+    evidence_digest = _digest("evidence")
+    manifest_digest = _digest("manifest")
+    anchor = SimpleNamespace(
+        anchor_id="anchor-0",
+        source_trajectory_id="trajectory-0",
+        source_seed=17,
+        split_group_id="split-0",
+    )
+    group = SimpleNamespace(
+        anchor_id=anchor.anchor_id,
+        source_trajectory_id=anchor.source_trajectory_id,
+        source_seed=anchor.source_seed,
+        split_group_id=anchor.split_group_id,
+        dataset_split=DatasetSplit.TRAIN,
+        state_content_digest=simulator_state_digest,
+        state_vector_semantic="verifier-v1",
+        source_sample_id="candidate-0",
+        corrupted_sample_ids=(),
+        group_id="group-0",
+    )
+    record = SimpleNamespace(
+        anchor=anchor,
+        source_state_content_digest=archived_record_digest,
+        source_state_digest=simulator_state_digest,
+        verifier_state_content_digest=verifier_digest,
+    )
+    packet = SimpleNamespace(
+        anchor_id=anchor.anchor_id,
+        source_collection=SourceCollection.M3A_DEVELOPMENT,
+        source_trajectory_id=anchor.source_trajectory_id,
+        split=VisualDatasetSplit.TRAIN,
+        split_group_id=anchor.split_group_id,
+        state_reference_id=archived_record_digest,
+        expected_state_digest=simulator_state_digest,
+        verifier_state_semantic=group.state_vector_semantic,
+        verifier_state_digest=verifier_digest,
+        pickcube_compatibility_identity=compatibility,
+    )
+    source_dataset = SimpleNamespace(
+        content_digest=dataset_digest,
+        candidate_groups=(group,),
+        split_assignments=(
+            SimpleNamespace(
+                source_trajectory_id=anchor.source_trajectory_id,
+                dataset_split=DatasetSplit.TRAIN,
+            ),
+        ),
+        samples=(),
+    )
+    anchor_manifest = SimpleNamespace(
+        content_digest=manifest_digest,
+        records=(record,),
+    )
+    visual_dataset = SimpleNamespace(
+        source_dataset_digest=dataset_digest,
+        split_digest=split_digest,
+        evidence_digest=evidence_digest,
+        source_compatibility_identity=compatibility,
+        packets=(packet,),
+        candidate_bindings=(),
+        samples=(),
+    )
+    binding = SimpleNamespace(
+        dataset_digest=dataset_digest,
+        anchor_manifest_digest=manifest_digest,
+        split_digest=split_digest,
+        evidence_digest=evidence_digest,
+        compatibility_identity=compatibility,
+    )
+    monkeypatch.setattr(action_models, "ActionVerifierDatasetV1", SimpleNamespace)
+    monkeypatch.setattr(state_build, "PickCubeAnchorManifestV1", SimpleNamespace)
+    monkeypatch.setattr(
+        visual_models, "VisualVerifierDevelopmentDatasetV1", SimpleNamespace
+    )
+
+    with pytest.raises(
+        VisualSourceBindingError, match="candidate inventory or order differs"
+    ):
+        validate_visual_development_source_binding(
+            visual_dataset,
+            source_dataset,
+            anchor_manifest,
+            binding,  # type: ignore[arg-type]
+            allow_partial=True,
+        )
 
 
 def test_m3a_loader_rejects_accepted_dataset_identity_tampering(

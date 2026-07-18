@@ -393,16 +393,45 @@ The final completion report records observed facts only and must state:
   Git SHA, branch, seed, source identity, rig/domain digests, and compatibility
   cross-reference. No raw RGB, packet, training, or feature artifact was
   retrieved.
+- Phase B dry-run preflight
+  `20260718T103750Z_m4a-phase-b-smoke-preflight_1ae23f8_seed271828` ran from
+  clean pushed SHA `1ae23f8796a20cf73cfce11b0eabc55b3fb0e837`. The first
+  invocation selected the human-facing acceptance summary instead of the
+  strict serialized validation report and was rejected before an output root
+  or image was created. Correcting the wrapper to use `validation-report.json`
+  required no tracked source or configuration change.
+- The corrected dry run then failed closed on the first selected M3A anchor
+  before rendering. Exact diagnostic reload showed that all trajectory, seed,
+  split, manifest, archived-record, simulator-state, and verifier bindings
+  matched independently. The sole mismatch was an M4A comparison of the
+  legacy-named `ActionVerifierCandidateGroupV1.state_content_digest` with the
+  archived record digest; the versioned M3A exporter intentionally binds that
+  field to `PickCubeIndexedStateV1.state_digest`, the complete simulator
+  state-tree structure/path/dtype/shape/byte digest. The M3C candidate-pool
+  field was independently checked and correctly remains bound to the archived
+  record `content_digest`.
+- The local correction is therefore restricted to the M3A context loader and
+  the independent M3A visual-source validator. Regression tests use distinct
+  archived-record and simulator-state digests, accept only the exported
+  simulator-state binding, and reject the previous record-digest comparison.
+  Neither dry-run attempt created a render root, packet, image, training
+  artifact, or GPU workload; the server remains online.
+- The corrected local candidate passed `1464 passed, 3 skipped`; `ruff check
+  .`, `ruff format --check .`, `mypy src`, all five M4A CLI help paths, and
+  `git diff --check` also passed. The three skips are the existing Windows
+  symbolic-link privilege cases. Independent review found no remaining
+  M3A/M3C state-digest semantic mismatch or P0/P1/P2 blocker.
 
 ## Current status
 
-The exact runtime-calibration fix and complete local validation were committed
-and pushed at SHA `c7ef1fea4a843d934c2ee51d7422375ff46e8bab`; the remote checkout was
-fast-forwarded to that exact clean revision. The fifth and final Phase A probe
-then passed every strict trust gate and its two compact artifacts passed
-independent local reload as recorded above. This closes discovery without a
-calibration or pixel tolerance. The paid server remains online. No raw visual
-dataset, model training, feature extraction, VLM, LangMani, video, or M4A
-smoke/full render has completed. The next gate is one Phase B smoke render of
-exactly six M3A development packets and six M3C external packets, followed by
-strict reload, leakage, resume, and physical-integrity validation.
+The fifth and final Phase A probe passed every strict trust gate, and its two
+compact artifacts passed independent local reload and were frozen at pushed
+SHA `1ae23f8796a20cf73cfce11b0eabc55b3fb0e837`. Phase B has not rendered: its
+dry-run preflight exposed the narrowly scoped M3A legacy-field comparison
+defect recorded above. The paid server remains online. No raw visual dataset,
+model training, feature extraction, VLM, LangMani, video, or M4A smoke/full
+render has completed. The next gates are complete local validation,
+commit/push, exact remote synchronization, corrected dual dry-run, then one
+Phase B smoke render of exactly six M3A development trajectories and six M3C
+external trajectories followed by strict reload, leakage, resume, and
+physical-integrity validation.

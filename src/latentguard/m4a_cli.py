@@ -1056,7 +1056,9 @@ def _load_m3a_render_contexts(
             group.source_trajectory_id != record.anchor.source_trajectory_id
             or group.source_seed != record.anchor.source_seed
             or group.split_group_id != record.anchor.split_group_id
-            or group.state_content_digest != state.content_digest
+            # M3A's versioned ActionVerifier export retains this legacy field
+            # name but binds it to the complete simulator state-tree digest.
+            or group.state_content_digest != state.state_digest
             or record.source_state_content_digest != state.content_digest
             or record.source_state_digest != state.state_digest
             or record.verifier_state_content_digest

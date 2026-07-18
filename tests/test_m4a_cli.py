@@ -688,6 +688,116 @@ def test_bounded_m3a_render_routes_fake_backend(
     assert "packets=3 images=9 candidates=9" in capsys.readouterr().out
 
 
+def test_m3a_render_context_binds_exported_simulator_state_digest(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    import latentguard.action_verifier as action_verifier
+    import latentguard.m4a_cli as m4a
+    from latentguard.integrations.maniskill_pickcube import (
+        state_indexed_archive as archive_module,
+    )
+    from latentguard.integrations.maniskill_pickcube import (
+        state_indexed_build as build_module,
+    )
+    from latentguard.vision_data.models import (
+        PICKCUBE_CANONICAL_TASK_TEXT,
+        PICKCUBE_VISUAL_TASK_ID,
+    )
+
+    archive_digest = _digest("archive")
+    manifest_digest = _digest("manifest")
+    dataset_digest = _digest("dataset")
+    archived_record_digest = _digest("archived-record")
+    simulator_state_digest = _digest("simulator-state-bytes")
+    verifier_digest = _digest("verifier")
+    state = SimpleNamespace(
+        content_digest=archived_record_digest,
+        state_digest=simulator_state_digest,
+        verifier_state=SimpleNamespace(content_digest=verifier_digest),
+    )
+    anchor = SimpleNamespace(
+        anchor_id="anchor-0",
+        state_index=0,
+        source_trajectory_id="trajectory-0",
+        source_seed=17,
+        split_group_id="split-0",
+    )
+    record = SimpleNamespace(
+        anchor=anchor,
+        source_archive_episode_id="episode-0",
+        source_state_content_digest=archived_record_digest,
+        source_state_digest=simulator_state_digest,
+        verifier_state_content_digest=verifier_digest,
+    )
+    episode = SimpleNamespace(episode_id="episode-0", states=(state,))
+    group = SimpleNamespace(
+        anchor_id=anchor.anchor_id,
+        source_trajectory_id=anchor.source_trajectory_id,
+        source_seed=anchor.source_seed,
+        split_group_id=anchor.split_group_id,
+        dataset_split=SimpleNamespace(value="train"),
+        state_content_digest=simulator_state_digest,
+        source_sample_id="sample-0",
+        corrupted_sample_ids=(),
+    )
+    sample = SimpleNamespace(
+        sample_id="sample-0",
+        anchor_id=anchor.anchor_id,
+        source_trajectory_id=anchor.source_trajectory_id,
+        split_group_id=anchor.split_group_id,
+        task_id=PICKCUBE_VISUAL_TASK_ID,
+        instruction=PICKCUBE_CANONICAL_TASK_TEXT,
+    )
+    dataset = SimpleNamespace(
+        content_digest=dataset_digest,
+        split_assignments=(
+            SimpleNamespace(source_trajectory_id=anchor.source_trajectory_id),
+        ),
+        candidate_groups=(group,),
+        samples=(sample,),
+    )
+    archive = SimpleNamespace(content_digest=archive_digest, episodes=(episode,))
+    manifest = SimpleNamespace(
+        content_digest=manifest_digest,
+        source_archive_content_digest=archive_digest,
+        records=(record,),
+    )
+    monkeypatch.setattr(
+        action_verifier, "load_action_verifier_dataset", lambda _path: dataset
+    )
+    monkeypatch.setattr(
+        archive_module, "load_state_indexed_archive", lambda _path: archive
+    )
+    monkeypatch.setattr(build_module, "load_anchor_manifest", lambda _path: manifest)
+    args = argparse.Namespace(
+        dataset_dir=tmp_path / "dataset",
+        runtime_archive_dir=tmp_path / "archive",
+        anchor_manifest_dir=tmp_path / "manifest",
+        trajectory_limit=None,
+        anchor_limit=None,
+    )
+    binding = SimpleNamespace(
+        dataset_digest=dataset_digest,
+        source_archive_digest=archive_digest,
+        anchor_manifest_digest=manifest_digest,
+    )
+
+    contexts, _, _, _ = m4a._load_m3a_render_contexts(args, binding)
+    assert len(contexts) == 1
+    assert contexts[0].state is state
+
+    dataset.candidate_groups = (
+        SimpleNamespace(
+            **{**vars(group), "state_content_digest": archived_record_digest}
+        ),
+    )
+    with pytest.raises(
+        ValueError, match="dataset, manifest, and archived state differ"
+    ):
+        m4a._load_m3a_render_contexts(args, binding)
+
+
 def test_m3a_validation_routes_runtime_archive_through_accepted_binding(
     tmp_path: Path,
     monkeypatch: pytest.MonkeyPatch,

@@ -437,7 +437,7 @@ def validate_visual_development_source_binding(
             record.anchor.source_trajectory_id != group.source_trajectory_id
             or record.anchor.source_seed != group.source_seed
             or record.anchor.split_group_id != group.split_group_id
-            or record.source_state_content_digest != group.state_content_digest
+            or record.source_state_digest != group.state_content_digest
             or assignment.dataset_split != group.dataset_split
         ):
             _fail(anchor_id, "M3A group, anchor, or split source differs")
