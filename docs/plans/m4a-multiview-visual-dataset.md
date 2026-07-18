@@ -278,17 +278,38 @@ The final completion report records observed facts only and must state:
 - local, upstream, and GitHub SHA equality; and
 - clean working-tree status.
 
+## Remote execution attempt ledger
+
+- Phase A attempt 1 used run ID
+  `20260718T041652Z_m4a-phase-a-discovery_6ce55c4_seed271828` from clean pushed
+  SHA `6ce55c48241e8eae70c6691fc677779fd7d36779`. The accepted M3A report digest,
+  dependency versions, single-GPU identity, 238 GB available disk, clean Git
+  state, and absent output root passed preflight.
+- The command failed after 30 seconds during renderer preparation, before an
+  output root, packet, or image was created. ManiSkill 3.0.1
+  `set_shader_pack` requires the selected `ShaderConfig` object from
+  `PREBUILT_SHADER_CONFIGS`; the integration had passed its bound string key.
+  No pixel-determinism result was produced, so this was not a completed visual
+  compatibility probe.
+- The raw log and wrapper status were retrieved into ignored local temporary
+  storage and content-bound by the sanitized compact failure summary under
+  `reports/m4a/`. No training or feature extraction began. The paid server was
+  shut down immediately after evidence retrieval.
+- This platform defect is the material reason authorizing one new Phase A run
+  ID after a narrow local fix passes the complete suite, is committed and
+  pushed, and the server is restarted and synchronized to that exact new SHA.
+
 ## Current status
 
-The local discovery candidate and cost-aware execution amendment are
-implemented. The repository environment passed 1,420 tests with three Windows
-directory-symlink tests skipped for missing host privilege. `ruff check .`,
-`ruff format --check .`, `mypy src`, all five installed CLI help paths, and the
-CPU-import boundary also pass. No visual compatibility probe, trusted render,
-raw visual dataset, model training, VLM, LangMani, video, or remote M4A
-probe/render phase has yet occurred. The paid server is currently available.
-Its clean checkout remains on the pushed discovery implementation while this
-amendment candidate is reviewed and pushed; the complete accepted M3A/M3C
-source bindings have already passed. The next gate after exact synchronization
-is the single bounded visual compatibility discovery probe; no training process
-has run.
+The cost-aware implementation was pushed and synchronized exactly, and the
+first bounded Phase A command exposed the shader-object integration defect
+recorded above before rendering. A narrow local fix now resolves the bound
+prebuilt shader object and fails closed on a missing, unknown, or wrong-type
+registry entry while preserving the configuration string in semantic evidence.
+The narrow fix passed the complete local gate with 1,424 tests passing and the
+three expected Windows directory-symlink privilege skips, plus Ruff, format,
+mypy, and diff checks. The paid server is shut down. No trusted visual probe,
+raw visual dataset, model training, feature extraction, VLM, LangMani, video,
+or M4A smoke/full render has completed. The next gate is push of the fix,
+followed by one material-reason Phase A rerun after the server is restarted and
+synchronized to the new exact SHA.

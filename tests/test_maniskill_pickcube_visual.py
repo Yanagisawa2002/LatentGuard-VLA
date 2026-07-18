@@ -39,6 +39,7 @@ from latentguard.integrations.maniskill_pickcube.visual_probe import (
 from latentguard.integrations.maniskill_pickcube.visual_rendering import (
     EXTRINSIC_4X4_SEMANTIC,
     UINT8_COLOR_TO_RGB_UINT8_SEMANTIC,
+    LazyManiSkillPickCubeVisualRenderer,
     ManiSkillVisualRenderingError,
     PickCubeVisualRenderPlan,
     RenderedVisualView,
@@ -461,6 +462,105 @@ def test_render_plan_is_deterministic_and_lighting_keeps_camera_identity() -> No
         else:
             assert first_digests == base
         assert first.lighting == second.lighting
+
+
+@dataclass(frozen=True)
+class _InstalledShaderConfig:
+    shader_pack: str
+
+
+class _InstalledPose:
+    def __init__(self, position: object, quaternion: object) -> None:
+        self.position = position
+        self.quaternion = quaternion
+
+
+class _InstalledScene:
+    backend = "fake_gpu"
+
+    def __init__(self) -> None:
+        self.camera_calls: list[dict[str, object]] = []
+        self.ambient: object = None
+        self.directional: object = None
+
+    def can_render(self) -> bool:
+        return True
+
+    def add_camera(self, **kwargs: object) -> object:
+        self.camera_calls.append(kwargs)
+        return SimpleNamespace()
+
+    def set_ambient_light(self, value: object) -> None:
+        self.ambient = value
+
+    def add_directional_light(self, **kwargs: object) -> None:
+        self.directional = kwargs
+
+
+def _installed_renderer_modules(
+    registry: object,
+) -> tuple[Callable[[str], object], list[object]]:
+    applied: list[object] = []
+
+    def module_importer(name: str) -> object:
+        if name == "sapien":
+            return SimpleNamespace(Pose=_InstalledPose)
+        if name == "mani_skill.render":
+            return SimpleNamespace(
+                PREBUILT_SHADER_CONFIGS=registry,
+                ShaderConfig=_InstalledShaderConfig,
+                set_shader_pack=applied.append,
+            )
+        raise AssertionError(f"unexpected module import {name!r}")
+
+    return module_importer, applied
+
+
+def test_installed_renderer_resolves_the_bound_prebuilt_shader_object() -> None:
+    rig, configuration = _configuration()
+    plan = build_pickcube_visual_render_plan(
+        rig, configuration.domain("canonical"), configuration, 30
+    )
+    shader_config = _InstalledShaderConfig(shader_pack="minimal")
+    module_importer, applied = _installed_renderer_modules({"minimal": shader_config})
+    scene = _InstalledScene()
+    renderer = LazyManiSkillPickCubeVisualRenderer(module_importer=module_importer)
+
+    handle = renderer.prepare(
+        SimpleNamespace(unwrapped=SimpleNamespace(scene=scene)), plan
+    )
+
+    assert len(applied) == 1
+    assert applied[0] is shader_config
+    assert handle.api_observation.shader_configuration == "minimal"
+    assert len(scene.camera_calls) == 3
+    assert scene.ambient == [0.3, 0.3, 0.3]
+
+
+@pytest.mark.parametrize(
+    ("registry", "message"),
+    (
+        (None, "lacks the prebuilt shader"),
+        ({}, "configured prebuilt shader is unavailable"),
+        ({"minimal": "minimal"}, "unexpected type"),
+    ),
+)
+def test_installed_renderer_rejects_unbound_prebuilt_shader_registries(
+    registry: object, message: str
+) -> None:
+    rig, configuration = _configuration()
+    plan = build_pickcube_visual_render_plan(
+        rig, configuration.domain("canonical"), configuration, 30
+    )
+    module_importer, _ = _installed_renderer_modules(registry)
+    renderer = LazyManiSkillPickCubeVisualRenderer(module_importer=module_importer)
+    scene = _InstalledScene()
+
+    with pytest.raises(ManiSkillVisualRenderingError, match=message):
+        renderer.prepare(SimpleNamespace(unwrapped=SimpleNamespace(scene=scene)), plan)
+    assert scene.ambient is None
+    assert scene.directional is None
+    assert scene.camera_calls == []
 
 
 def test_visual_session_has_no_step_path_and_checks_every_repetition() -> None:

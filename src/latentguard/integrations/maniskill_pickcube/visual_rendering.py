@@ -8,7 +8,7 @@ from __future__ import annotations
 
 import importlib
 import math
-from collections.abc import Iterable, Sequence
+from collections.abc import Iterable, Mapping, Sequence
 from dataclasses import dataclass, field, replace
 from types import MappingProxyType
 from typing import Any, Protocol, cast, runtime_checkable
@@ -628,12 +628,31 @@ class LazyManiSkillPickCubeVisualRenderer:
         if not bool(can_render()):
             raise ManiSkillVisualRenderingError("PickCube scene cannot render")
         set_shader_pack = getattr(render_module, "set_shader_pack", None)
+        prebuilt_shader_configs = getattr(
+            render_module, "PREBUILT_SHADER_CONFIGS", None
+        )
+        shader_config_type = getattr(render_module, "ShaderConfig", None)
         pose_type = getattr(sapien, "Pose", None)
-        if not callable(set_shader_pack) or not callable(pose_type):
+        if (
+            not callable(set_shader_pack)
+            or not isinstance(prebuilt_shader_configs, Mapping)
+            or not isinstance(shader_config_type, type)
+            or not callable(pose_type)
+        ):
             raise ManiSkillVisualRenderingError(
-                "installed renderer lacks shader or world-pose APIs"
+                "installed renderer lacks the prebuilt shader or world-pose APIs"
             )
-        set_shader_pack(plan.shader_configuration)
+        shader_config = prebuilt_shader_configs.get(plan.shader_configuration)
+        if not isinstance(shader_config, shader_config_type):
+            raise ManiSkillVisualRenderingError(
+                "configured prebuilt shader is unavailable or has an unexpected type"
+            )
+        try:
+            set_shader_pack(shader_config)
+        except Exception as exc:
+            raise ManiSkillVisualRenderingError(
+                "could not apply the configured prebuilt shader"
+            ) from exc
         self._apply_lighting(scene, plan.lighting)
         cameras: list[tuple[VisualCameraRenderPlan, object]] = []
         for camera in plan.cameras:
