@@ -1,0 +1,10 @@
+{
+  "action_contract_digest": "sha256:028d8c2cbb10e867d709f1c5d4c31e07ef1e084f1a8ad8370f96185ba892f0eb",
+  "candidate_count": 8,
+  "candidate_pool_configuration_digest": "sha256:b6a532550ba27e3ecc6acf16ccae0138fce97dd0fd8533724bd74dce2c3a714f",
+  "exact_source_excluded": true,
+  "id_like_count": 4,
+  "no_clipping_or_repair": true,
+  "schema_version": "1.0",
+  "shifted_count": 4
+}

@@ -91,3 +91,11 @@ validated, committed, and pushed locally before exact-SHA synchronization.
 The server, environment, datasets, caches, checkpoints, reports, and run roots
 remain available after M4B. Shutdown requires a separate explicit user request
 in the current task.
+
+## M4C online inference
+
+The accepted M4B direct and distilled three-seed ensembles are loaded frozen for
+M4C. At each boundary, three state-preserving RGB224 renders occupy slots 0..2
+of an exact batch of 128, with round-robin repeats filling the rest. Only the
+first three feature rows are consumed. No external image, outcome, checkpoint,
+calibration, threshold, or rendering configuration is used for tuning.

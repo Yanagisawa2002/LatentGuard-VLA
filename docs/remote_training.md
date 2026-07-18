@@ -448,3 +448,14 @@ resolved config, accepted dataset/cache/checkpoint identities, seed, launch
 command, environment, timing, and peak GPU allocation. Only compact sanitized
 reports are retrieved. After M4B, the server and all persistent state remain
 online and intact unless the user explicitly requests shutdown in that task.
+
+## M4C remote execution
+
+M4C performs no training. After the local implementation commit is pushed, the
+remote checkout must match that exact SHA before the six-source matrix smoke or
+the single 60-source/600-episode full benchmark starts. Runtime state, RGB,
+checkpoints, and ledgers remain outside Git. Retrieve only compact sanitized
+manifests and summaries, validate a zero-work resume, and never edit tracked
+source remotely. For this M4C task the user explicitly requested shutdown after
+final artifact validation, push, and SHA parity; that request does not create a
+standing shutdown default for future tasks.

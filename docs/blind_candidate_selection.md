@@ -210,3 +210,12 @@ is frozen without outcomes. Its visual dataset remains external
 evaluation-only and preserves the candidate-pool, blind-manifest, full-outcome,
 and replay-evidence identities. Images, domain IDs, and camera IDs cannot be
 introduced retroactively into the completed M3C Stage A selection.
+
+## Repeated blind selection in M4C
+
+M4C applies the blind Stage-A boundary repeatedly. Every selector receives the
+same deterministic eight-candidate pool, no source candidate, and no simulator
+outcome. The candidate pool and ranking are finalized on disk before execution.
+Recovery reuses that record without rescoring. Future states, task evidence,
+candidate family metadata, and outcome-derived values are absent from decision
+inputs and semantic records.

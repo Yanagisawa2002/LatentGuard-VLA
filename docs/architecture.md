@@ -393,3 +393,13 @@ stopping, seed-zero promotion, calibration, and thresholds. Internal test is
 opened once after three-seed freeze. External selection accepts no outcome
 path, freezes one manifest per domain, and joins only the already accepted M3C
 outcomes afterward without simulator replay.
+
+## M4C closed-loop control boundary
+
+The simulator-independent `latentguard.control` layer owns candidate, decision,
+episode, scheduling, recovery, and metric contracts. The optional PickCube
+integration implements complete-state storage, rendering, task evidence, and
+action execution behind typed protocols. Frozen M3B/M4B loaders depend on their
+existing checkpoint and compatibility identities; simulator-native objects do
+not enter persisted core models. See the M4C receding-horizon protocol for the
+full transaction and recovery contract.

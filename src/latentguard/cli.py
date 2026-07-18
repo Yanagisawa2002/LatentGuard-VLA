@@ -91,6 +91,7 @@ from latentguard.m3b_cli import add_m3b_subparsers, run_m3b_command
 from latentguard.m3c_cli import add_m3c_subparsers, run_m3c_command
 from latentguard.m4a_cli import add_m4a_subparsers, run_m4a_command
 from latentguard.m4b_cli import add_m4b_subparsers, run_m4b_command
+from latentguard.m4c_cli import add_m4c_subparsers, run_m4c_command
 from latentguard.remote import RemoteSyncError, resolve_remote_config, sync_remote
 from latentguard.replay.evaluator import ExactStatePairedReplayEvaluator
 from latentguard.replay.registry import (
@@ -348,6 +349,7 @@ def _build_parser() -> argparse.ArgumentParser:
     add_m3c_subparsers(subparsers)
     add_m4a_subparsers(subparsers)
     add_m4b_subparsers(subparsers)
+    add_m4c_subparsers(subparsers)
 
     return parser
 
@@ -1270,6 +1272,9 @@ def main(argv: Sequence[str] | None = None) -> int:
     m4b_result = run_m4b_command(args)
     if m4b_result is not None:
         return m4b_result
+    m4c_result = run_m4c_command(args)
+    if m4c_result is not None:
+        return m4c_result
     if args.command == "sanity-data":
         return _run_sanity_data(args)
     if args.command == "audit-data":

@@ -1,0 +1,60 @@
+{
+  "nonvisual_episode_count_per_source": 4,
+  "schema_version": "1.0",
+  "selectors": [
+    {
+      "accepted_report_digest": "sha256:596d104f2ecea17304f56d2a2b65f9677e3799f79a0b6288623a422ed308ec48",
+      "ensemble_size": 0,
+      "input_semantic": "fixed_predeclared_candidate_definition_v1",
+      "role": "no_verifier_baseline",
+      "selector_id": "fixed_primary_v1",
+      "visual": false
+    },
+    {
+      "accepted_report_digest": "sha256:596d104f2ecea17304f56d2a2b65f9677e3799f79a0b6288623a422ed308ec48",
+      "ensemble_size": 0,
+      "input_semantic": "sha256_pool_candidate_uniform_ranking_v1",
+      "role": "uninformed_baseline",
+      "selector_id": "deterministic_random_v1",
+      "visual": false
+    },
+    {
+      "accepted_report_digest": "sha256:e85b4645e7544555adc7e8c4fce729c7a17ed2e16f1da4c53158316e9329ac72",
+      "ensemble_size": 5,
+      "input_semantic": "current_candidate_actions_and_masks_only_v1",
+      "role": "nonvisual_deployment_baseline",
+      "selector_id": "action_only_ensemble_v1",
+      "visual": false
+    },
+    {
+      "accepted_report_digest": "sha256:01a52cf6fc1ceb4a426788c7adf38a12d7b86c8bd9b3605a6fba3358f0b3d3cc",
+      "ensemble_size": 3,
+      "input_semantic": "current_three_rgb_views_candidate_actions_and_masks_v1",
+      "role": "distillation_ablation",
+      "selector_id": "direct_visual_ensemble_v1",
+      "visual": true
+    },
+    {
+      "accepted_report_digest": "sha256:d2bb5993ac2d17ef02543c9842ba23725cc530b1acdac17a6f703a7d0526e3eb",
+      "ensemble_size": 3,
+      "input_semantic": "current_three_rgb_views_candidate_actions_and_masks_v1",
+      "role": "primary_system",
+      "selector_id": "distilled_visual_ensemble_v1",
+      "visual": true
+    },
+    {
+      "accepted_report_digest": "sha256:201f721cc2be979b627dde9abe5fc9d40cd019dc6592c2459e1744f4dbcb3e51",
+      "ensemble_size": 5,
+      "input_semantic": "current_pickcube_verifier_state_candidate_actions_and_masks_v1",
+      "role": "privileged_unavailable_state_upper_bound",
+      "selector_id": "privileged_structured_ensemble_v1",
+      "visual": false
+    }
+  ],
+  "visual_domains": [
+    "canonical",
+    "strong_camera_shift",
+    "strong_lighting_shift"
+  ],
+  "visual_episode_count_per_source": 6
+}

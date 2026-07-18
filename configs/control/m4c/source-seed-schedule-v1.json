@@ -1,0 +1,9 @@
+{
+  "full_maximum_attempts": 240,
+  "full_requested_successes": 60,
+  "full_start_seed": 420000,
+  "schema_version": "1.0",
+  "smoke_maximum_attempts": 24,
+  "smoke_requested_successes": 6,
+  "smoke_start_seed": 410000
+}

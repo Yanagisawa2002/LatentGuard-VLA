@@ -1,0 +1,19 @@
+{
+  "candidate_horizon": 16,
+  "candidate_pool_identity": "sha256:8ebdc4c7b01e7e8a2865c2074880dedf649e80ddf886f5edc7cad5f10f5efa89",
+  "execution_stride": 4,
+  "fixed_batch_semantic": "three_real_round_robin_repeat_to_128_consume_first_three_v1",
+  "fixed_visual_batch_size": 128,
+  "maximum_control_steps": 320,
+  "schema_version": "1.0",
+  "selector_matrix_identity": "sha256:bd76f1d449194d0a211ccdc0334824e92449a554d61e8d5bbeb04698a6dc9289",
+  "state_restoration_semantic": "tolerance_verified_full_state_v1",
+  "state_restoration_tolerance": 1e-6,
+  "tail_semantic": "last_full_window_then_nominal_residual_v1",
+  "task_check_cadence": "after_every_executed_action_v1",
+  "visual_domains": [
+    "canonical",
+    "strong_camera_shift",
+    "strong_lighting_shift"
+  ]
+}

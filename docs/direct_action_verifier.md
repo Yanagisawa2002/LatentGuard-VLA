@@ -222,3 +222,12 @@ content-bound RGB packets. The 38D verifier state remains privileged teacher
 metadata and is not a visual-student input. Visual candidate records reference
 the accepted action chunks, masks, labels, and evidence without duplicating or
 relabeling them. No visual model is trained in M4A.
+
+## M4C frozen reuse
+
+M4C loads the accepted five-seed action-only and privileged structured M3B
+ensembles once as frozen selectors. It does not fit preprocessing, calibration,
+thresholds, checkpoints, or model parameters. Action-only receives only the
+current candidate actions and masks; privileged structured additionally
+receives the current verified 38-value PickCube state and is reported only as
+an unavailable-state upper bound.

@@ -380,3 +380,24 @@ The remote-sync example values are placeholders. Store machine-specific values
 in environment variables or an ignored local file; never commit credentials
 or private paths. See [the remote workflow](docs/remote_training.md),
 [architecture](docs/architecture.md), and [data contract](docs/data_contract.md).
+
+## Evaluate the frozen M4C receding-horizon shield
+
+M4C adds six commands for bounded source-plan preparation, one-selector runs,
+the fixed selector/domain benchmark, exact resume, evaluation, and episode
+inspection:
+
+```text
+latentguard prepare-closed-loop-source-plans --help
+latentguard run-receding-horizon-selector --help
+latentguard benchmark-receding-horizon-selectors --help
+latentguard resume-receding-horizon-benchmark --help
+latentguard evaluate-receding-horizon-benchmark --help
+latentguard inspect-closed-loop-episode --help
+```
+
+It reuses frozen M3B/M4B checkpoints without training. Each decision uses the
+same eight non-source M3C candidates, horizon 16, stride 4, transactional
+pre-execution persistence, and exact recovery. Visual inference always sends a
+fixed 128-image batch and consumes only its three real feature rows. See the
+[M4C protocol](docs/receding_horizon_visual_shield.md).

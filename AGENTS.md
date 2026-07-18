@@ -198,6 +198,27 @@ restoration.
 - Keep raw visual datasets, embeddings, teacher targets, and checkpoints outside
   Git.
 
+## Receding-horizon shield rules
+
+- M4C reuses accepted frozen M3B and M4B ensembles; it must not train, tune,
+  calibrate, select, or mutate a model, checkpoint, threshold, renderer, or
+  candidate configuration.
+- At every boundary all selectors receive the same eight deterministic M3C
+  candidates. The exact source continuation is prohibited, and candidate
+  generation must remain independent of selector identity and outcomes.
+- Persist the candidate pool and finalized ranking before action execution.
+  Recovery restores the last committed full state and reuses that exact
+  decision without rescoring. A complete episode resume must execute zero work.
+- Keep horizon 16, stride 4, the last-full-window then nominal-residual tail,
+  per-action task checks, and distinct success, task-failure, unsafe,
+  horizon-exhausted, and execution-error outcomes.
+- Visual selection uses exactly three current state-preserving RGB views in
+  slots 0..2 of a fixed 128-image round-robin batch and consumes only the first
+  three feature rows. Variable batches and privileged visual inputs are invalid.
+- The full benchmark is exactly 60 new disjoint source plans and 600 paired
+  selector/domain episodes. Use the fixed 2,000-resample source-trajectory
+  bootstrap and do not create an equivalent duplicate full benchmark.
+
 ## Engineering and data rules
 
 - Use Python 3.11 and a `src`-layout package.

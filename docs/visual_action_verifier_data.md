@@ -264,3 +264,11 @@ its JSON envelope and payload were scanned for runtime paths, hosts, wall-clock
 fields or values, credentials, and secret-bearing fields. No raw image, action,
 state archive, dataset, packet, cache, video, or model artifact was retrieved
 or committed.
+
+## M4C visual source boundary
+
+M4C does not add training data. It renders only the current content-bound
+closed-loop state under the accepted camera rig and three frozen domains, then
+re-verifies complete state, task projection, and verifier bytes. RGB remains a
+runtime observation outside Git; camera and domain IDs remain reporting
+metadata rather than deployable model inputs.
