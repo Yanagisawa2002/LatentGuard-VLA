@@ -163,6 +163,7 @@ def select_external_visual_candidates(
             expected_binding=metadata.progress.binding,
             model=model,
             restore_rng=False,
+            model_only=True,
         )
         model.to(target)
         model.eval()

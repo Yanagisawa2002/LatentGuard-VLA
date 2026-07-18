@@ -317,8 +317,21 @@ def load_visual_checkpoint(
     scheduler: object | None = None,
     scaler: object | None = None,
     restore_rng: bool = True,
+    model_only: bool = False,
 ) -> LoadedVisualCheckpointV1:
     """Apply state only after exact identity, shape, and finiteness validation."""
+    if type(model_only) is not bool:
+        _fail("visual checkpoint", "model_only must be boolean")
+    if model_only and (
+        optimizer is not None
+        or scheduler is not None
+        or scaler is not None
+        or restore_rng
+    ):
+        _fail(
+            "visual checkpoint model-only load",
+            "training state and RNG restoration must be disabled",
+        )
     payload = _payload(path)
     binding = _binding_from_mapping(payload["binding"])
     if binding != expected_binding:
@@ -340,16 +353,19 @@ def load_visual_checkpoint(
             _fail("visual checkpoint model", f"tensor {key!r} is non-finite")
     try:
         model.load_state_dict(state, strict=True)
-        if optimizer is not None:
-            optimizer.load_state_dict(payload["optimizer_state"])  # type: ignore[arg-type]
-        if scheduler is not None:
-            cast(Any, scheduler).load_state_dict(payload["scheduler_state"])
-        elif payload["scheduler_state"] is not None:
-            _fail("visual checkpoint scheduler", "runtime scheduler is absent")
-        if scaler is not None:
-            cast(Any, scaler).load_state_dict(payload["scaler_state"])
-        elif payload["scaler_state"] is not None:
-            _fail("visual checkpoint scaler", "runtime scaler is absent")
+        if not model_only:
+            if optimizer is not None:
+                optimizer.load_state_dict(
+                    cast(dict[str, Any], payload["optimizer_state"])
+                )
+            if scheduler is not None:
+                cast(Any, scheduler).load_state_dict(payload["scheduler_state"])
+            elif payload["scheduler_state"] is not None:
+                _fail("visual checkpoint scheduler", "runtime scheduler is absent")
+            if scaler is not None:
+                cast(Any, scaler).load_state_dict(payload["scaler_state"])
+            elif payload["scaler_state"] is not None:
+                _fail("visual checkpoint scaler", "runtime scaler is absent")
         if restore_rng:
             random.setstate(payload["python_rng_state"])  # type: ignore[arg-type]
             np.random.set_state(payload["numpy_rng_state"])  # type: ignore[arg-type]

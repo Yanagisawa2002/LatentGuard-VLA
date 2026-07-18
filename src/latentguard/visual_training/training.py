@@ -513,7 +513,11 @@ def train_visual_action_verifier(
             if not best_path.is_file():
                 _fail("visual training resume", "best checkpoint is missing")
             load_visual_checkpoint(
-                best_path, expected_binding=binding, model=model, restore_rng=False
+                best_path,
+                expected_binding=binding,
+                model=model,
+                restore_rng=False,
+                model_only=True,
             )
             domains = _validate_domains(
                 model,

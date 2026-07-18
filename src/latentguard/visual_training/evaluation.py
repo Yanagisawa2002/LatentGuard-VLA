@@ -213,6 +213,7 @@ def _load_models(
             expected_binding=metadata.progress.binding,
             model=model,
             restore_rng=False,
+            model_only=True,
         )
         model.to(device)
         model.eval()
