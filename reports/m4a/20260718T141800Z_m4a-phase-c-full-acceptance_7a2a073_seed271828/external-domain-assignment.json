@@ -1,0 +1,25 @@
+{
+  "content_digest": "sha256:3403c223c6fd10cbeb85dd37cf2ef2d2b0f628903f8c605f061a5815c77af06e",
+  "payload": {
+    "assignment_validation_passed": true,
+    "dataset_content_digest": "sha256:62e762acf6a441579c494e1aab6e873e868594cead40f256be2d809abcbeccef",
+    "domain_packet_counts": {
+      "canonical": 360,
+      "strong_camera_shift": 360,
+      "strong_lighting_shift": 360
+    },
+    "schema_version": "1.0",
+    "split_domain_packet_counts": {
+      "external": {
+        "canonical": 360,
+        "strong_camera_shift": 360,
+        "strong_lighting_shift": 360
+      }
+    },
+    "split_packet_counts": {
+      "external": 1080
+    }
+  },
+  "report_type": "m4a_external_domain_assignment_v1",
+  "schema_version": "1.0"
+}

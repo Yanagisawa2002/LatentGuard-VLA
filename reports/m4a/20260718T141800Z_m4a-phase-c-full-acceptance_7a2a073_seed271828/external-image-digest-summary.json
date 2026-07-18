@@ -1,0 +1,19 @@
+{
+  "content_digest": "sha256:1ac570b5e1688152d3b4c962c30f21b978af07f6a8daac8007974bf78502dd1a",
+  "payload": {
+    "camera_image_counts": {
+      "front_oblique": 1080,
+      "overhead": 1080,
+      "side_oblique": 1080
+    },
+    "dataset_content_digest": "sha256:62e762acf6a441579c494e1aab6e873e868594cead40f256be2d809abcbeccef",
+    "image_count": 3240,
+    "image_inventory_digest": "sha256:2698f7c5b83b0ff8898cf6006e90535df133f0e0a6b8f8e4c66398f8acb54288",
+    "raw_image_bytes_included": false,
+    "schema_version": "1.0",
+    "unique_npy_digest_count": 3240,
+    "unique_pixel_digest_count": 3240
+  },
+  "report_type": "m4a_external_image_digest_summary_v1",
+  "schema_version": "1.0"
+}

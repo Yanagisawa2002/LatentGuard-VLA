@@ -1,0 +1,13 @@
+{
+  "content_digest": "sha256:467d6b9ba061b9ac10e041f91081761a29419f5f2e2c4ddb6de609e1bef5ca7f",
+  "payload": {
+    "candidate_pool_identity": "sha256:e2982acd30297fb81f000ea53081afdb4e2ca9ad5dc2f16c6aa71d199c8ef1b7",
+    "dataset_content_digest": "sha256:62e762acf6a441579c494e1aab6e873e868594cead40f256be2d809abcbeccef",
+    "evaluation_only": true,
+    "schema_version": "1.0",
+    "training_allowed": false,
+    "training_loader_rejection_verified": true
+  },
+  "report_type": "m4a_external_training_prohibition_v1",
+  "schema_version": "1.0"
+}

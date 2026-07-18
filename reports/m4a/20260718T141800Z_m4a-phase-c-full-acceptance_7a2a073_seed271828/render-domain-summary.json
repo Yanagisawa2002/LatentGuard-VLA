@@ -1,0 +1,85 @@
+{
+  "content_digest": "sha256:5c51c2c997742a395644de4bb1466f62e0cee4245d022cdc54782bb6d5c8a4cd",
+  "payload": {
+    "color_format": "rgb_uint8",
+    "configuration_digest": "sha256:ce16fe22b8b143a714f10b43653a30f86d409402d756cc55b60de9fee158abc2",
+    "configuration_id": "pickcube_render_domains_v1",
+    "domain_count": 5,
+    "domains": [
+      {
+        "allowed_collections": [
+          "m3a_development",
+          "m3c_external"
+        ],
+        "allowed_splits": [
+          "train",
+          "validation",
+          "test",
+          "external"
+        ],
+        "domain_digest": "sha256:405dc473c4ed228ba23ea75a0c05da54625465fe621fd59b575b85555c2874db",
+        "domain_id": "canonical",
+        "semantic_version": "1.0.0"
+      },
+      {
+        "allowed_collections": [
+          "m3a_development"
+        ],
+        "allowed_splits": [
+          "train",
+          "validation"
+        ],
+        "domain_digest": "sha256:7d0c75dcf169f7dfdd66699a21a6f40b17777b05578c42c1f1088b6d8b8f84c8",
+        "domain_id": "mild_camera_shift",
+        "semantic_version": "1.0.0"
+      },
+      {
+        "allowed_collections": [
+          "m3a_development"
+        ],
+        "allowed_splits": [
+          "train",
+          "validation"
+        ],
+        "domain_digest": "sha256:dc9a1b763ece0b34eb9e94036a2980828c293aba9adc1945ebb56d6355cfbb7a",
+        "domain_id": "mild_lighting_shift",
+        "semantic_version": "1.0.0"
+      },
+      {
+        "allowed_collections": [
+          "m3a_development",
+          "m3c_external"
+        ],
+        "allowed_splits": [
+          "test",
+          "external"
+        ],
+        "domain_digest": "sha256:3391c76c9935b584b57b3655be9fde91650ec8c48800d8eb521dc1ef9ef05646",
+        "domain_id": "strong_camera_shift",
+        "semantic_version": "1.0.0"
+      },
+      {
+        "allowed_collections": [
+          "m3a_development",
+          "m3c_external"
+        ],
+        "allowed_splits": [
+          "test",
+          "external"
+        ],
+        "domain_digest": "sha256:8b10af13b87e0c85a47d4c361bfe63a8f6b2ca2e6f3d1aaad4854315e9437289",
+        "domain_id": "strong_lighting_shift",
+        "semantic_version": "1.0.0"
+      }
+    ],
+    "image_resolution": [
+      224,
+      224
+    ],
+    "schema_version": "1.0",
+    "seed_derivation": "sha256_anchor_domain_base_seed_v1",
+    "shader_configuration": "minimal"
+  },
+  "report_type": "m4a_render_domain_summary_v1",
+  "schema_version": "1.0"
+}

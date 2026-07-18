@@ -477,20 +477,106 @@ The final completion report records observed facts only and must state:
   tests passed with the three existing Windows symbolic-link privilege skips.
   Ruff lint, Ruff format checking across 217 files, mypy across 141 source
   files, all five M4A CLI help smokes, and `git diff --check` also passed.
+- The canonical-persistence correction was committed and pushed as
+  `7a2a073666e455b36da8e72a2b87350a2baf3582`. Remote combined validation from
+  a detached clean worktree then accepted both immutable smoke datasets twice,
+  including the final reload after their exact-manifest zero-work resumes. Each
+  validation covered 216 packets, 648 images, and 1,836 derived samples with
+  cross-dataset leakage absent. Each smoke root preserved all 108 packets,
+  rendered zero new packets, initialized zero environments, and retained its
+  original dataset digest.
+- Phase C preflight run
+  `20260718T121719Z_m4a-phase-c-full-preflight_7a2a073_seed271828` completed in
+  234 seconds from that clean pushed SHA. It bound the complete M3A and M3C
+  source identities, planned 1,080 packets and 3,240 images per dataset, kept
+  the output roots absent, retained `training_allowed=false` for M3C, and
+  confirmed the single-GPU renderer and available storage before paid work.
+- Full development run
+  `20260718T121719Z_m4a-phase-c-m3a-full_7a2a073_seed271828` first stopped with
+  native signal 11 after 2,148 seconds and exactly 864 complete packets. Its
+  ledger contained one interrupted packet, 215 pending packets, and zero
+  execution errors. The 864 complete packet directories and 2,592 images
+  strictly reloaded with no orphan or staging content. Recovery run
+  `20260718T130200Z_m4a-phase-c-m3a-resume1_7a2a073_seed271828` completed in
+  740 seconds, preserved those 864 packets, rendered only the remaining 216,
+  and published 1,080 packets, 3,240 images, and 3,240 candidate bindings with
+  dataset digest
+  `sha256:f79be2b357a9de68e1deb80132f7915717158bec506884554536882e3adbd339`.
+- Full external run
+  `20260718T121719Z_m4a-phase-c-m3c-full_7a2a073_seed271828` independently
+  stopped with the same native signal at the same 864-packet boundary after
+  2,089 seconds, again with one interrupted attempt, 215 pending packets, and
+  zero execution errors. Recovery run
+  `20260718T135600Z_m4a-phase-c-m3c-resume1_7a2a073_seed271828` completed in
+  701 seconds, preserved all 864 packets, rendered 216, and published 1,080
+  packets, 3,240 images, and 2,880 candidate bindings with dataset digest
+  `sha256:62e762acf6a441579c494e1aab6e873e868594cead40f256be2d809abcbeccef`.
+  The external dataset remained evaluation-only and the training loader
+  rejected it.
+- The identical 864-packet failures across disjoint source datasets, followed
+  by successful completion of both interrupted packets in fresh recovery
+  processes, make a packet-specific deterministic failure unlikely and are
+  consistent with a cumulative native SAPIEN/ManiSkill renderer-lifecycle
+  limitation. System evidence showed ample memory and disk, normal GPU
+  temperature and allocation, and no Python, CUDA-OOM, task, or data-validation
+  error. Kernel and core backtraces were unavailable in the execution
+  container, so no narrower native cause is claimed and long-process stability
+  remains an operational limit.
+- Combined zero-work run
+  `20260718T141100Z_m4a-phase-c-zero-work-resume_7a2a073_seed271828` completed
+  in 327 seconds. Each root rendered zero packets, preserved all 1,080,
+  initialized zero environments, wrote live-bound resume evidence, and retained
+  its dataset digest.
+- The sole combined full acceptance run
+  `20260718T141800Z_m4a-phase-c-full-acceptance_7a2a073_seed271828` completed in
+  261 seconds and accepted two datasets, 2,160 packets, 6,480 images, and
+  18,360 samples. It proved exact pixel determinism, state and verifier
+  integrity, external training prohibition, and no overlap in any protected
+  cross-dataset identity or image digest. It atomically published exactly 17
+  sanitized JSON reports.
+- Both datasets have 70-component complete-state maximum error
+  `1.1920928955078125e-7`, below the fixed `1e-6` adapter contract, and exact
+  38-component verifier state. Physics-step, task-projection-change, and
+  environment-close-failure counts are zero. Repeated and fresh-environment
+  captures changed zero pixels and used no pixel tolerance.
+- The successful operational reports cover 432 measured recovery-rendered
+  packets and `738052425161` ns of packet rendering. The 1,728 packets produced
+  before the two native process exits have no persisted per-packet timing or
+  environment-initialization metrics, so the compact report correctly marks
+  those operational totals incomplete. Renderer allocations are outside the
+  PyTorch allocator, so its 8,594,432-byte peak is not presented as total GPU
+  memory. The named Phase C wrapper statuses total 6,500 seconds, excluding
+  interactive read-only diagnostics and artifact transfer.
+- The 16 compact reports plus their retrieval manifest were the only 17 Phase C
+  result files retrieved. Every local file matches the remote file SHA-256 byte
+  for byte; strict local reload recomputed every report content digest and the
+  retrieval manifest. Scans of every JSON envelope and payload found no raw
+  images, actions, state archives, datasets, packets, runtime paths, hosts,
+  wall-clock fields or values, credentials, or secret-bearing fields.
+- Final Linux validation run
+  `20260718T143000Z_m4a-linux-validation_7a2a073` used a clean detached
+  worktree at the exact execution SHA and exited successfully after 313
+  seconds. All 1,468 tests passed in 295.80 seconds; Ruff lint, Ruff format
+  checking across 217 files, mypy across 141 source files, all five M4A CLI
+  help smokes, and `git diff --check` also passed. This status came from the
+  remote validation wrapper and log rather than from the 17-result JSON bundle.
+- The final local result candidate passed 1,465 tests with only the three
+  existing Windows symbolic-link privilege skips. Ruff lint, Ruff format
+  checking across 217 files, mypy across 141 source files, all five M4A CLI
+  help smokes, and `git diff --check` also passed. The remote Python 3.11 suite
+  above provides the corresponding no-skip Linux coverage.
 
 ## Current status
 
-The fifth and final Phase A probe passed every strict trust gate, and its two
-compact artifacts passed independent local reload. Both bounded Phase B smoke
-datasets have now rendered and published exactly once from pushed SHA
-`2c8da8d8658b4edece298fa9a2e399483f196d7f`. The reload-only `FailureEvent`
-comparison defect is fixed at pushed SHA `1bb7b48b2bb758b11df789b43be699400f819dc1`,
-and its first remote revalidation exposed the signed-zero persistence mismatch
-recorded above. The narrow correction now passes every local gate; Phase B
-acceptance awaits its commit/push and remote revalidation. The paid server
-remains online. No model training, feature extraction, VLM, LangMani, video,
-multi-GPU work, or M4A full render has run. The next gates are commit/push,
-corrected combined strict reload/leakage/integrity validation of the existing
-smoke datasets, one exact-manifest zero-work resume per dataset from the
-original rendering revision, a final read-only combined validation, and only
-then exact remote fast-forward synchronization.
+Phase A, bounded Phase B, both Phase C full datasets, exact zero-work resume,
+and the sole combined full acceptance have passed from clean pushed revision
+`7a2a073666e455b36da8e72a2b87350a2baf3582`. The 16 compact reports plus their
+retrieval manifest are retrieved under
+`reports/m4a/20260718T141800Z_m4a-phase-c-full-acceptance_7a2a073_seed271828/`
+and pass byte-level remote/local comparison, strict local reload, all acceptance
+assertions, and sanitization scanning. No training, feature extraction, VLM,
+LangMani, video, or multi-GPU work ran. The final candidate's first complete
+Linux suite passed with all 1,468 tests. Only the local documentation/result
+closeout suite has also passed; only the result commit and push remain. The paid
+server remains online under the user's latest standing instruction and will not
+be shut down automatically.

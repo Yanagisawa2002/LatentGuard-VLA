@@ -1,0 +1,22 @@
+{
+  "content_digest": "sha256:de4e46b7e32a7b55f9ed6855d8e63fdfcad5b3ff82f226aa8e0727cb77741866",
+  "payload": {
+    "constant_image_digests_requiring_review": [],
+    "cross_dataset_leakage_absent": true,
+    "overlapping_anchor_ids": [],
+    "overlapping_candidate_ids": [],
+    "overlapping_image_digests": [],
+    "overlapping_packet_ids": [],
+    "overlapping_reset_seeds": [],
+    "overlapping_source_trajectory_ids": [],
+    "overlapping_split_group_ids": [],
+    "overlapping_state_digests": [],
+    "overlapping_verifier_state_digests": [],
+    "perceptual_similarity_used": false,
+    "repeated_images_within_development": [],
+    "repeated_images_within_external": [],
+    "schema_version": "1.0"
+  },
+  "report_type": "m4a_cross_dataset_leakage_v1",
+  "schema_version": "1.0"
+}

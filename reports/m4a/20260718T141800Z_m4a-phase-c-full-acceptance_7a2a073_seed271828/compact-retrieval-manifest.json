@@ -1,0 +1,31 @@
+{
+  "content_digest": "sha256:57a8173fe54d826dc203030377843e7a4421a34f04d1c96f647932f1144e994c",
+  "payload": {
+    "raw_actions_included": false,
+    "raw_images_included": false,
+    "raw_state_archives_included": false,
+    "report_content_digests": {
+      "camera-rig-summary.json": "sha256:2cfff507595ad82037daeb7f53c3905600e190bb6fbdd2a5ffd52055c69186f9",
+      "cross-dataset-leakage.json": "sha256:de4e46b7e32a7b55f9ed6855d8e63fdfcad5b3ff82f226aa8e0727cb77741866",
+      "development-dataset-summary.json": "sha256:c7967a7c9e806822c4c8b17eff474d461e9d4219f6574cb4bc095b4f8a0d07cd",
+      "development-domain-assignment.json": "sha256:6c4cf9330d2ca54e51cd4d570b4218b15df9f17f0b04b7c3f81dfdcc1bf7bf7b",
+      "development-image-digest-summary.json": "sha256:0e822a0e0e03aa0b21e434f54ea6c80f89f2fe332e8398f84ce68823b4bfacc2",
+      "development-resume.json": "sha256:b9ad46c6935daaf962a0a3203b9e675fcad29ee27cff5781bfe3ac1a5ce256f7",
+      "development-state-integrity.json": "sha256:efe351be183f5f8f0faf47c24a7539ffa93f554dcce8e98e98e7579d2af6d2cc",
+      "external-dataset-summary.json": "sha256:6c9a8d7224be6ac898a434b5d5aeb4e723d02d15f18db8012986a01b81f40ebc",
+      "external-domain-assignment.json": "sha256:3403c223c6fd10cbeb85dd37cf2ef2d2b0f628903f8c605f061a5815c77af06e",
+      "external-image-digest-summary.json": "sha256:1ac570b5e1688152d3b4c962c30f21b978af07f6a8daac8007974bf78502dd1a",
+      "external-resume.json": "sha256:44829c2bc668695d51e88bc8224aaf1616d0da611155719e3d1195efcd570050",
+      "external-state-integrity.json": "sha256:c77e3488f3d0f34e258d68934ee7c8f377cc3f86f00497bbbb48e8a1185a8851",
+      "external-training-prohibition.json": "sha256:467d6b9ba061b9ac10e041f91081761a29419f5f2e2c4ddb6de609e1bef5ca7f",
+      "operational-cost-summary.json": "sha256:01b97fdd04c2995039a795929f736314858928b84ff49c0b78050c3b2e9e25c5",
+      "render-determinism.json": "sha256:2bb80b5df768d8b630511f2d415149957799e140912ed68a4e3e8f71f86e45b1",
+      "render-domain-summary.json": "sha256:5c51c2c997742a395644de4bb1466f62e0cee4245d022cdc54782bb6d5c8a4cd"
+    },
+    "report_file_count": 16,
+    "sanitized_json_only": true,
+    "schema_version": "1.0"
+  },
+  "report_type": "m4a_compact_retrieval_manifest_v1",
+  "schema_version": "1.0"
+}

@@ -1,0 +1,47 @@
+{
+  "content_digest": "sha256:2bb80b5df768d8b630511f2d415149957799e140912ed68a4e3e8f71f86e45b1",
+  "payload": {
+    "fresh_environment": {
+      "changed_pixel_counts": [
+        0,
+        0,
+        0
+      ],
+      "maximum_per_channel_absolute_differences": [
+        0,
+        0,
+        0
+      ],
+      "mean_absolute_pixel_differences": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    "pixel_tolerance_authorized": false,
+    "rendering_reproducible": true,
+    "repeated_render": {
+      "changed_pixel_counts": [
+        0,
+        0,
+        0
+      ],
+      "maximum_per_channel_absolute_differences": [
+        0,
+        0,
+        0
+      ],
+      "mean_absolute_pixel_differences": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    "schema_version": "1.0",
+    "spatially_stable": true,
+    "trusted_generation_permitted": true,
+    "visual_compatibility_identity": "sha256:d4d4b18156eeb390541b0fd184f0a0e0ad67c36450f45c69e36c8c3426d03312"
+  },
+  "report_type": "m4a_render_determinism_v1",
+  "schema_version": "1.0"
+}

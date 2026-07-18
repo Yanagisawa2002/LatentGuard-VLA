@@ -390,8 +390,40 @@ checkout. Only compact sanitized reports return to Git; NPY/PNG images, state
 archives, action arrays, datasets, caches, and videos remain remote.
 
 On a blocker, flush transactional state, preserve and retrieve a compact
-sanitized diagnostic, make no remote source change, and shut down the paid
-server. After successful completion, validate and package compact reports,
-retrieve and verify them locally, commit and push them locally, confirm exact
-SHA equality, and shut down the paid server immediately rather than leaving it
-running for review.
+sanitized diagnostic, and make no remote source change. After successful
+completion, validate and package compact reports, retrieve and verify them
+locally, commit and push them locally, and confirm exact SHA equality. The paid
+server remains online unless the user separately and explicitly requests a
+shutdown.
+
+### Accepted Phase C execution
+
+The final Phase C execution used clean pushed SHA
+`7a2a073666e455b36da8e72a2b87350a2baf3582`, branch
+`codex/m4a-multiview-visual-dataset`, seed `271828`, and one RTX 5090. The full
+development and external run IDs were respectively
+`20260718T121719Z_m4a-phase-c-m3a-full_7a2a073_seed271828` and
+`20260718T121719Z_m4a-phase-c-m3c-full_7a2a073_seed271828`. Both initial native
+processes stopped after 864 completed packets with signal 11 and zero ledger
+execution errors. Exact-manifest resume preserved those 864 packets and
+rendered only the remaining 216 in each immutable run root.
+
+Run `20260718T141100Z_m4a-phase-c-zero-work-resume_7a2a073_seed271828`
+subsequently proved zero duplicate work for both complete roots. The sole
+combined full validation
+`20260718T141800Z_m4a-phase-c-full-acceptance_7a2a073_seed271828` completed in
+261 seconds and accepted two datasets, 2,160 packets, 6,480 images, and 18,360
+samples with no cross-dataset leakage. Only its 17 sanitized JSON reports were
+retrieved to
+[`reports/m4a/20260718T141800Z_m4a-phase-c-full-acceptance_7a2a073_seed271828`](../reports/m4a/20260718T141800Z_m4a-phase-c-full-acceptance_7a2a073_seed271828/compact-retrieval-manifest.json).
+Final clean-Linux validation
+`20260718T143000Z_m4a-linux-validation_7a2a073` then passed all 1,468 tests,
+Ruff lint and formatting, mypy, all five M4A CLI help smokes, and
+`git diff --check` in 313 seconds. This validation status is operational log
+evidence and is not represented as a field in the compact acceptance bundle.
+The compact operational report has complete telemetry only for the 432 packets
+rendered by the successful recovery processes; end-to-end timing,
+environment-initialization count, and total renderer peak memory remain
+explicitly incomplete.
+No training, feature extraction, VLM, LangMani, video, or multi-GPU work ran.
+The server was deliberately left online under the user's standing instruction.

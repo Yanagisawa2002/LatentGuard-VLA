@@ -209,6 +209,23 @@ image-inventory digests, determinism, fixed nearest-rank physical/verifier state
 error statistics, leakage, training prohibition, and observed resume evidence;
 it never copies raw images, actions, states, or evidence payloads.
 
+The accepted M4A Phase C result was rendered and validated from pushed SHA
+`7a2a073666e455b36da8e72a2b87350a2baf3582`. The M3A development dataset
+contains 1,080 packets, 3,240 RGB images, 3,240 candidate bindings, and 9,720
+derived visual samples. The disjoint M3C external dataset contains 1,080
+packets, 3,240 images, 2,880 candidate bindings, and 8,640 derived samples and
+remains evaluation-only with `training_allowed=false`. Exact zero-work resume,
+state integrity, pixel determinism, training-loader rejection, and
+cross-dataset leakage gates passed. The fixed 17-file sanitized acceptance
+inventory is under
+[`reports/m4a/20260718T141800Z_m4a-phase-c-full-acceptance_7a2a073_seed271828`](reports/m4a/20260718T141800Z_m4a-phase-c-full-acceptance_7a2a073_seed271828/compact-retrieval-manifest.json).
+Each logical full dataset required one exact transactional resume after its
+initial native renderer process stopped at 864 packets; both final datasets and
+their later zero-work resumes validate completely. Operational timing and GPU
+memory coverage remain intentionally incomplete because the initial native
+processes did not publish per-packet telemetry and renderer allocations are
+outside the PyTorch allocator.
+
 Generate, validate, save, reload, and compare a small deterministic dataset:
 
 ```text

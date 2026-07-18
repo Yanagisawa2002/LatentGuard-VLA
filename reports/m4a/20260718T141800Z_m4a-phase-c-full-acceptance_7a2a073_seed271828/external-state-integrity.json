@@ -1,0 +1,42 @@
+{
+  "content_digest": "sha256:c77e3488f3d0f34e258d68934ee7c8f377cc3f86f00497bbbb48e8a1185a8851",
+  "payload": {
+    "complete_state_component_count_values": [
+      70
+    ],
+    "complete_state_error_statistics": {
+      "count": 1080,
+      "maximum": 1.1920928955078125e-07,
+      "median": 1.1920928955078125e-07,
+      "minimum": 1.1920928955078125e-07,
+      "p95": 1.1920928955078125e-07,
+      "percentile_semantic": "nearest_rank_v1",
+      "zero_count": 0
+    },
+    "environment_close_failure_count": 0,
+    "maximum_complete_state_error": 1.1920928955078125e-07,
+    "maximum_verifier_state_error": 0.0,
+    "packet_count": 1080,
+    "packet_manifest_digest": "sha256:b32fbe194ae930ec060c2e75e54d387e4d1d081805ca1ade2c7077b6d8661839",
+    "passed": true,
+    "physics_step_count": 0,
+    "schema_version": "1.0",
+    "state_tolerance": 1e-06,
+    "task_projection_change_count": 0,
+    "verifier_state_component_count_values": [
+      38
+    ],
+    "verifier_state_error_statistics": {
+      "count": 1080,
+      "maximum": 0.0,
+      "median": 0.0,
+      "minimum": 0.0,
+      "p95": 0.0,
+      "percentile_semantic": "nearest_rank_v1",
+      "zero_count": 1080
+    },
+    "visual_dataset_digest": "sha256:62e762acf6a441579c494e1aab6e873e868594cead40f256be2d809abcbeccef"
+  },
+  "report_type": "m4a_render_state_integrity_v1",
+  "schema_version": "1.0"
+}

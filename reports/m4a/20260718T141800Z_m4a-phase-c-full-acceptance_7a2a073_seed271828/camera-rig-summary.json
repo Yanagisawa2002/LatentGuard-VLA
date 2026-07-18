@@ -1,0 +1,41 @@
+{
+  "content_digest": "sha256:2cfff507595ad82037daeb7f53c3905600e190bb6fbdd2a5ffd52055c69186f9",
+  "payload": {
+    "camera_count": 3,
+    "cameras": [
+      {
+        "camera_configuration_digest": "sha256:b5a3ace3336575eb30dc72d026aeafa81e6ebd67704e3c779f4e498f113c116e",
+        "camera_id": "front_oblique",
+        "far": 10.0,
+        "fov_y_degrees": 60.0,
+        "height": 224,
+        "near": 0.01,
+        "width": 224
+      },
+      {
+        "camera_configuration_digest": "sha256:360960c666ce14c86c5287e6458f09b5e581077f5c5c7be219037dff7e43be7b",
+        "camera_id": "overhead",
+        "far": 10.0,
+        "fov_y_degrees": 60.0,
+        "height": 224,
+        "near": 0.01,
+        "width": 224
+      },
+      {
+        "camera_configuration_digest": "sha256:c3fe169def3c976172ab8ce0528ddfb3d64abde5f9b754d35f55df56071c00fc",
+        "camera_id": "side_oblique",
+        "far": 10.0,
+        "fov_y_degrees": 60.0,
+        "height": 224,
+        "near": 0.01,
+        "width": 224
+      }
+    ],
+    "rig_digest": "sha256:f6345d8c01554a8def7a84f2cd01707523192338d1082578cc27652d7ee42f1f",
+    "rig_id": "pickcube_multiview_rig_v1",
+    "schema_version": "1.0",
+    "semantic_version": "2.0.0"
+  },
+  "report_type": "m4a_camera_rig_summary_v1",
+  "schema_version": "1.0"
+}

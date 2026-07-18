@@ -1,0 +1,56 @@
+{
+  "content_digest": "sha256:c7967a7c9e806822c4c8b17eff474d461e9d4219f6574cb4bc095b4f8a0d07cd",
+  "payload": {
+    "camera_rig_digest": "sha256:f6345d8c01554a8def7a84f2cd01707523192338d1082578cc27652d7ee42f1f",
+    "candidate_binding_count": 3240,
+    "dataset_content_digest": "sha256:f79be2b357a9de68e1deb80132f7915717158bec506884554536882e3adbd339",
+    "domain_packet_counts": {
+      "canonical": 360,
+      "mild_camera_shift": 324,
+      "mild_lighting_shift": 324,
+      "strong_camera_shift": 36,
+      "strong_lighting_shift": 36
+    },
+    "evidence_digest": "sha256:d077dcf31012d32f4b4833a0622b58d55a43d5a96a1f81b4eea045da0f747995",
+    "expanded_visual_sample_count": 9720,
+    "image_count": 3240,
+    "image_inventory_digest": "sha256:a50f078480dda78b5d011d0193141d77aa4f75a0e23d7ffd69b9cffcc2a64b65",
+    "images_stored_once_and_shared_by_candidates": true,
+    "packet_count": 1080,
+    "packet_manifest_digest": "sha256:0a00c741916b46bae0a7d829675ad7c959f92ca9dd2124413de60f210bfa6a88",
+    "render_domain_configuration_digest": "sha256:ce16fe22b8b143a714f10b43653a30f86d409402d756cc55b60de9fee158abc2",
+    "samples_are_derived": true,
+    "schema_version": "1.0",
+    "source_collection": "m3a_development",
+    "source_dataset_digest": "sha256:7847c9d0e09170531e13ba07531fabb3ea6f0aa6b0122298b733726d2055856d",
+    "split_digest": "sha256:173ca40a072a1977cc65dbcccedb4684ae573e97f3984c176e3f91bba09f940a",
+    "split_domain_packet_counts": {
+      "test": {
+        "canonical": 36,
+        "strong_camera_shift": 36,
+        "strong_lighting_shift": 36
+      },
+      "train": {
+        "canonical": 288,
+        "mild_camera_shift": 288,
+        "mild_lighting_shift": 288
+      },
+      "validation": {
+        "canonical": 36,
+        "mild_camera_shift": 36,
+        "mild_lighting_shift": 36
+      }
+    },
+    "split_packet_counts": {
+      "test": 108,
+      "train": 864,
+      "validation": 108
+    },
+    "training_allowed": true,
+    "unique_npy_digest_count": 3240,
+    "unique_pixel_digest_count": 3240,
+    "visual_compatibility_identity": "sha256:d4d4b18156eeb390541b0fd184f0a0e0ad67c36450f45c69e36c8c3426d03312"
+  },
+  "report_type": "m4a_development_visual_dataset_summary_v1",
+  "schema_version": "1.0"
+}

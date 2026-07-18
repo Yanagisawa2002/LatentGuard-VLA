@@ -6,8 +6,9 @@ train a visual model, fine-tune or extract a visual encoder, compute teacher
 logits or frozen embeddings, run large-scale augmentation or normalization
 fitting, run a VLM/LLM, use LangMani, or change any accepted M3A or M3C outcome.
 M4A ends after visual data generation, strict validation, compact result
-retrieval, Git closeout, and paid-server shutdown; it does not begin M4B
-automatically.
+retrieval, and Git closeout; it does not begin M4B automatically. The paid
+server remains online unless the user separately and explicitly requests a
+shutdown.
 
 ## Exact render boundary
 
@@ -203,3 +204,63 @@ reports may be retrieved. Building and validating these controlled visual
 inputs before VLM integration isolates renderer and physical-state errors from
 model behavior and prevents an unbounded language/vision stack from obscuring
 the provenance boundary.
+
+## Accepted M4A result
+
+The accepted Phase C datasets and reports were produced from clean pushed SHA
+`7a2a073666e455b36da8e72a2b87350a2baf3582` with seed `271828`. The M3A
+development dataset digest is
+`sha256:f79be2b357a9de68e1deb80132f7915717158bec506884554536882e3adbd339`;
+it contains 60 trajectories, 360 anchors, 1,080 packets, 3,240 unique RGB
+images, 3,240 candidate bindings, and 9,720 derived samples. Its packet split
+is 864 train, 108 validation, and 108 test. The M3C external dataset digest is
+`sha256:62e762acf6a441579c494e1aab6e873e868594cead40f256be2d809abcbeccef`;
+it contains 60 disjoint trajectories, 360 anchors, 1,080 packets, 3,240 unique
+images, 2,880 candidate bindings, and 8,640 derived external samples.
+
+Both datasets passed complete 70-component state verification with maximum
+absolute error `1.1920928955078125e-7` under the authorized `1e-6` contract.
+All 1,080 verifier-state comparisons per dataset were exact across 38
+components, with no physics steps, task-projection changes, or environment
+close failures. Repeated and fresh-environment renders changed zero pixels and
+used no pixel tolerance. Cross-dataset overlap was absent for reset seeds,
+trajectories, split groups, anchors, complete and verifier states, packets,
+candidates, and image digests. The external training loader rejected the M3C
+dataset and independently confirmed `training_allowed=false`.
+
+The first long native rendering process for each dataset exited with signal 11
+after exactly 864 completed packets. Transactional evidence contained 864
+complete packets, one interrupted attempt, 215 pending packets, and zero
+execution errors in each case. A fresh process resumed the same immutable run
+root, preserved all 864 completed packets, and rendered only the remaining 216.
+The later complete zero-work resume for each root rendered zero packets,
+preserved all 1,080, initialized zero environments, and retained the dataset
+digest. This repeated 864-packet native boundary, together with successful
+fresh-process recovery, is consistent with a cumulative renderer-lifecycle
+limitation and is recorded as an unresolved long-process stability limit, not
+as task failure or data corruption.
+
+Because both initial native processes ended before writing operational metrics,
+the compact operational report marks environment-initialization, end-to-end
+timing, and peak-memory coverage incomplete. It measures 432 packets and
+`738052425161` ns of packet rendering across the successful recovery processes,
+with average, nearest-rank p50, and nearest-rank p95 packet times of
+`1708454687.8726852`, `1691630671`, and `1798795782` ns respectively. It also
+records `1532451568587` ns of measured server-active duration and
+`234640193284` ns of validation time while identifying 1,728 preexisting or
+reused packets as unmeasured. Neither value is presented as complete end-to-end
+runtime. Renderer allocations are outside the PyTorch allocator, so the
+reported 8,594,432-byte peak is not a total renderer-memory measurement. These
+limitations do not weaken the exact packet, image, state, resume, leakage, or
+training-prohibition gates.
+
+The unique combined validation run
+`20260718T141800Z_m4a-phase-c-full-acceptance_7a2a073_seed271828` accepted two
+datasets, 2,160 packets, 6,480 images, and 18,360 samples. Its fixed 17 JSON
+reports are stored under
+[`reports/m4a/20260718T141800Z_m4a-phase-c-full-acceptance_7a2a073_seed271828`](../reports/m4a/20260718T141800Z_m4a-phase-c-full-acceptance_7a2a073_seed271828/compact-retrieval-manifest.json).
+Every file was retrieved byte-identically, strictly reloaded locally, and
+its JSON envelope and payload were scanned for runtime paths, hosts, wall-clock
+fields or values, credentials, and secret-bearing fields. No raw image, action,
+state archive, dataset, packet, cache, video, or model artifact was retrieved
+or committed.

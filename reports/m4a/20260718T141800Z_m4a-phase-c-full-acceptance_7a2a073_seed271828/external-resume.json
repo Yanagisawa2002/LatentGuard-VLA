@@ -1,0 +1,19 @@
+{
+  "content_digest": "sha256:44829c2bc668695d51e88bc8224aaf1616d0da611155719e3d1195efcd570050",
+  "payload": {
+    "camera_rig_digest": "sha256:f6345d8c01554a8def7a84f2cd01707523192338d1082578cc27652d7ee42f1f",
+    "ledger_content_digest": "sha256:198d5911f95fa0e43c706f2e7dd3597c94cab3569d3b810c814b559d8ad30624",
+    "ledger_entry_count": 1080,
+    "packet_count": 1080,
+    "recovered_packets": 0,
+    "render_domain_configuration_digest": "sha256:ce16fe22b8b143a714f10b43653a30f86d409402d756cc55b60de9fee158abc2",
+    "rendered_packets": 0,
+    "retried_packets": 0,
+    "run_id": "m4a-m3c-12dcd557ed2641be",
+    "schema_version": "1.0",
+    "source_identity_digest": "sha256:972324b6fced7554a2ef120b4cee06c62098d75bb68eb18fffb26bf51c4640b1",
+    "zero_duplicate_work": true
+  },
+  "report_type": "m4a_render_resume_v1",
+  "schema_version": "1.0"
+}

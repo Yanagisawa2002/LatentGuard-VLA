@@ -1,0 +1,39 @@
+{
+  "content_digest": "sha256:6c4cf9330d2ca54e51cd4d570b4218b15df9f17f0b04b7c3f81dfdcc1bf7bf7b",
+  "payload": {
+    "assignment_validation_passed": true,
+    "dataset_content_digest": "sha256:f79be2b357a9de68e1deb80132f7915717158bec506884554536882e3adbd339",
+    "domain_packet_counts": {
+      "canonical": 360,
+      "mild_camera_shift": 324,
+      "mild_lighting_shift": 324,
+      "strong_camera_shift": 36,
+      "strong_lighting_shift": 36
+    },
+    "schema_version": "1.0",
+    "split_domain_packet_counts": {
+      "test": {
+        "canonical": 36,
+        "strong_camera_shift": 36,
+        "strong_lighting_shift": 36
+      },
+      "train": {
+        "canonical": 288,
+        "mild_camera_shift": 288,
+        "mild_lighting_shift": 288
+      },
+      "validation": {
+        "canonical": 36,
+        "mild_camera_shift": 36,
+        "mild_lighting_shift": 36
+      }
+    },
+    "split_packet_counts": {
+      "test": 108,
+      "train": 864,
+      "validation": 108
+    }
+  },
+  "report_type": "m4a_development_domain_assignment_v1",
+  "schema_version": "1.0"
+}

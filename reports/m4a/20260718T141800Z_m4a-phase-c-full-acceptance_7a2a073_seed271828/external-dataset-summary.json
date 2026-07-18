@@ -1,0 +1,43 @@
+{
+  "content_digest": "sha256:6c9a8d7224be6ac898a434b5d5aeb4e723d02d15f18db8012986a01b81f40ebc",
+  "payload": {
+    "blind_manifest_digest": "sha256:c5aa3798d0d1797a1714f8de6ad76954f6aa1b31835a3aae8d0abbd7e52dcbcc",
+    "camera_rig_digest": "sha256:f6345d8c01554a8def7a84f2cd01707523192338d1082578cc27652d7ee42f1f",
+    "candidate_binding_count": 2880,
+    "candidate_pool_identity": "sha256:e2982acd30297fb81f000ea53081afdb4e2ca9ad5dc2f16c6aa71d199c8ef1b7",
+    "dataset_content_digest": "sha256:62e762acf6a441579c494e1aab6e873e868594cead40f256be2d809abcbeccef",
+    "domain_packet_counts": {
+      "canonical": 360,
+      "strong_camera_shift": 360,
+      "strong_lighting_shift": 360
+    },
+    "expanded_visual_sample_count": 8640,
+    "full_outcome_digest": "sha256:06ac372236586ed7e4dcf3af8fc8d09e05e063f24cdaa687ee6bcdcd8e51d05c",
+    "image_count": 3240,
+    "image_inventory_digest": "sha256:2698f7c5b83b0ff8898cf6006e90535df133f0e0a6b8f8e4c66398f8acb54288",
+    "images_stored_once_and_shared_by_candidates": true,
+    "packet_count": 1080,
+    "packet_manifest_digest": "sha256:b32fbe194ae930ec060c2e75e54d387e4d1d081805ca1ade2c7077b6d8661839",
+    "render_domain_configuration_digest": "sha256:ce16fe22b8b143a714f10b43653a30f86d409402d756cc55b60de9fee158abc2",
+    "samples_are_derived": true,
+    "schema_version": "1.0",
+    "source_collection": "m3c_external",
+    "source_set_identity": "sha256:db1f3ece9576850c09a9f95b8c4aee483d11d71ebbbe0772b695db2d60321123",
+    "split_domain_packet_counts": {
+      "external": {
+        "canonical": 360,
+        "strong_camera_shift": 360,
+        "strong_lighting_shift": 360
+      }
+    },
+    "split_packet_counts": {
+      "external": 1080
+    },
+    "training_allowed": false,
+    "unique_npy_digest_count": 3240,
+    "unique_pixel_digest_count": 3240,
+    "visual_compatibility_identity": "sha256:d4d4b18156eeb390541b0fd184f0a0e0ad67c36450f45c69e36c8c3426d03312"
+  },
+  "report_type": "m4a_external_visual_dataset_summary_v1",
+  "schema_version": "1.0"
+}
