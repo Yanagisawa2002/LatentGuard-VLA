@@ -1,0 +1,7 @@
+{
+  "benchmark_zero_work_resume": true,
+  "development_feature_extracted": 0,
+  "external_feature_extracted": 0,
+  "teacher_targets_computed": 0,
+  "training_zero_work_resume_count": 10
+}

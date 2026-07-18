@@ -1,0 +1,21 @@
+{
+  "configuration_digest": "sha256:d44a1350fd5c712ececf742e5972b5ba85e9444c73bd48b0c456d07b72959fcc",
+  "content_digest": "sha256:7e694cdc720aca8361a404f2be2617e3a75e576edbeea728772136ea0e5eae96",
+  "expected_input_resolution": 224,
+  "normalization_mean": [
+    0.485,
+    0.456,
+    0.406
+  ],
+  "normalization_standard_deviation": [
+    0.229,
+    0.224,
+    0.225
+  ],
+  "output_feature_dimension": 512,
+  "preprocessing_semantic": "torchvision_resnet18_imagenet1k_v1_rgb224_v1",
+  "schema_version": "1.0",
+  "torchvision_version": "0.23.0+cu128",
+  "weight_content_digest": "sha256:f37072fd47e89c5e827621c5baffa7500819f7896bbacec160b1a16c560e07ec",
+  "weight_enum_identity": "ResNet18_Weights.IMAGENET1K_V1"
+}

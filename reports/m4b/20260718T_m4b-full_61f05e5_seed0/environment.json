@@ -1,0 +1,9 @@
+{
+  "cuda_runtime": "12.8",
+  "execution_git_sha": "d76013e1434c7a0888ad0e2f2e1ec5077a5cd048",
+  "gpu_count": 1,
+  "gpu_model": "NVIDIA GeForce RTX 5090",
+  "python": "3.11.15",
+  "pytorch": "2.8.0+cu128",
+  "torchvision": "0.23.0+cu128"
+}

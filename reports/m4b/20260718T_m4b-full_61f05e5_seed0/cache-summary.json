@@ -1,0 +1,46 @@
+{
+  "feature_caches": [
+    {
+      "backbone_digest": "sha256:7e694cdc720aca8361a404f2be2617e3a75e576edbeea728772136ea0e5eae96",
+      "cache_digest": "sha256:2a2f1eb81e83a4ea95ded152a8899b35c2ceb77705bf913eda54d0d80ad8d221",
+      "dataset_digest": "sha256:f79be2b357a9de68e1deb80132f7915717158bec506884554536882e3adbd339",
+      "feature_dtype": "float32",
+      "feature_shape": [
+        3240,
+        512
+      ],
+      "features_npy_digest": "sha256:d2e40780e22b96aae6849f5fb52552b8dcc4cdbdd7ee1b18d8682455e074cf2c",
+      "git_sha": "61f05e5aef7b9894a05d392a56003b37fc6d774c",
+      "model_freeze_digest": null,
+      "name": "m3a_development",
+      "preprocessing_semantic": "torchvision_resnet18_imagenet1k_v1_rgb224_v1",
+      "resume_extracted_count": 0
+    },
+    {
+      "backbone_digest": "sha256:7e694cdc720aca8361a404f2be2617e3a75e576edbeea728772136ea0e5eae96",
+      "cache_digest": "sha256:c51b7e4b3e1464acdd124254019ad9a31dfebfcc5e903d328774fdd43da3f262",
+      "dataset_digest": "sha256:62e762acf6a441579c494e1aab6e873e868594cead40f256be2d809abcbeccef",
+      "feature_dtype": "float32",
+      "feature_shape": [
+        3240,
+        512
+      ],
+      "features_npy_digest": "sha256:76a08a9fe08b55b8999f64d106deb3d52c46a38651bb558df9edb21f4f5ad520",
+      "git_sha": "d52c58b0e858d6b82eafbcbafec7543b5fb6d0c5",
+      "model_freeze_digest": "sha256:d2bb5993ac2d17ef02543c9842ba23725cc530b1acdac17a6f703a7d0526e3eb",
+      "name": "m3c_external",
+      "preprocessing_semantic": "torchvision_resnet18_imagenet1k_v1_rgb224_v1",
+      "resume_extracted_count": 0
+    }
+  ],
+  "teacher_cache": {
+    "candidate_count": 3240,
+    "content_digest": "sha256:cc73b82b61ff6b381d4e8e10e27afac68132f0ee0c6518e330a7ef85266177d5",
+    "dataset_digest": "sha256:7847c9d0e09170531e13ba07531fabb3ea6f0aa6b0122298b733726d2055856d",
+    "format": "latentguard-m4b-teacher-cache-v1",
+    "git_sha": "61f05e5aef7b9894a05d392a56003b37fc6d774c",
+    "resume_computed_count": 0,
+    "split_digest": "sha256:173ca40a072a1977cc65dbcccedb4684ae573e97f3984c176e3f91bba09f940a",
+    "teacher_bundle_digest": "sha256:3f58fb6b87a444f74439b93e78693e9f7bdf07bbfaf89278a3e7eaa04a01bd32"
+  }
+}

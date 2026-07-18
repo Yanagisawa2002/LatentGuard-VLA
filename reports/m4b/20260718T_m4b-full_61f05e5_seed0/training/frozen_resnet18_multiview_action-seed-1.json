@@ -1,0 +1,43 @@
+{
+  "best_checkpoint_digest": "sha256:743a0ef6a99894059ec0808a1dff101553c10113e6824c46b92dbdafabcf048d",
+  "completed_epochs": 20,
+  "content_digest": "sha256:201c91e08464697b0e4ff6dcb066c297b3d50c32394b0b04f7d59c0daf1480bb",
+  "domain_results": [
+    {
+      "brier_score": 0.08219493280699297,
+      "candidate_count": 324,
+      "corrupted_only_failure_auprc": 0.88284414750204,
+      "domain_id": "canonical",
+      "failure_auprc": 0.8792986480064189,
+      "pairwise_concordance": 0.9698979591836735
+    },
+    {
+      "brier_score": 0.08142996275134064,
+      "candidate_count": 324,
+      "corrupted_only_failure_auprc": 0.8759254738295299,
+      "domain_id": "mild_camera_shift",
+      "failure_auprc": 0.8724412526297802,
+      "pairwise_concordance": 0.9721301020408164
+    },
+    {
+      "brier_score": 0.08021622268234299,
+      "candidate_count": 324,
+      "corrupted_only_failure_auprc": 0.8830273221417119,
+      "domain_id": "mild_lighting_shift",
+      "failure_auprc": 0.8799211311017762,
+      "pairwise_concordance": 0.9698979591836735
+    }
+  ],
+  "duration_seconds": 20.73416244611144,
+  "global_steps": 820,
+  "mean_corrupted_only_failure_auprc": 0.8805989811577605,
+  "model_id": "frozen_resnet18_multiview_action",
+  "peak_gpu_memory_bytes": 38022144,
+  "resumed": false,
+  "seed": 1,
+  "selected_epoch": 13,
+  "total_parameters": 500610,
+  "trainable_parameters": 500610,
+  "worst_domain_corrupted_only_failure_auprc": 0.8759254738295299,
+  "zero_work_resume": false
+}

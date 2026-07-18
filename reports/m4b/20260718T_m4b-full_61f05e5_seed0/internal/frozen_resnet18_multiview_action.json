@@ -1,0 +1,3133 @@
+{
+  "calibration": [
+    {
+      "checkpoint_content_digest": "sha256:60373e2e485837970e6c7929eb6f6f4347aee4e4f199bdf26d352789e401255b",
+      "checkpoint_identity": "m4b-run-sha256-29497af6d671ad1f83e370cf4a2a5f79971bfc4b615d4e24c85dadd23850bcb5",
+      "content_digest": "sha256:16cfe3da91db9d588f94cbfe2f77ffa88feafbae59fcf0846c0d1684b49d31f6",
+      "dataset_digest": "sha256:7847c9d0e09170531e13ba07531fabb3ea6f0aa6b0122298b733726d2055856d",
+      "method": "bounded_log_temperature_golden_section_v1",
+      "model_config_digest": "sha256:1450011719aa356492fe96c6f1e5b017926415038fb2c5defbd1af17c688b2c8",
+      "preprocessing_digest": "sha256:b779039966aba90a63d6c3d4abfbf5af929a0084ecdc9b1c0fc996c17e4fbd97",
+      "schema_version": "1.0",
+      "split_digest": "sha256:173ca40a072a1977cc65dbcccedb4684ae573e97f3984c176e3f91bba09f940a",
+      "temperature": 0.8397970131609377,
+      "validation_prediction_digest": "sha256:d750e72d2420351c7b872260c81b50a5e21f615132aa1c35e5f8b9661c4a244c"
+    },
+    {
+      "checkpoint_content_digest": "sha256:743a0ef6a99894059ec0808a1dff101553c10113e6824c46b92dbdafabcf048d",
+      "checkpoint_identity": "m4b-run-sha256-ae7c8eea756bfab17a2a91f1fa983b93dd05c577654151ce39636d613dfa48b4",
+      "content_digest": "sha256:535e5c027120ff200eec623a5015431c840f736d294abed892681e67a8a80f4c",
+      "dataset_digest": "sha256:7847c9d0e09170531e13ba07531fabb3ea6f0aa6b0122298b733726d2055856d",
+      "method": "bounded_log_temperature_golden_section_v1",
+      "model_config_digest": "sha256:1450011719aa356492fe96c6f1e5b017926415038fb2c5defbd1af17c688b2c8",
+      "preprocessing_digest": "sha256:b779039966aba90a63d6c3d4abfbf5af929a0084ecdc9b1c0fc996c17e4fbd97",
+      "schema_version": "1.0",
+      "split_digest": "sha256:173ca40a072a1977cc65dbcccedb4684ae573e97f3984c176e3f91bba09f940a",
+      "temperature": 1.1229990141942858,
+      "validation_prediction_digest": "sha256:ccc75463673bc57f1ead94b1d0eba4618c7b04b3256c3367fa17569598ea51aa"
+    },
+    {
+      "checkpoint_content_digest": "sha256:edde4caa6cb8a9403e19ce291a64b17f8ad6c19c176eeac15f53422856394d2d",
+      "checkpoint_identity": "m4b-run-sha256-80fa1b72b8a7deb98aac6ea7d995f0039d581a6687f04574d6748c67509c7b3a",
+      "content_digest": "sha256:454c158e9dbc5cc295709ce7551046f989a7599a4ac8e7c216086e9e28d0c77f",
+      "dataset_digest": "sha256:7847c9d0e09170531e13ba07531fabb3ea6f0aa6b0122298b733726d2055856d",
+      "method": "bounded_log_temperature_golden_section_v1",
+      "model_config_digest": "sha256:1450011719aa356492fe96c6f1e5b017926415038fb2c5defbd1af17c688b2c8",
+      "preprocessing_digest": "sha256:b779039966aba90a63d6c3d4abfbf5af929a0084ecdc9b1c0fc996c17e4fbd97",
+      "schema_version": "1.0",
+      "split_digest": "sha256:173ca40a072a1977cc65dbcccedb4684ae573e97f3984c176e3f91bba09f940a",
+      "temperature": 1.4269794342726707,
+      "validation_prediction_digest": "sha256:83700453786a8383fad149ab639c396f0a2c7021e2200f7eb2d337ea59853a49"
+    }
+  ],
+  "checkpoint_digests": [
+    "sha256:60373e2e485837970e6c7929eb6f6f4347aee4e4f199bdf26d352789e401255b",
+    "sha256:743a0ef6a99894059ec0808a1dff101553c10113e6824c46b92dbdafabcf048d",
+    "sha256:edde4caa6cb8a9403e19ce291a64b17f8ad6c19c176eeac15f53422856394d2d"
+  ],
+  "content_digest": "sha256:01a52cf6fc1ceb4a426788c7adf38a12d7b86c8bd9b3605a6fba3358f0b3d3cc",
+  "domains": {
+    "canonical": {
+      "binary_metrics": {
+        "balanced_accuracy": {
+          "reason": null,
+          "status": "defined",
+          "value": 0.870884106818771
+        },
+        "brier_score": {
+          "reason": null,
+          "status": "defined",
+          "value": 0.0778156147351558
+        },
+        "confusion_matrix": {
+          "false_negative": 8,
+          "false_positive": 32,
+          "true_negative": 234,
+          "true_positive": 50
+        },
+        "expected_calibration_error": {
+          "reason": null,
+          "status": "defined",
+          "value": 0.09147081432761667
+        },
+        "f1": {
+          "reason": null,
+          "status": "defined",
+          "value": 0.7142857142857144
+        },
+        "failure_auprc": {
+          "reason": null,
+          "status": "defined",
+          "value": 0.8705769492634359
+        },
+        "failure_count": 58,
+        "failure_prevalence": {
+          "reason": null,
+          "status": "defined",
+          "value": 0.17901234567901234
+        },
+        "matthews_correlation_coefficient": {
+          "reason": null,
+          "status": "defined",
+          "value": 0.6540461971311037
+        },
+        "negative_log_likelihood": {
+          "reason": null,
+          "status": "defined",
+          "value": 0.25056304098264937
+        },
+        "precision": {
+          "reason": null,
+          "status": "defined",
+          "value": 0.6097560975609756
+        },
+        "probability_clip_epsilon": 2.220446049250313e-16,
+        "recall": {
+          "reason": null,
+          "status": "defined",
+          "value": 0.8620689655172413
+        },
+        "reliability_bins": [
+          {
+            "count": 182,
+            "empirical_failure_rate": 0.005494505494505495,
+            "lower_bound": 0.0,
+            "mean_failure_probability": 0.039938661701612116,
+            "upper_bound": 0.1,
+            "upper_inclusive": false
+          },
+          {
+            "count": 29,
+            "empirical_failure_rate": 0.06896551724137931,
+            "lower_bound": 0.1,
+            "mean_failure_probability": 0.15217522249600657,
+            "upper_bound": 0.2,
+            "upper_inclusive": false
+          },
+          {
+            "count": 23,
+            "empirical_failure_rate": 0.13043478260869565,
+            "lower_bound": 0.2,
+            "mean_failure_probability": 0.24253516917503273,
+            "upper_bound": 0.3,
+            "upper_inclusive": false
+          },
+          {
+            "count": 6,
+            "empirical_failure_rate": 0.16666666666666666,
+            "lower_bound": 0.3,
+            "mean_failure_probability": 0.3360645254137367,
+            "upper_bound": 0.4,
+            "upper_inclusive": false
+          },
+          {
+            "count": 5,
+            "empirical_failure_rate": 0.4,
+            "lower_bound": 0.4,
+            "mean_failure_probability": 0.45751201837295835,
+            "upper_bound": 0.5,
+            "upper_inclusive": false
+          },
+          {
+            "count": 12,
+            "empirical_failure_rate": 0.25,
+            "lower_bound": 0.5,
+            "mean_failure_probability": 0.5530002456926445,
+            "upper_bound": 0.6,
+            "upper_inclusive": false
+          },
+          {
+            "count": 6,
+            "empirical_failure_rate": 0.0,
+            "lower_bound": 0.6,
+            "mean_failure_probability": 0.6386175179860868,
+            "upper_bound": 0.7,
+            "upper_inclusive": false
+          },
+          {
+            "count": 7,
+            "empirical_failure_rate": 0.14285714285714285,
+            "lower_bound": 0.7,
+            "mean_failure_probability": 0.7510994639754408,
+            "upper_bound": 0.8,
+            "upper_inclusive": false
+          },
+          {
+            "count": 17,
+            "empirical_failure_rate": 0.6470588235294118,
+            "lower_bound": 0.8,
+            "mean_failure_probability": 0.8524087737647711,
+            "upper_bound": 0.9,
+            "upper_inclusive": false
+          },
+          {
+            "count": 37,
+            "empirical_failure_rate": 0.918918918918919,
+            "lower_bound": 0.9,
+            "mean_failure_probability": 0.9690815234226973,
+            "upper_bound": 1.0,
+            "upper_inclusive": true
+          }
+        ],
+        "roc_auc": {
+          "reason": null,
+          "status": "defined",
+          "value": 0.9583873476795437
+        },
+        "sample_count": 324,
+        "specificity": {
+          "reason": null,
+          "status": "defined",
+          "value": 0.8796992481203008
+        },
+        "success_auprc": {
+          "reason": null,
+          "status": "defined",
+          "value": 0.9905277189070606
+        },
+        "success_count": 266,
+        "threshold": 0.4467518099724223
+      },
+      "candidate_selection": {
+        "coverage": 1.0,
+        "group_count": 36,
+        "selected_success_rate": 1.0,
+        "task_failure_rate": 0.0
+      },
+      "coverage_risk": {
+        "area_semantic": "tie_block_right_step_mean_v1",
+        "area_under_risk_coverage_curve": {
+          "reason": null,
+          "status": "defined",
+          "value": 0.025339309116878622
+        },
+        "failure_count": 58,
+        "points": [
+          {
+            "observed_coverage": 1.0,
+            "rejected_count": 0,
+            "rejected_failure_recall": {
+              "reason": null,
+              "status": "defined",
+              "value": 0.0
+            },
+            "requested_coverage": 1.0,
+            "retained_count": 324,
+            "retained_failure_rate": {
+              "reason": null,
+              "status": "defined",
+              "value": 0.17901234567901234
+            },
+            "retained_success_rate": {
+              "reason": null,
+              "status": "defined",
+              "value": 0.8209876543209876
+            },
+            "threshold": 0.9912766353696755
+          },
+          {
+            "observed_coverage": 0.9012345679012346,
+            "rejected_count": 32,
+            "rejected_failure_recall": {
+              "reason": null,
+              "status": "defined",
+              "value": 0.5517241379310345
+            },
+            "requested_coverage": 0.9,
+            "retained_count": 292,
+            "retained_failure_rate": {
+              "reason": null,
+              "status": "defined",
+              "value": 0.08904109589041095
+            },
+            "retained_success_rate": {
+              "reason": null,
+              "status": "defined",
+              "value": 0.910958904109589
+            },
+            "threshold": 0.9240541106477718
+          },
+          {
+            "observed_coverage": 0.8024691358024691,
+            "rejected_count": 64,
+            "rejected_failure_recall": {
+              "reason": null,
+              "status": "defined",
+              "value": 0.7931034482758621
+            },
+            "requested_coverage": 0.8,
+            "retained_count": 260,
+            "retained_failure_rate": {
+              "reason": null,
+              "status": "defined",
+              "value": 0.046153846153846156
+            },
+            "retained_success_rate": {
+              "reason": null,
+              "status": "defined",
+              "value": 0.9538461538461538
+            },
+            "threshold": 0.6088101484721654
+          },
+          {
+            "observed_coverage": 0.7006172839506173,
+            "rejected_count": 97,
+            "rejected_failure_recall": {
+              "reason": null,
+              "status": "defined",
+              "value": 0.9137931034482759
+            },
+            "requested_coverage": 0.7,
+            "retained_count": 227,
+            "retained_failure_rate": {
+              "reason": null,
+              "status": "defined",
+              "value": 0.022026431718061675
+            },
+            "retained_success_rate": {
+              "reason": null,
+              "status": "defined",
+              "value": 0.9779735682819384
+            },
+            "threshold": 0.24645242267638526
+          },
+          {
+            "observed_coverage": 0.5,
+            "rejected_count": 162,
+            "rejected_failure_recall": {
+              "reason": null,
+              "status": "defined",
+              "value": 1.0
+            },
+            "requested_coverage": 0.5,
+            "retained_count": 162,
+            "retained_failure_rate": {
+              "reason": null,
+              "status": "defined",
+              "value": 0.0
+            },
+            "retained_success_rate": {
+              "reason": null,
+              "status": "defined",
+              "value": 1.0
+            },
+            "threshold": 0.07350216695521831
+          }
+        ],
+        "sample_count": 324,
+        "threshold_semantic": "ceil_rank_retain_all_boundary_ties_v1"
+      },
+      "group_ranking": {
+        "both_class_group_count": 27,
+        "corrupted_top1_eligible_group_count": 36,
+        "corrupted_top1_failure_rate": {
+          "reason": null,
+          "status": "defined",
+          "value": 0.0
+        },
+        "corrupted_top1_success": {
+          "reason": null,
+          "status": "defined",
+          "value": 1.0
+        },
+        "group_count": 36,
+        "mean_reciprocal_rank_first_success": {
+          "reason": null,
+          "status": "defined",
+          "value": 1.0
+        },
+        "mean_source_success_margin_over_failed_corruptions": {
+          "reason": null,
+          "status": "defined",
+          "value": 0.6710493664514381
+        },
+        "pairwise_comparison_count": 306,
+        "pairwise_success_over_failure_concordance": {
+          "reason": null,
+          "status": "defined",
+          "value": 0.9820987654320987
+        },
+        "random_choice_success_expectation": {
+          "reason": null,
+          "status": "defined",
+          "value": 0.7986111111111112
+        },
+        "source_margin_group_count": 27,
+        "source_margin_pair_count": 58
+      },
+      "prediction_digest": "sha256:a35bae2bb1654224f9116b4b88b4982b666874750c9e4e6404b8bfa8604cd5b2",
+      "raw_predictions_persisted": false,
+      "robustness": {
+        "failure_auprc_drop_from_canonical": 0.0,
+        "selected_success_drop_from_canonical": 0.0,
+        "selected_success_paired_bootstrap_vs_canonical": {
+          "bootstrap_samples": 2000,
+          "confidence_lower": 0.0,
+          "confidence_upper": 0.0,
+          "estimate": 0.0,
+          "resampling_unit": "source_trajectory",
+          "seed": 271828
+        }
+      },
+      "seed_metrics": [
+        {
+          "binary_metrics": {
+            "balanced_accuracy": {
+              "reason": null,
+              "status": "defined",
+              "value": 0.8914311641171895
+            },
+            "brier_score": {
+              "reason": null,
+              "status": "defined",
+              "value": 0.07336746536061806
+            },
+            "confusion_matrix": {
+              "false_negative": 3,
+              "false_positive": 44,
+              "true_negative": 222,
+              "true_positive": 55
+            },
+            "expected_calibration_error": {
+              "reason": null,
+              "status": "defined",
+              "value": 0.07817241779980554
+            },
+            "f1": {
+              "reason": null,
+              "status": "defined",
+              "value": 0.7006369426751592
+            },
+            "failure_auprc": {
+              "reason": null,
+              "status": "defined",
+              "value": 0.8769037945138443
+            },
+            "failure_count": 58,
+            "failure_prevalence": {
+              "reason": null,
+              "status": "defined",
+              "value": 0.17901234567901234
+            },
+            "matthews_correlation_coefficient": {
+              "reason": null,
+              "status": "defined",
+              "value": 0.6515254034259199
+            },
+            "negative_log_likelihood": {
+              "reason": null,
+              "status": "defined",
+              "value": 0.23991456555157487
+            },
+            "precision": {
+              "reason": null,
+              "status": "defined",
+              "value": 0.5555555555555556
+            },
+            "probability_clip_epsilon": 2.220446049250313e-16,
+            "recall": {
+              "reason": null,
+              "status": "defined",
+              "value": 0.9482758620689655
+            },
+            "reliability_bins": [
+              {
+                "count": 189,
+                "empirical_failure_rate": 0.010582010582010581,
+                "lower_bound": 0.0,
+                "mean_failure_probability": 0.03324893896394141,
+                "upper_bound": 0.1,
+                "upper_inclusive": false
+              },
+              {
+                "count": 32,
+                "empirical_failure_rate": 0.03125,
+                "lower_bound": 0.1,
+                "mean_failure_probability": 0.14212096412691888,
+                "upper_bound": 0.2,
+                "upper_inclusive": false
+              },
+              {
+                "count": 19,
+                "empirical_failure_rate": 0.15789473684210525,
+                "lower_bound": 0.2,
+                "mean_failure_probability": 0.25988919270941363,
+                "upper_bound": 0.3,
+                "upper_inclusive": false
+              },
+              {
+                "count": 13,
+                "empirical_failure_rate": 0.38461538461538464,
+                "lower_bound": 0.3,
+                "mean_failure_probability": 0.354724847585862,
+                "upper_bound": 0.4,
+                "upper_inclusive": false
+              },
+              {
+                "count": 0,
+                "empirical_failure_rate": null,
+                "lower_bound": 0.4,
+                "mean_failure_probability": null,
+                "upper_bound": 0.5,
+                "upper_inclusive": false
+              },
+              {
+                "count": 3,
+                "empirical_failure_rate": 0.0,
+                "lower_bound": 0.5,
+                "mean_failure_probability": 0.5249376144659909,
+                "upper_bound": 0.6,
+                "upper_inclusive": false
+              },
+              {
+                "count": 6,
+                "empirical_failure_rate": 0.16666666666666666,
+                "lower_bound": 0.6,
+                "mean_failure_probability": 0.6480599242589363,
+                "upper_bound": 0.7,
+                "upper_inclusive": false
+              },
+              {
+                "count": 9,
+                "empirical_failure_rate": 0.3333333333333333,
+                "lower_bound": 0.7,
+                "mean_failure_probability": 0.773681985894871,
+                "upper_bound": 0.8,
+                "upper_inclusive": false
+              },
+              {
+                "count": 16,
+                "empirical_failure_rate": 0.5625,
+                "lower_bound": 0.8,
+                "mean_failure_probability": 0.8522098627562196,
+                "upper_bound": 0.9,
+                "upper_inclusive": false
+              },
+              {
+                "count": 37,
+                "empirical_failure_rate": 0.918918918918919,
+                "lower_bound": 0.9,
+                "mean_failure_probability": 0.9758865768087315,
+                "upper_bound": 1.0,
+                "upper_inclusive": true
+              }
+            ],
+            "roc_auc": {
+              "reason": null,
+              "status": "defined",
+              "value": 0.9504148301788955
+            },
+            "sample_count": 324,
+            "specificity": {
+              "reason": null,
+              "status": "defined",
+              "value": 0.8345864661654135
+            },
+            "success_auprc": {
+              "reason": null,
+              "status": "defined",
+              "value": 0.9863729436157029
+            },
+            "success_count": 266,
+            "threshold": 0.23524151420163916
+          },
+          "group_ranking": {
+            "both_class_group_count": 27,
+            "corrupted_top1_eligible_group_count": 36,
+            "corrupted_top1_failure_rate": {
+              "reason": null,
+              "status": "defined",
+              "value": 0.0
+            },
+            "corrupted_top1_success": {
+              "reason": null,
+              "status": "defined",
+              "value": 1.0
+            },
+            "group_count": 36,
+            "mean_reciprocal_rank_first_success": {
+              "reason": null,
+              "status": "defined",
+              "value": 1.0
+            },
+            "mean_source_success_margin_over_failed_corruptions": {
+              "reason": null,
+              "status": "defined",
+              "value": 0.6908942174624568
+            },
+            "pairwise_comparison_count": 306,
+            "pairwise_success_over_failure_concordance": {
+              "reason": null,
+              "status": "defined",
+              "value": 0.9766975308641975
+            },
+            "random_choice_success_expectation": {
+              "reason": null,
+              "status": "defined",
+              "value": 0.7986111111111112
+            },
+            "source_margin_group_count": 27,
+            "source_margin_pair_count": 58
+          },
+          "seed": 0
+        },
+        {
+          "binary_metrics": {
+            "balanced_accuracy": {
+              "reason": null,
+              "status": "defined",
+              "value": 0.8619393310863366
+            },
+            "brier_score": {
+              "reason": null,
+              "status": "defined",
+              "value": 0.08259337622689478
+            },
+            "confusion_matrix": {
+              "false_negative": 11,
+              "false_positive": 23,
+              "true_negative": 243,
+              "true_positive": 47
+            },
+            "expected_calibration_error": {
+              "reason": null,
+              "status": "defined",
+              "value": 0.08355973343455499
+            },
+            "f1": {
+              "reason": null,
+              "status": "defined",
+              "value": 0.7343749999999999
+            },
+            "failure_auprc": {
+              "reason": null,
+              "status": "defined",
+              "value": 0.848467020361915
+            },
+            "failure_count": 58,
+            "failure_prevalence": {
+              "reason": null,
+              "status": "defined",
+              "value": 0.17901234567901234
+            },
+            "matthews_correlation_coefficient": {
+              "reason": null,
+              "status": "defined",
+              "value": 0.6743024099833542
+            },
+            "negative_log_likelihood": {
+              "reason": null,
+              "status": "defined",
+              "value": 0.2701628588310972
+            },
+            "precision": {
+              "reason": null,
+              "status": "defined",
+              "value": 0.6714285714285714
+            },
+            "probability_clip_epsilon": 2.220446049250313e-16,
+            "recall": {
+              "reason": null,
+              "status": "defined",
+              "value": 0.8103448275862069
+            },
+            "reliability_bins": [
+              {
+                "count": 198,
+                "empirical_failure_rate": 0.005050505050505051,
+                "lower_bound": 0.0,
+                "mean_failure_probability": 0.04045361852057667,
+                "upper_bound": 0.1,
+                "upper_inclusive": false
+              },
+              {
+                "count": 34,
+                "empirical_failure_rate": 0.14705882352941177,
+                "lower_bound": 0.1,
+                "mean_failure_probability": 0.136522423813115,
+                "upper_bound": 0.2,
+                "upper_inclusive": false
+              },
+              {
+                "count": 3,
+                "empirical_failure_rate": 0.0,
+                "lower_bound": 0.2,
+                "mean_failure_probability": 0.23456325819350746,
+                "upper_bound": 0.3,
+                "upper_inclusive": false
+              },
+              {
+                "count": 8,
+                "empirical_failure_rate": 0.375,
+                "lower_bound": 0.3,
+                "mean_failure_probability": 0.3478251990826735,
+                "upper_bound": 0.4,
+                "upper_inclusive": false
+              },
+              {
+                "count": 7,
+                "empirical_failure_rate": 0.2857142857142857,
+                "lower_bound": 0.4,
+                "mean_failure_probability": 0.43413604323601823,
+                "upper_bound": 0.5,
+                "upper_inclusive": false
+              },
+              {
+                "count": 2,
+                "empirical_failure_rate": 0.0,
+                "lower_bound": 0.5,
+                "mean_failure_probability": 0.55342582886954,
+                "upper_bound": 0.6,
+                "upper_inclusive": false
+              },
+              {
+                "count": 7,
+                "empirical_failure_rate": 0.14285714285714285,
+                "lower_bound": 0.6,
+                "mean_failure_probability": 0.6552549320557256,
+                "upper_bound": 0.7,
+                "upper_inclusive": false
+              },
+              {
+                "count": 11,
+                "empirical_failure_rate": 0.36363636363636365,
+                "lower_bound": 0.7,
+                "mean_failure_probability": 0.7688906273014587,
+                "upper_bound": 0.8,
+                "upper_inclusive": false
+              },
+              {
+                "count": 13,
+                "empirical_failure_rate": 0.6153846153846154,
+                "lower_bound": 0.8,
+                "mean_failure_probability": 0.8384912229208143,
+                "upper_bound": 0.9,
+                "upper_inclusive": false
+              },
+              {
+                "count": 41,
+                "empirical_failure_rate": 0.8292682926829268,
+                "lower_bound": 0.9,
+                "mean_failure_probability": 0.9681326856190364,
+                "upper_bound": 1.0,
+                "upper_inclusive": true
+              }
+            ],
+            "roc_auc": {
+              "reason": null,
+              "status": "defined",
+              "value": 0.9524241638579206
+            },
+            "sample_count": 324,
+            "specificity": {
+              "reason": null,
+              "status": "defined",
+              "value": 0.9135338345864662
+            },
+            "success_auprc": {
+              "reason": null,
+              "status": "defined",
+              "value": 0.9889339284797508
+            },
+            "success_count": 266,
+            "threshold": 0.6163355143823782
+          },
+          "group_ranking": {
+            "both_class_group_count": 27,
+            "corrupted_top1_eligible_group_count": 36,
+            "corrupted_top1_failure_rate": {
+              "reason": null,
+              "status": "defined",
+              "value": 0.037037037037037035
+            },
+            "corrupted_top1_success": {
+              "reason": null,
+              "status": "defined",
+              "value": 0.9722222222222222
+            },
+            "group_count": 36,
+            "mean_reciprocal_rank_first_success": {
+              "reason": null,
+              "status": "defined",
+              "value": 0.9814814814814815
+            },
+            "mean_source_success_margin_over_failed_corruptions": {
+              "reason": null,
+              "status": "defined",
+              "value": 0.6734692642382937
+            },
+            "pairwise_comparison_count": 306,
+            "pairwise_success_over_failure_concordance": {
+              "reason": null,
+              "status": "defined",
+              "value": 0.9635802469135802
+            },
+            "random_choice_success_expectation": {
+              "reason": null,
+              "status": "defined",
+              "value": 0.7986111111111112
+            },
+            "source_margin_group_count": 27,
+            "source_margin_pair_count": 58
+          },
+          "seed": 1
+        },
+        {
+          "binary_metrics": {
+            "balanced_accuracy": {
+              "reason": null,
+              "status": "defined",
+              "value": 0.870884106818771
+            },
+            "brier_score": {
+              "reason": null,
+              "status": "defined",
+              "value": 0.09880769064006346
+            },
+            "confusion_matrix": {
+              "false_negative": 8,
+              "false_positive": 32,
+              "true_negative": 234,
+              "true_positive": 50
+            },
+            "expected_calibration_error": {
+              "reason": null,
+              "status": "defined",
+              "value": 0.12117129526300513
+            },
+            "f1": {
+              "reason": null,
+              "status": "defined",
+              "value": 0.7142857142857144
+            },
+            "failure_auprc": {
+              "reason": null,
+              "status": "defined",
+              "value": 0.8534596219481655
+            },
+            "failure_count": 58,
+            "failure_prevalence": {
+              "reason": null,
+              "status": "defined",
+              "value": 0.17901234567901234
+            },
+            "matthews_correlation_coefficient": {
+              "reason": null,
+              "status": "defined",
+              "value": 0.6540461971311037
+            },
+            "negative_log_likelihood": {
+              "reason": null,
+              "status": "defined",
+              "value": 0.3137865446469783
+            },
+            "precision": {
+              "reason": null,
+              "status": "defined",
+              "value": 0.6097560975609756
+            },
+            "probability_clip_epsilon": 2.220446049250313e-16,
+            "recall": {
+              "reason": null,
+              "status": "defined",
+              "value": 0.8620689655172413
+            },
+            "reliability_bins": [
+              {
+                "count": 177,
+                "empirical_failure_rate": 0.005649717514124294,
+                "lower_bound": 0.0,
+                "mean_failure_probability": 0.03920588941282688,
+                "upper_bound": 0.1,
+                "upper_inclusive": false
+              },
+              {
+                "count": 26,
+                "empirical_failure_rate": 0.11538461538461539,
+                "lower_bound": 0.1,
+                "mean_failure_probability": 0.13504926695615105,
+                "upper_bound": 0.2,
+                "upper_inclusive": false
+              },
+              {
+                "count": 14,
+                "empirical_failure_rate": 0.14285714285714285,
+                "lower_bound": 0.2,
+                "mean_failure_probability": 0.25306261480207554,
+                "upper_bound": 0.3,
+                "upper_inclusive": false
+              },
+              {
+                "count": 7,
+                "empirical_failure_rate": 0.14285714285714285,
+                "lower_bound": 0.3,
+                "mean_failure_probability": 0.3616033934402087,
+                "upper_bound": 0.4,
+                "upper_inclusive": false
+              },
+              {
+                "count": 18,
+                "empirical_failure_rate": 0.05555555555555555,
+                "lower_bound": 0.4,
+                "mean_failure_probability": 0.4501601205137919,
+                "upper_bound": 0.5,
+                "upper_inclusive": false
+              },
+              {
+                "count": 1,
+                "empirical_failure_rate": 1.0,
+                "lower_bound": 0.5,
+                "mean_failure_probability": 0.5886704097249712,
+                "upper_bound": 0.6,
+                "upper_inclusive": false
+              },
+              {
+                "count": 5,
+                "empirical_failure_rate": 0.2,
+                "lower_bound": 0.6,
+                "mean_failure_probability": 0.6298637730043428,
+                "upper_bound": 0.7,
+                "upper_inclusive": false
+              },
+              {
+                "count": 15,
+                "empirical_failure_rate": 0.06666666666666667,
+                "lower_bound": 0.7,
+                "mean_failure_probability": 0.7375674354010398,
+                "upper_bound": 0.8,
+                "upper_inclusive": false
+              },
+              {
+                "count": 14,
+                "empirical_failure_rate": 0.7142857142857143,
+                "lower_bound": 0.8,
+                "mean_failure_probability": 0.8512343205119574,
+                "upper_bound": 0.9,
+                "upper_inclusive": false
+              },
+              {
+                "count": 47,
+                "empirical_failure_rate": 0.7872340425531915,
+                "lower_bound": 0.9,
+                "mean_failure_probability": 0.9593692190264864,
+                "upper_bound": 1.0,
+                "upper_inclusive": true
+              }
+            ],
+            "roc_auc": {
+              "reason": null,
+              "status": "defined",
+              "value": 0.9462017111744879
+            },
+            "sample_count": 324,
+            "specificity": {
+              "reason": null,
+              "status": "defined",
+              "value": 0.8796992481203008
+            },
+            "success_auprc": {
+              "reason": null,
+              "status": "defined",
+              "value": 0.98668891931799
+            },
+            "success_count": 266,
+            "threshold": 0.48867840133324947
+          },
+          "group_ranking": {
+            "both_class_group_count": 27,
+            "corrupted_top1_eligible_group_count": 36,
+            "corrupted_top1_failure_rate": {
+              "reason": null,
+              "status": "defined",
+              "value": 0.037037037037037035
+            },
+            "corrupted_top1_success": {
+              "reason": null,
+              "status": "defined",
+              "value": 0.9722222222222222
+            },
+            "group_count": 36,
+            "mean_reciprocal_rank_first_success": {
+              "reason": null,
+              "status": "defined",
+              "value": 0.9814814814814815
+            },
+            "mean_source_success_margin_over_failed_corruptions": {
+              "reason": null,
+              "status": "defined",
+              "value": 0.6487846176535643
+            },
+            "pairwise_comparison_count": 306,
+            "pairwise_success_over_failure_concordance": {
+              "reason": null,
+              "status": "defined",
+              "value": 0.9728395061728394
+            },
+            "random_choice_success_expectation": {
+              "reason": null,
+              "status": "defined",
+              "value": 0.7986111111111112
+            },
+            "source_margin_group_count": 27,
+            "source_margin_pair_count": 58
+          },
+          "seed": 2
+        }
+      ],
+      "three_seed_statistics": {
+        "brier_score": {
+          "maximum": 0.09880769064006346,
+          "mean": 0.08492284407585876,
+          "median": 0.08259337622689478,
+          "minimum": 0.07336746536061806,
+          "standard_deviation": 0.010515736807653279
+        },
+        "expected_calibration_error": {
+          "maximum": 0.12117129526300513,
+          "mean": 0.09430114883245522,
+          "median": 0.08355973343455499,
+          "minimum": 0.07817241779980554,
+          "standard_deviation": 0.019126933354766163
+        },
+        "failure_auprc": {
+          "maximum": 0.8769037945138443,
+          "mean": 0.8596101456079749,
+          "median": 0.8534596219481655,
+          "minimum": 0.848467020361915,
+          "standard_deviation": 0.01239715658284497
+        },
+        "roc_auc": {
+          "maximum": 0.9524241638579206,
+          "mean": 0.9496802350704346,
+          "median": 0.9504148301788955,
+          "minimum": 0.9462017111744879,
+          "standard_deviation": 0.0025928686596664308
+        }
+      }
+    },
+    "strong_camera_shift": {
+      "binary_metrics": {
+        "balanced_accuracy": {
+          "reason": null,
+          "status": "defined",
+          "value": 0.864143116411719
+        },
+        "brier_score": {
+          "reason": null,
+          "status": "defined",
+          "value": 0.07821621870772519
+        },
+        "confusion_matrix": {
+          "false_negative": 9,
+          "false_positive": 31,
+          "true_negative": 235,
+          "true_positive": 49
+        },
+        "expected_calibration_error": {
+          "reason": null,
+          "status": "defined",
+          "value": 0.09203105613436809
+        },
+        "f1": {
+          "reason": null,
+          "status": "defined",
+          "value": 0.7101449275362319
+        },
+        "failure_auprc": {
+          "reason": null,
+          "status": "defined",
+          "value": 0.8671588114108412
+        },
+        "failure_count": 58,
+        "failure_prevalence": {
+          "reason": null,
+          "status": "defined",
+          "value": 0.17901234567901234
+        },
+        "matthews_correlation_coefficient": {
+          "reason": null,
+          "status": "defined",
+          "value": 0.6474660615197406
+        },
+        "negative_log_likelihood": {
+          "reason": null,
+          "status": "defined",
+          "value": 0.2573508396503181
+        },
+        "precision": {
+          "reason": null,
+          "status": "defined",
+          "value": 0.6125
+        },
+        "probability_clip_epsilon": 2.220446049250313e-16,
+        "recall": {
+          "reason": null,
+          "status": "defined",
+          "value": 0.8448275862068966
+        },
+        "reliability_bins": [
+          {
+            "count": 170,
+            "empirical_failure_rate": 0.011764705882352941,
+            "lower_bound": 0.0,
+            "mean_failure_probability": 0.04331466430354287,
+            "upper_bound": 0.1,
+            "upper_inclusive": false
+          },
+          {
+            "count": 41,
+            "empirical_failure_rate": 0.024390243902439025,
+            "lower_bound": 0.1,
+            "mean_failure_probability": 0.13741424501368676,
+            "upper_bound": 0.2,
+            "upper_inclusive": false
+          },
+          {
+            "count": 23,
+            "empirical_failure_rate": 0.13043478260869565,
+            "lower_bound": 0.2,
+            "mean_failure_probability": 0.24473619168973873,
+            "upper_bound": 0.3,
+            "upper_inclusive": false
+          },
+          {
+            "count": 7,
+            "empirical_failure_rate": 0.2857142857142857,
+            "lower_bound": 0.3,
+            "mean_failure_probability": 0.33597124063233025,
+            "upper_bound": 0.4,
+            "upper_inclusive": false
+          },
+          {
+            "count": 7,
+            "empirical_failure_rate": 0.42857142857142855,
+            "lower_bound": 0.4,
+            "mean_failure_probability": 0.44773362811276435,
+            "upper_bound": 0.5,
+            "upper_inclusive": false
+          },
+          {
+            "count": 9,
+            "empirical_failure_rate": 0.0,
+            "lower_bound": 0.5,
+            "mean_failure_probability": 0.5518539016829365,
+            "upper_bound": 0.6,
+            "upper_inclusive": false
+          },
+          {
+            "count": 9,
+            "empirical_failure_rate": 0.2222222222222222,
+            "lower_bound": 0.6,
+            "mean_failure_probability": 0.6574372935733693,
+            "upper_bound": 0.7,
+            "upper_inclusive": false
+          },
+          {
+            "count": 7,
+            "empirical_failure_rate": 0.2857142857142857,
+            "lower_bound": 0.7,
+            "mean_failure_probability": 0.7639375641527929,
+            "upper_bound": 0.8,
+            "upper_inclusive": false
+          },
+          {
+            "count": 15,
+            "empirical_failure_rate": 0.6666666666666666,
+            "lower_bound": 0.8,
+            "mean_failure_probability": 0.8470172264920325,
+            "upper_bound": 0.9,
+            "upper_inclusive": false
+          },
+          {
+            "count": 36,
+            "empirical_failure_rate": 0.9166666666666666,
+            "lower_bound": 0.9,
+            "mean_failure_probability": 0.9658132393482046,
+            "upper_bound": 1.0,
+            "upper_inclusive": true
+          }
+        ],
+        "roc_auc": {
+          "reason": null,
+          "status": "defined",
+          "value": 0.9506092818252528
+        },
+        "sample_count": 324,
+        "specificity": {
+          "reason": null,
+          "status": "defined",
+          "value": 0.8834586466165414
+        },
+        "success_auprc": {
+          "reason": null,
+          "status": "defined",
+          "value": 0.9877807324349409
+        },
+        "success_count": 266,
+        "threshold": 0.4467518099724223
+      },
+      "candidate_selection": {
+        "coverage": 1.0,
+        "group_count": 36,
+        "selected_success_rate": 1.0,
+        "task_failure_rate": 0.0
+      },
+      "coverage_risk": {
+        "area_semantic": "tie_block_right_step_mean_v1",
+        "area_under_risk_coverage_curve": {
+          "reason": null,
+          "status": "defined",
+          "value": 0.027611357419669018
+        },
+        "failure_count": 58,
+        "points": [
+          {
+            "observed_coverage": 1.0,
+            "rejected_count": 0,
+            "rejected_failure_recall": {
+              "reason": null,
+              "status": "defined",
+              "value": 0.0
+            },
+            "requested_coverage": 1.0,
+            "retained_count": 324,
+            "retained_failure_rate": {
+              "reason": null,
+              "status": "defined",
+              "value": 0.17901234567901234
+            },
+            "retained_success_rate": {
+              "reason": null,
+              "status": "defined",
+              "value": 0.8209876543209876
+            },
+            "threshold": 0.9911168899635497
+          },
+          {
+            "observed_coverage": 0.9012345679012346,
+            "rejected_count": 32,
+            "rejected_failure_recall": {
+              "reason": null,
+              "status": "defined",
+              "value": 0.5344827586206896
+            },
+            "requested_coverage": 0.9,
+            "retained_count": 292,
+            "retained_failure_rate": {
+              "reason": null,
+              "status": "defined",
+              "value": 0.09246575342465753
+            },
+            "retained_success_rate": {
+              "reason": null,
+              "status": "defined",
+              "value": 0.9075342465753424
+            },
+            "threshold": 0.9242159452702386
+          },
+          {
+            "observed_coverage": 0.8024691358024691,
+            "rejected_count": 64,
+            "rejected_failure_recall": {
+              "reason": null,
+              "status": "defined",
+              "value": 0.8103448275862069
+            },
+            "requested_coverage": 0.8,
+            "retained_count": 260,
+            "retained_failure_rate": {
+              "reason": null,
+              "status": "defined",
+              "value": 0.04230769230769231
+            },
+            "retained_success_rate": {
+              "reason": null,
+              "status": "defined",
+              "value": 0.9576923076923077
+            },
+            "threshold": 0.6482363577628368
+          },
+          {
+            "observed_coverage": 0.7037037037037037,
+            "rejected_count": 96,
+            "rejected_failure_recall": {
+              "reason": null,
+              "status": "defined",
+              "value": 0.9137931034482759
+            },
+            "requested_coverage": 0.7,
+            "retained_count": 228,
+            "retained_failure_rate": {
+              "reason": null,
+              "status": "defined",
+              "value": 0.021929824561403508
+            },
+            "retained_success_rate": {
+              "reason": null,
+              "status": "defined",
+              "value": 0.9780701754385965
+            },
+            "threshold": 0.2564185611523168
+          },
+          {
+            "observed_coverage": 0.5030864197530864,
+            "rejected_count": 161,
+            "rejected_failure_recall": {
+              "reason": null,
+              "status": "defined",
+              "value": 0.9655172413793104
+            },
+            "requested_coverage": 0.5,
+            "retained_count": 163,
+            "retained_failure_rate": {
+              "reason": null,
+              "status": "defined",
+              "value": 0.012269938650306749
+            },
+            "retained_success_rate": {
+              "reason": null,
+              "status": "defined",
+              "value": 0.9877300613496932
+            },
+            "threshold": 0.0868390165409552
+          }
+        ],
+        "sample_count": 324,
+        "threshold_semantic": "ceil_rank_retain_all_boundary_ties_v1"
+      },
+      "group_ranking": {
+        "both_class_group_count": 27,
+        "corrupted_top1_eligible_group_count": 36,
+        "corrupted_top1_failure_rate": {
+          "reason": null,
+          "status": "defined",
+          "value": 0.0
+        },
+        "corrupted_top1_success": {
+          "reason": null,
+          "status": "defined",
+          "value": 1.0
+        },
+        "group_count": 36,
+        "mean_reciprocal_rank_first_success": {
+          "reason": null,
+          "status": "defined",
+          "value": 1.0
+        },
+        "mean_source_success_margin_over_failed_corruptions": {
+          "reason": null,
+          "status": "defined",
+          "value": 0.6588342491832365
+        },
+        "pairwise_comparison_count": 306,
+        "pairwise_success_over_failure_concordance": {
+          "reason": null,
+          "status": "defined",
+          "value": 0.9820987654320987
+        },
+        "random_choice_success_expectation": {
+          "reason": null,
+          "status": "defined",
+          "value": 0.7986111111111112
+        },
+        "source_margin_group_count": 27,
+        "source_margin_pair_count": 58
+      },
+      "prediction_digest": "sha256:a0d1645f4e1e07367b10a27d54224247aad500f89307011184b4510f8173f2bb",
+      "raw_predictions_persisted": false,
+      "robustness": {
+        "failure_auprc_drop_from_canonical": 0.003418137852594705,
+        "selected_success_drop_from_canonical": 0.0,
+        "selected_success_paired_bootstrap_vs_canonical": {
+          "bootstrap_samples": 2000,
+          "confidence_lower": 0.0,
+          "confidence_upper": 0.0,
+          "estimate": 0.0,
+          "resampling_unit": "source_trajectory",
+          "seed": 271828
+        }
+      },
+      "seed_metrics": [
+        {
+          "binary_metrics": {
+            "balanced_accuracy": {
+              "reason": null,
+              "status": "defined",
+              "value": 0.8857920663728287
+            },
+            "brier_score": {
+              "reason": null,
+              "status": "defined",
+              "value": 0.0766332787242099
+            },
+            "confusion_matrix": {
+              "false_negative": 3,
+              "false_positive": 47,
+              "true_negative": 219,
+              "true_positive": 55
+            },
+            "expected_calibration_error": {
+              "reason": null,
+              "status": "defined",
+              "value": 0.08437674213206572
+            },
+            "f1": {
+              "reason": null,
+              "status": "defined",
+              "value": 0.6875
+            },
+            "failure_auprc": {
+              "reason": null,
+              "status": "defined",
+              "value": 0.8643284563525231
+            },
+            "failure_count": 58,
+            "failure_prevalence": {
+              "reason": null,
+              "status": "defined",
+              "value": 0.17901234567901234
+            },
+            "matthews_correlation_coefficient": {
+              "reason": null,
+              "status": "defined",
+              "value": 0.6368857472516566
+            },
+            "negative_log_likelihood": {
+              "reason": null,
+              "status": "defined",
+              "value": 0.2513668269178713
+            },
+            "precision": {
+              "reason": null,
+              "status": "defined",
+              "value": 0.5392156862745098
+            },
+            "probability_clip_epsilon": 2.220446049250313e-16,
+            "recall": {
+              "reason": null,
+              "status": "defined",
+              "value": 0.9482758620689655
+            },
+            "reliability_bins": [
+              {
+                "count": 197,
+                "empirical_failure_rate": 0.015228426395939087,
+                "lower_bound": 0.0,
+                "mean_failure_probability": 0.04253080511249693,
+                "upper_bound": 0.1,
+                "upper_inclusive": false
+              },
+              {
+                "count": 23,
+                "empirical_failure_rate": 0.0,
+                "lower_bound": 0.1,
+                "mean_failure_probability": 0.1446228965232401,
+                "upper_bound": 0.2,
+                "upper_inclusive": false
+              },
+              {
+                "count": 16,
+                "empirical_failure_rate": 0.3125,
+                "lower_bound": 0.2,
+                "mean_failure_probability": 0.2579385346739129,
+                "upper_bound": 0.3,
+                "upper_inclusive": false
+              },
+              {
+                "count": 13,
+                "empirical_failure_rate": 0.23076923076923078,
+                "lower_bound": 0.3,
+                "mean_failure_probability": 0.3451442680672393,
+                "upper_bound": 0.4,
+                "upper_inclusive": false
+              },
+              {
+                "count": 5,
+                "empirical_failure_rate": 0.2,
+                "lower_bound": 0.4,
+                "mean_failure_probability": 0.4332915757775476,
+                "upper_bound": 0.5,
+                "upper_inclusive": false
+              },
+              {
+                "count": 2,
+                "empirical_failure_rate": 0.0,
+                "lower_bound": 0.5,
+                "mean_failure_probability": 0.5459963555859484,
+                "upper_bound": 0.6,
+                "upper_inclusive": false
+              },
+              {
+                "count": 8,
+                "empirical_failure_rate": 0.25,
+                "lower_bound": 0.6,
+                "mean_failure_probability": 0.6522313343916492,
+                "upper_bound": 0.7,
+                "upper_inclusive": false
+              },
+              {
+                "count": 9,
+                "empirical_failure_rate": 0.1111111111111111,
+                "lower_bound": 0.7,
+                "mean_failure_probability": 0.758285572359456,
+                "upper_bound": 0.8,
+                "upper_inclusive": false
+              },
+              {
+                "count": 15,
+                "empirical_failure_rate": 0.6,
+                "lower_bound": 0.8,
+                "mean_failure_probability": 0.8564718148489875,
+                "upper_bound": 0.9,
+                "upper_inclusive": false
+              },
+              {
+                "count": 36,
+                "empirical_failure_rate": 0.9444444444444444,
+                "lower_bound": 0.9,
+                "mean_failure_probability": 0.9757044903982952,
+                "upper_bound": 1.0,
+                "upper_inclusive": true
+              }
+            ],
+            "roc_auc": {
+              "reason": null,
+              "status": "defined",
+              "value": 0.9398496240601504
+            },
+            "sample_count": 324,
+            "specificity": {
+              "reason": null,
+              "status": "defined",
+              "value": 0.8233082706766918
+            },
+            "success_auprc": {
+              "reason": null,
+              "status": "defined",
+              "value": 0.9814494562472255
+            },
+            "success_count": 266,
+            "threshold": 0.23524151420163916
+          },
+          "group_ranking": {
+            "both_class_group_count": 27,
+            "corrupted_top1_eligible_group_count": 36,
+            "corrupted_top1_failure_rate": {
+              "reason": null,
+              "status": "defined",
+              "value": 0.0
+            },
+            "corrupted_top1_success": {
+              "reason": null,
+              "status": "defined",
+              "value": 1.0
+            },
+            "group_count": 36,
+            "mean_reciprocal_rank_first_success": {
+              "reason": null,
+              "status": "defined",
+              "value": 1.0
+            },
+            "mean_source_success_margin_over_failed_corruptions": {
+              "reason": null,
+              "status": "defined",
+              "value": 0.6841208751681075
+            },
+            "pairwise_comparison_count": 306,
+            "pairwise_success_over_failure_concordance": {
+              "reason": null,
+              "status": "defined",
+              "value": 0.9736111111111112
+            },
+            "random_choice_success_expectation": {
+              "reason": null,
+              "status": "defined",
+              "value": 0.7986111111111112
+            },
+            "source_margin_group_count": 27,
+            "source_margin_pair_count": 58
+          },
+          "seed": 0
+        },
+        {
+          "binary_metrics": {
+            "balanced_accuracy": {
+              "reason": null,
+              "status": "defined",
+              "value": 0.8619393310863366
+            },
+            "brier_score": {
+              "reason": null,
+              "status": "defined",
+              "value": 0.08667942239550867
+            },
+            "confusion_matrix": {
+              "false_negative": 11,
+              "false_positive": 23,
+              "true_negative": 243,
+              "true_positive": 47
+            },
+            "expected_calibration_error": {
+              "reason": null,
+              "status": "defined",
+              "value": 0.08978486018085215
+            },
+            "f1": {
+              "reason": null,
+              "status": "defined",
+              "value": 0.7343749999999999
+            },
+            "failure_auprc": {
+              "reason": null,
+              "status": "defined",
+              "value": 0.8258327459598499
+            },
+            "failure_count": 58,
+            "failure_prevalence": {
+              "reason": null,
+              "status": "defined",
+              "value": 0.17901234567901234
+            },
+            "matthews_correlation_coefficient": {
+              "reason": null,
+              "status": "defined",
+              "value": 0.6743024099833542
+            },
+            "negative_log_likelihood": {
+              "reason": null,
+              "status": "defined",
+              "value": 0.2917460138181455
+            },
+            "precision": {
+              "reason": null,
+              "status": "defined",
+              "value": 0.6714285714285714
+            },
+            "probability_clip_epsilon": 2.220446049250313e-16,
+            "recall": {
+              "reason": null,
+              "status": "defined",
+              "value": 0.8103448275862069
+            },
+            "reliability_bins": [
+              {
+                "count": 183,
+                "empirical_failure_rate": 0.01639344262295082,
+                "lower_bound": 0.0,
+                "mean_failure_probability": 0.0466462550950021,
+                "upper_bound": 0.1,
+                "upper_inclusive": false
+              },
+              {
+                "count": 44,
+                "empirical_failure_rate": 0.09090909090909091,
+                "lower_bound": 0.1,
+                "mean_failure_probability": 0.15476153763400946,
+                "upper_bound": 0.2,
+                "upper_inclusive": false
+              },
+              {
+                "count": 9,
+                "empirical_failure_rate": 0.1111111111111111,
+                "lower_bound": 0.2,
+                "mean_failure_probability": 0.25265246214169207,
+                "upper_bound": 0.3,
+                "upper_inclusive": false
+              },
+              {
+                "count": 7,
+                "empirical_failure_rate": 0.2857142857142857,
+                "lower_bound": 0.3,
+                "mean_failure_probability": 0.347179897962396,
+                "upper_bound": 0.4,
+                "upper_inclusive": false
+              },
+              {
+                "count": 5,
+                "empirical_failure_rate": 0.2,
+                "lower_bound": 0.4,
+                "mean_failure_probability": 0.43721357696442553,
+                "upper_bound": 0.5,
+                "upper_inclusive": false
+              },
+              {
+                "count": 3,
+                "empirical_failure_rate": 0.0,
+                "lower_bound": 0.5,
+                "mean_failure_probability": 0.5346838474633347,
+                "upper_bound": 0.6,
+                "upper_inclusive": false
+              },
+              {
+                "count": 11,
+                "empirical_failure_rate": 0.18181818181818182,
+                "lower_bound": 0.6,
+                "mean_failure_probability": 0.6367756452468921,
+                "upper_bound": 0.7,
+                "upper_inclusive": false
+              },
+              {
+                "count": 11,
+                "empirical_failure_rate": 0.36363636363636365,
+                "lower_bound": 0.7,
+                "mean_failure_probability": 0.7601111583131682,
+                "upper_bound": 0.8,
+                "upper_inclusive": false
+              },
+              {
+                "count": 12,
+                "empirical_failure_rate": 0.75,
+                "lower_bound": 0.8,
+                "mean_failure_probability": 0.8449818669125606,
+                "upper_bound": 0.9,
+                "upper_inclusive": false
+              },
+              {
+                "count": 39,
+                "empirical_failure_rate": 0.8205128205128205,
+                "lower_bound": 0.9,
+                "mean_failure_probability": 0.9678136986148402,
+                "upper_bound": 1.0,
+                "upper_inclusive": true
+              }
+            ],
+            "roc_auc": {
+              "reason": null,
+              "status": "defined",
+              "value": 0.9340160746694322
+            },
+            "sample_count": 324,
+            "specificity": {
+              "reason": null,
+              "status": "defined",
+              "value": 0.9135338345864662
+            },
+            "success_auprc": {
+              "reason": null,
+              "status": "defined",
+              "value": 0.9829638433987246
+            },
+            "success_count": 266,
+            "threshold": 0.6163355143823782
+          },
+          "group_ranking": {
+            "both_class_group_count": 27,
+            "corrupted_top1_eligible_group_count": 36,
+            "corrupted_top1_failure_rate": {
+              "reason": null,
+              "status": "defined",
+              "value": 0.037037037037037035
+            },
+            "corrupted_top1_success": {
+              "reason": null,
+              "status": "defined",
+              "value": 0.9722222222222222
+            },
+            "group_count": 36,
+            "mean_reciprocal_rank_first_success": {
+              "reason": null,
+              "status": "defined",
+              "value": 0.9814814814814815
+            },
+            "mean_source_success_margin_over_failed_corruptions": {
+              "reason": null,
+              "status": "defined",
+              "value": 0.64983675450181
+            },
+            "pairwise_comparison_count": 306,
+            "pairwise_success_over_failure_concordance": {
+              "reason": null,
+              "status": "defined",
+              "value": 0.9582892416225749
+            },
+            "random_choice_success_expectation": {
+              "reason": null,
+              "status": "defined",
+              "value": 0.7986111111111112
+            },
+            "source_margin_group_count": 27,
+            "source_margin_pair_count": 58
+          },
+          "seed": 1
+        },
+        {
+          "binary_metrics": {
+            "balanced_accuracy": {
+              "reason": null,
+              "status": "defined",
+              "value": 0.8690044075706507
+            },
+            "brier_score": {
+              "reason": null,
+              "status": "defined",
+              "value": 0.09159381827633364
+            },
+            "confusion_matrix": {
+              "false_negative": 8,
+              "false_positive": 33,
+              "true_negative": 233,
+              "true_positive": 50
+            },
+            "expected_calibration_error": {
+              "reason": null,
+              "status": "defined",
+              "value": 0.10732035278905908
+            },
+            "f1": {
+              "reason": null,
+              "status": "defined",
+              "value": 0.7092198581560283
+            },
+            "failure_auprc": {
+              "reason": null,
+              "status": "defined",
+              "value": 0.8454835630885297
+            },
+            "failure_count": 58,
+            "failure_prevalence": {
+              "reason": null,
+              "status": "defined",
+              "value": 0.17901234567901234
+            },
+            "matthews_correlation_coefficient": {
+              "reason": null,
+              "status": "defined",
+              "value": 0.6481399583802063
+            },
+            "negative_log_likelihood": {
+              "reason": null,
+              "status": "defined",
+              "value": 0.30423973814124816
+            },
+            "precision": {
+              "reason": null,
+              "status": "defined",
+              "value": 0.6024096385542169
+            },
+            "probability_clip_epsilon": 2.220446049250313e-16,
+            "recall": {
+              "reason": null,
+              "status": "defined",
+              "value": 0.8620689655172413
+            },
+            "reliability_bins": [
+              {
+                "count": 183,
+                "empirical_failure_rate": 0.02185792349726776,
+                "lower_bound": 0.0,
+                "mean_failure_probability": 0.04225313185764386,
+                "upper_bound": 0.1,
+                "upper_inclusive": false
+              },
+              {
+                "count": 25,
+                "empirical_failure_rate": 0.04,
+                "lower_bound": 0.1,
+                "mean_failure_probability": 0.14605341255389281,
+                "upper_bound": 0.2,
+                "upper_inclusive": false
+              },
+              {
+                "count": 18,
+                "empirical_failure_rate": 0.05555555555555555,
+                "lower_bound": 0.2,
+                "mean_failure_probability": 0.2568177683340698,
+                "upper_bound": 0.3,
+                "upper_inclusive": false
+              },
+              {
+                "count": 4,
+                "empirical_failure_rate": 0.25,
+                "lower_bound": 0.3,
+                "mean_failure_probability": 0.35868369304391656,
+                "upper_bound": 0.4,
+                "upper_inclusive": false
+              },
+              {
+                "count": 11,
+                "empirical_failure_rate": 0.09090909090909091,
+                "lower_bound": 0.4,
+                "mean_failure_probability": 0.43228973138255156,
+                "upper_bound": 0.5,
+                "upper_inclusive": false
+              },
+              {
+                "count": 9,
+                "empirical_failure_rate": 0.0,
+                "lower_bound": 0.5,
+                "mean_failure_probability": 0.565702730475079,
+                "upper_bound": 0.6,
+                "upper_inclusive": false
+              },
+              {
+                "count": 7,
+                "empirical_failure_rate": 0.2857142857142857,
+                "lower_bound": 0.6,
+                "mean_failure_probability": 0.6655249188037408,
+                "upper_bound": 0.7,
+                "upper_inclusive": false
+              },
+              {
+                "count": 10,
+                "empirical_failure_rate": 0.4,
+                "lower_bound": 0.7,
+                "mean_failure_probability": 0.7432729509346686,
+                "upper_bound": 0.8,
+                "upper_inclusive": false
+              },
+              {
+                "count": 11,
+                "empirical_failure_rate": 0.7272727272727273,
+                "lower_bound": 0.8,
+                "mean_failure_probability": 0.8492406576657775,
+                "upper_bound": 0.9,
+                "upper_inclusive": false
+              },
+              {
+                "count": 46,
+                "empirical_failure_rate": 0.782608695652174,
+                "lower_bound": 0.9,
+                "mean_failure_probability": 0.9576330100628233,
+                "upper_bound": 1.0,
+                "upper_inclusive": true
+              }
+            ],
+            "roc_auc": {
+              "reason": null,
+              "status": "defined",
+              "value": 0.9400440757065076
+            },
+            "sample_count": 324,
+            "specificity": {
+              "reason": null,
+              "status": "defined",
+              "value": 0.8759398496240601
+            },
+            "success_auprc": {
+              "reason": null,
+              "status": "defined",
+              "value": 0.9838532572913091
+            },
+            "success_count": 266,
+            "threshold": 0.48867840133324947
+          },
+          "group_ranking": {
+            "both_class_group_count": 27,
+            "corrupted_top1_eligible_group_count": 36,
+            "corrupted_top1_failure_rate": {
+              "reason": null,
+              "status": "defined",
+              "value": 0.037037037037037035
+            },
+            "corrupted_top1_success": {
+              "reason": null,
+              "status": "defined",
+              "value": 0.9722222222222222
+            },
+            "group_count": 36,
+            "mean_reciprocal_rank_first_success": {
+              "reason": null,
+              "status": "defined",
+              "value": 0.9814814814814815
+            },
+            "mean_source_success_margin_over_failed_corruptions": {
+              "reason": null,
+              "status": "defined",
+              "value": 0.6425451178797918
+            },
+            "pairwise_comparison_count": 306,
+            "pairwise_success_over_failure_concordance": {
+              "reason": null,
+              "status": "defined",
+              "value": 0.9675485008818342
+            },
+            "random_choice_success_expectation": {
+              "reason": null,
+              "status": "defined",
+              "value": 0.7986111111111112
+            },
+            "source_margin_group_count": 27,
+            "source_margin_pair_count": 58
+          },
+          "seed": 2
+        }
+      ],
+      "three_seed_statistics": {
+        "brier_score": {
+          "maximum": 0.09159381827633364,
+          "mean": 0.08496883979868408,
+          "median": 0.08667942239550867,
+          "minimum": 0.0766332787242099,
+          "standard_deviation": 0.006226235113779119
+        },
+        "expected_calibration_error": {
+          "maximum": 0.10732035278905908,
+          "mean": 0.09382731836732565,
+          "median": 0.08978486018085215,
+          "minimum": 0.08437674213206572,
+          "standard_deviation": 0.009793141090816733
+        },
+        "failure_auprc": {
+          "maximum": 0.8643284563525231,
+          "mean": 0.8452149218003009,
+          "median": 0.8454835630885297,
+          "minimum": 0.8258327459598499,
+          "standard_deviation": 0.015716955934392377
+        },
+        "roc_auc": {
+          "maximum": 0.9400440757065076,
+          "mean": 0.93796992481203,
+          "median": 0.9398496240601504,
+          "minimum": 0.9340160746694322,
+          "standard_deviation": 0.0027969210539786796
+        }
+      }
+    },
+    "strong_lighting_shift": {
+      "binary_metrics": {
+        "balanced_accuracy": {
+          "reason": null,
+          "status": "defined",
+          "value": 0.8495592429349235
+        },
+        "brier_score": {
+          "reason": null,
+          "status": "defined",
+          "value": 0.06652337034634301
+        },
+        "confusion_matrix": {
+          "false_negative": 12,
+          "false_positive": 25,
+          "true_negative": 241,
+          "true_positive": 46
+        },
+        "expected_calibration_error": {
+          "reason": null,
+          "status": "defined",
+          "value": 0.07334148623604352
+        },
+        "f1": {
+          "reason": null,
+          "status": "defined",
+          "value": 0.7131782945736435
+        },
+        "failure_auprc": {
+          "reason": null,
+          "status": "defined",
+          "value": 0.8729330478108237
+        },
+        "failure_count": 58,
+        "failure_prevalence": {
+          "reason": null,
+          "status": "defined",
+          "value": 0.17901234567901234
+        },
+        "matthews_correlation_coefficient": {
+          "reason": null,
+          "status": "defined",
+          "value": 0.6479122123011549
+        },
+        "negative_log_likelihood": {
+          "reason": null,
+          "status": "defined",
+          "value": 0.21626529096097902
+        },
+        "precision": {
+          "reason": null,
+          "status": "defined",
+          "value": 0.647887323943662
+        },
+        "probability_clip_epsilon": 2.220446049250313e-16,
+        "recall": {
+          "reason": null,
+          "status": "defined",
+          "value": 0.7931034482758621
+        },
+        "reliability_bins": [
+          {
+            "count": 206,
+            "empirical_failure_rate": 0.009708737864077669,
+            "lower_bound": 0.0,
+            "mean_failure_probability": 0.03747830487019923,
+            "upper_bound": 0.1,
+            "upper_inclusive": false
+          },
+          {
+            "count": 27,
+            "empirical_failure_rate": 0.07407407407407407,
+            "lower_bound": 0.1,
+            "mean_failure_probability": 0.12958412332431626,
+            "upper_bound": 0.2,
+            "upper_inclusive": false
+          },
+          {
+            "count": 8,
+            "empirical_failure_rate": 0.5,
+            "lower_bound": 0.2,
+            "mean_failure_probability": 0.2402654557437473,
+            "upper_bound": 0.3,
+            "upper_inclusive": false
+          },
+          {
+            "count": 10,
+            "empirical_failure_rate": 0.3,
+            "lower_bound": 0.3,
+            "mean_failure_probability": 0.3508582982374309,
+            "upper_bound": 0.4,
+            "upper_inclusive": false
+          },
+          {
+            "count": 8,
+            "empirical_failure_rate": 0.125,
+            "lower_bound": 0.4,
+            "mean_failure_probability": 0.45524669164136067,
+            "upper_bound": 0.5,
+            "upper_inclusive": false
+          },
+          {
+            "count": 6,
+            "empirical_failure_rate": 0.16666666666666666,
+            "lower_bound": 0.5,
+            "mean_failure_probability": 0.5491300626645085,
+            "upper_bound": 0.6,
+            "upper_inclusive": false
+          },
+          {
+            "count": 4,
+            "empirical_failure_rate": 0.25,
+            "lower_bound": 0.6,
+            "mean_failure_probability": 0.6356912128944331,
+            "upper_bound": 0.7,
+            "upper_inclusive": false
+          },
+          {
+            "count": 12,
+            "empirical_failure_rate": 0.5833333333333334,
+            "lower_bound": 0.7,
+            "mean_failure_probability": 0.7699647866225368,
+            "upper_bound": 0.8,
+            "upper_inclusive": false
+          },
+          {
+            "count": 13,
+            "empirical_failure_rate": 0.5384615384615384,
+            "lower_bound": 0.8,
+            "mean_failure_probability": 0.8665684552250421,
+            "upper_bound": 0.9,
+            "upper_inclusive": false
+          },
+          {
+            "count": 30,
+            "empirical_failure_rate": 1.0,
+            "lower_bound": 0.9,
+            "mean_failure_probability": 0.9675868682351824,
+            "upper_bound": 1.0,
+            "upper_inclusive": true
+          }
+        ],
+        "roc_auc": {
+          "reason": null,
+          "status": "defined",
+          "value": 0.9588410681877106
+        },
+        "sample_count": 324,
+        "specificity": {
+          "reason": null,
+          "status": "defined",
+          "value": 0.9060150375939849
+        },
+        "success_auprc": {
+          "reason": null,
+          "status": "defined",
+          "value": 0.990517643705313
+        },
+        "success_count": 266,
+        "threshold": 0.4467518099724223
+      },
+      "candidate_selection": {
+        "coverage": 1.0,
+        "group_count": 36,
+        "selected_success_rate": 1.0,
+        "task_failure_rate": 0.0
+      },
+      "coverage_risk": {
+        "area_semantic": "tie_block_right_step_mean_v1",
+        "area_under_risk_coverage_curve": {
+          "reason": null,
+          "status": "defined",
+          "value": 0.02534146844923798
+        },
+        "failure_count": 58,
+        "points": [
+          {
+            "observed_coverage": 1.0,
+            "rejected_count": 0,
+            "rejected_failure_recall": {
+              "reason": null,
+              "status": "defined",
+              "value": 0.0
+            },
+            "requested_coverage": 1.0,
+            "retained_count": 324,
+            "retained_failure_rate": {
+              "reason": null,
+              "status": "defined",
+              "value": 0.17901234567901234
+            },
+            "retained_success_rate": {
+              "reason": null,
+              "status": "defined",
+              "value": 0.8209876543209876
+            },
+            "threshold": 0.9877547558242172
+          },
+          {
+            "observed_coverage": 0.9012345679012346,
+            "rejected_count": 32,
+            "rejected_failure_recall": {
+              "reason": null,
+              "status": "defined",
+              "value": 0.5344827586206896
+            },
+            "requested_coverage": 0.9,
+            "retained_count": 292,
+            "retained_failure_rate": {
+              "reason": null,
+              "status": "defined",
+              "value": 0.09246575342465753
+            },
+            "retained_success_rate": {
+              "reason": null,
+              "status": "defined",
+              "value": 0.9075342465753424
+            },
+            "threshold": 0.8909948115685755
+          },
+          {
+            "observed_coverage": 0.8024691358024691,
+            "rejected_count": 64,
+            "rejected_failure_recall": {
+              "reason": null,
+              "status": "defined",
+              "value": 0.7931034482758621
+            },
+            "requested_coverage": 0.8,
+            "retained_count": 260,
+            "retained_failure_rate": {
+              "reason": null,
+              "status": "defined",
+              "value": 0.046153846153846156
+            },
+            "retained_success_rate": {
+              "reason": null,
+              "status": "defined",
+              "value": 0.9538461538461538
+            },
+            "threshold": 0.5040252906244017
+          },
+          {
+            "observed_coverage": 0.7006172839506173,
+            "rejected_count": 97,
+            "rejected_failure_recall": {
+              "reason": null,
+              "status": "defined",
+              "value": 0.9482758620689655
+            },
+            "requested_coverage": 0.7,
+            "retained_count": 227,
+            "retained_failure_rate": {
+              "reason": null,
+              "status": "defined",
+              "value": 0.013215859030837005
+            },
+            "retained_success_rate": {
+              "reason": null,
+              "status": "defined",
+              "value": 0.986784140969163
+            },
+            "threshold": 0.1548404254611727
+          },
+          {
+            "observed_coverage": 0.5,
+            "rejected_count": 162,
+            "rejected_failure_recall": {
+              "reason": null,
+              "status": "defined",
+              "value": 1.0
+            },
+            "requested_coverage": 0.5,
+            "retained_count": 162,
+            "retained_failure_rate": {
+              "reason": null,
+              "status": "defined",
+              "value": 0.0
+            },
+            "retained_success_rate": {
+              "reason": null,
+              "status": "defined",
+              "value": 1.0
+            },
+            "threshold": 0.05692419854084955
+          }
+        ],
+        "sample_count": 324,
+        "threshold_semantic": "ceil_rank_retain_all_boundary_ties_v1"
+      },
+      "group_ranking": {
+        "both_class_group_count": 27,
+        "corrupted_top1_eligible_group_count": 36,
+        "corrupted_top1_failure_rate": {
+          "reason": null,
+          "status": "defined",
+          "value": 0.0
+        },
+        "corrupted_top1_success": {
+          "reason": null,
+          "status": "defined",
+          "value": 1.0
+        },
+        "group_count": 36,
+        "mean_reciprocal_rank_first_success": {
+          "reason": null,
+          "status": "defined",
+          "value": 1.0
+        },
+        "mean_source_success_margin_over_failed_corruptions": {
+          "reason": null,
+          "status": "defined",
+          "value": 0.6566299991685086
+        },
+        "pairwise_comparison_count": 306,
+        "pairwise_success_over_failure_concordance": {
+          "reason": null,
+          "status": "defined",
+          "value": 0.9820987654320987
+        },
+        "random_choice_success_expectation": {
+          "reason": null,
+          "status": "defined",
+          "value": 0.7986111111111112
+        },
+        "source_margin_group_count": 27,
+        "source_margin_pair_count": 58
+      },
+      "prediction_digest": "sha256:0fac9cf8ee410e09f47f89639bf9deecc1bbd05ba42b943a898e2d334596c7dc",
+      "raw_predictions_persisted": false,
+      "robustness": {
+        "failure_auprc_drop_from_canonical": -0.0023560985473878304,
+        "selected_success_drop_from_canonical": 0.0,
+        "selected_success_paired_bootstrap_vs_canonical": {
+          "bootstrap_samples": 2000,
+          "confidence_lower": 0.0,
+          "confidence_upper": 0.0,
+          "estimate": 0.0,
+          "resampling_unit": "source_trajectory",
+          "seed": 271828
+        }
+      },
+      "seed_metrics": [
+        {
+          "binary_metrics": {
+            "balanced_accuracy": {
+              "reason": null,
+              "status": "defined",
+              "value": 0.8746435053150117
+            },
+            "brier_score": {
+              "reason": null,
+              "status": "defined",
+              "value": 0.06552777197255884
+            },
+            "confusion_matrix": {
+              "false_negative": 8,
+              "false_positive": 30,
+              "true_negative": 236,
+              "true_positive": 50
+            },
+            "expected_calibration_error": {
+              "reason": null,
+              "status": "defined",
+              "value": 0.06032638661896657
+            },
+            "f1": {
+              "reason": null,
+              "status": "defined",
+              "value": 0.7246376811594203
+            },
+            "failure_auprc": {
+              "reason": null,
+              "status": "defined",
+              "value": 0.8753102926488858
+            },
+            "failure_count": 58,
+            "failure_prevalence": {
+              "reason": null,
+              "status": "defined",
+              "value": 0.17901234567901234
+            },
+            "matthews_correlation_coefficient": {
+              "reason": null,
+              "status": "defined",
+              "value": 0.6661363181886972
+            },
+            "negative_log_likelihood": {
+              "reason": null,
+              "status": "defined",
+              "value": 0.21299945609653367
+            },
+            "precision": {
+              "reason": null,
+              "status": "defined",
+              "value": 0.625
+            },
+            "probability_clip_epsilon": 2.220446049250313e-16,
+            "recall": {
+              "reason": null,
+              "status": "defined",
+              "value": 0.8620689655172413
+            },
+            "reliability_bins": [
+              {
+                "count": 214,
+                "empirical_failure_rate": 0.014018691588785047,
+                "lower_bound": 0.0,
+                "mean_failure_probability": 0.033039807437576084,
+                "upper_bound": 0.1,
+                "upper_inclusive": false
+              },
+              {
+                "count": 26,
+                "empirical_failure_rate": 0.11538461538461539,
+                "lower_bound": 0.1,
+                "mean_failure_probability": 0.1472081710993781,
+                "upper_bound": 0.2,
+                "upper_inclusive": false
+              },
+              {
+                "count": 12,
+                "empirical_failure_rate": 0.4166666666666667,
+                "lower_bound": 0.2,
+                "mean_failure_probability": 0.25217446473780114,
+                "upper_bound": 0.3,
+                "upper_inclusive": false
+              },
+              {
+                "count": 3,
+                "empirical_failure_rate": 0.0,
+                "lower_bound": 0.3,
+                "mean_failure_probability": 0.3473411159739726,
+                "upper_bound": 0.4,
+                "upper_inclusive": false
+              },
+              {
+                "count": 4,
+                "empirical_failure_rate": 0.25,
+                "lower_bound": 0.4,
+                "mean_failure_probability": 0.4215154446311987,
+                "upper_bound": 0.5,
+                "upper_inclusive": false
+              },
+              {
+                "count": 4,
+                "empirical_failure_rate": 0.5,
+                "lower_bound": 0.5,
+                "mean_failure_probability": 0.55639685704187,
+                "upper_bound": 0.6,
+                "upper_inclusive": false
+              },
+              {
+                "count": 5,
+                "empirical_failure_rate": 0.2,
+                "lower_bound": 0.6,
+                "mean_failure_probability": 0.6421266050151515,
+                "upper_bound": 0.7,
+                "upper_inclusive": false
+              },
+              {
+                "count": 14,
+                "empirical_failure_rate": 0.35714285714285715,
+                "lower_bound": 0.7,
+                "mean_failure_probability": 0.7479944705756213,
+                "upper_bound": 0.8,
+                "upper_inclusive": false
+              },
+              {
+                "count": 11,
+                "empirical_failure_rate": 0.6363636363636364,
+                "lower_bound": 0.8,
+                "mean_failure_probability": 0.8556356741429206,
+                "upper_bound": 0.9,
+                "upper_inclusive": false
+              },
+              {
+                "count": 31,
+                "empirical_failure_rate": 1.0,
+                "lower_bound": 0.9,
+                "mean_failure_probability": 0.9798164187789389,
+                "upper_bound": 1.0,
+                "upper_inclusive": true
+              }
+            ],
+            "roc_auc": {
+              "reason": null,
+              "status": "defined",
+              "value": 0.950479647394348
+            },
+            "sample_count": 324,
+            "specificity": {
+              "reason": null,
+              "status": "defined",
+              "value": 0.8872180451127819
+            },
+            "success_auprc": {
+              "reason": null,
+              "status": "defined",
+              "value": 0.9868725726801264
+            },
+            "success_count": 266,
+            "threshold": 0.23524151420163916
+          },
+          "group_ranking": {
+            "both_class_group_count": 27,
+            "corrupted_top1_eligible_group_count": 36,
+            "corrupted_top1_failure_rate": {
+              "reason": null,
+              "status": "defined",
+              "value": 0.037037037037037035
+            },
+            "corrupted_top1_success": {
+              "reason": null,
+              "status": "defined",
+              "value": 0.9722222222222222
+            },
+            "group_count": 36,
+            "mean_reciprocal_rank_first_success": {
+              "reason": null,
+              "status": "defined",
+              "value": 0.9814814814814815
+            },
+            "mean_source_success_margin_over_failed_corruptions": {
+              "reason": null,
+              "status": "defined",
+              "value": 0.6693363428592852
+            },
+            "pairwise_comparison_count": 306,
+            "pairwise_success_over_failure_concordance": {
+              "reason": null,
+              "status": "defined",
+              "value": 0.9705246913580247
+            },
+            "random_choice_success_expectation": {
+              "reason": null,
+              "status": "defined",
+              "value": 0.7986111111111112
+            },
+            "source_margin_group_count": 27,
+            "source_margin_pair_count": 58
+          },
+          "seed": 0
+        },
+        {
+          "binary_metrics": {
+            "balanced_accuracy": {
+              "reason": null,
+              "status": "defined",
+              "value": 0.8540964480165931
+            },
+            "brier_score": {
+              "reason": null,
+              "status": "defined",
+              "value": 0.0756221024757638
+            },
+            "confusion_matrix": {
+              "false_negative": 13,
+              "false_positive": 18,
+              "true_negative": 248,
+              "true_positive": 45
+            },
+            "expected_calibration_error": {
+              "reason": null,
+              "status": "defined",
+              "value": 0.07318113761649767
+            },
+            "f1": {
+              "reason": null,
+              "status": "defined",
+              "value": 0.7438016528925621
+            },
+            "failure_auprc": {
+              "reason": null,
+              "status": "defined",
+              "value": 0.8409764913339607
+            },
+            "failure_count": 58,
+            "failure_prevalence": {
+              "reason": null,
+              "status": "defined",
+              "value": 0.17901234567901234
+            },
+            "matthews_correlation_coefficient": {
+              "reason": null,
+              "status": "defined",
+              "value": 0.6859869480760148
+            },
+            "negative_log_likelihood": {
+              "reason": null,
+              "status": "defined",
+              "value": 0.24993010497627627
+            },
+            "precision": {
+              "reason": null,
+              "status": "defined",
+              "value": 0.7142857142857143
+            },
+            "probability_clip_epsilon": 2.220446049250313e-16,
+            "recall": {
+              "reason": null,
+              "status": "defined",
+              "value": 0.7758620689655172
+            },
+            "reliability_bins": [
+              {
+                "count": 219,
+                "empirical_failure_rate": 0.0091324200913242,
+                "lower_bound": 0.0,
+                "mean_failure_probability": 0.0378676303713562,
+                "upper_bound": 0.1,
+                "upper_inclusive": false
+              },
+              {
+                "count": 17,
+                "empirical_failure_rate": 0.23529411764705882,
+                "lower_bound": 0.1,
+                "mean_failure_probability": 0.14113322896742528,
+                "upper_bound": 0.2,
+                "upper_inclusive": false
+              },
+              {
+                "count": 12,
+                "empirical_failure_rate": 0.3333333333333333,
+                "lower_bound": 0.2,
+                "mean_failure_probability": 0.2441571069604388,
+                "upper_bound": 0.3,
+                "upper_inclusive": false
+              },
+              {
+                "count": 4,
+                "empirical_failure_rate": 0.5,
+                "lower_bound": 0.3,
+                "mean_failure_probability": 0.3360378608229209,
+                "upper_bound": 0.4,
+                "upper_inclusive": false
+              },
+              {
+                "count": 6,
+                "empirical_failure_rate": 0.0,
+                "lower_bound": 0.4,
+                "mean_failure_probability": 0.43974917378312317,
+                "upper_bound": 0.5,
+                "upper_inclusive": false
+              },
+              {
+                "count": 3,
+                "empirical_failure_rate": 0.3333333333333333,
+                "lower_bound": 0.5,
+                "mean_failure_probability": 0.5812393559132708,
+                "upper_bound": 0.6,
+                "upper_inclusive": false
+              },
+              {
+                "count": 4,
+                "empirical_failure_rate": 0.25,
+                "lower_bound": 0.6,
+                "mean_failure_probability": 0.6631240535936394,
+                "upper_bound": 0.7,
+                "upper_inclusive": false
+              },
+              {
+                "count": 13,
+                "empirical_failure_rate": 0.46153846153846156,
+                "lower_bound": 0.7,
+                "mean_failure_probability": 0.7508855866102819,
+                "upper_bound": 0.8,
+                "upper_inclusive": false
+              },
+              {
+                "count": 9,
+                "empirical_failure_rate": 0.6666666666666666,
+                "lower_bound": 0.8,
+                "mean_failure_probability": 0.8406113030148519,
+                "upper_bound": 0.9,
+                "upper_inclusive": false
+              },
+              {
+                "count": 37,
+                "empirical_failure_rate": 0.8648648648648649,
+                "lower_bound": 0.9,
+                "mean_failure_probability": 0.9656555534540804,
+                "upper_bound": 1.0,
+                "upper_inclusive": true
+              }
+            ],
+            "roc_auc": {
+              "reason": null,
+              "status": "defined",
+              "value": 0.947886958776251
+            },
+            "sample_count": 324,
+            "specificity": {
+              "reason": null,
+              "status": "defined",
+              "value": 0.9323308270676691
+            },
+            "success_auprc": {
+              "reason": null,
+              "status": "defined",
+              "value": 0.9875765656264668
+            },
+            "success_count": 266,
+            "threshold": 0.6163355143823782
+          },
+          "group_ranking": {
+            "both_class_group_count": 27,
+            "corrupted_top1_eligible_group_count": 36,
+            "corrupted_top1_failure_rate": {
+              "reason": null,
+              "status": "defined",
+              "value": 0.037037037037037035
+            },
+            "corrupted_top1_success": {
+              "reason": null,
+              "status": "defined",
+              "value": 0.9722222222222222
+            },
+            "group_count": 36,
+            "mean_reciprocal_rank_first_success": {
+              "reason": null,
+              "status": "defined",
+              "value": 0.9814814814814815
+            },
+            "mean_source_success_margin_over_failed_corruptions": {
+              "reason": null,
+              "status": "defined",
+              "value": 0.642927763613799
+            },
+            "pairwise_comparison_count": 306,
+            "pairwise_success_over_failure_concordance": {
+              "reason": null,
+              "status": "defined",
+              "value": 0.9635802469135802
+            },
+            "random_choice_success_expectation": {
+              "reason": null,
+              "status": "defined",
+              "value": 0.7986111111111112
+            },
+            "source_margin_group_count": 27,
+            "source_margin_pair_count": 58
+          },
+          "seed": 1
+        },
+        {
+          "binary_metrics": {
+            "balanced_accuracy": {
+              "reason": null,
+              "status": "defined",
+              "value": 0.8810604096448016
+            },
+            "brier_score": {
+              "reason": null,
+              "status": "defined",
+              "value": 0.07395243619877492
+            },
+            "confusion_matrix": {
+              "false_negative": 9,
+              "false_positive": 22,
+              "true_negative": 244,
+              "true_positive": 49
+            },
+            "expected_calibration_error": {
+              "reason": null,
+              "status": "defined",
+              "value": 0.06694554668079322
+            },
+            "f1": {
+              "reason": null,
+              "status": "defined",
+              "value": 0.7596899224806202
+            },
+            "failure_auprc": {
+              "reason": null,
+              "status": "defined",
+              "value": 0.8474740238312254
+            },
+            "failure_count": 58,
+            "failure_prevalence": {
+              "reason": null,
+              "status": "defined",
+              "value": 0.17901234567901234
+            },
+            "matthews_correlation_coefficient": {
+              "reason": null,
+              "status": "defined",
+              "value": 0.7062999992802689
+            },
+            "negative_log_likelihood": {
+              "reason": null,
+              "status": "defined",
+              "value": 0.24852470106704727
+            },
+            "precision": {
+              "reason": null,
+              "status": "defined",
+              "value": 0.6901408450704225
+            },
+            "probability_clip_epsilon": 2.220446049250313e-16,
+            "recall": {
+              "reason": null,
+              "status": "defined",
+              "value": 0.8448275862068966
+            },
+            "reliability_bins": [
+              {
+                "count": 211,
+                "empirical_failure_rate": 0.018957345971563982,
+                "lower_bound": 0.0,
+                "mean_failure_probability": 0.0382596764278201,
+                "upper_bound": 0.1,
+                "upper_inclusive": false
+              },
+              {
+                "count": 16,
+                "empirical_failure_rate": 0.0625,
+                "lower_bound": 0.1,
+                "mean_failure_probability": 0.148913605338012,
+                "upper_bound": 0.2,
+                "upper_inclusive": false
+              },
+              {
+                "count": 14,
+                "empirical_failure_rate": 0.14285714285714285,
+                "lower_bound": 0.2,
+                "mean_failure_probability": 0.24943984696233298,
+                "upper_bound": 0.3,
+                "upper_inclusive": false
+              },
+              {
+                "count": 8,
+                "empirical_failure_rate": 0.25,
+                "lower_bound": 0.3,
+                "mean_failure_probability": 0.3570913659796372,
+                "upper_bound": 0.4,
+                "upper_inclusive": false
+              },
+              {
+                "count": 6,
+                "empirical_failure_rate": 0.16666666666666666,
+                "lower_bound": 0.4,
+                "mean_failure_probability": 0.4758672719460643,
+                "upper_bound": 0.5,
+                "upper_inclusive": false
+              },
+              {
+                "count": 3,
+                "empirical_failure_rate": 0.0,
+                "lower_bound": 0.5,
+                "mean_failure_probability": 0.5412003523290617,
+                "upper_bound": 0.6,
+                "upper_inclusive": false
+              },
+              {
+                "count": 5,
+                "empirical_failure_rate": 0.2,
+                "lower_bound": 0.6,
+                "mean_failure_probability": 0.653958014049786,
+                "upper_bound": 0.7,
+                "upper_inclusive": false
+              },
+              {
+                "count": 8,
+                "empirical_failure_rate": 0.75,
+                "lower_bound": 0.7,
+                "mean_failure_probability": 0.7432562153794856,
+                "upper_bound": 0.8,
+                "upper_inclusive": false
+              },
+              {
+                "count": 14,
+                "empirical_failure_rate": 0.5714285714285714,
+                "lower_bound": 0.8,
+                "mean_failure_probability": 0.8430514545306215,
+                "upper_bound": 0.9,
+                "upper_inclusive": false
+              },
+              {
+                "count": 39,
+                "empirical_failure_rate": 0.8461538461538461,
+                "lower_bound": 0.9,
+                "mean_failure_probability": 0.955917782776505,
+                "upper_bound": 1.0,
+                "upper_inclusive": true
+              }
+            ],
+            "roc_auc": {
+              "reason": null,
+              "status": "defined",
+              "value": 0.947886958776251
+            },
+            "sample_count": 324,
+            "specificity": {
+              "reason": null,
+              "status": "defined",
+              "value": 0.9172932330827067
+            },
+            "success_auprc": {
+              "reason": null,
+              "status": "defined",
+              "value": 0.9871287827118006
+            },
+            "success_count": 266,
+            "threshold": 0.48867840133324947
+          },
+          "group_ranking": {
+            "both_class_group_count": 27,
+            "corrupted_top1_eligible_group_count": 36,
+            "corrupted_top1_failure_rate": {
+              "reason": null,
+              "status": "defined",
+              "value": 0.037037037037037035
+            },
+            "corrupted_top1_success": {
+              "reason": null,
+              "status": "defined",
+              "value": 0.9722222222222222
+            },
+            "group_count": 36,
+            "mean_reciprocal_rank_first_success": {
+              "reason": null,
+              "status": "defined",
+              "value": 0.9814814814814815
+            },
+            "mean_source_success_margin_over_failed_corruptions": {
+              "reason": null,
+              "status": "defined",
+              "value": 0.6576258910324413
+            },
+            "pairwise_comparison_count": 306,
+            "pairwise_success_over_failure_concordance": {
+              "reason": null,
+              "status": "defined",
+              "value": 0.9728395061728394
+            },
+            "random_choice_success_expectation": {
+              "reason": null,
+              "status": "defined",
+              "value": 0.7986111111111112
+            },
+            "source_margin_group_count": 27,
+            "source_margin_pair_count": 58
+          },
+          "seed": 2
+        }
+      ],
+      "three_seed_statistics": {
+        "brier_score": {
+          "maximum": 0.0756221024757638,
+          "mean": 0.07170077021569919,
+          "median": 0.07395243619877492,
+          "minimum": 0.06552777197255884,
+          "standard_deviation": 0.004417871044706855
+        },
+        "expected_calibration_error": {
+          "maximum": 0.07318113761649767,
+          "mean": 0.06681769030541916,
+          "median": 0.06694554668079322,
+          "minimum": 0.06032638661896657,
+          "standard_deviation": 0.0052487088089468595
+        },
+        "failure_auprc": {
+          "maximum": 0.8753102926488858,
+          "mean": 0.8545869359380239,
+          "median": 0.8474740238312254,
+          "minimum": 0.8409764913339607,
+          "standard_deviation": 0.014891778876558483
+        },
+        "roc_auc": {
+          "maximum": 0.950479647394348,
+          "mean": 0.9487511883156166,
+          "median": 0.947886958776251,
+          "minimum": 0.947886958776251,
+          "standard_deviation": 0.0012222051355743914
+        }
+      }
+    }
+  },
+  "ensemble_semantic": "mean_of_per_seed_validation_temperature_calibrated_probabilities_v1",
+  "external_dataset_opened": false,
+  "feature_cache_digest": "sha256:2a2f1eb81e83a4ea95ded152a8899b35c2ceb77705bf913eda54d0d80ad8d221",
+  "git_sha": "61f05e5aef7b9894a05d392a56003b37fc6d774c",
+  "internal_test_opened_once": true,
+  "model_config_digest": "sha256:1450011719aa356492fe96c6f1e5b017926415038fb2c5defbd1af17c688b2c8",
+  "model_id": "frozen_resnet18_multiview_action",
+  "schema_version": "1.0",
+  "seed_order": [
+    0,
+    1,
+    2
+  ],
+  "split_digest": "sha256:173ca40a072a1977cc65dbcccedb4684ae573e97f3984c176e3f91bba09f940a",
+  "structured_dataset_digest": "sha256:7847c9d0e09170531e13ba07531fabb3ea6f0aa6b0122298b733726d2055856d",
+  "test_domain_order": [
+    "canonical",
+    "strong_camera_shift",
+    "strong_lighting_shift"
+  ],
+  "thresholds": [
+    {
+      "calibration_digest": "sha256:16cfe3da91db9d588f94cbfe2f77ffa88feafbae59fcf0846c0d1684b49d31f6",
+      "comparison_semantic": "predict_failure_when_probability_gte_threshold_v1",
+      "content_digest": "sha256:58883ac7e5db233c78cc21810509cbf4f19d8bcdc393fad206f21bee7c547084",
+      "dataset_digest": "sha256:7847c9d0e09170531e13ba07531fabb3ea6f0aa6b0122298b733726d2055856d",
+      "maximum_balanced_accuracy": {
+        "achieved_failure_recall": {
+          "reason": null,
+          "status": "defined",
+          "value": 0.9444444444444444
+        },
+        "policy": "maximum_validation_balanced_accuracy",
+        "target_failure_recall": null,
+        "target_met": null,
+        "threshold": 0.23524151420163916,
+        "validation_balanced_accuracy": {
+          "reason": null,
+          "status": "defined",
+          "value": 0.9097222222222222
+        }
+      },
+      "schema_version": "1.0",
+      "split_digest": "sha256:173ca40a072a1977cc65dbcccedb4684ae573e97f3984c176e3f91bba09f940a",
+      "target_failure_recall": {
+        "achieved_failure_recall": {
+          "reason": null,
+          "status": "defined",
+          "value": 0.9
+        },
+        "policy": "target_validation_failure_recall",
+        "target_failure_recall": 0.9,
+        "target_met": true,
+        "threshold": 0.33200773234645176,
+        "validation_balanced_accuracy": {
+          "reason": null,
+          "status": "defined",
+          "value": 0.9001262626262627
+        }
+      },
+      "validation_prediction_digest": "sha256:d750e72d2420351c7b872260c81b50a5e21f615132aa1c35e5f8b9661c4a244c"
+    },
+    {
+      "calibration_digest": "sha256:535e5c027120ff200eec623a5015431c840f736d294abed892681e67a8a80f4c",
+      "comparison_semantic": "predict_failure_when_probability_gte_threshold_v1",
+      "content_digest": "sha256:6774cb2f8846dd404c79348949de80d54e50a5c0c8ae21496a44f82b7a5487b4",
+      "dataset_digest": "sha256:7847c9d0e09170531e13ba07531fabb3ea6f0aa6b0122298b733726d2055856d",
+      "maximum_balanced_accuracy": {
+        "achieved_failure_recall": {
+          "reason": null,
+          "status": "defined",
+          "value": 0.8611111111111112
+        },
+        "policy": "maximum_validation_balanced_accuracy",
+        "target_failure_recall": null,
+        "target_met": null,
+        "threshold": 0.6163355143823782,
+        "validation_balanced_accuracy": {
+          "reason": null,
+          "status": "defined",
+          "value": 0.8882575757575758
+        }
+      },
+      "schema_version": "1.0",
+      "split_digest": "sha256:173ca40a072a1977cc65dbcccedb4684ae573e97f3984c176e3f91bba09f940a",
+      "target_failure_recall": {
+        "achieved_failure_recall": {
+          "reason": null,
+          "status": "defined",
+          "value": 0.9
+        },
+        "policy": "target_validation_failure_recall",
+        "target_failure_recall": 0.9,
+        "target_met": true,
+        "threshold": 0.45813713664039013,
+        "validation_balanced_accuracy": {
+          "reason": null,
+          "status": "defined",
+          "value": 0.8843434343434344
+        }
+      },
+      "validation_prediction_digest": "sha256:ccc75463673bc57f1ead94b1d0eba4618c7b04b3256c3367fa17569598ea51aa"
+    },
+    {
+      "calibration_digest": "sha256:454c158e9dbc5cc295709ce7551046f989a7599a4ac8e7c216086e9e28d0c77f",
+      "comparison_semantic": "predict_failure_when_probability_gte_threshold_v1",
+      "content_digest": "sha256:f0e987dccfbd6a5d1779c2c14cb32856c3ada99e1a062edcae71aa150e90eeb0",
+      "dataset_digest": "sha256:7847c9d0e09170531e13ba07531fabb3ea6f0aa6b0122298b733726d2055856d",
+      "maximum_balanced_accuracy": {
+        "achieved_failure_recall": {
+          "reason": null,
+          "status": "defined",
+          "value": 0.9055555555555556
+        },
+        "policy": "maximum_validation_balanced_accuracy",
+        "target_failure_recall": null,
+        "target_met": null,
+        "threshold": 0.48867840133324947,
+        "validation_balanced_accuracy": {
+          "reason": null,
+          "status": "defined",
+          "value": 0.9003787878787879
+        }
+      },
+      "schema_version": "1.0",
+      "split_digest": "sha256:173ca40a072a1977cc65dbcccedb4684ae573e97f3984c176e3f91bba09f940a",
+      "target_failure_recall": {
+        "achieved_failure_recall": {
+          "reason": null,
+          "status": "defined",
+          "value": 0.9
+        },
+        "policy": "target_validation_failure_recall",
+        "target_failure_recall": 0.9,
+        "target_met": true,
+        "threshold": 0.5288384313211214,
+        "validation_balanced_accuracy": {
+          "reason": null,
+          "status": "defined",
+          "value": 0.8994949494949496
+        }
+      },
+      "validation_prediction_digest": "sha256:83700453786a8383fad149ab639c396f0a2c7021e2200f7eb2d337ea59853a49"
+    }
+  ],
+  "training_config_digest": "sha256:5e9dc0d6ea6cd51d2df55f3b034c6552b0625f42e347940fa7188e72987053cb",
+  "training_or_selection_inputs": "m3a_development_only",
+  "visual_dataset_digest": "sha256:f79be2b357a9de68e1deb80132f7915717158bec506884554536882e3adbd339"
+}

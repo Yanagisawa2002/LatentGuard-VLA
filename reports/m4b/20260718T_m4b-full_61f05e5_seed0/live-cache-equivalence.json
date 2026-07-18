@@ -1,0 +1,32 @@
+{
+  "backbone_digest": "sha256:7e694cdc720aca8361a404f2be2617e3a75e576edbeea728772136ea0e5eae96",
+  "cache_digest": "sha256:2a2f1eb81e83a4ea95ded152a8899b35c2ceb77705bf913eda54d0d80ad8d221",
+  "content_digest": "sha256:d12ae849a0b264a71dde453e88e86544b43eb39a81f1be45954bed5a94947098",
+  "execution_git_sha": "6a5d5280591266b8b44ea5f91ec2b22c8121efec",
+  "feature_maximum_absolute_error": 0.0,
+  "fixed_equivalence_batch_size": 128,
+  "models": [
+    {
+      "checkpoint_digest": "sha256:96390490f72f240e770749b900d0f553b95eb32f73e582ab201e6ab9580bf888",
+      "model_id": "frozen_resnet18_multiview_action_distilled",
+      "probability_maximum_absolute_error": 0.0,
+      "raw_rgb_image_count": 3
+    },
+    {
+      "checkpoint_digest": "sha256:60373e2e485837970e6c7929eb6f6f4347aee4e4f199bdf26d352789e401255b",
+      "model_id": "frozen_resnet18_multiview_action",
+      "probability_maximum_absolute_error": 0.0,
+      "raw_rgb_image_count": 3
+    },
+    {
+      "checkpoint_digest": "sha256:bdd6e43472d360b42b194daca127defc1c047b70740dbdff68a2073640b1e306",
+      "model_id": "frozen_resnet18_singleview_action",
+      "probability_maximum_absolute_error": 0.0,
+      "raw_rgb_image_count": 1
+    }
+  ],
+  "packet_id": "vop-sha256-61f9a9253037a85bca7369938f6695eff181ec7ad6f99a6baddef431ff08a996",
+  "schema_version": "1.0",
+  "semantic": "live_rgb_to_frozen_feature_to_student_probability_v1",
+  "small_batch_cross_shape_maximum_absolute_error": 0.0023941993713378906
+}

@@ -127,11 +127,42 @@ test or external outcomes never authorize tuning or seed escalation.
 
 ## Current status
 
-Repository/server discovery and the local M4B implementation are complete.
-The strict configurations, eight CLI commands, metadata-isolated data join,
-four models, feature/teacher caches, exact checkpoints, staged promotion,
-internal evaluation, and outcome-free external join have passed targeted CPU
-tests plus the complete local test/lint/type suite. Remote synchronization,
-cache creation, GPU smokes, screening, promotion, evaluation, compact result
-retrieval, and result closeout remain pending until the implementation commit
-is reviewed, pushed, and verified at the exact SHA.
+M4B implementation and remote execution are complete. The accepted execution
+revision is `d76013e1434c7a0888ad0e2f2e1ec5077a5cd048` on branch
+`codex/m4b-visual-action-verifier`; local, upstream, GitHub, and the clean
+remote checkout matched that revision before final validation. The retained
+remote run is
+`20260718T_m4b-full_61f05e5_seed0`.
+
+Exactly four seed-zero models were screened. Validation promoted distilled
+multi-view, direct multi-view, and single-view, and only those three families
+received seeds `1` and `2`. Distilled multi-view remained the stable validation
+winner with three-seed mean corrupted-only failure AUPRC `0.8933850553` and
+population standard deviation `0.0020563243`; no five-seed trigger occurred and
+seeds `3` and `4` were not run.
+
+The frozen distilled ensemble achieved internal failure AUPRC
+`0.8923886449`, `0.8727331737`, and `0.8869124670` on canonical,
+strong-camera, and strong-lighting domains. Outcome-free M3C manifests were
+finalized before existing outcomes were opened. External selected-success was
+`0.9888888889` canonical and `0.9805555556` on both strong domains, with
+improvement over deterministic random of `0.1024305556`, `0.0940972222`, and
+`0.0940972222`. The join performed no simulator replay. The visual advantage
+over the fixed action-only selector was small and its paired intervals included
+zero, so the result does not establish a general visual-safety claim.
+
+All ten completed training runs, both benchmark stages, both feature caches,
+and the teacher cache passed zero-work/zero-duplicate resume. Fixed batch-128
+raw-RGB extraction reproduced cached features and all promoted seed-zero model
+probabilities exactly. A separate batch-3 probe differed from the batch-128
+cache by maximum feature absolute error `0.0023941993713378906`; cross
+batch-shape equivalence is therefore a known limitation and no tolerance was
+introduced. Final Linux validation reported `1496 passed`, ruff and format
+clean, and mypy clean across 153 source files. The 29-file sanitized compact
+retrieval under `reports/m4b/20260718T_m4b-full_61f05e5_seed0` passed local
+SHA-256 and strict-loader verification.
+
+No renderer, simulator, VLM, LangMani, distributed process, multi-GPU job, or
+new replay was launched. The server remains powered on and SSH-accessible; its
+environments, datasets, caches, checkpoints, reports, logs, and run roots are
+preserved for a future explicitly authorized task.

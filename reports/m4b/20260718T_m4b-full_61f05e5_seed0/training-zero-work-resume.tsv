@@ -1,0 +1,10 @@
+random_resnet18_multiview_action	seed=0	zero_work_resume=true
+frozen_resnet18_multiview_action_distilled	seed=0	zero_work_resume=true
+frozen_resnet18_multiview_action_distilled	seed=1	zero_work_resume=true
+frozen_resnet18_multiview_action_distilled	seed=2	zero_work_resume=true
+frozen_resnet18_multiview_action	seed=0	zero_work_resume=true
+frozen_resnet18_multiview_action	seed=1	zero_work_resume=true
+frozen_resnet18_multiview_action	seed=2	zero_work_resume=true
+frozen_resnet18_singleview_action	seed=0	zero_work_resume=true
+frozen_resnet18_singleview_action	seed=1	zero_work_resume=true
+frozen_resnet18_singleview_action	seed=2	zero_work_resume=true

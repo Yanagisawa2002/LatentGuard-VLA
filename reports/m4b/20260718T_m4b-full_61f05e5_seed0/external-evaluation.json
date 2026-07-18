@@ -1,0 +1,94 @@
+{
+  "accepted_m3c_report_digest": "sha256:596d104f2ecea17304f56d2a2b65f9677e3799f79a0b6288623a422ed308ec48",
+  "candidate_pool_digest": "sha256:e2982acd30297fb81f000ea53081afdb4e2ca9ad5dc2f16c6aa71d199c8ef1b7",
+  "content_digest": "sha256:f4c156229e5c5b8eb4f4592f6cf1e0de9afcd3eac26a2c51c62f12752693f49b",
+  "domains": {
+    "canonical": {
+      "coverage": 1.0,
+      "improvement_over_random": 0.10243055555555558,
+      "regret_to_oracle": 0.0,
+      "relative_failure_reduction_vs_random": 0.9021406727828749,
+      "robustness_drop_from_canonical": 0.0,
+      "selected_success_rate": 0.9888888888888889,
+      "task_failure_rate": 0.011111111111111072,
+      "visual_minus_action_only_bootstrap": {
+        "bootstrap_samples": 2000,
+        "confidence_lower": -0.008333333333333333,
+        "confidence_upper": 0.013888888888888888,
+        "estimate": 0.002777777777777778,
+        "resampling_unit": "source_trajectory",
+        "seed": 271828
+      },
+      "visual_minus_random_bootstrap": {
+        "bootstrap_samples": 2000,
+        "confidence_lower": 0.08784722222222222,
+        "confidence_upper": 0.11666666666666667,
+        "estimate": 0.10243055555555555,
+        "resampling_unit": "source_trajectory",
+        "seed": 271828
+      }
+    },
+    "strong_camera_shift": {
+      "coverage": 1.0,
+      "improvement_over_random": 0.09409722222222217,
+      "regret_to_oracle": 0.0,
+      "relative_failure_reduction_vs_random": 0.8287461773700302,
+      "robustness_drop_from_canonical": 0.008333333333333415,
+      "selected_success_rate": 0.9805555555555555,
+      "task_failure_rate": 0.019444444444444486,
+      "visual_minus_action_only_bootstrap": {
+        "bootstrap_samples": 2000,
+        "confidence_lower": -0.022222222222222223,
+        "confidence_upper": 0.008333333333333333,
+        "estimate": -0.005555555555555556,
+        "resampling_unit": "source_trajectory",
+        "seed": 271828
+      },
+      "visual_minus_random_bootstrap": {
+        "bootstrap_samples": 2000,
+        "confidence_lower": 0.07776909722222222,
+        "confidence_upper": 0.10833333333333334,
+        "estimate": 0.09409722222222222,
+        "resampling_unit": "source_trajectory",
+        "seed": 271828
+      }
+    },
+    "strong_lighting_shift": {
+      "coverage": 1.0,
+      "improvement_over_random": 0.09409722222222217,
+      "regret_to_oracle": 0.0,
+      "relative_failure_reduction_vs_random": 0.8287461773700302,
+      "robustness_drop_from_canonical": 0.008333333333333415,
+      "selected_success_rate": 0.9805555555555555,
+      "task_failure_rate": 0.019444444444444486,
+      "visual_minus_action_only_bootstrap": {
+        "bootstrap_samples": 2000,
+        "confidence_lower": -0.022222222222222223,
+        "confidence_upper": 0.008333333333333333,
+        "estimate": -0.005555555555555556,
+        "resampling_unit": "source_trajectory",
+        "seed": 271828
+      },
+      "visual_minus_random_bootstrap": {
+        "bootstrap_samples": 2000,
+        "confidence_lower": 0.07881944444444444,
+        "confidence_upper": 0.10868055555555556,
+        "estimate": 0.09409722222222222,
+        "resampling_unit": "source_trajectory",
+        "seed": 271828
+      }
+    }
+  },
+  "existing_outcomes_joined_after_selection": true,
+  "external_evaluation_config_digest": "sha256:a8eba0e117b25f2240ea396a747e2257b27a07d200e6a3ed70a1f43a80ca7b68",
+  "external_outcome_tuning_permitted": false,
+  "original_baseline_selected_success_rates": {
+    "action_only_ensemble_v1": 0.9861111111111112,
+    "deterministic_random_v1": 0.8888888888888888,
+    "state_action_mlp_ensemble_v1": 0.9944444444444445,
+    "temporal_ensemble_v1": 0.9833333333333333
+  },
+  "replay_evidence_digest": "sha256:c44bb6631243c78b0c8d7db8f573454613ee04f919293c0b9b37d561502cbdd4",
+  "schema_version": "1.0",
+  "simulator_replay_performed": false
+}
