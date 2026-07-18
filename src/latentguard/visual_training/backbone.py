@@ -219,7 +219,7 @@ def prepare_backbone(
     try:
         import torch
         from torch import nn
-        from torchvision.models import (  # type: ignore[import-not-found]
+        from torchvision.models import (  # type: ignore
             ResNet18_Weights,
             resnet18,
         )

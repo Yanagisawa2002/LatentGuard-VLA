@@ -487,7 +487,7 @@ def train_visual_action_verifier(
     )
     scaler: Any | None = None
     if mixed_precision and target.type == "cuda":
-        scaler = torch.amp.GradScaler("cuda")
+        scaler = cast(Any, torch.amp).GradScaler("cuda")
     start_epoch = 0
     global_step = 0
     best_metric = 0.0

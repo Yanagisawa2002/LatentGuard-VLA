@@ -119,7 +119,7 @@ class VisualActionVerifier(nn.Module):
         else:
             if image_encoder is None:
                 try:
-                    import torchvision.models as tv_models  # type: ignore[import-not-found]
+                    import torchvision.models as tv_models  # type: ignore
                 except ImportError as exc:  # pragma: no cover
                     raise ImportError("random ResNet-18 requires torchvision") from exc
                 image_encoder = tv_models.resnet18(weights=None)
