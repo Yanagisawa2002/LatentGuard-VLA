@@ -1,0 +1,31 @@
+{
+  "content_digest": "sha256:9cebee7a06c6c56cafe2be6890f9c7c7de646d2900ade0a6cb7bcbde9bb14ebd",
+  "decision_count": 17,
+  "episode_execution_id": "m4c-episode-0b0f8a8420602c9a8e6fcfca4ac3d1448eb7c6d352a85982d88111d9ee097f41",
+  "executed_control_steps": 77,
+  "recovery_count": 0,
+  "schema_version": "1.0",
+  "selected_candidate_ids": [
+    "m4c-candidate-4370aca00ecb5b3d1415b29c6be40fce3891a055b73d5b7701844c64e447076a",
+    "m4c-candidate-9f1caf486454cd7ba60803e8e9b8b96cf54a436f058a604ad00f2ad685e58528",
+    "m4c-candidate-159d00dce57fc59334ae5bee9d717137a3d14c56495575285add8429fd53296b",
+    "m4c-candidate-720b5052637a12e513f641ada05798c80c8f7976caa817c086758250a2272ed3",
+    "m4c-candidate-da4477b642a7868128b0751acd905b40d42abcb204b919ca3a35efd070b7bfc2",
+    "m4c-candidate-152afefe8af425b274f4aeb4990588eb14c5017ef16f4b9c18f4d004240d4564",
+    "m4c-candidate-cc6e679638d25bf65cee30d094d3f0a551b5d4a97b31414ffa6ecaf5cb772af3",
+    "m4c-candidate-60cce57fd4cc399b8e126ce2e1c7d3ece6ed9141972a9376f57cb6756e2e57d9",
+    "m4c-candidate-eacec98dd600063c26ae9d5183d839fd3611dec8679adcf637bcfaac8443e41e",
+    "m4c-candidate-178fadf97f80184b439a8d0ad7832c0cde50791114281cf246fbb44c310168ea",
+    "m4c-candidate-19c435c1ec4c014c44a55bad54c8ffdd8ca8b1d312c04dccca8a70118d64922e",
+    "m4c-candidate-ebd0f2ab13c39bf95741291c9698b1a5771cfd6fe7e94e6a833bfbf94b19dd10",
+    "m4c-candidate-ee0badaffe992a4c5683f6958eb7215cbc0a0fa10dfa7f6e68d440a1f3cc8d47",
+    "m4c-candidate-41617ce0eb52cdebce1ae9644bf6849dc2b2387691655d20252316d32d6cf5a9",
+    "m4c-candidate-9b1fa74cb53ac17b911a0f3fc44e70a63582b59bd6b3d5c409034480b0628a02",
+    "m4c-candidate-d947a0f302e41c5020e4f75cab7ac09ae3ac44fbd9c2597582ce83c76818a4e5",
+    "m4c-candidate-22f9d85d5f0ca9175bf6c69575c40e81c11fa8218f2b4419d962b602b1b46d45"
+  ],
+  "selector_id": "fixed_primary_v1",
+  "source_trajectory_id": "mspc-trajectory-f486a6d65679e4aeb85b4e53197785f05771cee45b104577b95ec9bb26bcce32",
+  "state": "success",
+  "visual_domain": "not_applicable"
+}

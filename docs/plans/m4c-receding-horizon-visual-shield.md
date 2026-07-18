@@ -69,8 +69,20 @@ or new training is authorized.
 
 ## Completion evidence
 
-Completion requires the six-source smoke, the full 60-source/600-episode
-benchmark, strict zero-work resume, compact evaluation, all required local and
-Linux validation commands, final pushed commit/SHA parity, and confirmed remote
-shutdown. Any failed earlier gate leaves M4C incomplete and preserves evidence
-without advancing the workflow.
+The six-source smoke accepted six plans in six attempts and completed 60/60
+episodes with zero execution errors. The full set accepted 60 plans in 60
+attempts, passed the M3A/M3C/smoke disjointness gates, and completed the fixed
+600/600 matrix: 501 success, 98 horizon exhaustion, one unsafe termination,
+zero task failure, and zero execution error. Strict resume executed zero work
+for all 600 identities.
+
+The primary distilled selector improved over random but failed the fixed
+primary, action-only, direct-visual, and privileged-structured comparisons, so
+the overall research acceptance targets were not met. The negative result is
+retained without tuning. Local validation passed with 1522 tests and three
+Windows symlink-permission skips; the final Linux SHA passed all 1525 tests,
+ruff, format, and mypy. Compact result JSON and the honest result review are
+stored under `reports/m4c/20260718T204934Z_m4c-full_2864b30_seed420000/`.
+
+Final Git parity and the explicitly requested server shutdown remain the last
+two lifecycle gates; no later milestone is authorized.

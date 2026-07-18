@@ -1,0 +1,57 @@
+{
+  "accepted_artifacts": {
+    "camera_rig": "sha256:f6345d8c01554a8def7a84f2cd01707523192338d1082578cc27652d7ee42f1f",
+    "m4a_external_visual_dataset": "sha256:62e762acf6a441579c494e1aab6e873e868594cead40f256be2d809abcbeccef",
+    "m4a_visual_development_dataset": "sha256:f79be2b357a9de68e1deb80132f7915717158bec506884554536882e3adbd339",
+    "render_domains": "sha256:ce16fe22b8b143a714f10b43653a30f86d409402d756cc55b60de9fee158abc2",
+    "visual_compatibility": "sha256:d4d4b18156eeb390541b0fd184f0a0e0ad67c36450f45c69e36c8c3426d03312"
+  },
+  "candidate_pool": {
+    "action_contract_digest": "sha256:028d8c2cbb10e867d709f1c5d4c31e07ef1e084f1a8ad8370f96185ba892f0eb",
+    "binding_digest": "sha256:8ebdc4c7b01e7e8a2865c2074880dedf649e80ddf886f5edc7cad5f10f5efa89",
+    "candidate_count": 8,
+    "candidate_pool_configuration_digest": "sha256:b6a532550ba27e3ecc6acf16ccae0138fce97dd0fd8533724bd74dce2c3a714f",
+    "exact_source_excluded": true,
+    "id_like_count": 4,
+    "no_clipping_or_repair": true,
+    "shifted_count": 4
+  },
+  "configuration_digests": {
+    "bootstrap": "sha256:8a738bf615a89458dd37dcd32ab4095168d8b8a72d72c1c582a77c95ba93754e",
+    "closed_loop": "sha256:51da77b5b249e595bc6baddf6708847ac6897cc60dad7fc64ff232798c10ac49",
+    "selector_matrix": "sha256:bd76f1d449194d0a211ccdc0334824e92449a554d61e8d5bbeb04698a6dc9289",
+    "source_seed_schedule": "sha256:79db1f800666974d18dcb62dbb700beffd347f47ca9aa488c2e38ee432a44fe3"
+  },
+  "direct_visual_ensemble": {
+    "accepted_report_digest": "sha256:01a52cf6fc1ceb4a426788c7adf38a12d7b86c8bd9b3605a6fba3358f0b3d3cc",
+    "checkpoint_digests": [
+      "sha256:60373e2e485837970e6c7929eb6f6f4347aee4e4f199bdf26d352789e401255b",
+      "sha256:743a0ef6a99894059ec0808a1dff101553c10113e6824c46b92dbdafabcf048d",
+      "sha256:edde4caa6cb8a9403e19ce291a64b17f8ad6c19c176eeac15f53422856394d2d"
+    ],
+    "model_config_digest": "sha256:1450011719aa356492fe96c6f1e5b017926415038fb2c5defbd1af17c688b2c8",
+    "model_id": "frozen_resnet18_multiview_action"
+  },
+  "distilled_visual_ensemble": {
+    "accepted_report_digest": "sha256:d2bb5993ac2d17ef02543c9842ba23725cc530b1acdac17a6f703a7d0526e3eb",
+    "checkpoint_digests": [
+      "sha256:96390490f72f240e770749b900d0f553b95eb32f73e582ab201e6ab9580bf888",
+      "sha256:31140c52aa820cbd33256f3f6140f069c334f9f33612eb37ac96416daa59e237",
+      "sha256:2af33c38ab76f34ad8a216a410763d44625cc226e035d22501dd531a2c30a458"
+    ],
+    "model_config_digest": "sha256:4192b6914029d82e776713e5922e07bcd5548cc323c48da03b8ad12bf750a27d",
+    "model_id": "frozen_resnet18_multiview_action_distilled"
+  },
+  "fixed_visual_inference": {
+    "backbone_digest": "sha256:7e694cdc720aca8361a404f2be2617e3a75e576edbeea728772136ea0e5eae96",
+    "batch_size": 128,
+    "semantic": "three_real_round_robin_repeat_to_128_consume_first_three_v1"
+  },
+  "nonvisual_selector_report_digests": {
+    "action_only_ensemble_v1": "sha256:e85b4645e7544555adc7e8c4fce729c7a17ed2e16f1da4c53158316e9329ac72",
+    "fixed_primary_v1": "sha256:596d104f2ecea17304f56d2a2b65f9677e3799f79a0b6288623a422ed308ec48",
+    "privileged_structured_ensemble_v1": "sha256:201f721cc2be979b627dde9abe5fc9d40cd019dc6592c2459e1744f4dbcb3e51",
+    "random_v1": "sha256:596d104f2ecea17304f56d2a2b65f9677e3799f79a0b6288623a422ed308ec48"
+  },
+  "schema_version": "1.0"
+}

@@ -1,0 +1,30 @@
+{
+  "local": {
+    "mypy": "success: 166 source files",
+    "pytest": "1522 passed, 3 skipped",
+    "ruff_check": "passed",
+    "ruff_format_check": "252 files already formatted",
+    "targeted_m4c_pytest": "29 passed",
+    "windows_skip_reason": "directory symbolic-link privilege unavailable"
+  },
+  "remote_linux": {
+    "gpu": "NVIDIA GeForce RTX 5090, 32607 MiB",
+    "mypy": "success: 166 source files",
+    "python": "3.11.15",
+    "pytest": "1525 passed",
+    "pytorch": "2.8.0+cu128",
+    "ruff_check": "passed",
+    "ruff_format_check": "252 files already formatted"
+  },
+  "result_reload": {
+    "bootstrap_comparison_count": 17,
+    "compact_json_sanitization_scan": "passed",
+    "full_episode_count": 600,
+    "full_strict_reload": "passed",
+    "selector_domain_aggregate_count": 10,
+    "smoke_episode_count": 60,
+    "smoke_strict_reload": "passed"
+  },
+  "schema_version": "1.0",
+  "validation_git_sha": "ca348a94106bae3a0d19826f2883659451898ae3"
+}

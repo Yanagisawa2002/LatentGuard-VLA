@@ -1,0 +1,126 @@
+{
+  "acceptance_target_review": {
+    "canonical_distilled_vs_fixed_primary_success_difference": {
+      "observed": -0.26666666666666666,
+      "passed": false,
+      "target_minimum": 0.03
+    },
+    "canonical_distilled_vs_privileged_success_difference": {
+      "observed": -0.18333333333333332,
+      "passed": false,
+      "target_minimum": -0.05
+    },
+    "canonical_distilled_vs_random_success_difference": {
+      "confidence_interval_95": [
+        0.11666666666666667,
+        0.43333333333333335
+      ],
+      "observed": 0.2833333333333333,
+      "passed": true,
+      "target_minimum": 0.05
+    },
+    "canonical_relative_unsuccessful_reduction_vs_random": {
+      "observed": 0.5151515151515151,
+      "passed": true,
+      "target_minimum": 0.3
+    },
+    "overall_targets_met": false,
+    "strong_camera_robustness_drop_from_canonical": {
+      "observed": 0.0,
+      "passed": true,
+      "target_maximum": 0.1
+    },
+    "strong_camera_vs_random_success_difference": {
+      "observed": 0.2833333333333333,
+      "passed": true,
+      "target_minimum": 0.03
+    },
+    "strong_lighting_robustness_drop_from_canonical": {
+      "observed": -0.13333333333333333,
+      "passed": true,
+      "target_maximum": 0.1
+    },
+    "strong_lighting_vs_random_success_difference": {
+      "observed": 0.4166666666666667,
+      "passed": true,
+      "target_minimum": 0.03
+    },
+    "unexplained_execution_error_count": {
+      "observed": 0,
+      "passed": true,
+      "target": 0
+    }
+  },
+  "benchmark": {
+    "completed_episode_count": 600,
+    "outcome_counts": {
+      "execution_error": 0,
+      "horizon_exhausted": 98,
+      "success": 501,
+      "task_failure": 0,
+      "unsafe": 1
+    },
+    "planned_episode_count": 600
+  },
+  "execution_commits": {
+    "benchmark": "2864b30ae96c1a066c50b0944b799f947de6f69d",
+    "evaluation": "ca348a94106bae3a0d19826f2883659451898ae3",
+    "implementation": "2864b30ae96c1a066c50b0944b799f947de6f69d",
+    "predeclared_analysis_fix": "ca348a94106bae3a0d19826f2883659451898ae3"
+  },
+  "operational_evidence": {
+    "active_gpu_compute_processes_after_validation": 0,
+    "average_episode_execution_seconds": {
+      "action_only": 2.4216077802081903,
+      "direct_canonical": 3.3228881785025197,
+      "distilled_canonical": 3.8775520355130237,
+      "fixed_primary": 2.40067155379802,
+      "privileged_structured": 3.012511053370933,
+      "random": 2.4812330291296045
+    },
+    "dedicated_inference_latency_instrumented": false,
+    "gpu_memory_observation": {
+      "measurement_semantic": "nvidia_smi_poll_sample_not_peak_v1",
+      "observed_mib": 3016
+    },
+    "remote_recovery_count": 0
+  },
+  "prohibitions": {
+    "distributed_or_multi_gpu": false,
+    "langmani": false,
+    "model_training_or_tuning": false,
+    "outcomes_available_during_selection": false,
+    "vlm_or_llm": false
+  },
+  "schema_version": "1.0",
+  "selector_success_rates": {
+    "action_only/not_applicable": 0.9333333333333333,
+    "direct_visual/canonical": 0.9,
+    "direct_visual/strong_camera_shift": 0.8833333333333333,
+    "direct_visual/strong_lighting_shift": 0.9333333333333333,
+    "distilled_visual/canonical": 0.7333333333333333,
+    "distilled_visual/strong_camera_shift": 0.7333333333333333,
+    "distilled_visual/strong_lighting_shift": 0.8666666666666667,
+    "fixed_primary/not_applicable": 1.0,
+    "privileged_structured/not_applicable": 0.9166666666666666,
+    "random/not_applicable": 0.45
+  },
+  "source_set": {
+    "accepted_source_trajectories": 60,
+    "archive_content_digest": "sha256:b7e77a413d20973b341f8fd208a3d583653b0a0db6ee7a48f816da02fedb5283",
+    "attempt_count": 60,
+    "disjoint_from_accepted_m3a": true,
+    "disjoint_from_accepted_m3c": true,
+    "disjoint_from_m4c_smoke": true,
+    "fresh_state_maximum_absolute_error": 1.1920928955078125e-07,
+    "fresh_state_restoration_tolerance": 1e-06,
+    "fresh_state_verification_count": 78,
+    "t_plus_one_state_count": 4544
+  },
+  "strict_resume": {
+    "completed_episode_count": 600,
+    "executed_episode_count": 0,
+    "zero_work_episode_count": 600,
+    "zero_work_resume": true
+  }
+}

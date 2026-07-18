@@ -1,0 +1,15 @@
+{
+  "completed_episode_count": 600,
+  "executed_episode_count": 0,
+  "outcome_counts": {
+    "execution_error": 0,
+    "horizon_exhausted": 98,
+    "success": 501,
+    "task_failure": 0,
+    "unsafe": 1
+  },
+  "planned_episode_count": 600,
+  "schema_version": "1.0",
+  "zero_work_episode_count": 600,
+  "zero_work_resume": true
+}

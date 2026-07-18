@@ -1,0 +1,30 @@
+{
+  "content_digest": "sha256:426d7c21e97fce714c223804f487d146e744581d256dd70d3627781615550337",
+  "decision_count": 16,
+  "episode_execution_id": "m4c-episode-5faf19216a1c1ee881b8e3f51f6bb84369509d24ab04e60bde7ee7e55a7209a5",
+  "executed_control_steps": 69,
+  "recovery_count": 0,
+  "schema_version": "1.0",
+  "selected_candidate_ids": [
+    "m4c-candidate-89f0f72802e280e1568202851197d7f39b1c43f70c27035f6d85da4da60b3288",
+    "m4c-candidate-ca526dbea9a0c3f71d005d04badc7d51fa886dff8bb2673bc4978229054a8475",
+    "m4c-candidate-e06842ae506e04c2fd6d82db540f37eed2bfabd0c4ba9eab9d93d4ab57468759",
+    "m4c-candidate-c52b2982d50331d6658a6df24b65ad2743357b51ca82eb4046e403e60313e85f",
+    "m4c-candidate-ff328bd773dc4d477e32c0d7297bc8a68357bf7fa96ddab8894a7334db29d037",
+    "m4c-candidate-b02546d8ac6f41f0813f4fb74d430702bf30dc3c6598556a9e8493baa0ce3ba2",
+    "m4c-candidate-dae1cc693ffff643120a563e441d69cd26c2e60efe98835c2f674dd9fb09f9ed",
+    "m4c-candidate-6fdbcfe6f81b1ea2234636b29a4e73f00c1d191b70021dfa14aad2970f22d57d",
+    "m4c-candidate-49fc08c5c4ee87b2871dc550246e3542516172911806426cd2cf6df8957bbc6f",
+    "m4c-candidate-4993bee2bcd2fd102de84a840aeaa0bce50703069c16ad0ad4f37718719bb18e",
+    "m4c-candidate-24210d0f62bffa773d708a178a97f48ebfc62db850eea9e3f8cc235c7ff2d4d2",
+    "m4c-candidate-6ce27049fc029bb0a03aa9a2c89071a03fe1478c4b8fdc8590dc9f79e5e07c1f",
+    "m4c-candidate-bdf676851fb2951f23bbf9938cb279e47a232d6eca93c994c1efd2fa01389e38",
+    "m4c-candidate-f4b3e95ba80d9d6d26023dc171ea9d99978dfc5374ec06706d7dad04063b969c",
+    "m4c-candidate-bdbfa17a89632e0d4aaa8d63ef6ca98fc744c378bf0f329afd0748a9ef5e4113",
+    "m4c-candidate-8fe87c904d5c2e06e97668d7e8180d8de73e8a019e7d3484280489dbc8754370"
+  ],
+  "selector_id": "fixed_primary_v1",
+  "source_trajectory_id": "mspc-trajectory-85db7231a8eee6dc7dabdab071dd7ca524958537dc5b08304066fce76a1ad668",
+  "state": "success",
+  "visual_domain": "not_applicable"
+}

@@ -61,3 +61,16 @@ The nominal plan is fixed and finite. M4C selects among deterministic
 perturbations of its current window; it does not generate a new plan, learn a
 policy online, use future state, or establish visual-language, cross-task,
 general-safety, or real-robot performance.
+
+## M4C full result
+
+The accepted full run completed 60 new sources and all 600 selector/domain
+episodes with zero execution errors. The primary distilled visual ensemble
+improved canonical success over deterministic random (`0.7333` versus
+`0.4500`) but underperformed fixed primary (`1.0000`), action-only (`0.9333`),
+direct visual (`0.9000`), and privileged structured (`0.9167`). The overall
+predeclared targets therefore failed. Strong-camera success matched canonical
+at `0.7333`; strong-lighting success was `0.8667`. These results are preserved
+without post-outcome tuning in the compact
+[`reports/m4c`](../reports/m4c/20260718T204934Z_m4c-full_2864b30_seed420000/review.md)
+review.
