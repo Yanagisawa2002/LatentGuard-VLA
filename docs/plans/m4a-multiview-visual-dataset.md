@@ -315,21 +315,37 @@ The final completion report records observed facts only and must state:
   operational instruction. This material platform defect authorizes one new
   Phase A run only after a version-bound, fail-closed camera-group fix passes
   the complete local suite, is committed, pushed, and synchronized exactly.
+- Phase A attempt 3 used run ID
+  `20260718T080331Z_m4a-phase-a-discovery_d30e1f6_seed271828` from clean pushed
+  SHA `d30e1f6a13cbd5a6893d53aaddb6cd9989e1ab49`. It passed all three GPU
+  camera-group creations and assignments, then failed after 31 seconds during
+  render-only lighting setup, before an output root, packet, or image was
+  created.
+- SAPIEN 3.0 forbids scene modification after its batched render system is
+  created. The candidate applied lighting after the camera-group initializer's
+  first `scene.update_render`, so the lighting call was rejected. The raw log
+  and status were retrieved and content-bound by the third compact sanitized
+  failure summary. No training or feature extraction began, and the GPU
+  returned to zero allocated memory.
+- The server remains online under the user's instruction. This material API
+  ordering defect authorizes one new Phase A run after lighting is moved before
+  batched render-system initialization, the required order is regression-tested,
+  and the complete local validation, commit, push, and exact synchronization
+  gates pass again.
 
 ## Current status
 
-The cost-aware implementation and shader-object fix were pushed and
-synchronized exactly. The second bounded Phase A command reached first camera
-capture and exposed the missing GPU camera-group initialization recorded above.
-A narrow local candidate now binds exactly three late-added cameras to three
-SAPIEN render-system 3.0 groups, one underlying camera each, using the ordered
-shader texture inventory. It stages all group creation before assignment,
-records the private compatibility boundary in renderer evidence, and fails
-closed without lighting or a render handle on initialization error. Local
-validation passed with 1,429 tests and the three expected Windows
-directory-symlink privilege skips, plus full-repository Ruff, format, mypy,
-five-command help smoke, and diff checks. Publication of this candidate is
-pending. The paid server remains online. No trusted visual probe, raw visual
-dataset, model training, feature extraction, VLM, LangMani, video, or M4A
-smoke/full render has completed. The next gates are commit/push, exact remote
+The cost-aware implementation, shader-object fix, and version-bound GPU
+camera-group initialization were pushed and synchronized exactly. The third
+bounded Phase A command proved all three groups initialize, then exposed the
+SAPIEN ordering defect recorded above. A narrow local candidate now applies
+render-only lighting after all cameras are added but before the first
+`scene.update_render` creates the batched render system. The CPU fake enforces
+the same mutation prohibition and exact event order. Targeted tests, Ruff, and
+mypy pass. Complete local validation also passed with 1,429 tests and the three
+expected Windows directory-symlink privilege skips, full-repository Ruff,
+format, mypy, five-command help smoke, and diff checks; publication is pending.
+The paid server remains online. No trusted visual probe, raw visual dataset,
+model training, feature extraction, VLM, LangMani, video, or M4A smoke/full
+render has completed. The next gates are commit/push, exact remote
 synchronization, and one material-reason Phase A rerun.

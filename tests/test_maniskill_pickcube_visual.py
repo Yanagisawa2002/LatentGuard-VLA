@@ -569,10 +569,14 @@ class _InstalledScene:
             )
 
     def set_ambient_light(self, value: object) -> None:
+        if self.render_system_group is not None:
+            raise RuntimeError("batched render system forbids scene mutation")
         self.events.append("ambient")
         self.ambient = value
 
     def add_directional_light(self, **kwargs: object) -> None:
+        if self.render_system_group is not None:
+            raise RuntimeError("batched render system forbids scene mutation")
         self.events.append("directional")
         self.directional = kwargs
 
@@ -643,9 +647,9 @@ def test_installed_renderer_resolves_the_bound_prebuilt_shader_object() -> None:
         "add_camera:front_oblique",
         "add_camera:overhead",
         "add_camera:side_oblique",
-        "update_render",
         "ambient",
         "directional",
+        "update_render",
     ]
     assert scene.ambient == [0.3, 0.3, 0.3]
 
@@ -697,8 +701,8 @@ def test_installed_renderer_camera_group_initialization_fails_closed(
 
     with pytest.raises(ManiSkillVisualRenderingError, match=message):
         renderer.prepare(SimpleNamespace(unwrapped=SimpleNamespace(scene=scene)), plan)
-    assert scene.ambient is None
-    assert scene.directional is None
+    assert scene.ambient == [0.3, 0.3, 0.3]
+    assert scene.directional is not None
     assert scene.camera_groups == {}
     assert all(camera.camera_group is None for camera in scene.runtime_cameras)
 

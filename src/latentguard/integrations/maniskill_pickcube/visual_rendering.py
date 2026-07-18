@@ -767,12 +767,12 @@ class LazyManiSkillPickCubeVisualRenderer:
                     f"could not add world camera {camera.camera_id!r}"
                 ) from exc
             cameras.append((camera, runtime_camera))
+        self._apply_lighting(scene, plan.lighting)
         self._initialize_gpu_camera_groups(
             scene=scene,
             cameras=cameras,
             texture_names=texture_names,
         )
-        self._apply_lighting(scene, plan.lighting)
         backend = getattr(scene, "backend", None)
         observation = VisualRendererApiObservation(
             renderer_backend=_safe_runtime_name(backend),
@@ -912,12 +912,17 @@ class LazyManiSkillPickCubeVisualRenderer:
             )
         ambient = [plan.ambient_intensity] * 3
         key_color = [item * plan.key_intensity for item in plan.key_color_rgb]
-        set_ambient(ambient)
-        add_directional(
-            direction=list(plan.key_direction),
-            color=key_color,
-            shadow=False,
-        )
+        try:
+            set_ambient(ambient)
+            add_directional(
+                direction=list(plan.key_direction),
+                color=key_color,
+                shadow=False,
+            )
+        except Exception as exc:
+            raise ManiSkillVisualRenderingError(
+                "could not apply render-only lighting before GPU group initialization"
+            ) from exc
 
 
 def build_pickcube_visual_render_plan(
