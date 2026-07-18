@@ -451,6 +451,32 @@ The final completion report records observed facts only and must state:
   CLI help smokes, and `git diff --check` also passed. Independent read-only
   review found no P0/P1/P2 issue and confirmed that both M3A and M3C compare all
   five serialized event fields with exact count and ordering.
+- That correction was committed and pushed as
+  `1bb7b48b2bb758b11df789b43be699400f819dc1`. A detached clean remote worktree
+  at that exact SHA reloaded both existing smoke datasets without advancing the
+  original rendering checkout, but the combined validation then failed closed
+  after 123 seconds on `overhead.extrinsics` for the first M3A packet.
+- Field-level diagnosis proved that all 16 numeric components were equal with
+  maximum absolute error zero and that the exact runtime/expected calibration
+  digests still matched. The only differences were four negative-zero bits in
+  the reconstructed planned matrix versus positive zero after packet
+  persistence. The repository's canonical JSON contract deliberately maps both
+  signed-zero encodings to positive zero, so the preexisting reload comparison
+  was stricter than the authoritative serialization and could never accept this
+  valid overhead view after publication.
+- The narrow correction applies the existing canonical signed-zero writer
+  semantic to the reconstructed planned matrix only after the bound runtime
+  cast. The validator accepts either the exact in-memory planned bits or the
+  one canonical persisted projection, while rejecting a signed zero not
+  present in the plan and retaining byte-exact comparison for every nonzero
+  component. It does not introduce a numeric tolerance or weaken the exact
+  runtime calibration digests, camera configuration identity, dtype, shape,
+  packet digest, or image inventory.
+- The correction passed its exact targeted regression, an explicit
+  save/reload/render-inventory regression, and the complete local gate: 1465
+  tests passed with the three existing Windows symbolic-link privilege skips.
+  Ruff lint, Ruff format checking across 217 files, mypy across 141 source
+  files, all five M4A CLI help smokes, and `git diff --check` also passed.
 
 ## Current status
 
@@ -458,11 +484,13 @@ The fifth and final Phase A probe passed every strict trust gate, and its two
 compact artifacts passed independent local reload. Both bounded Phase B smoke
 datasets have now rendered and published exactly once from pushed SHA
 `2c8da8d8658b4edece298fa9a2e399483f196d7f`. The reload-only `FailureEvent`
-comparison defect recorded above is corrected and fully validated locally;
-Phase B acceptance now awaits its commit/push and remote revalidation. The paid
-server remains online. No model training, feature extraction, VLM, LangMani,
-video, multi-GPU work, or M4A full render has run. The next gates are
-commit/push, combined strict reload/leakage/integrity validation of the existing
-smoke datasets from the corrected revision, one exact-manifest zero-work resume
-per dataset from the original rendering revision, a final read-only combined
-validation, and only then exact remote fast-forward synchronization.
+comparison defect is fixed at pushed SHA `1bb7b48b2bb758b11df789b43be699400f819dc1`,
+and its first remote revalidation exposed the signed-zero persistence mismatch
+recorded above. The narrow correction now passes every local gate; Phase B
+acceptance awaits its commit/push and remote revalidation. The paid server
+remains online. No model training, feature extraction, VLM, LangMani, video,
+multi-GPU work, or M4A full render has run. The next gates are commit/push,
+corrected combined strict reload/leakage/integrity validation of the existing
+smoke datasets, one exact-manifest zero-work resume per dataset from the
+original rendering revision, a final read-only combined validation, and only
+then exact remote fast-forward synchronization.

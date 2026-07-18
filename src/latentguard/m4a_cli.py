@@ -2182,7 +2182,7 @@ def _require_validation_paths(
 def _matrix_matches_runtime_cast(
     observed: object, planned: object, *, runtime_dtype: str
 ) -> bool:
-    """Match serialized canonical calibration after the bound runtime cast."""
+    """Match persisted canonical calibration after the bound runtime cast."""
 
     import numpy as np
 
@@ -2195,10 +2195,18 @@ def _matrix_matches_runtime_cast(
     projected = np.asarray(planned_array, dtype=np.dtype(runtime_dtype)).astype(
         np.float64
     )
-    return bool(
-        observed_array.dtype == projected.dtype
-        and observed_array.tobytes(order="C") == projected.tobytes(order="C")
-    )
+    if observed_array.dtype != projected.dtype:
+        return False
+    observed_bytes = observed_array.tobytes(order="C")
+    if observed_bytes == projected.tobytes(order="C"):
+        return True
+    # Canonical JSON deliberately maps a planned -0.0 to persisted +0.0. Accept
+    # exactly that writer projection while retaining bit-exact comparison for
+    # every nonzero component and rejecting a signed zero not present in the
+    # plan.
+    persisted_projection = projected.copy(order="C")
+    persisted_projection[persisted_projection == 0.0] = 0.0
+    return bool(observed_bytes == persisted_projection.tobytes(order="C"))
 
 
 def _validate_render_inventory(

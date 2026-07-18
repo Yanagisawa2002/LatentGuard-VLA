@@ -1613,11 +1613,20 @@ def test_validate_and_inspect_strict_serialized_partial_dataset(
 ) -> None:
     import latentguard.m4a_cli as m4a
     import latentguard.vision_data.dataset as visual_dataset
+    from latentguard.vision_data.serialization import load_visual_dataset
 
     root, dataset, render_root = _visual_bundle(tmp_path)
     scope = _scope()
     assert m4a._validate_render_inventory(
         dataset,
+        render_root,
+        scope,
+        expected_source_identity_digest=_digest("source-identity"),
+        expected_reset_seeds_by_anchor={"anchor-0": 17},
+    ) == (17,)
+    reloaded = load_visual_dataset(root)
+    assert m4a._validate_render_inventory(
+        reloaded,
         render_root,
         scope,
         expected_source_identity_digest=_digest("source-identity"),
@@ -1656,15 +1665,26 @@ def test_validate_and_inspect_strict_serialized_partial_dataset(
     assert summary["state_integrity_verified"] is True
 
 
-def test_matrix_matches_runtime_cast_rejects_signed_zero_drift() -> None:
+def test_matrix_matches_runtime_cast_applies_canonical_json_zero_semantic() -> None:
     import latentguard.m4a_cli as m4a
 
-    planned = ((1.0, 0.0), (0.0, 1.0))
-    observed = ((1.0, -0.0), (0.0, 1.0))
+    planned = ((1.0, -0.0), (-0.0, 1.0))
+    persisted = ((1.0, 0.0), (0.0, 1.0))
+    noncanonical_observed = ((1.0, -0.0), (0.0, 1.0))
+    drifted = (
+        (1.0, float(np.nextafter(np.float32(0.0), np.float32(1.0)))),
+        (0.0, 1.0),
+    )
 
     assert m4a._matrix_matches_runtime_cast(planned, planned, runtime_dtype="float32")
+    assert m4a._matrix_matches_runtime_cast(persisted, planned, runtime_dtype="float32")
     assert not m4a._matrix_matches_runtime_cast(
-        observed, planned, runtime_dtype="float32"
+        noncanonical_observed,
+        ((1.0, 0.0), (0.0, 1.0)),
+        runtime_dtype="float32",
+    )
+    assert not m4a._matrix_matches_runtime_cast(
+        drifted, planned, runtime_dtype="float32"
     )
 
 
