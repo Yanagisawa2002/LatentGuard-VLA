@@ -21,6 +21,10 @@ dev = [
 training = [
   "torch>=2.3,<3.0",
 ]
+visual-training = [
+  "torch==2.8.*",
+  "torchvision==0.23.*",
+]
 
 [project.scripts]
 latentguard = "latentguard.cli:main"

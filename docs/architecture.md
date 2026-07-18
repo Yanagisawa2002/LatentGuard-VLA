@@ -369,3 +369,27 @@ without reopening simulator-native objects.
 Visual packets share images across candidate references. The M3A development
 binding extends the accepted trajectory split; the independent M3C external
 binding is evaluation-only and cannot flow into training loaders.
+
+## M4B visual-training boundary
+
+`latentguard.visual_training` consumes the simulator-independent M4A packet
+models and accepted M3A structured projection. It never imports ManiSkill,
+SAPIEN, LangMani, or a renderer. Student examples contain only action arrays,
+masks, and strong failure targets; packet, split, candidate, corruption,
+trajectory, camera, and domain fields live in a separate reporting join.
+
+The official torchvision ResNet-18 ImageNet-1K V1 manifest transitively binds
+the exact downloaded weight bytes, torchvision version, input normalization,
+resolution, and 512-component output. Safe NPY caches bind the exact Git,
+dataset/source/split, image, backbone, weight, and preprocessing identities.
+The five-seed M3B temporal teacher cache stores logits and calibrated
+probabilities only—never state/action arrays or paths—and only the M3A training
+split may read its ensemble target during loss computation.
+
+Every trainable architecture shares one masked two-layer action Transformer.
+Frozen single/multi-view variants consume the reused cache; the random ResNet-18
+baseline decodes RGB and trains end to end. Validation alone controls early
+stopping, seed-zero promotion, calibration, and thresholds. Internal test is
+opened once after three-seed freeze. External selection accepts no outcome
+path, freezes one manifest per domain, and joins only the already accepted M3C
+outcomes afterward without simulator replay.

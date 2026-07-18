@@ -427,3 +427,24 @@ environment-initialization count, and total renderer peak memory remain
 explicitly incomplete.
 No training, feature extraction, VLM, LangMani, video, or multi-GPU work ran.
 The server was deliberately left online under the user's standing instruction.
+
+## M4B single-GPU visual training
+
+M4B reuses the accepted M4A dataset roots and existing M3B runtime artifacts;
+it does not start a renderer or simulator. The exact pushed revision must pass
+clean-tree/SHA, artifact-digest, free-space, single-GPU, dependency, and
+no-live-renderer gates before preparing the official ResNet-18 weights.
+
+Paid execution proceeds once in this order: M3A feature and teacher caches;
+four seed-zero screens; validation-only promotion; seeds one and two for at
+most three families while reusing seed zero; checkpoint/calibration/threshold
+freeze; one internal test; M3C evaluation-only feature cache; three outcome-free
+selection manifests; existing-outcome join; zero-work resumes; final Linux
+validation; compact retrieval. A failed target is retained as a valid negative
+result and never triggers test tuning, more seeds, new rendering, or replay.
+
+All run roots live outside the tracked checkout and record the full Git SHA,
+resolved config, accepted dataset/cache/checkpoint identities, seed, launch
+command, environment, timing, and peak GPU allocation. Only compact sanitized
+reports are retrieved. After M4B, the server and all persistent state remain
+online and intact unless the user explicitly requests shutdown in that task.

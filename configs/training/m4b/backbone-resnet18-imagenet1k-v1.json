@@ -1,0 +1,10 @@
+{
+  "schema_version": "1.0",
+  "family": "torchvision_resnet18",
+  "weight_enum": "ResNet18_Weights.IMAGENET1K_V1",
+  "expected_input_resolution": 224,
+  "normalization_mean": [0.485, 0.456, 0.406],
+  "normalization_standard_deviation": [0.229, 0.224, 0.225],
+  "output_feature_dimension": 512,
+  "preprocessing_semantic": "torchvision_resnet18_imagenet1k_v1_rgb224_v1"
+}

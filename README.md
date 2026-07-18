@@ -35,6 +35,16 @@ sequence with exact resume and integrity validation. See
 [the visual data contract](docs/visual_action_verifier_data.md) and
 [the M4A execution plan](docs/plans/m4a-multiview-visual-dataset.md).
 
+Milestone M4B adds a cost-aware visual-action training and evaluation layer.
+It screens exactly four ResNet-18 visual/action models at seed `0`, reuses a
+single content-bound frozen-feature cache and one five-seed privileged-teacher
+cache, and advances at most three validation-selected families to seeds
+`0, 1, 2`. The student receives only ordered RGB/features, the candidate
+action chunk, and its mask. M3C images remain external-only and their outcomes
+cannot enter selection. See
+[the M4B training contract](docs/visual_action_verifier_training.md) and
+[the M4B execution plan](docs/plans/m4b-visual-action-verifier.md).
+
 The current M2C checkout has passed a trusted real-runtime probe and accepted
 six official ManiSkill source trajectories with six independent successful
 baseline replays. The first 12-proposal paired-replay smoke was rejected because
@@ -225,6 +235,28 @@ their later zero-work resumes validate completely. Operational timing and GPU
 memory coverage remain intentionally incomplete because the initial native
 processes did not publish per-packet telemetry and renderer allocations are
 outside the PyTorch allocator.
+
+## Train and evaluate the visual action verifier
+
+M4B exposes eight strict commands. Their default help and dry-run paths remain
+CPU-safe and do not download weights or open datasets:
+
+```text
+latentguard prepare-visual-backbone --help
+latentguard extract-visual-features --help
+latentguard prepare-visual-teacher-targets --help
+latentguard train-visual-action-verifier --help
+latentguard benchmark-visual-action-verifier --help
+latentguard evaluate-visual-action-verifier --help
+latentguard select-visual-action-candidates --help
+latentguard evaluate-external-visual-selection --help
+```
+
+Install `.[visual-training]` only in the persistent remote environment used for
+single-GPU execution. Raw images, feature/teacher arrays, checkpoints, and raw
+predictions stay outside Git. External feature extraction requires the
+explicit `--evaluation-only` gate, and external selection has no outcome or
+replay argument. A five-seed M4B benchmark is always refused.
 
 Generate, validate, save, reload, and compare a small deterministic dataset:
 

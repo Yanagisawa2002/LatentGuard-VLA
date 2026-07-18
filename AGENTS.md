@@ -182,6 +182,21 @@ restoration.
   split, and cross-dataset leakage gates pass.
 - Report repeated-render nondeterminism exactly. Do not hide pixel drift behind
   an unreviewed tolerance.
+- Visual training loaders may consume only development datasets with
+  `training_allowed=true`; M3C external visual data is unavailable during
+  training, selection, calibration, threshold fitting, and model promotion.
+- Compute content-bound frozen image features and privileged teacher targets
+  once, and reuse the identical caches for every repeated seed.
+- Single-seed screening is not a stability claim. Only validation-promoted
+  models may advance to seeds `0, 1, 2`; seeds `3` and `4` require explicit
+  authorization.
+- Camera/domain IDs, corruption metadata, candidate types, evidence/trajectory
+  IDs, and outcome metadata are reporting-only and never learned inputs.
+- Freeze every visual-model configuration before internal test or external
+  evaluation. External evaluation must finalize an outcome-free selection
+  manifest before joining the existing outcomes.
+- Keep raw visual datasets, embeddings, teacher targets, and checkpoints outside
+  Git.
 
 ## Engineering and data rules
 

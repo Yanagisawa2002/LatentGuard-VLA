@@ -1,0 +1,15 @@
+{
+  "schema_version": "1.0",
+  "model_id": "frozen_resnet18_singleview_action",
+  "backbone_frozen": true,
+  "pretrained": true,
+  "view_count": 1,
+  "distillation_enabled": false,
+  "action_embedding_dimension": 128,
+  "action_attention_heads": 4,
+  "action_feedforward_dimension": 256,
+  "action_transformer_layers": 2,
+  "view_projection_dimension": 256,
+  "fusion_hidden_dimension": 256,
+  "dropout": 0.1
+}

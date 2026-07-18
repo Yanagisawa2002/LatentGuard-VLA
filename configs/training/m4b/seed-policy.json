@@ -1,0 +1,9 @@
+{
+  "schema_version": "1.0",
+  "screen_seeds": [0],
+  "promoted_seeds": [0, 1, 2],
+  "maximum_promoted_families": 3,
+  "close_gap_threshold": 0.02,
+  "high_standard_deviation_threshold": 0.03,
+  "five_seed_requires_explicit_authorization": true
+}

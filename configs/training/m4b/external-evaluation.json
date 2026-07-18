@@ -1,0 +1,8 @@
+{
+  "schema_version": "1.0",
+  "domains": ["canonical", "strong_camera_shift", "strong_lighting_shift"],
+  "bootstrap_samples": 2000,
+  "bootstrap_seed": 271828,
+  "selection_semantic": "minimum_three_seed_mean_calibrated_failure_probability_v1",
+  "outcomes_available_during_selection": false
+}
