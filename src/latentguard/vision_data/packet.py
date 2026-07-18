@@ -23,7 +23,7 @@ from latentguard.vision_data.models import (
     VisualTaskProjectionV1,
 )
 
-VISUAL_VIEW_SCHEMA_VERSION = "1.0"
+VISUAL_VIEW_SCHEMA_VERSION = "1.1"
 VISUAL_PACKET_SCHEMA_VERSION = VISION_DATA_SCHEMA_VERSION
 M4A_STATE_COMPONENT_COUNT = 70
 M4A_VERIFIER_STATE_COMPONENT_COUNT = 38
@@ -53,6 +53,8 @@ class VisualViewRecordV1:
     intrinsics_dtype: str
     extrinsics: Matrix4
     extrinsics_dtype: str
+    runtime_extrinsics_digest: str
+    expected_runtime_extrinsics_digest: str
     camera_configuration_digest: str
     state_before_render_digest: str
     state_after_render_digest: str
@@ -74,6 +76,8 @@ class VisualViewRecordV1:
             "intrinsics_dtype",
             "extrinsics",
             "extrinsics_dtype",
+            "runtime_extrinsics_digest",
+            "expected_runtime_extrinsics_digest",
             "camera_configuration_digest",
             "state_before_render_digest",
             "state_after_render_digest",
@@ -115,12 +119,16 @@ class VisualViewRecordV1:
             "dtype": self.dtype,
             "extrinsics": [list(row) for row in self.extrinsics],
             "extrinsics_dtype": self.extrinsics_dtype,
+            "expected_runtime_extrinsics_digest": (
+                self.expected_runtime_extrinsics_digest
+            ),
             "image_reference": self.image_reference,
             "intrinsics": [list(row) for row in self.intrinsics],
             "intrinsics_dtype": self.intrinsics_dtype,
             "maximum_state_error": self.maximum_state_error,
             "npy_sha256": self.npy_sha256,
             "pixel_sha256": self.pixel_sha256,
+            "runtime_extrinsics_digest": self.runtime_extrinsics_digest,
             "schema_version": self.schema_version,
             "shape": list(self.shape),
             "state_after_render_digest": self.state_after_render_digest,
@@ -178,6 +186,14 @@ class VisualViewRecordV1:
             ),
             extrinsics_dtype=require_text(
                 item["extrinsics_dtype"], "VisualViewRecordV1.extrinsics_dtype"
+            ),
+            runtime_extrinsics_digest=require_text(
+                item["runtime_extrinsics_digest"],
+                "VisualViewRecordV1.runtime_extrinsics_digest",
+            ),
+            expected_runtime_extrinsics_digest=require_text(
+                item["expected_runtime_extrinsics_digest"],
+                "VisualViewRecordV1.expected_runtime_extrinsics_digest",
             ),
             camera_configuration_digest=require_text(
                 item["camera_configuration_digest"],

@@ -6,14 +6,17 @@ import math
 from collections.abc import Callable
 from dataclasses import dataclass
 from types import MappingProxyType
-from typing import Protocol, cast, runtime_checkable
+from typing import Any, Protocol, cast, runtime_checkable
 
 import numpy as np
 from numpy.typing import NDArray
 
 from latentguard.replay.models import ReplayExecutionRole
 from latentguard.vision_data.cameras import Matrix3, Matrix4, PickCubeMultiViewRigV1
-from latentguard.vision_data.domains import RenderDomainConfigurationV1
+from latentguard.vision_data.domains import (
+    CANONICAL_DOMAIN_ID,
+    RenderDomainConfigurationV1,
+)
 from latentguard.vision_data.models import (
     SourceCollection,
     VisualDatasetSplit,
@@ -51,11 +54,13 @@ from .state_indexed_runtime import (
 from .state_tree import StateTreeComparison, clone_state_tree, compare_state_trees
 from .task_evidence import PickCubeTaskKeyContract
 from .visual_rendering import (
+    PACKET_EXTRINSIC_CANONICALIZATION_SEMANTIC,
     VISUAL_RENDERER_SEMANTIC_VERSION,
     LazyManiSkillPickCubeVisualRenderer,
     PickCubeVisualRenderer,
     PickCubeVisualRenderPlan,
     RenderedVisualView,
+    RuntimeCalibrationEvidenceV1,
     VisualRendererApiObservation,
     build_pickcube_visual_render_plan,
 )
@@ -251,6 +256,13 @@ class TrustedVisualCompatibility(Protocol):
     @property
     def renderer_api(self) -> VisualRendererApiObservation:
         """Return the exact renderer API contract observed by the probe."""
+        ...
+
+    @property
+    def runtime_calibration_evidence(
+        self,
+    ) -> tuple[RuntimeCalibrationEvidenceV1, ...]:
+        """Return the identity-bound canonical probe calibration inventory."""
         ...
 
     def require_trusted_visual_generation_ready(self) -> None:
@@ -550,6 +562,13 @@ def build_visual_observation_packet(
         raise ManiSkillVisualInvalidContextError(
             "runtime renderer API differs from the reviewed visual compatibility"
         )
+    if (
+        result.renderer_api.packet_extrinsic_canonicalization_semantic
+        != PACKET_EXTRINSIC_CANONICALIZATION_SEMANTIC
+    ):
+        raise ManiSkillVisualInvalidContextError(
+            "runtime renderer does not authorize canonical packet extrinsics"
+        )
     if result.render_plan.domain_id != render_domain.domain_id:
         raise ManiSkillVisualInvalidContextError(
             "render result domain differs from packet source metadata"
@@ -563,6 +582,37 @@ def build_visual_observation_packet(
     observed_camera_digests = tuple(
         view.camera_configuration_digest for view in result.views
     )
+    if any(
+        view.intrinsics.dtype.name != result.renderer_api.runtime_intrinsics_dtype
+        or view.extrinsics.dtype.name != result.renderer_api.runtime_extrinsics_dtype
+        or view.runtime_extrinsics.dtype.name
+        != result.renderer_api.runtime_extrinsics_dtype
+        for view in result.views
+    ):
+        raise ManiSkillVisualInvalidContextError(
+            "rendered calibration dtype differs from the reviewed runtime API"
+        )
+    if any(
+        not _array_bits_equal(
+            view.intrinsics,
+            np.asarray(planned.intrinsics, dtype=view.intrinsics.dtype),
+        )
+        or not _array_bits_equal(
+            view.extrinsics,
+            np.asarray(planned.extrinsics, dtype=view.extrinsics.dtype),
+        )
+        or view.runtime_extrinsics_digest != view.expected_runtime_extrinsics_digest
+        for view, planned in zip(result.views, result.render_plan.cameras, strict=True)
+    ):
+        raise ManiSkillVisualInvalidContextError(
+            "rendered calibration differs from its exact plan or runtime evidence"
+        )
+    if result.render_plan.domain_id == CANONICAL_DOMAIN_ID and tuple(
+        view.runtime_calibration_evidence for view in result.views
+    ) != tuple(visual_compatibility.runtime_calibration_evidence):
+        raise ManiSkillVisualInvalidContextError(
+            "canonical runtime calibration differs from reviewed probe evidence"
+        )
     configured_camera_ids = tuple(camera.camera_id for camera in camera_rig.cameras)
     planned_camera_ids = tuple(
         camera.camera_id for camera in result.render_plan.cameras
@@ -601,6 +651,10 @@ def build_visual_observation_packet(
                 intrinsics_dtype=view.intrinsics.dtype.name,
                 extrinsics=_matrix4(view.extrinsics),
                 extrinsics_dtype=view.extrinsics.dtype.name,
+                runtime_extrinsics_digest=view.runtime_extrinsics_digest,
+                expected_runtime_extrinsics_digest=(
+                    view.expected_runtime_extrinsics_digest
+                ),
                 camera_configuration_digest=view.camera_configuration_digest,
                 state_before_render_digest=(
                     result.integrity.state_before_render_digest
@@ -616,7 +670,11 @@ def build_visual_observation_packet(
                 task_projection_before=task_projection,
                 task_projection_after=task_projection,
             )
-            for view, prepared in zip(result.views, prepared_images, strict=True)
+            for view, prepared in zip(
+                result.views,
+                prepared_images,
+                strict=True,
+            )
         )
         return VisualObservationPacketV1(
             source_collection=source_collection,
@@ -803,6 +861,16 @@ def _render_plan_mapping(plan: PickCubeVisualRenderPlan) -> tuple[object, ...]:
         plan.lighting.key_intensity,
         plan.lighting.key_color_rgb,
         plan.lighting.key_direction,
+    )
+
+
+def _array_bits_equal(left: NDArray[Any], right: NDArray[Any]) -> bool:
+    """Return exact array equality including dtype and signed-zero bits."""
+
+    return (
+        left.shape == right.shape
+        and left.dtype == right.dtype
+        and left.tobytes(order="C") == right.tobytes(order="C")
     )
 
 

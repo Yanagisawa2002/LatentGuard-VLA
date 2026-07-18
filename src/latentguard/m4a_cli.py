@@ -2180,7 +2180,7 @@ def _require_validation_paths(
 def _matrix_matches_runtime_cast(
     observed: object, planned: object, *, runtime_dtype: str
 ) -> bool:
-    """Apply ``exact_after_runtime_dtype_cast_v1`` to serialized calibration."""
+    """Match serialized canonical calibration after the bound runtime cast."""
 
     import numpy as np
 
@@ -2193,7 +2193,10 @@ def _matrix_matches_runtime_cast(
     projected = np.asarray(planned_array, dtype=np.dtype(runtime_dtype)).astype(
         np.float64
     )
-    return bool(np.array_equal(observed_array, projected))
+    return bool(
+        observed_array.dtype == projected.dtype
+        and observed_array.tobytes(order="C") == projected.tobytes(order="C")
+    )
 
 
 def _validate_render_inventory(

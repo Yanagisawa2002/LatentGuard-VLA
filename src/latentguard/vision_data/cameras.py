@@ -20,7 +20,10 @@ from latentguard.vision_data.configuration import (
 CAMERA_SCHEMA_VERSION = "1.0"
 CAMERA_RIG_SCHEMA_VERSION = "1.0"
 PICKCUBE_MULTIVIEW_RIG_ID = "pickcube_multiview_rig_v1"
-PICKCUBE_MULTIVIEW_RIG_SEMANTIC_VERSION = "1.0.0"
+PICKCUBE_MULTIVIEW_RIG_SEMANTIC_VERSION = "2.0.0"
+OPENCV_WORLD_TO_CAMERA_EXTRINSIC_SEMANTIC = (
+    "ros_camera_world_pose_to_opencv_world_to_camera_v1"
+)
 PICKCUBE_CAMERA_IDS = ("front_oblique", "overhead", "side_oblique")
 M4A_IMAGE_WIDTH = 224
 M4A_IMAGE_HEIGHT = 224
@@ -32,6 +35,62 @@ Vector3 = tuple[float, float, float]
 Vector4 = tuple[float, float, float, float]
 Matrix3 = tuple[Vector3, Vector3, Vector3]
 Matrix4 = tuple[Vector4, Vector4, Vector4, Vector4]
+
+
+def opencv_world_to_camera_extrinsics(
+    position: Vector3, quaternion_wxyz: Vector4
+) -> Matrix4:
+    """Derive the explicit OpenCV world-to-camera matrix from a ROS camera pose."""
+
+    if len(position) != 3 or len(quaternion_wxyz) != 4:
+        raise ValueError("camera pose must contain position[3] and quaternion[4]")
+    values = (*position, *quaternion_wxyz)
+    if any(
+        type(value) not in (int, float) or not math.isfinite(value) for value in values
+    ):
+        raise ValueError("camera pose values must be finite numbers")
+    px, py, pz = (float(value) for value in position)
+    w, x, y, z = (float(value) for value in quaternion_wxyz)
+    squared_norm = w * w + x * x + y * y + z * z
+    if not math.isfinite(squared_norm) or squared_norm <= 0.0:
+        raise ValueError("camera quaternion must have positive finite norm")
+    two_s = 2.0 / squared_norm
+    camera_to_world = (
+        (
+            1.0 - two_s * (y * y + z * z),
+            two_s * (x * y - z * w),
+            two_s * (x * z + y * w),
+        ),
+        (
+            two_s * (x * y + z * w),
+            1.0 - two_s * (x * x + z * z),
+            two_s * (y * z - x * w),
+        ),
+        (
+            two_s * (x * z - y * w),
+            two_s * (y * z + x * w),
+            1.0 - two_s * (x * x + y * y),
+        ),
+    )
+    ros_world_to_camera = tuple(zip(*camera_to_world, strict=True))
+    ros_rows = tuple(
+        (
+            row[0],
+            row[1],
+            row[2],
+            -(row[0] * px + row[1] * py + row[2] * pz),
+        )
+        for row in ros_world_to_camera
+    )
+    return cast(
+        Matrix4,
+        (
+            tuple(-value for value in ros_rows[1]),
+            tuple(-value for value in ros_rows[2]),
+            ros_rows[0],
+            (0.0, 0.0, 0.0, 1.0),
+        ),
+    )
 
 
 def expected_pinhole_focal_lengths(
@@ -281,6 +340,7 @@ __all__ = [
     "M4A_IMAGE_HEIGHT",
     "M4A_IMAGE_WIDTH",
     "M4A_PINHOLE_PROJECTION_ABSOLUTE_TOLERANCE",
+    "OPENCV_WORLD_TO_CAMERA_EXTRINSIC_SEMANTIC",
     "PICKCUBE_CAMERA_IDS",
     "PICKCUBE_MULTIVIEW_RIG_ID",
     "PICKCUBE_MULTIVIEW_RIG_SEMANTIC_VERSION",
@@ -292,4 +352,5 @@ __all__ = [
     "Vector3",
     "Vector4",
     "expected_pinhole_focal_lengths",
+    "opencv_world_to_camera_extrinsics",
 ]

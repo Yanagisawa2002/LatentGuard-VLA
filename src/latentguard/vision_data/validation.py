@@ -22,6 +22,7 @@ from latentguard.vision_data.cameras import (
     CameraPoseV1,
     PickCubeMultiViewRigV1,
     expected_pinhole_focal_lengths,
+    opencv_world_to_camera_extrinsics,
 )
 from latentguard.vision_data.domains import (
     CANONICAL_DOMAIN_ID,
@@ -206,6 +207,20 @@ def validate_camera_configuration(value: CameraConfigurationV1) -> None:
         _fail("CameraConfigurationV1.intrinsics", "last row must be [0,0,1]")
     if value.extrinsics[3] != (0.0, 0.0, 0.0, 1.0):
         _fail("CameraConfigurationV1.extrinsics", "last row must be [0,0,0,1]")
+    expected_extrinsics = opencv_world_to_camera_extrinsics(
+        value.world_pose.position,
+        value.world_pose.quaternion_wxyz,
+    )
+    if tuple(
+        tuple(float(component).hex() for component in row) for row in value.extrinsics
+    ) != tuple(
+        tuple(float(component).hex() for component in row)
+        for row in expected_extrinsics
+    ):
+        _fail(
+            "CameraConfigurationV1.extrinsics",
+            "must exactly derive from the declared world pose and OpenCV convention",
+        )
     _digest(value.content_digest, "CameraConfigurationV1.content_digest")
 
 
@@ -412,10 +427,17 @@ def validate_view_record(value: object) -> None:
     _matrix_finite(value.extrinsics, (4, 4), "VisualViewRecordV1.extrinsics")
     for field in (
         "camera_configuration_digest",
+        "runtime_extrinsics_digest",
+        "expected_runtime_extrinsics_digest",
         "state_before_render_digest",
         "state_after_render_digest",
     ):
         _digest(getattr(value, field), f"VisualViewRecordV1.{field}")
+    if value.runtime_extrinsics_digest != value.expected_runtime_extrinsics_digest:
+        _fail(
+            "VisualViewRecordV1.runtime_extrinsics_digest",
+            "does not match independently expected runtime calibration",
+        )
     if value.compared_state_component_count != M4A_STATE_COMPONENT_COUNT:
         _fail("VisualViewRecordV1.compared_state_component_count", "expected 70")
     error = _finite(

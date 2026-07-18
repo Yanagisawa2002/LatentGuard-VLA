@@ -245,6 +245,12 @@ def _visual_bundle(tmp_path: Path) -> tuple[Path, object, Path]:
                         for row in camera.extrinsics
                     ),  # type: ignore[arg-type]
                     extrinsics_dtype=camera.extrinsics.dtype.name,
+                    runtime_extrinsics_digest=_digest(
+                        f"runtime-extrinsics-{camera.camera_id}"
+                    ),
+                    expected_runtime_extrinsics_digest=_digest(
+                        f"runtime-extrinsics-{camera.camera_id}"
+                    ),
                     camera_configuration_digest=(camera.camera_configuration_digest),
                     state_before_render_digest=_digest("state"),
                     state_after_render_digest=_digest("state"),
@@ -1538,6 +1544,18 @@ def test_validate_and_inspect_strict_serialized_partial_dataset(
     assert summary["packet_id"] == packet.packet_id
     assert summary["image_count"] == 3
     assert summary["state_integrity_verified"] is True
+
+
+def test_matrix_matches_runtime_cast_rejects_signed_zero_drift() -> None:
+    import latentguard.m4a_cli as m4a
+
+    planned = ((1.0, 0.0), (0.0, 1.0))
+    observed = ((1.0, -0.0), (0.0, 1.0))
+
+    assert m4a._matrix_matches_runtime_cast(planned, planned, runtime_dtype="float32")
+    assert not m4a._matrix_matches_runtime_cast(
+        observed, planned, runtime_dtype="float32"
+    )
 
 
 def test_validation_retrieves_only_a_live_bound_zero_work_resume_report(

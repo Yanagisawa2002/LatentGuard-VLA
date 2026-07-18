@@ -6,8 +6,10 @@ object used by M4A.  Importing it never imports ManiSkill, SAPIEN, or Torch.
 
 from __future__ import annotations
 
+import hashlib
 import importlib
 import math
+import re
 from collections.abc import Iterable, Mapping, MutableMapping, Sequence
 from dataclasses import dataclass, field, replace
 from types import MappingProxyType
@@ -23,13 +25,14 @@ from latentguard.vision_data.cameras import (
     Matrix4,
     PickCubeMultiViewRigV1,
     expected_pinhole_focal_lengths,
+    opencv_world_to_camera_extrinsics,
 )
 from latentguard.vision_data.domains import (
     RenderDomainConfigurationV1,
     RenderDomainV1,
 )
 
-VISUAL_RENDERER_SEMANTIC_VERSION = "maniskill_pickcube_multiview_rgb_v2"
+VISUAL_RENDERER_SEMANTIC_VERSION = "maniskill_pickcube_multiview_rgb_v3"
 GPU_CAMERA_GROUP_INITIALIZATION_SEMANTIC = (
     "sapien_render_system_3_0_one_group_per_runtime_camera_v1"
 )
@@ -43,11 +46,31 @@ FLOAT_COLOR_TO_RGB_UINT8_SEMANTIC = (
     "mani_skill_camera_finite_unit_rgb_times_255_uint8_v1"
 )
 UINT8_COLOR_TO_RGB_UINT8_SEMANTIC = "drop_alpha_identity_uint8_v1"
-CALIBRATION_COMPARISON_SEMANTIC = "exact_after_runtime_dtype_cast_v1"
+CALIBRATION_COMPARISON_SEMANTIC = (
+    "exact_intrinsics_after_runtime_cast_and_exact_pose_bound_device_"
+    "recomputed_extrinsics_v1"
+)
 EXTRINSIC_3X4_TO_4X4_SEMANTIC = (
     "mani_skill_public_opencv_world_to_camera_3x4_to_homogeneous_4x4_v1"
 )
 EXTRINSIC_4X4_SEMANTIC = "public_homogeneous_world_to_camera_4x4_identity_v1"
+RUNTIME_CAMERA_POSE_VERIFICATION_SEMANTIC = (
+    "exact_world_pose_float32_cuda_7_components_v1"
+)
+RUNTIME_PUBLIC_EXTRINSIC_DERIVATION_SEMANTIC = (
+    "independent_maniskill_pose_inverse_ros_to_opencv_float32_cuda_matmul_bitwise_v1"
+)
+PACKET_EXTRINSIC_CANONICALIZATION_SEMANTIC = (
+    "content_bound_ideal_opencv_plan_cast_to_runtime_dtype_v1"
+)
+RUNTIME_CALIBRATION_EVIDENCE_SEMANTIC = (
+    "camera_plan_bound_public_vs_independent_expected_digest_v1"
+)
+UNDERLYING_CAMERA_POSE_VERIFICATION_SEMANTIC = (
+    "unmounted_sapien_render_camera_component_local_pose_float32_numpy_"
+    "plan_and_pre_post_bitwise_v1"
+)
+_SHA256_DIGEST_PATTERN = re.compile(r"^sha256:[0-9a-f]{64}$")
 
 
 class ManiSkillVisualRenderingError(RuntimeError):
@@ -151,9 +174,13 @@ class VisualCameraRenderPlan:
             or not 0.0 < float(self.fov_y_degrees) < 180.0
         ):
             raise ManiSkillVisualRenderingError("camera field of view is invalid")
-        position = _finite_tuple(self.position, 3, field_name="camera position")
-        quaternion = _finite_tuple(
-            self.quaternion_wxyz, 4, field_name="camera quaternion"
+        position = cast(
+            tuple[float, float, float],
+            _finite_tuple(self.position, 3, field_name="camera position"),
+        )
+        quaternion = cast(
+            tuple[float, float, float, float],
+            _finite_tuple(self.quaternion_wxyz, 4, field_name="camera quaternion"),
         )
         norm = math.sqrt(sum(item * item for item in quaternion))
         if not math.isclose(norm, 1.0, rel_tol=0.0, abs_tol=1e-6):
@@ -186,6 +213,18 @@ class VisualCameraRenderPlan:
             field_name="camera extrinsics",
             shape=(4, 4),
         )
+        expected_extrinsics = np.asarray(
+            opencv_world_to_camera_extrinsics(position, quaternion),
+            dtype=extrinsics.dtype,
+        )
+        if (
+            extrinsics.shape != expected_extrinsics.shape
+            or extrinsics.dtype != expected_extrinsics.dtype
+            or extrinsics.tobytes(order="C") != expected_extrinsics.tobytes(order="C")
+        ):
+            raise ManiSkillVisualRenderingError(
+                "camera extrinsics must exactly derive from the declared world pose"
+            )
         if (
             not isinstance(self.camera_configuration_digest, str)
             or not self.camera_configuration_digest.startswith("sha256:")
@@ -270,15 +309,71 @@ class PickCubeVisualRenderPlan:
         object.__setattr__(self, "cameras", cameras)
 
 
+@dataclass(frozen=True, slots=True)
+class RuntimeCalibrationEvidenceV1:
+    """Persistent digest evidence for one independently verified public matrix."""
+
+    camera_id: str
+    camera_configuration_digest: str
+    runtime_extrinsics_digest: str
+    expected_runtime_extrinsics_digest: str
+    semantic: str = RUNTIME_CALIBRATION_EVIDENCE_SEMANTIC
+
+    def __post_init__(self) -> None:
+        if self.camera_id not in ("front_oblique", "overhead", "side_oblique"):
+            raise ManiSkillVisualRenderingError(
+                "runtime calibration evidence camera is unsupported"
+            )
+        for name in (
+            "camera_configuration_digest",
+            "runtime_extrinsics_digest",
+            "expected_runtime_extrinsics_digest",
+        ):
+            value = getattr(self, name)
+            if (
+                not isinstance(value, str)
+                or _SHA256_DIGEST_PATTERN.fullmatch(value) is None
+            ):
+                raise ManiSkillVisualRenderingError(
+                    f"runtime calibration evidence {name} must be a lowercase SHA-256"
+                )
+        if self.runtime_extrinsics_digest != self.expected_runtime_extrinsics_digest:
+            raise ManiSkillVisualRenderingError(
+                "runtime calibration evidence does not match independent expectation"
+            )
+        if self.semantic != RUNTIME_CALIBRATION_EVIDENCE_SEMANTIC:
+            raise ManiSkillVisualRenderingError(
+                "runtime calibration evidence semantic is unsupported"
+            )
+
+    def as_mapping(self) -> MappingProxyType[str, str]:
+        """Return the strict JSON-native evidence mapping."""
+
+        return MappingProxyType(
+            {
+                "camera_configuration_digest": self.camera_configuration_digest,
+                "camera_id": self.camera_id,
+                "expected_runtime_extrinsics_digest": (
+                    self.expected_runtime_extrinsics_digest
+                ),
+                "runtime_extrinsics_digest": self.runtime_extrinsics_digest,
+                "semantic": self.semantic,
+            }
+        )
+
+
 @dataclass(frozen=True, slots=True, eq=False)
 class RenderedVisualView:
-    """One detached authoritative RGB result and runtime calibration."""
+    """One detached RGB result with canonical and raw runtime calibration."""
 
     camera_id: str
     rgb: NDArray[Any]
     intrinsics: NDArray[Any]
     extrinsics: NDArray[Any]
+    runtime_extrinsics: NDArray[Any]
+    expected_runtime_extrinsics_digest: str
     camera_configuration_digest: str
+    runtime_extrinsics_digest: str = field(init=False)
 
     def __post_init__(self) -> None:
         """Detach runtime tensors and require exact M4A image/calibration shapes."""
@@ -295,9 +390,26 @@ class RenderedVisualView:
         )
         extrinsics = _freeze_array(
             self.extrinsics,
-            field_name=f"{self.camera_id} extrinsics",
+            field_name=f"{self.camera_id} canonical extrinsics",
             shape=(4, 4),
         )
+        runtime_extrinsics = _freeze_array(
+            self.runtime_extrinsics,
+            field_name=f"{self.camera_id} runtime extrinsics",
+            shape=(4, 4),
+        )
+        if extrinsics.dtype != runtime_extrinsics.dtype:
+            raise ManiSkillVisualRenderingError(
+                f"{self.camera_id} canonical and runtime extrinsics dtypes differ"
+            )
+        runtime_extrinsics_digest = runtime_calibration_array_digest(runtime_extrinsics)
+        if (
+            not isinstance(self.expected_runtime_extrinsics_digest, str)
+            or self.expected_runtime_extrinsics_digest != runtime_extrinsics_digest
+        ):
+            raise ManiSkillVisualRenderingError(
+                f"{self.camera_id} runtime extrinsics lack matching verified evidence"
+            )
         if (
             not isinstance(self.camera_configuration_digest, str)
             or not self.camera_configuration_digest.startswith("sha256:")
@@ -309,6 +421,21 @@ class RenderedVisualView:
         object.__setattr__(self, "rgb", rgb)
         object.__setattr__(self, "intrinsics", intrinsics)
         object.__setattr__(self, "extrinsics", extrinsics)
+        object.__setattr__(self, "runtime_extrinsics", runtime_extrinsics)
+        object.__setattr__(self, "runtime_extrinsics_digest", runtime_extrinsics_digest)
+
+    @property
+    def runtime_calibration_evidence(self) -> RuntimeCalibrationEvidenceV1:
+        """Return the exact proof record for persistent compatibility evidence."""
+
+        return RuntimeCalibrationEvidenceV1(
+            camera_id=self.camera_id,
+            camera_configuration_digest=self.camera_configuration_digest,
+            runtime_extrinsics_digest=self.runtime_extrinsics_digest,
+            expected_runtime_extrinsics_digest=(
+                self.expected_runtime_extrinsics_digest
+            ),
+        )
 
 
 @dataclass(frozen=True, slots=True)
@@ -341,6 +468,29 @@ class VisualRendererApiObservation:
     runtime_extrinsics_dtype: str = "unobserved"
     raw_extrinsic_matrix_shape: str = "unobserved"
     runtime_extrinsics_semantic: str = "unobserved"
+    runtime_camera_pose_dtype: str = "unobserved"
+    raw_camera_pose_shape: str = "unobserved"
+    runtime_camera_pose_device_type: str = "unobserved"
+    runtime_pose_component_count: int = 0
+    runtime_underlying_pose_type: str = "unobserved"
+    runtime_underlying_position_type: str = "unobserved"
+    runtime_underlying_quaternion_type: str = "unobserved"
+    runtime_underlying_pose_dtype: str = "unobserved"
+    raw_underlying_position_shape: str = "unobserved"
+    raw_underlying_quaternion_shape: str = "unobserved"
+    runtime_underlying_pose_component_count: int = 0
+    underlying_camera_pose_pre_post_bitwise: bool = False
+    runtime_extrinsic_component_count: int = 0
+    runtime_pose_verification_semantic: str = RUNTIME_CAMERA_POSE_VERIFICATION_SEMANTIC
+    runtime_public_extrinsic_derivation_semantic: str = (
+        RUNTIME_PUBLIC_EXTRINSIC_DERIVATION_SEMANTIC
+    )
+    packet_extrinsic_canonicalization_semantic: str = (
+        PACKET_EXTRINSIC_CANONICALIZATION_SEMANTIC
+    )
+    underlying_camera_pose_verification_semantic: str = (
+        UNDERLYING_CAMERA_POSE_VERIFICATION_SEMANTIC
+    )
 
     def __post_init__(self) -> None:
         """Require a compact, sanitized, fixed RGB API observation."""
@@ -363,6 +513,19 @@ class VisualRendererApiObservation:
             "runtime_extrinsics_dtype",
             "raw_extrinsic_matrix_shape",
             "runtime_extrinsics_semantic",
+            "runtime_camera_pose_dtype",
+            "raw_camera_pose_shape",
+            "runtime_camera_pose_device_type",
+            "runtime_underlying_pose_type",
+            "runtime_underlying_position_type",
+            "runtime_underlying_quaternion_type",
+            "runtime_underlying_pose_dtype",
+            "raw_underlying_position_shape",
+            "raw_underlying_quaternion_shape",
+            "runtime_pose_verification_semantic",
+            "runtime_public_extrinsic_derivation_semantic",
+            "packet_extrinsic_canonicalization_semantic",
+            "underlying_camera_pose_verification_semantic",
         ):
             value = getattr(self, name)
             if (
@@ -433,8 +596,7 @@ class VisualRendererApiObservation:
             )
         valid_extrinsic_contracts = {
             ("unobserved", "unobserved"),
-            ("[3,4]", EXTRINSIC_3X4_TO_4X4_SEMANTIC),
-            ("[4,4]", EXTRINSIC_4X4_SEMANTIC),
+            ("[1,3,4]", EXTRINSIC_3X4_TO_4X4_SEMANTIC),
         }
         if (
             self.raw_extrinsic_matrix_shape,
@@ -461,6 +623,95 @@ class VisualRendererApiObservation:
         ):
             raise ManiSkillVisualRenderingError(
                 "renderer API runtime calibration dtypes must be observed together"
+            )
+        for name in (
+            "runtime_pose_component_count",
+            "runtime_underlying_pose_component_count",
+            "runtime_extrinsic_component_count",
+        ):
+            if type(getattr(self, name)) is not int:
+                raise ManiSkillVisualRenderingError(
+                    f"renderer API {name} must be an integer"
+                )
+        pose_observation = (
+            self.runtime_camera_pose_dtype,
+            self.raw_camera_pose_shape,
+            self.runtime_camera_pose_device_type,
+            self.runtime_pose_component_count,
+            self.runtime_underlying_pose_type,
+            self.runtime_underlying_position_type,
+            self.runtime_underlying_quaternion_type,
+            self.runtime_underlying_pose_dtype,
+            self.raw_underlying_position_shape,
+            self.raw_underlying_quaternion_shape,
+            self.runtime_underlying_pose_component_count,
+            self.underlying_camera_pose_pre_post_bitwise,
+            self.runtime_extrinsic_component_count,
+        )
+        if pose_observation not in {
+            (
+                "unobserved",
+                "unobserved",
+                "unobserved",
+                0,
+                "unobserved",
+                "unobserved",
+                "unobserved",
+                "unobserved",
+                "unobserved",
+                "unobserved",
+                0,
+                False,
+                0,
+            ),
+            (
+                "float32",
+                "[1,7]",
+                "cuda",
+                7,
+                "sapien.pysapien.Pose",
+                "numpy.ndarray",
+                "numpy.ndarray",
+                "float32",
+                "[3]",
+                "[4]",
+                7,
+                True,
+                12,
+            ),
+        }:
+            raise ManiSkillVisualRenderingError(
+                "renderer API runtime pose/extrinsic evidence is unsupported"
+            )
+        calibration_observed = self.runtime_intrinsics_dtype != "unobserved"
+        if any(
+            observed != calibration_observed
+            for observed in (
+                self.raw_color_texture_dtype != "unobserved",
+                self.raw_extrinsic_matrix_shape != "unobserved",
+                self.runtime_camera_pose_dtype != "unobserved",
+            )
+        ):
+            raise ManiSkillVisualRenderingError(
+                "renderer API image, pose, and calibration facts must be "
+                "observed together"
+            )
+        if self.runtime_extrinsics_dtype not in {"unobserved", "float32"}:
+            raise ManiSkillVisualRenderingError(
+                "renderer API public extrinsics must use pinned float32"
+            )
+        if (
+            self.runtime_pose_verification_semantic
+            != RUNTIME_CAMERA_POSE_VERIFICATION_SEMANTIC
+            or self.runtime_public_extrinsic_derivation_semantic
+            != RUNTIME_PUBLIC_EXTRINSIC_DERIVATION_SEMANTIC
+            or self.packet_extrinsic_canonicalization_semantic
+            != PACKET_EXTRINSIC_CANONICALIZATION_SEMANTIC
+            or self.underlying_camera_pose_verification_semantic
+            != UNDERLYING_CAMERA_POSE_VERIFICATION_SEMANTIC
+        ):
+            raise ManiSkillVisualRenderingError(
+                "renderer API calibration evidence semantic is unsupported"
             )
         calls = tuple(self.sensor_update_calls)
         if not calls or len(calls) != len(set(calls)):
@@ -492,6 +743,7 @@ class VisualRendererApiObservation:
             "camera_intrinsics_available",
             "camera_extrinsics_available",
             "rendering_requires_sensor_update_calls",
+            "underlying_camera_pose_pre_post_bitwise",
         ):
             if type(getattr(self, name)) is not bool:
                 raise ManiSkillVisualRenderingError(
@@ -526,10 +778,49 @@ class VisualRendererApiObservation:
                 ),
                 "raw_color_texture_dtype": self.raw_color_texture_dtype,
                 "raw_extrinsic_matrix_shape": self.raw_extrinsic_matrix_shape,
+                "raw_camera_pose_shape": self.raw_camera_pose_shape,
+                "raw_underlying_position_shape": self.raw_underlying_position_shape,
+                "raw_underlying_quaternion_shape": (
+                    self.raw_underlying_quaternion_shape
+                ),
                 "rgb_conversion_semantic": self.rgb_conversion_semantic,
                 "runtime_extrinsics_dtype": self.runtime_extrinsics_dtype,
                 "runtime_extrinsics_semantic": self.runtime_extrinsics_semantic,
                 "runtime_intrinsics_dtype": self.runtime_intrinsics_dtype,
+                "runtime_camera_pose_device_type": (
+                    self.runtime_camera_pose_device_type
+                ),
+                "runtime_camera_pose_dtype": self.runtime_camera_pose_dtype,
+                "runtime_extrinsic_component_count": (
+                    self.runtime_extrinsic_component_count
+                ),
+                "runtime_pose_component_count": self.runtime_pose_component_count,
+                "runtime_underlying_pose_component_count": (
+                    self.runtime_underlying_pose_component_count
+                ),
+                "runtime_underlying_pose_dtype": self.runtime_underlying_pose_dtype,
+                "runtime_underlying_pose_type": self.runtime_underlying_pose_type,
+                "runtime_underlying_position_type": (
+                    self.runtime_underlying_position_type
+                ),
+                "runtime_underlying_quaternion_type": (
+                    self.runtime_underlying_quaternion_type
+                ),
+                "underlying_camera_pose_pre_post_bitwise": (
+                    self.underlying_camera_pose_pre_post_bitwise
+                ),
+                "runtime_pose_verification_semantic": (
+                    self.runtime_pose_verification_semantic
+                ),
+                "runtime_public_extrinsic_derivation_semantic": (
+                    self.runtime_public_extrinsic_derivation_semantic
+                ),
+                "packet_extrinsic_canonicalization_semantic": (
+                    self.packet_extrinsic_canonicalization_semantic
+                ),
+                "underlying_camera_pose_verification_semantic": (
+                    self.underlying_camera_pose_verification_semantic
+                ),
                 "scene_type": self.scene_type,
                 "sensor_update_calls": list(self.sensor_update_calls),
                 "shader_configuration": self.shader_configuration,
@@ -600,12 +891,39 @@ class _InstalledRenderHandle:
                 raise ManiSkillVisualRenderingError(
                     f"camera {plan.camera_id!r} lacks a required public render API"
                 )
+            before = _read_verified_runtime_calibration(
+                plan=plan,
+                camera=camera,
+                get_intrinsic=get_intrinsic,
+                get_extrinsic=get_extrinsic,
+            )
             take_picture()
             textures = get_picture(["Color"])
             if not isinstance(textures, Sequence) or len(textures) != 1:
                 raise ManiSkillVisualRenderingError(
                     f"camera {plan.camera_id!r} returned an invalid Color texture"
                 )
+            after = _read_verified_runtime_calibration(
+                plan=plan,
+                camera=camera,
+                get_intrinsic=get_intrinsic,
+                get_extrinsic=get_extrinsic,
+            )
+            _require_array_bits_equal(
+                before.intrinsics,
+                after.intrinsics,
+                field_name=f"{plan.camera_id} pre/post-capture intrinsics",
+            )
+            _require_array_bits_equal(
+                before.raw_public_extrinsics,
+                after.raw_public_extrinsics,
+                field_name=f"{plan.camera_id} pre/post-capture public extrinsics",
+            )
+            _require_array_bits_equal(
+                before.underlying_world_pose,
+                after.underlying_world_pose,
+                field_name=f"{plan.camera_id} pre/post-capture underlying pose",
+            )
             color = _runtime_array(textures[0])
             if color.shape == (1, 224, 224, 4):
                 color = color[0]
@@ -614,30 +932,31 @@ class _InstalledRenderHandle:
                     f"camera {plan.camera_id!r} Color must be [1,224,224,4]"
                 )
             rgb, raw_color_dtype, rgb_conversion = _convert_color_to_rgb_uint8(color)
-            intrinsics = _single_matrix(get_intrinsic(), (3, 3), "intrinsics")
-            (
-                extrinsics,
-                raw_extrinsic_shape,
-                extrinsic_semantic,
-            ) = _single_extrinsic_matrix(get_extrinsic())
-            _require_runtime_calibration_matches_plan(
-                intrinsics,
-                plan.intrinsics,
-                field_name=f"{plan.camera_id} intrinsics",
-            )
-            _require_runtime_calibration_matches_plan(
-                extrinsics,
-                plan.extrinsics,
-                field_name=f"{plan.camera_id} extrinsics",
-            )
             observation = replace(
                 self._api_observation,
                 raw_color_texture_dtype=raw_color_dtype,
                 rgb_conversion_semantic=rgb_conversion,
-                runtime_intrinsics_dtype=intrinsics.dtype.name,
-                runtime_extrinsics_dtype=extrinsics.dtype.name,
-                raw_extrinsic_matrix_shape=raw_extrinsic_shape,
-                runtime_extrinsics_semantic=extrinsic_semantic,
+                runtime_intrinsics_dtype=after.intrinsics.dtype.name,
+                runtime_extrinsics_dtype=after.extrinsics.dtype.name,
+                raw_extrinsic_matrix_shape=after.raw_extrinsic_shape,
+                runtime_extrinsics_semantic=after.extrinsic_semantic,
+                runtime_camera_pose_dtype=after.runtime_pose_dtype,
+                raw_camera_pose_shape=after.raw_pose_shape,
+                runtime_camera_pose_device_type=after.runtime_pose_device_type,
+                runtime_pose_component_count=7,
+                runtime_underlying_pose_type=after.runtime_underlying_pose_type,
+                runtime_underlying_position_type=(
+                    after.runtime_underlying_position_type
+                ),
+                runtime_underlying_quaternion_type=(
+                    after.runtime_underlying_quaternion_type
+                ),
+                runtime_underlying_pose_dtype=after.runtime_underlying_pose_dtype,
+                raw_underlying_position_shape="[3]",
+                raw_underlying_quaternion_shape="[4]",
+                runtime_underlying_pose_component_count=7,
+                underlying_camera_pose_pre_post_bitwise=True,
+                runtime_extrinsic_component_count=12,
             )
             if self._api_observation.raw_color_texture_dtype != "unobserved" and (
                 observation != self._api_observation
@@ -650,12 +969,285 @@ class _InstalledRenderHandle:
                 RenderedVisualView(
                     camera_id=plan.camera_id,
                     rgb=rgb,
-                    intrinsics=intrinsics,
-                    extrinsics=extrinsics,
+                    intrinsics=after.intrinsics,
+                    extrinsics=np.asarray(
+                        plan.extrinsics, dtype=after.extrinsics.dtype
+                    ),
+                    runtime_extrinsics=after.extrinsics,
+                    expected_runtime_extrinsics_digest=(
+                        after.expected_runtime_extrinsics_digest
+                    ),
                     camera_configuration_digest=plan.camera_configuration_digest,
                 )
             )
         return tuple(results)
+
+
+@dataclass(frozen=True, slots=True)
+class _VerifiedRuntimeCalibration:
+    """One exact live camera-calibration read bound to its planned world pose."""
+
+    intrinsics: NDArray[Any]
+    extrinsics: NDArray[Any]
+    raw_public_extrinsics: NDArray[Any]
+    raw_extrinsic_shape: str
+    extrinsic_semantic: str
+    runtime_pose_dtype: str
+    raw_pose_shape: str
+    runtime_pose_device_type: str
+    underlying_world_pose: NDArray[Any]
+    runtime_underlying_pose_type: str
+    runtime_underlying_position_type: str
+    runtime_underlying_quaternion_type: str
+    runtime_underlying_pose_dtype: str
+    expected_runtime_extrinsics_digest: str
+
+
+def _read_verified_runtime_calibration(
+    *,
+    plan: VisualCameraRenderPlan,
+    camera: object,
+    get_intrinsic: Any,
+    get_extrinsic: Any,
+) -> _VerifiedRuntimeCalibration:
+    """Read and independently verify one pinned GPU camera calibration."""
+
+    if getattr(camera, "mount", object()) is not None:
+        raise ManiSkillVisualContractError(
+            f"camera {plan.camera_id!r} must remain an unmounted world camera"
+        )
+    render_cameras = getattr(camera, "_render_cameras", None)
+    if not isinstance(render_cameras, list) or len(render_cameras) != 1:
+        raise ManiSkillVisualContractError(
+            f"camera {plan.camera_id!r} must retain one underlying camera"
+        )
+    underlying_before = _read_verified_underlying_world_pose(
+        plan=plan,
+        render_camera=render_cameras[0],
+    )
+    get_global_pose = getattr(camera, "get_global_pose", None)
+    if not callable(get_global_pose):
+        raise ManiSkillVisualContractError(
+            f"camera {plan.camera_id!r} lacks its global-pose API"
+        )
+    runtime_pose = get_global_pose()
+    if _qualified_type_name(runtime_pose) != "mani_skill.utils.structs.pose.Pose":
+        raise ManiSkillVisualContractError(
+            f"camera {plan.camera_id!r} returned an unsupported pose type"
+        )
+    raw_pose_tensor = getattr(runtime_pose, "raw_pose", None)
+    raw_pose, pose_device_type, pose_device = _require_pinned_runtime_tensor(
+        raw_pose_tensor,
+        shape=(1, 7),
+        field_name=f"{plan.camera_id} runtime world pose",
+    )
+    new_tensor = getattr(raw_pose_tensor, "new_tensor", None)
+    clone = getattr(raw_pose_tensor, "clone", None)
+    if not callable(new_tensor) or not callable(clone):
+        raise ManiSkillVisualContractError(
+            f"camera {plan.camera_id!r} pose tensor lacks independent creation APIs"
+        )
+    expected_pose_tensor = new_tensor(((*plan.position, *plan.quaternion_wxyz),))
+    expected_pose_raw, expected_device_type, expected_device = (
+        _require_pinned_runtime_tensor(
+            expected_pose_tensor,
+            shape=(1, 7),
+            field_name=f"{plan.camera_id} independently cast plan pose",
+        )
+    )
+    if expected_device_type != pose_device_type or expected_device != pose_device:
+        raise ManiSkillVisualContractError(
+            f"camera {plan.camera_id!r} plan pose used a different CUDA device"
+        )
+    _require_array_bits_equal(
+        raw_pose,
+        expected_pose_raw,
+        field_name=f"{plan.camera_id} runtime world pose",
+    )
+    pose_type = type(runtime_pose)
+    create_pose = getattr(pose_type, "create", None)
+    if not callable(create_pose):
+        raise ManiSkillVisualContractError(
+            f"camera {plan.camera_id!r} pose type lacks independent creation"
+        )
+    independent_pose = create_pose(
+        expected_pose_tensor.clone(),
+        device=getattr(raw_pose_tensor, "device", None),
+    )
+    if type(independent_pose) is not pose_type:
+        raise ManiSkillVisualContractError(
+            f"camera {plan.camera_id!r} independent pose type changed"
+        )
+    inverse = getattr(independent_pose, "inv", None)
+    if not callable(inverse):
+        raise ManiSkillVisualContractError(
+            f"camera {plan.camera_id!r} independent pose lacks inversion"
+        )
+    inverse_pose = inverse()
+    to_matrix = getattr(inverse_pose, "to_transformation_matrix", None)
+    if not callable(to_matrix):
+        raise ManiSkillVisualContractError(
+            f"camera {plan.camera_id!r} inverse pose lacks matrix conversion"
+        )
+    inverse_matrix_tensor = to_matrix()
+    _, inverse_device_type, inverse_device = _require_pinned_runtime_tensor(
+        inverse_matrix_tensor,
+        shape=(1, 4, 4),
+        field_name=f"{plan.camera_id} independent inverse pose matrix",
+    )
+    axis_tensor = new_tensor(
+        (
+            (0.0, 0.0, 1.0, 0.0),
+            (-1.0, 0.0, 0.0, 0.0),
+            (0.0, -1.0, 0.0, 0.0),
+            (0.0, 0.0, 0.0, 1.0),
+        )
+    )
+    _, axis_device_type, axis_device = _require_pinned_runtime_tensor(
+        axis_tensor,
+        shape=(4, 4),
+        field_name=f"{plan.camera_id} ROS-to-OpenCV axis matrix",
+    )
+    if (
+        inverse_device_type != pose_device_type
+        or axis_device_type != pose_device_type
+        or inverse_device != pose_device
+        or axis_device != pose_device
+    ):
+        raise ManiSkillVisualContractError(
+            f"camera {plan.camera_id!r} derivation crossed CUDA devices"
+        )
+    transpose = getattr(axis_tensor, "T", None)
+    if transpose is None:
+        raise ManiSkillVisualContractError(
+            f"camera {plan.camera_id!r} axis matrix lacks transpose"
+        )
+    expected_public_tensor = (transpose @ inverse_matrix_tensor)[:, :3, :4]
+    expected_public, expected_public_device_type, expected_public_device = (
+        _require_pinned_runtime_tensor(
+            expected_public_tensor,
+            shape=(1, 3, 4),
+            field_name=f"{plan.camera_id} independently derived public extrinsics",
+        )
+    )
+    expected_extrinsics, _, _ = _single_extrinsic_matrix(expected_public_tensor)
+    public_tensor = get_extrinsic()
+    public_raw, public_device_type, public_device = _require_pinned_runtime_tensor(
+        public_tensor,
+        shape=(1, 3, 4),
+        field_name=f"{plan.camera_id} public extrinsics",
+    )
+    if (
+        expected_public_device_type != public_device_type
+        or expected_public_device != public_device
+        or public_device != pose_device
+    ):
+        raise ManiSkillVisualContractError(
+            f"camera {plan.camera_id!r} public extrinsics crossed CUDA devices"
+        )
+    _require_array_bits_equal(
+        public_raw,
+        expected_public,
+        field_name=f"{plan.camera_id} public extrinsics derivation",
+    )
+    intrinsics = _single_matrix(get_intrinsic(), (3, 3), "intrinsics")
+    _require_runtime_calibration_matches_plan(
+        intrinsics,
+        plan.intrinsics,
+        field_name=f"{plan.camera_id} intrinsics",
+    )
+    extrinsics, raw_shape, semantic = _single_extrinsic_matrix(public_tensor)
+    underlying_after = _read_verified_underlying_world_pose(
+        plan=plan,
+        render_camera=render_cameras[0],
+    )
+    _require_array_bits_equal(
+        underlying_before,
+        underlying_after,
+        field_name=f"{plan.camera_id} underlying pose across calibration reads",
+    )
+    return _VerifiedRuntimeCalibration(
+        intrinsics=intrinsics,
+        extrinsics=extrinsics,
+        raw_public_extrinsics=public_raw,
+        raw_extrinsic_shape=raw_shape,
+        extrinsic_semantic=semantic,
+        runtime_pose_dtype=raw_pose.dtype.name,
+        raw_pose_shape="[1,7]",
+        runtime_pose_device_type=pose_device_type,
+        underlying_world_pose=underlying_after,
+        runtime_underlying_pose_type="sapien.pysapien.Pose",
+        runtime_underlying_position_type="numpy.ndarray",
+        runtime_underlying_quaternion_type="numpy.ndarray",
+        runtime_underlying_pose_dtype=underlying_after.dtype.name,
+        expected_runtime_extrinsics_digest=runtime_calibration_array_digest(
+            expected_extrinsics
+        ),
+    )
+
+
+def _read_verified_underlying_world_pose(
+    *,
+    plan: VisualCameraRenderPlan,
+    render_camera: object,
+) -> NDArray[Any]:
+    """Read the uncached SAPIEN component pose and bind all seven float32 bits."""
+
+    get_local_pose = getattr(render_camera, "get_local_pose", None)
+    if not callable(get_local_pose):
+        raise ManiSkillVisualContractError(
+            f"camera {plan.camera_id!r} underlying component lacks local pose"
+        )
+    native_pose = get_local_pose()
+    if _qualified_type_name(native_pose) != "sapien.pysapien.Pose":
+        raise ManiSkillVisualContractError(
+            f"camera {plan.camera_id!r} underlying pose type is unsupported"
+        )
+    raw_position = getattr(native_pose, "p", None)
+    raw_quaternion = getattr(native_pose, "q", None)
+    if (
+        _qualified_type_name(raw_position) != "numpy.ndarray"
+        or _qualified_type_name(raw_quaternion) != "numpy.ndarray"
+    ):
+        raise ManiSkillVisualContractError(
+            f"camera {plan.camera_id!r} underlying pose arrays are unsupported"
+        )
+    if not bool(
+        getattr(getattr(raw_position, "flags", None), "c_contiguous", False)
+    ) or not bool(
+        getattr(getattr(raw_quaternion, "flags", None), "c_contiguous", False)
+    ):
+        raise ManiSkillVisualContractError(
+            f"camera {plan.camera_id!r} underlying pose arrays must be C-contiguous"
+        )
+    position = _freeze_array(
+        raw_position,
+        field_name=f"{plan.camera_id} underlying position",
+        dtype=np.dtype(np.float32),
+        shape=(3,),
+    )
+    quaternion = _freeze_array(
+        raw_quaternion,
+        field_name=f"{plan.camera_id} underlying quaternion",
+        dtype=np.dtype(np.float32),
+        shape=(4,),
+    )
+    _require_array_bits_equal(
+        position,
+        np.asarray(plan.position, dtype=np.float32),
+        field_name=f"{plan.camera_id} underlying world position",
+    )
+    _require_array_bits_equal(
+        quaternion,
+        np.asarray(plan.quaternion_wxyz, dtype=np.float32),
+        field_name=f"{plan.camera_id} underlying world quaternion",
+    )
+    return _freeze_array(
+        np.concatenate((position, quaternion)),
+        field_name=f"{plan.camera_id} underlying world pose",
+        dtype=np.dtype(np.float32),
+        shape=(7,),
+    )
 
 
 @dataclass(frozen=True, slots=True)
@@ -1088,20 +1680,10 @@ def _world_to_camera_extrinsics(
     position: tuple[float, float, float],
     quaternion_wxyz: tuple[float, float, float, float],
 ) -> NDArray[np.float64]:
-    w, x, y, z = quaternion_wxyz
-    camera_to_world = np.asarray(
-        (
-            (1.0 - 2.0 * (y * y + z * z), 2.0 * (x * y - z * w), 2.0 * (x * z + y * w)),
-            (2.0 * (x * y + z * w), 1.0 - 2.0 * (x * x + z * z), 2.0 * (y * z - x * w)),
-            (2.0 * (x * z - y * w), 2.0 * (y * z + x * w), 1.0 - 2.0 * (x * x + y * y)),
-        ),
+    return np.asarray(
+        opencv_world_to_camera_extrinsics(position, quaternion_wxyz),
         dtype=np.float64,
     )
-    world_to_camera = camera_to_world.T
-    extrinsics = np.eye(4, dtype=np.float64)
-    extrinsics[:3, :3] = world_to_camera
-    extrinsics[:3, 3] = -world_to_camera @ np.asarray(position, dtype=np.float64)
-    return extrinsics
 
 
 def _runtime_array(value: object) -> NDArray[Any]:
@@ -1114,6 +1696,70 @@ def _runtime_array(value: object) -> NDArray[Any]:
     if callable(to_numpy):
         candidate = to_numpy()
     return np.asarray(candidate)
+
+
+def _require_pinned_runtime_tensor(
+    value: object,
+    *,
+    shape: tuple[int, ...],
+    field_name: str,
+) -> tuple[NDArray[Any], str, object]:
+    """Require one finite float32 CUDA torch tensor and detach exact bytes."""
+
+    if _qualified_type_name(value) != "torch.Tensor":
+        raise ManiSkillVisualContractError(f"runtime {field_name} must be torch.Tensor")
+    device = getattr(value, "device", None)
+    device_type = getattr(device, "type", None)
+    if device_type != "cuda":
+        raise ManiSkillVisualContractError(
+            f"runtime {field_name} must remain on a CUDA device"
+        )
+    array = _runtime_array(value)
+    if array.dtype != np.dtype(np.float32):
+        raise ManiSkillVisualContractError(
+            f"runtime {field_name} must use pinned float32"
+        )
+    return (
+        _freeze_array(array, field_name=f"runtime {field_name}", shape=shape),
+        device_type,
+        device,
+    )
+
+
+def _require_array_bits_equal(
+    observed: NDArray[Any],
+    expected: NDArray[Any],
+    *,
+    field_name: str,
+) -> None:
+    """Require identical shape, dtype, and C-order numeric bit pattern."""
+
+    if (
+        observed.shape != expected.shape
+        or observed.dtype != expected.dtype
+        or observed.tobytes(order="C") != expected.tobytes(order="C")
+    ):
+        raise ManiSkillVisualContractError(
+            f"runtime {field_name} differs at the bit level"
+        )
+
+
+def runtime_calibration_array_digest(value: NDArray[Any]) -> str:
+    """Content-bind one exact runtime calibration array without runtime paths."""
+
+    array = np.asarray(value)
+    if array.dtype.hasobject or not np.issubdtype(array.dtype, np.number):
+        raise ManiSkillVisualRenderingError(
+            "runtime calibration digest requires a numeric array"
+        )
+    digest = hashlib.sha256()
+    digest.update(b"latentguard-runtime-calibration-array-v1\0")
+    digest.update(array.dtype.str.encode("ascii"))
+    digest.update(b"\0")
+    digest.update(",".join(str(item) for item in array.shape).encode("ascii"))
+    digest.update(b"\0")
+    digest.update(array.tobytes(order="C"))
+    return f"sha256:{digest.hexdigest()}"
 
 
 def _convert_color_to_rgb_uint8(
@@ -1162,10 +1808,12 @@ def _require_runtime_calibration_matches_plan(
             f"runtime {field_name} must use a floating dtype"
         )
     expected = np.asarray(planned, dtype=observed.dtype)
-    if observed.shape != expected.shape or not np.array_equal(observed, expected):
+    try:
+        _require_array_bits_equal(observed, expected, field_name=field_name)
+    except ManiSkillVisualContractError as exc:
         raise ManiSkillVisualContractError(
             f"runtime {field_name} differs from the content-bound camera plan"
-        )
+        ) from exc
 
 
 def _single_matrix(
@@ -1181,6 +1829,7 @@ def _single_extrinsic_matrix(
     value: object,
 ) -> tuple[NDArray[Any], str, str]:
     array = _runtime_array(value)
+    raw_shape = array.shape
     if array.shape in {(1, 3, 4), (1, 4, 4)}:
         array = array[0]
     if array.shape == (3, 4):
@@ -1188,13 +1837,13 @@ def _single_extrinsic_matrix(
         homogeneous[:3, :] = array
         return (
             _freeze_array(homogeneous, field_name="runtime extrinsics", shape=(4, 4)),
-            "[3,4]",
+            "[1,3,4]" if raw_shape == (1, 3, 4) else "[3,4]",
             EXTRINSIC_3X4_TO_4X4_SEMANTIC,
         )
     if array.shape == (4, 4):
         return (
             _freeze_array(array, field_name="runtime extrinsics", shape=(4, 4)),
-            "[4,4]",
+            "[1,4,4]" if raw_shape == (1, 4, 4) else "[4,4]",
             EXTRINSIC_4X4_SEMANTIC,
         )
     raise ManiSkillVisualRenderingError(
@@ -1222,6 +1871,7 @@ __all__ = [
     "FLOAT_COLOR_TO_RGB_UINT8_SEMANTIC",
     "GPU_CAMERA_GROUP_INITIALIZATION_SEMANTIC",
     "LIGHTING_APPLICATION_SEMANTIC",
+    "PACKET_EXTRINSIC_CANONICALIZATION_SEMANTIC",
     "LazyManiSkillPickCubeVisualRenderer",
     "ManiSkillVisualContractError",
     "ManiSkillVisualRenderingError",
@@ -1230,7 +1880,12 @@ __all__ = [
     "PickCubeVisualRenderer",
     "RGB_CHANNEL_ORDER",
     "RGB_COLOR_SPACE_ASSUMPTION",
+    "RUNTIME_CALIBRATION_EVIDENCE_SEMANTIC",
+    "RUNTIME_CAMERA_POSE_VERIFICATION_SEMANTIC",
+    "RUNTIME_PUBLIC_EXTRINSIC_DERIVATION_SEMANTIC",
+    "UNDERLYING_CAMERA_POSE_VERIFICATION_SEMANTIC",
     "RenderedVisualView",
+    "RuntimeCalibrationEvidenceV1",
     "UINT8_COLOR_TO_RGB_UINT8_SEMANTIC",
     "VERTICAL_ORIENTATION_CONVENTION",
     "VISUAL_CAMERA_RESOLUTION_SEMANTIC",
@@ -1239,4 +1894,5 @@ __all__ = [
     "VisualLightingRenderPlan",
     "VisualRendererApiObservation",
     "build_pickcube_visual_render_plan",
+    "runtime_calibration_array_digest",
 ]

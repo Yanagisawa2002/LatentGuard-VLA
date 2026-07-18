@@ -78,6 +78,12 @@ def _packet_and_images() -> tuple[
                 intrinsics_dtype="float64",
                 extrinsics=camera.extrinsics,
                 extrinsics_dtype="float64",
+                runtime_extrinsics_digest=_digest(
+                    f"runtime-extrinsics-{camera.camera_id}"
+                ),
+                expected_runtime_extrinsics_digest=_digest(
+                    f"runtime-extrinsics-{camera.camera_id}"
+                ),
                 camera_configuration_digest=camera.content_digest,
                 state_before_render_digest=state_digest,
                 state_after_render_digest=state_digest,

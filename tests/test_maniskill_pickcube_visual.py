@@ -37,6 +37,7 @@ from latentguard.integrations.maniskill_pickcube.visual_probe import (
     probe_maniskill_pickcube_visual,
 )
 from latentguard.integrations.maniskill_pickcube.visual_rendering import (
+    EXTRINSIC_3X4_TO_4X4_SEMANTIC,
     EXTRINSIC_4X4_SEMANTIC,
     GPU_CAMERA_GROUP_INITIALIZATION_SEMANTIC,
     UINT8_COLOR_TO_RGB_UINT8_SEMANTIC,
@@ -44,8 +45,10 @@ from latentguard.integrations.maniskill_pickcube.visual_rendering import (
     ManiSkillVisualRenderingError,
     PickCubeVisualRenderPlan,
     RenderedVisualView,
+    RuntimeCalibrationEvidenceV1,
     VisualRendererApiObservation,
     build_pickcube_visual_render_plan,
+    runtime_calibration_array_digest,
 )
 from latentguard.integrations.maniskill_pickcube.visual_session import (
     ManiSkillVisualSessionError,
@@ -286,10 +289,23 @@ class _FakeRenderHandle:
             sensor_update_calls=("fake.take_picture",),
             raw_color_texture_dtype="uint8",
             rgb_conversion_semantic=UINT8_COLOR_TO_RGB_UINT8_SEMANTIC,
-            runtime_intrinsics_dtype="float64",
-            runtime_extrinsics_dtype="float64",
-            raw_extrinsic_matrix_shape="[4,4]",
-            runtime_extrinsics_semantic=EXTRINSIC_4X4_SEMANTIC,
+            runtime_intrinsics_dtype="float32",
+            runtime_extrinsics_dtype="float32",
+            raw_extrinsic_matrix_shape="[1,3,4]",
+            runtime_extrinsics_semantic=EXTRINSIC_3X4_TO_4X4_SEMANTIC,
+            runtime_camera_pose_dtype="float32",
+            raw_camera_pose_shape="[1,7]",
+            runtime_camera_pose_device_type="cuda",
+            runtime_pose_component_count=7,
+            runtime_underlying_pose_type="sapien.pysapien.Pose",
+            runtime_underlying_position_type="numpy.ndarray",
+            runtime_underlying_quaternion_type="numpy.ndarray",
+            runtime_underlying_pose_dtype="float32",
+            raw_underlying_position_shape="[3]",
+            raw_underlying_quaternion_shape="[4]",
+            runtime_underlying_pose_component_count=7,
+            underlying_camera_pose_pre_post_bitwise=True,
+            runtime_extrinsic_component_count=12,
         )
 
     def render_views(self) -> tuple[RenderedVisualView, ...]:
@@ -311,8 +327,14 @@ class _FakeRenderHandle:
                 RenderedVisualView(
                     camera_id=camera.camera_id,
                     rgb=rgb,
-                    intrinsics=camera.intrinsics,
-                    extrinsics=camera.extrinsics,
+                    intrinsics=camera.intrinsics.astype(np.float32),
+                    extrinsics=camera.extrinsics.astype(np.float32),
+                    runtime_extrinsics=camera.extrinsics.astype(np.float32),
+                    expected_runtime_extrinsics_digest=(
+                        runtime_calibration_array_digest(
+                            camera.extrinsics.astype(np.float32)
+                        )
+                    ),
                     camera_configuration_digest=camera.camera_configuration_digest,
                 )
             )
@@ -448,6 +470,7 @@ class _TrustedVisual:
     camera_rig_digest: str
     render_domain_configuration_digest: str
     renderer_api: VisualRendererApiObservation
+    runtime_calibration_evidence: tuple[RuntimeCalibrationEvidenceV1, ...]
 
     def require_trusted_visual_generation_ready(self) -> None:
         return None
@@ -793,6 +816,87 @@ def test_visual_session_records_only_successfully_initialized_environments() -> 
     assert initialized == 1
 
 
+def test_probe_calibration_stability_rejects_one_bit_raw_fresh_drift() -> None:
+    from latentguard.integrations.maniskill_pickcube import visual_probe
+
+    episode, state = _source()
+    rig, configuration = _configuration()
+    plan = build_pickcube_visual_render_plan(
+        rig, configuration.domain("canonical"), configuration, 34
+    )
+    session, _ = _session()
+    repeated = session.render_state(
+        source_episode=episode,
+        source_state=state,
+        render_plan=plan,
+        repeat_count=2,
+    )
+    fresh = session.render_state(
+        source_episode=episode,
+        source_state=state,
+        render_plan=plan,
+        repeat_count=1,
+    )
+    changed_extrinsics = np.array(fresh.views[0].runtime_extrinsics, copy=True)
+    changed_extrinsics[0, 0] = np.nextafter(
+        changed_extrinsics[0, 0], np.float32(np.inf)
+    )
+    changed_view = replace(
+        fresh.views[0],
+        runtime_extrinsics=changed_extrinsics,
+        expected_runtime_extrinsics_digest=runtime_calibration_array_digest(
+            changed_extrinsics
+        ),
+    )
+    changed_fresh = replace(
+        fresh,
+        render_repetitions=((changed_view, *fresh.views[1:]),),
+    )
+    changed_dtype_runtime = fresh.views[0].runtime_extrinsics.astype(np.float64)
+    changed_dtype_view = replace(
+        fresh.views[0],
+        extrinsics=fresh.views[0].extrinsics.astype(np.float64),
+        runtime_extrinsics=changed_dtype_runtime,
+        expected_runtime_extrinsics_digest=runtime_calibration_array_digest(
+            changed_dtype_runtime
+        ),
+    )
+    changed_dtype_fresh = replace(
+        fresh,
+        render_repetitions=((changed_dtype_view, *fresh.views[1:]),),
+    )
+    signed_zero_extrinsics = np.array(fresh.views[0].runtime_extrinsics, copy=True)
+    assert signed_zero_extrinsics[3, 0] == 0.0
+    signed_zero_extrinsics[3, 0] = np.float32(-0.0)
+    assert np.array_equal(signed_zero_extrinsics, fresh.views[0].runtime_extrinsics)
+    signed_zero_view = replace(
+        fresh.views[0],
+        runtime_extrinsics=signed_zero_extrinsics,
+        expected_runtime_extrinsics_digest=runtime_calibration_array_digest(
+            signed_zero_extrinsics
+        ),
+    )
+    signed_zero_fresh = replace(
+        fresh,
+        render_repetitions=((signed_zero_view, *fresh.views[1:]),),
+    )
+    assert visual_probe._calibration_stable(repeated, (fresh,))
+    assert not visual_probe._calibration_stable(repeated, (changed_fresh,))
+    assert not visual_probe._calibration_stable(repeated, (changed_dtype_fresh,))
+    assert not visual_probe._calibration_stable(repeated, (signed_zero_fresh,))
+
+
+def test_session_calibration_bit_comparison_rejects_signed_zero_drift() -> None:
+    from latentguard.integrations.maniskill_pickcube import visual_session
+
+    positive = np.asarray(((1.0, 0.0), (0.0, 1.0)), dtype=np.float32)
+    negative = positive.copy()
+    negative[0, 1] = np.float32(-0.0)
+
+    assert np.array_equal(positive, negative)
+    assert not visual_session._array_bits_equal(positive, negative)
+
+
 @pytest.mark.parametrize(
     ("renderer", "runtime", "message"),
     [
@@ -868,16 +972,35 @@ def test_probe_reports_exact_and_controlled_nondeterminism(tmp_path: Path) -> No
     ]
     assert len(exact_runtime.created_environments) == 3
     assert len({id(item) for item in exact_runtime.created_environments}) == 3
-    assert exact.renderer_api.runtime_intrinsics_dtype == "float64"
-    assert exact.renderer_api.runtime_extrinsics_dtype == "float64"
+    assert exact.renderer_api.runtime_intrinsics_dtype == "float32"
+    assert exact.renderer_api.runtime_extrinsics_dtype == "float32"
+    assert tuple(item.camera_id for item in exact.runtime_calibration_evidence) == (
+        "front_oblique",
+        "overhead",
+        "side_oblique",
+    )
+    assert all(
+        item.runtime_extrinsics_digest == item.expected_runtime_extrinsics_digest
+        for item in exact.runtime_calibration_evidence
+    )
     assert load_visual_compatibility_report(report_path) == exact
+
+    normalized = replace(
+        exact,
+        runtime_calibration_evidence=cast(
+            Any, (item for item in exact.runtime_calibration_evidence)
+        ),
+    )
+    assert normalized.runtime_calibration_evidence == exact.runtime_calibration_evidence
+    assert (
+        normalized.visual_compatibility_identity == exact.visual_compatibility_identity
+    )
 
     changed_dtype = replace(
         exact,
         renderer_api=replace(
             exact.renderer_api,
-            runtime_intrinsics_dtype="float32",
-            runtime_extrinsics_dtype="float32",
+            runtime_intrinsics_dtype="float64",
         ),
     )
     assert changed_dtype.visual_compatibility_identity != (
@@ -891,6 +1014,21 @@ def test_probe_reports_exact_and_controlled_nondeterminism(tmp_path: Path) -> No
         ),
     )
     assert changed_camera_group_inventory.visual_compatibility_identity != (
+        exact.visual_compatibility_identity
+    )
+    changed_digest = f"sha256:{'d' * 64}"
+    changed_calibration_evidence = replace(
+        exact,
+        runtime_calibration_evidence=(
+            replace(
+                exact.runtime_calibration_evidence[0],
+                runtime_extrinsics_digest=changed_digest,
+                expected_runtime_extrinsics_digest=changed_digest,
+            ),
+            *exact.runtime_calibration_evidence[1:],
+        ),
+    )
+    assert changed_calibration_evidence.visual_compatibility_identity != (
         exact.visual_compatibility_identity
     )
 
@@ -941,6 +1079,30 @@ def test_probe_reports_exact_and_controlled_nondeterminism(tmp_path: Path) -> No
     renamed_comparison.write_text(json.dumps(payload), encoding="utf-8")
     with pytest.raises(ManiSkillVisualProbeError, match=r"bounded 3\+2 plan"):
         load_visual_compatibility_report(renamed_comparison)
+
+    payload = json.loads(report_path.read_text(encoding="utf-8"))
+    malformed_digest = f"sha256:{'g' * 64}"
+    payload["runtime_calibration_evidence"][0]["runtime_extrinsics_digest"] = (
+        malformed_digest
+    )
+    payload["runtime_calibration_evidence"][0]["expected_runtime_extrinsics_digest"] = (
+        malformed_digest
+    )
+    malformed_calibration = tmp_path / "malformed-calibration-digest.json"
+    malformed_calibration.write_text(json.dumps(payload), encoding="utf-8")
+    with pytest.raises(ManiSkillVisualRenderingError, match="lowercase SHA-256"):
+        load_visual_compatibility_report(malformed_calibration)
+
+
+def test_runtime_calibration_evidence_rejects_non_hex_digest() -> None:
+    malformed_digest = f"sha256:{'G' * 64}"
+    with pytest.raises(ManiSkillVisualRenderingError, match="lowercase SHA-256"):
+        RuntimeCalibrationEvidenceV1(
+            camera_id="front_oblique",
+            camera_configuration_digest=malformed_digest,
+            runtime_extrinsics_digest=malformed_digest,
+            expected_runtime_extrinsics_digest=malformed_digest,
+        )
 
 
 @pytest.mark.parametrize(
@@ -1072,6 +1234,9 @@ def test_verified_session_builds_core_packet_and_reference_keyed_npy_mapping() -
             camera_rig_digest=rig.rig_digest,
             render_domain_configuration_digest=configuration.content_digest,
             renderer_api=result.renderer_api,
+            runtime_calibration_evidence=tuple(
+                view.runtime_calibration_evidence for view in result.views
+            ),
         ),
     )
     references = tuple(view.image_reference for view in prepared.packet.views)
@@ -1093,8 +1258,107 @@ def test_verified_session_builds_core_packet_and_reference_keyed_npy_mapping() -
     assert tuple(view.extrinsics_dtype for view in prepared.packet.views) == tuple(
         view.extrinsics.dtype.name for view in result.views
     )
+    assert tuple(
+        view.runtime_extrinsics_digest for view in prepared.packet.views
+    ) == tuple(view.runtime_extrinsics_digest for view in result.views)
+    assert tuple(
+        view.expected_runtime_extrinsics_digest for view in prepared.packet.views
+    ) == tuple(view.expected_runtime_extrinsics_digest for view in result.views)
+    assert all(
+        np.array_equal(
+            np.asarray(view.extrinsics, dtype=np.float64),
+            np.asarray(planned.extrinsics, dtype=result_view.extrinsics.dtype).astype(
+                np.float64
+            ),
+        )
+        for view, planned, result_view in zip(
+            prepared.packet.views,
+            result.render_plan.cameras,
+            result.views,
+            strict=True,
+        )
+    )
     assert prepared.packet.pickcube_compatibility_identity == _COMPATIBILITY
     assert isinstance(prepared.images, MappingProxyType)
+
+    drifted_canonical = np.array(result.views[0].extrinsics, copy=True)
+    drifted_canonical[0, 0] = np.nextafter(drifted_canonical[0, 0], np.float32(np.inf))
+    assert not np.array_equal(
+        drifted_canonical,
+        np.asarray(result.render_plan.cameras[0].extrinsics, dtype=np.float32),
+    )
+    drifted_view = replace(result.views[0], extrinsics=drifted_canonical)
+    drifted_result = replace(
+        result,
+        render_repetitions=((drifted_view, *result.views[1:]),),
+    )
+    with pytest.raises(
+        ManiSkillVisualSessionError,
+        match="calibration differs from its exact plan or runtime evidence",
+    ):
+        build_visual_observation_packet(
+            drifted_result,
+            source_collection=SourceCollection.M3A_DEVELOPMENT,
+            anchor_id="anchor-a",
+            split=VisualDatasetSplit.TRAIN,
+            split_group_id="split-group-a",
+            state_reference_id=state.content_digest,
+            camera_rig=rig,
+            render_domain_configuration=configuration,
+            visual_compatibility=_TrustedVisual(
+                visual_compatibility_identity=f"sha256:{'b' * 64}",
+                pickcube_compatibility_identity=_COMPATIBILITY,
+                camera_rig_digest=rig.rig_digest,
+                render_domain_configuration_digest=configuration.content_digest,
+                renderer_api=result.renderer_api,
+                runtime_calibration_evidence=tuple(
+                    view.runtime_calibration_evidence for view in result.views
+                ),
+            ),
+        )
+
+    verified_runtime = np.array(result.views[0].runtime_extrinsics, copy=True)
+    verified_runtime[0, 0] = np.nextafter(verified_runtime[0, 0], np.float32(np.inf))
+    with pytest.raises(
+        ManiSkillVisualRenderingError,
+        match="runtime extrinsics lack matching verified evidence",
+    ):
+        replace(result.views[0], runtime_extrinsics=verified_runtime)
+    verified_runtime_view = replace(
+        result.views[0],
+        runtime_extrinsics=verified_runtime,
+        expected_runtime_extrinsics_digest=runtime_calibration_array_digest(
+            verified_runtime
+        ),
+    )
+    verified_runtime_result = replace(
+        result,
+        render_repetitions=((verified_runtime_view, *result.views[1:]),),
+    )
+    with pytest.raises(
+        ManiSkillVisualSessionError,
+        match="canonical runtime calibration differs from reviewed probe evidence",
+    ):
+        build_visual_observation_packet(
+            verified_runtime_result,
+            source_collection=SourceCollection.M3A_DEVELOPMENT,
+            anchor_id="anchor-a",
+            split=VisualDatasetSplit.TRAIN,
+            split_group_id="split-group-a",
+            state_reference_id=state.content_digest,
+            camera_rig=rig,
+            render_domain_configuration=configuration,
+            visual_compatibility=_TrustedVisual(
+                visual_compatibility_identity=f"sha256:{'b' * 64}",
+                pickcube_compatibility_identity=_COMPATIBILITY,
+                camera_rig_digest=rig.rig_digest,
+                render_domain_configuration_digest=configuration.content_digest,
+                renderer_api=result.renderer_api,
+                runtime_calibration_evidence=tuple(
+                    view.runtime_calibration_evidence for view in result.views
+                ),
+            ),
+        )
 
     with pytest.raises(ManiSkillVisualSessionError, match="successfully closed"):
         build_visual_observation_packet(
@@ -1112,6 +1376,9 @@ def test_verified_session_builds_core_packet_and_reference_keyed_npy_mapping() -
                 camera_rig_digest=rig.rig_digest,
                 render_domain_configuration_digest=configuration.content_digest,
                 renderer_api=result.renderer_api,
+                runtime_calibration_evidence=tuple(
+                    view.runtime_calibration_evidence for view in result.views
+                ),
             ),
         )
 
@@ -1132,6 +1399,9 @@ def test_verified_session_builds_core_packet_and_reference_keyed_npy_mapping() -
                 render_domain_configuration_digest=configuration.content_digest,
                 renderer_api=replace(
                     result.renderer_api, renderer_backend="drifted_backend"
+                ),
+                runtime_calibration_evidence=tuple(
+                    view.runtime_calibration_evidence for view in result.views
                 ),
             ),
         )
@@ -1174,3 +1444,688 @@ def test_runtime_calibration_must_match_content_bound_plan_exactly_after_cast() 
         visual_rendering._require_runtime_calibration_matches_plan(
             changed, planned, field_name="test intrinsics"
         )
+
+
+def test_world_to_camera_extrinsics_and_runtime_shape_normalization_are_explicit() -> (
+    None
+):
+    from latentguard.integrations.maniskill_pickcube import visual_rendering
+
+    expected = np.asarray(
+        (
+            (0.0, -1.0, 0.0, 2.0),
+            (0.0, 0.0, -1.0, 3.0),
+            (1.0, 0.0, 0.0, -1.0),
+            (0.0, 0.0, 0.0, 1.0),
+        ),
+        dtype=np.float64,
+    )
+    assert np.array_equal(
+        visual_rendering._world_to_camera_extrinsics(
+            (1.0, 2.0, 3.0),
+            (1.0, 0.0, 0.0, 0.0),
+        ),
+        expected,
+    )
+    for raw, raw_shape, expected_semantic in (
+        (expected[:3], "[3,4]", EXTRINSIC_3X4_TO_4X4_SEMANTIC),
+        (
+            expected[:3][None, ...],
+            "[1,3,4]",
+            EXTRINSIC_3X4_TO_4X4_SEMANTIC,
+        ),
+        (expected, "[4,4]", EXTRINSIC_4X4_SEMANTIC),
+        (expected[None, ...], "[1,4,4]", EXTRINSIC_4X4_SEMANTIC),
+    ):
+        normalized, observed_shape, observed_semantic = (
+            visual_rendering._single_extrinsic_matrix(raw)
+        )
+        assert observed_shape == raw_shape
+        assert observed_semantic == expected_semantic
+        assert np.array_equal(normalized, expected)
+
+
+class Tensor:
+    """Minimal CUDA-tensor double for strict renderer-calibration tests."""
+
+    __module__ = "torch"
+
+    def __init__(self, value: object) -> None:
+        self.array = np.asarray(value)
+        self.device = SimpleNamespace(type="cuda", index=0)
+
+    @property
+    def shape(self) -> tuple[int, ...]:
+        return self.array.shape
+
+    @property
+    def T(self) -> Tensor:
+        return Tensor(self.array.T)
+
+    def detach(self) -> Tensor:
+        return self
+
+    def cpu(self) -> Tensor:
+        return self
+
+    def numpy(self) -> NDArray[Any]:
+        return self.array
+
+    def clone(self) -> Tensor:
+        return Tensor(self.array.copy())
+
+    def new_tensor(self, value: object) -> Tensor:
+        return Tensor(np.asarray(value, dtype=self.array.dtype))
+
+    def __matmul__(self, other: Tensor) -> Tensor:
+        assert self.array.shape == (4, 4)
+        assert other.array.shape == (1, 4, 4)
+        product = np.empty((1, 4, 4), dtype=np.float32)
+        for row in range(4):
+            for column in range(4):
+                total = np.float32(0.0)
+                for component in range(4):
+                    total = np.float32(
+                        total
+                        + np.float32(
+                            self.array[row, component]
+                            * other.array[0, component, column]
+                        )
+                    )
+                product[0, row, column] = total
+        return Tensor(product)
+
+    def __getitem__(self, key: object) -> Tensor:
+        return Tensor(self.array[key])
+
+
+class Pose:
+    """Minimal ManiSkill Pose double with a deterministic float32 inverse matrix."""
+
+    __module__ = "mani_skill.utils.structs.pose"
+
+    def __init__(self, raw_pose: Tensor) -> None:
+        self.raw_pose = raw_pose
+
+    @classmethod
+    def create(cls, raw_pose: Tensor, *, device: object = None) -> Pose:
+        del device
+        return cls(raw_pose)
+
+    def inv(self) -> _InversePose:
+        return _InversePose(self.raw_pose)
+
+
+class _InversePose:
+    def __init__(self, raw_pose: Tensor) -> None:
+        self.raw_pose = raw_pose
+
+    def to_transformation_matrix(self) -> Tensor:
+        position = self.raw_pose.array[0, :3]
+        w, x, y, z = self.raw_pose.array[0, 3:]
+        squared_norm = np.float32(w * w + x * x + y * y + z * z)
+        two_s = np.float32(2.0) / squared_norm
+        camera_to_world = np.asarray(
+            (
+                (
+                    np.float32(1.0) - two_s * (y * y + z * z),
+                    two_s * (x * y - z * w),
+                    two_s * (x * z + y * w),
+                ),
+                (
+                    two_s * (x * y + z * w),
+                    np.float32(1.0) - two_s * (x * x + z * z),
+                    two_s * (y * z - x * w),
+                ),
+                (
+                    two_s * (x * z - y * w),
+                    two_s * (y * z + x * w),
+                    np.float32(1.0) - two_s * (x * x + y * y),
+                ),
+            ),
+            dtype=np.float32,
+        )
+        matrix = np.zeros((1, 4, 4), dtype=np.float32)
+        matrix[0, :3, :3] = camera_to_world.T
+        for row in range(3):
+            total = np.float32(0.0)
+            for component in range(3):
+                total = np.float32(
+                    total
+                    + np.float32(camera_to_world[component, row] * position[component])
+                )
+            matrix[0, row, 3] = -total
+        matrix[0, 3, 3] = np.float32(1.0)
+        return Tensor(matrix)
+
+
+class _SapienPose:
+    """Minimal native SAPIEN pose double exposing float32 NumPy components."""
+
+    __module__ = "sapien.pysapien"
+    __qualname__ = "Pose"
+
+    def __init__(self, raw_pose: NDArray[np.float32]) -> None:
+        self.p = np.array(raw_pose[:3], copy=True, order="C")
+        self.q = np.array(raw_pose[3:], copy=True, order="C")
+
+
+class _StrictUnderlyingRenderCamera:
+    """Expose the live, uncached native component pose for strict tests."""
+
+    def __init__(self, owner: _StrictRuntimeCamera) -> None:
+        self.owner = owner
+
+    def get_local_pose(self) -> _SapienPose:
+        return _SapienPose(self.owner.raw_pose[0])
+
+
+class _StrictRuntimeCamera:
+    def __init__(
+        self,
+        plan: object,
+        *,
+        pose_drift: bool = False,
+        public_drift: bool = False,
+        wrong_axis: bool = False,
+        mutate_on_take: bool = False,
+        mutate_on_get_picture: bool = False,
+        mutate_on_second_extrinsic: bool = False,
+        cache_wrapper_pose: bool = False,
+        public_device_index: int = 0,
+        signed_zero_intrinsics: bool = False,
+        signed_zero_intrinsics_after_take: bool = False,
+        fixed_public_extrinsics: NDArray[np.float32] | None = None,
+    ) -> None:
+        self.plan = plan
+        raw_pose = np.asarray(
+            ((*plan.position, *plan.quaternion_wxyz),), dtype=np.float32
+        )
+        self.raw_pose = raw_pose
+        self.wrapper_raw_pose = raw_pose.copy()
+        if pose_drift:
+            self.wrapper_raw_pose[0, 0] = np.nextafter(
+                self.wrapper_raw_pose[0, 0], np.float32(np.inf)
+            )
+        self.use_wrapper_raw_pose = pose_drift or cache_wrapper_pose
+        self.public_device_index = public_device_index
+        self.signed_zero_intrinsics = signed_zero_intrinsics
+        self.public_drift = public_drift
+        self.wrong_axis = wrong_axis
+        self.mutate_on_take = mutate_on_take
+        self.mutate_on_get_picture = mutate_on_get_picture
+        self.mutate_on_second_extrinsic = mutate_on_second_extrinsic
+        self.signed_zero_intrinsics_after_take = signed_zero_intrinsics_after_take
+        self.fixed_public_extrinsics = fixed_public_extrinsics
+        self.captured = False
+        self.extrinsic_calls = 0
+        self.mount = None
+        self._render_cameras = [_StrictUnderlyingRenderCamera(self)]
+
+    def get_global_pose(self) -> Pose:
+        raw_pose = self.wrapper_raw_pose if self.use_wrapper_raw_pose else self.raw_pose
+        return Pose(Tensor(raw_pose.copy()))
+
+    def get_intrinsic_matrix(self) -> Tensor:
+        intrinsics = np.asarray(self.plan.intrinsics, dtype=np.float32)[None, ...]
+        if self.signed_zero_intrinsics:
+            intrinsics = intrinsics.copy()
+            intrinsics[0, 0, 1] = np.float32(-0.0)
+        if self.signed_zero_intrinsics_after_take and self.captured:
+            intrinsics = intrinsics.copy()
+            intrinsics[0, 0, 1] = np.float32(-0.0)
+        return Tensor(intrinsics)
+
+    def get_extrinsic_matrix(self) -> Tensor:
+        self.extrinsic_calls += 1
+        if self.fixed_public_extrinsics is not None:
+            tensor = Tensor(self.fixed_public_extrinsics.copy())
+            tensor.device.index = self.public_device_index
+            return tensor
+        inverse = self.get_global_pose().inv().to_transformation_matrix()
+        axis = Tensor(
+            np.asarray(
+                (
+                    (0.0, 0.0, 1.0, 0.0),
+                    (-1.0, 0.0, 0.0, 0.0),
+                    (0.0, -1.0, 0.0, 0.0),
+                    (0.0, 0.0, 0.0, 1.0),
+                ),
+                dtype=np.float32,
+            )
+        )
+        raw = (axis.T @ inverse)[:, :3, :4].array
+        if self.wrong_axis:
+            raw = raw.copy()
+            raw[:, 0, :] = -raw[:, 0, :]
+        if self.public_drift:
+            raw = raw.copy()
+            raw[0, 0, 0] = np.nextafter(raw[0, 0, 0], np.float32(np.inf))
+        if self.mutate_on_second_extrinsic and self.extrinsic_calls == 2:
+            self.raw_pose[0, 0] = np.nextafter(self.raw_pose[0, 0], np.float32(np.inf))
+        tensor = Tensor(raw)
+        tensor.device.index = self.public_device_index
+        return tensor
+
+    def take_picture(self) -> None:
+        self.captured = True
+        if self.mutate_on_take:
+            self.raw_pose[0, 0] = np.nextafter(self.raw_pose[0, 0], np.float32(np.inf))
+
+    def get_picture(self, names: list[str]) -> list[Tensor]:
+        assert names == ["Color"]
+        if self.mutate_on_get_picture:
+            self.raw_pose[0, 0] = np.nextafter(self.raw_pose[0, 0], np.float32(np.inf))
+        return [Tensor(np.zeros((1, 224, 224, 4), dtype=np.uint8))]
+
+
+class _StrictRuntimeScene:
+    def update_render(self, **kwargs: object) -> None:
+        assert kwargs == {
+            "update_sensors": False,
+            "update_human_render_cameras": False,
+        }
+
+
+def _unobserved_renderer_api(
+    plan: PickCubeVisualRenderPlan,
+) -> VisualRendererApiObservation:
+    return VisualRendererApiObservation(
+        renderer_backend="fake_gpu",
+        scene_type="fake.Scene",
+        camera_type="fake.Camera",
+        shader_configuration=plan.shader_configuration,
+        camera_configuration_api="fake.add_camera",
+        camera_group_initialization_semantic=GPU_CAMERA_GROUP_INITIALIZATION_SEMANTIC,
+        camera_group_texture_names=("Color",),
+        camera_group_count=3,
+        underlying_camera_count_per_group=1,
+        camera_groups_ready=True,
+        world_camera_pose_representation="sapien.Pose(position,quaternion_wxyz)",
+        sensor_update_calls=("fake.take_picture",),
+    )
+
+
+@pytest.mark.parametrize(
+    ("field_name", "invalid_value"),
+    (
+        ("runtime_pose_component_count", 0.0),
+        ("runtime_pose_component_count", False),
+        ("runtime_underlying_pose_component_count", 0.0),
+        ("runtime_underlying_pose_component_count", False),
+        ("runtime_extrinsic_component_count", 0.0),
+        ("runtime_extrinsic_component_count", False),
+    ),
+)
+def test_renderer_api_component_counts_require_strict_integers(
+    field_name: str, invalid_value: float | bool
+) -> None:
+    rig, configuration = _configuration()
+    plan = build_pickcube_visual_render_plan(
+        rig, configuration.domain("canonical"), configuration, 41
+    )
+    observation = _unobserved_renderer_api(plan)
+
+    with pytest.raises(ManiSkillVisualRenderingError, match="must be an integer"):
+        replace(observation, **{field_name: invalid_value})
+
+
+@pytest.mark.parametrize(
+    ("camera_kwargs", "message"),
+    (
+        ({"pose_drift": True}, "runtime world pose differs at the bit level"),
+        ({"public_drift": True}, "public extrinsics derivation differs"),
+        ({"wrong_axis": True}, "public extrinsics derivation differs"),
+        ({"public_device_index": 1}, "public extrinsics crossed CUDA devices"),
+        (
+            {"signed_zero_intrinsics": True},
+            "intrinsics differs from the content-bound camera plan",
+        ),
+    ),
+)
+def test_runtime_camera_calibration_rejects_pose_public_and_axis_drift(
+    camera_kwargs: dict[str, object], message: str
+) -> None:
+    from latentguard.integrations.maniskill_pickcube import visual_rendering
+
+    rig, configuration = _configuration()
+    plan = build_pickcube_visual_render_plan(
+        rig, configuration.domain("canonical"), configuration, 42
+    )
+    camera_plan = plan.cameras[0]
+    camera = _StrictRuntimeCamera(camera_plan, **camera_kwargs)
+    with pytest.raises(ManiSkillVisualRenderingError, match=message):
+        visual_rendering._read_verified_runtime_calibration(
+            plan=camera_plan,
+            camera=camera,
+            get_intrinsic=camera.get_intrinsic_matrix,
+            get_extrinsic=camera.get_extrinsic_matrix,
+        )
+
+
+def test_runtime_camera_calibration_matches_independent_nontrivial_golden() -> None:
+    from latentguard.integrations.maniskill_pickcube import visual_rendering
+
+    rig, configuration = _configuration()
+    plan = build_pickcube_visual_render_plan(
+        rig, configuration.domain("canonical"), configuration, 44
+    )
+    golden = np.asarray(
+        (
+            (-0.0, 1.0, -0.0, -2.0),
+            (-0.0, -0.0, -1.0, 3.0),
+            (-1.0, 0.0, 0.0, 1.0),
+            (0.0, 0.0, 0.0, 1.0),
+        ),
+        dtype=np.float64,
+    )
+    camera_plan = replace(
+        plan.cameras[0],
+        position=(1.0, 2.0, 3.0),
+        quaternion_wxyz=(0.0, 0.0, 0.0, 1.0),
+        extrinsics=golden,
+    )
+    runtime_golden = np.asarray(
+        (
+            (0.0, 1.0, 0.0, -2.0),
+            (0.0, 0.0, -1.0, 3.0),
+            (-1.0, 0.0, 0.0, 1.0),
+        ),
+        dtype=np.float32,
+    )[None, ...]
+    camera = _StrictRuntimeCamera(
+        camera_plan,
+        fixed_public_extrinsics=runtime_golden,
+    )
+    observed = visual_rendering._read_verified_runtime_calibration(
+        plan=camera_plan,
+        camera=camera,
+        get_intrinsic=camera.get_intrinsic_matrix,
+        get_extrinsic=camera.get_extrinsic_matrix,
+    )
+    assert np.array_equal(observed.extrinsics, golden.astype(np.float32))
+
+
+def test_render_plan_rejects_signed_zero_extrinsic_drift() -> None:
+    rig, configuration = _configuration()
+    plan = build_pickcube_visual_render_plan(
+        rig, configuration.domain("canonical"), configuration, 48
+    )
+    changed = np.array(plan.cameras[0].extrinsics, copy=True)
+    assert changed[3, 0] == 0.0
+    changed[3, 0] = -0.0
+
+    with pytest.raises(ManiSkillVisualRenderingError, match="exactly derive"):
+        replace(plan.cameras[0], extrinsics=changed)
+
+
+@pytest.mark.parametrize(
+    ("mutation", "message"),
+    (
+        ("pose_type", "underlying pose type is unsupported"),
+        ("array_type", "underlying pose arrays are unsupported"),
+        ("dtype", "underlying position must have dtype float32"),
+        ("shape", "underlying position must have shape"),
+        ("contiguity", "underlying pose arrays must be C-contiguous"),
+        ("quaternion_drift", "underlying world quaternion differs at the bit level"),
+    ),
+)
+def test_underlying_camera_pose_contract_fails_closed(
+    mutation: str, message: str
+) -> None:
+    from latentguard.integrations.maniskill_pickcube import visual_rendering
+
+    rig, configuration = _configuration()
+    plan = build_pickcube_visual_render_plan(
+        rig, configuration.domain("canonical"), configuration, 47
+    )
+    camera_plan = plan.cameras[0]
+    raw_pose = np.asarray(
+        (*camera_plan.position, *camera_plan.quaternion_wxyz), dtype=np.float32
+    )
+    native_pose: object = _SapienPose(raw_pose)
+    if mutation == "pose_type":
+        native_pose = SimpleNamespace(p=raw_pose[:3], q=raw_pose[3:])
+    else:
+        assert isinstance(native_pose, _SapienPose)
+        if mutation == "array_type":
+            native_pose.p = list(native_pose.p)  # type: ignore[assignment]
+        elif mutation == "dtype":
+            native_pose.p = native_pose.p.astype(np.float64)
+        elif mutation == "shape":
+            native_pose.p = native_pose.p.reshape(1, 3)
+        elif mutation == "contiguity":
+            storage = np.empty((3, 2), dtype=np.float32)
+            storage[:, 0] = native_pose.p
+            native_pose.p = storage[:, 0]
+        else:
+            native_pose.q[0] = np.nextafter(native_pose.q[0], np.float32(np.inf))
+    render_camera = SimpleNamespace(get_local_pose=lambda: native_pose)
+
+    with pytest.raises(ManiSkillVisualRenderingError, match=message):
+        visual_rendering._read_verified_underlying_world_pose(
+            plan=camera_plan,
+            render_camera=render_camera,
+        )
+
+
+@pytest.mark.parametrize(
+    ("value", "message"),
+    (
+        (Tensor(np.zeros((1, 7), dtype=np.float64)), "pinned float32"),
+        (Tensor(np.zeros((7,), dtype=np.float32)), "shape"),
+    ),
+)
+def test_pinned_runtime_tensor_rejects_dtype_and_shape(
+    value: Tensor, message: str
+) -> None:
+    from latentguard.integrations.maniskill_pickcube import visual_rendering
+
+    with pytest.raises(ManiSkillVisualRenderingError, match=message):
+        visual_rendering._require_pinned_runtime_tensor(
+            value,
+            shape=(1, 7),
+            field_name="test pose",
+        )
+
+    cpu = Tensor(np.zeros((1, 7), dtype=np.float32))
+    cpu.device.type = "cpu"
+    with pytest.raises(ManiSkillVisualRenderingError, match="CUDA"):
+        visual_rendering._require_pinned_runtime_tensor(
+            cpu,
+            shape=(1, 7),
+            field_name="test pose",
+        )
+
+
+@pytest.mark.parametrize(
+    ("mutation", "message"),
+    (
+        ("mount", "unmounted world camera"),
+        ("multi_camera", "one underlying camera"),
+    ),
+)
+def test_runtime_camera_calibration_rejects_mount_and_camera_count(
+    mutation: str, message: str
+) -> None:
+    from latentguard.integrations.maniskill_pickcube import visual_rendering
+
+    rig, configuration = _configuration()
+    plan = build_pickcube_visual_render_plan(
+        rig, configuration.domain("canonical"), configuration, 46
+    )
+    camera = _StrictRuntimeCamera(plan.cameras[0])
+    if mutation == "mount":
+        camera.mount = object()
+    else:
+        camera._render_cameras.append(object())
+    with pytest.raises(ManiSkillVisualRenderingError, match=message):
+        visual_rendering._read_verified_runtime_calibration(
+            plan=plan.cameras[0],
+            camera=camera,
+            get_intrinsic=camera.get_intrinsic_matrix,
+            get_extrinsic=camera.get_extrinsic_matrix,
+        )
+
+
+def test_installed_render_handle_checks_calibration_before_and_after_capture() -> None:
+    from latentguard.integrations.maniskill_pickcube import visual_rendering
+
+    rig, configuration = _configuration()
+    plan = build_pickcube_visual_render_plan(
+        rig, configuration.domain("canonical"), configuration, 43
+    )
+    stable_cameras = tuple(
+        (camera_plan, _StrictRuntimeCamera(camera_plan)) for camera_plan in plan.cameras
+    )
+    handle = visual_rendering._InstalledRenderHandle(
+        _StrictRuntimeScene(),
+        stable_cameras,
+        _unobserved_renderer_api(plan),
+    )
+    views = handle.render_views()
+    assert len(views) == 3
+    assert handle.api_observation.runtime_camera_pose_dtype == "float32"
+    assert handle.api_observation.raw_camera_pose_shape == "[1,7]"
+    assert handle.api_observation.raw_extrinsic_matrix_shape == "[1,3,4]"
+
+    changed_camera = _StrictRuntimeCamera(
+        plan.cameras[0], mutate_on_take=True, cache_wrapper_pose=True
+    )
+    changed_handle = visual_rendering._InstalledRenderHandle(
+        _StrictRuntimeScene(),
+        ((plan.cameras[0], changed_camera),),
+        _unobserved_renderer_api(plan),
+    )
+    with pytest.raises(
+        ManiSkillVisualRenderingError,
+        match="underlying world position differs at the bit level",
+    ):
+        changed_handle.render_views()
+
+    picture_changed_camera = _StrictRuntimeCamera(
+        plan.cameras[0], mutate_on_get_picture=True, cache_wrapper_pose=True
+    )
+    picture_changed_handle = visual_rendering._InstalledRenderHandle(
+        _StrictRuntimeScene(),
+        ((plan.cameras[0], picture_changed_camera),),
+        _unobserved_renderer_api(plan),
+    )
+    with pytest.raises(
+        ManiSkillVisualRenderingError,
+        match="underlying world position differs at the bit level",
+    ):
+        picture_changed_handle.render_views()
+
+    getter_changed_camera = _StrictRuntimeCamera(
+        plan.cameras[0],
+        mutate_on_second_extrinsic=True,
+        cache_wrapper_pose=True,
+    )
+    getter_changed_handle = visual_rendering._InstalledRenderHandle(
+        _StrictRuntimeScene(),
+        ((plan.cameras[0], getter_changed_camera),),
+        _unobserved_renderer_api(plan),
+    )
+    with pytest.raises(
+        ManiSkillVisualRenderingError,
+        match="underlying world position differs at the bit level",
+    ):
+        getter_changed_handle.render_views()
+
+    signed_zero_camera = _StrictRuntimeCamera(
+        plan.cameras[0], signed_zero_intrinsics_after_take=True
+    )
+    signed_zero_handle = visual_rendering._InstalledRenderHandle(
+        _StrictRuntimeScene(),
+        ((plan.cameras[0], signed_zero_camera),),
+        _unobserved_renderer_api(plan),
+    )
+    with pytest.raises(
+        ManiSkillVisualRenderingError,
+        match="intrinsics differs from the content-bound camera plan",
+    ):
+        signed_zero_handle.render_views()
+
+
+def test_installed_render_handle_compares_pre_post_public_extrinsic_bits(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    from latentguard.integrations.maniskill_pickcube import visual_rendering
+
+    rig, configuration = _configuration()
+    plan = build_pickcube_visual_render_plan(
+        rig, configuration.domain("canonical"), configuration, 45
+    )
+    camera_plan = plan.cameras[1]
+    camera = _StrictRuntimeCamera(camera_plan)
+    baseline = visual_rendering._read_verified_runtime_calibration(
+        plan=camera_plan,
+        camera=camera,
+        get_intrinsic=camera.get_intrinsic_matrix,
+        get_extrinsic=camera.get_extrinsic_matrix,
+    )
+    changed_raw = np.array(baseline.raw_public_extrinsics, copy=True)
+    assert changed_raw[0, 0, 0] == 0.0
+    changed_raw[0, 0, 0] = np.float32(-0.0)
+    assert np.array_equal(changed_raw, baseline.raw_public_extrinsics)
+    reads = iter(
+        (
+            baseline,
+            replace(baseline, raw_public_extrinsics=changed_raw),
+        )
+    )
+    monkeypatch.setattr(
+        visual_rendering,
+        "_read_verified_runtime_calibration",
+        lambda **_kwargs: next(reads),
+    )
+    handle = visual_rendering._InstalledRenderHandle(
+        _StrictRuntimeScene(),
+        ((camera_plan, camera),),
+        _unobserved_renderer_api(plan),
+    )
+    with pytest.raises(
+        ManiSkillVisualRenderingError,
+        match="pre/post-capture public extrinsics differs at the bit level",
+    ):
+        handle.render_views()
+
+
+def test_installed_render_handle_compares_pre_post_intrinsic_bits(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    from latentguard.integrations.maniskill_pickcube import visual_rendering
+
+    rig, configuration = _configuration()
+    plan = build_pickcube_visual_render_plan(
+        rig, configuration.domain("canonical"), configuration, 49
+    )
+    camera_plan = plan.cameras[0]
+    camera = _StrictRuntimeCamera(camera_plan)
+    baseline = visual_rendering._read_verified_runtime_calibration(
+        plan=camera_plan,
+        camera=camera,
+        get_intrinsic=camera.get_intrinsic_matrix,
+        get_extrinsic=camera.get_extrinsic_matrix,
+    )
+    changed = np.array(baseline.intrinsics, copy=True)
+    assert changed[0, 1] == 0.0
+    changed[0, 1] = np.float32(-0.0)
+    reads = iter((baseline, replace(baseline, intrinsics=changed)))
+    monkeypatch.setattr(
+        visual_rendering,
+        "_read_verified_runtime_calibration",
+        lambda **_kwargs: next(reads),
+    )
+    handle = visual_rendering._InstalledRenderHandle(
+        _StrictRuntimeScene(),
+        ((camera_plan, camera),),
+        _unobserved_renderer_api(plan),
+    )
+
+    with pytest.raises(
+        ManiSkillVisualRenderingError,
+        match="pre/post-capture intrinsics differs at the bit level",
+    ):
+        handle.render_views()

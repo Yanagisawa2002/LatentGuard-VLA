@@ -10,7 +10,7 @@ import tempfile
 from collections.abc import Mapping, Sequence
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import NoReturn, Protocol, cast, runtime_checkable
+from typing import Any, NoReturn, Protocol, cast, runtime_checkable
 
 import numpy as np
 from numpy.typing import NDArray
@@ -33,15 +33,17 @@ from .state_indexed_archive import (
     PickCubeStateIndexedEpisodeV1,
 )
 from .visual_rendering import (
+    RUNTIME_CALIBRATION_EVIDENCE_SEMANTIC,
     VISUAL_RENDERER_SEMANTIC_VERSION,
     PickCubeVisualRenderPlan,
     RenderedVisualView,
+    RuntimeCalibrationEvidenceV1,
     VisualRendererApiObservation,
     build_pickcube_visual_render_plan,
 )
 from .visual_session import PickCubeVisualSession, PickCubeVisualSessionResult
 
-VISUAL_COMPATIBILITY_REPORT_SCHEMA_VERSION = "3.0"
+VISUAL_COMPATIBILITY_REPORT_SCHEMA_VERSION = "4.0"
 VISUAL_PROBE_SOURCE_SCHEMA_VERSION = "1.0"
 VISUAL_RENDER_OUTPUT_SHAPE = (224, 224, 3)
 VISUAL_PROBE_SAME_ENVIRONMENT_RENDER_COUNT = 3
@@ -365,6 +367,7 @@ class VisualCompatibilityReport:
     repeated_render: PixelComparisonReport
     fresh_environment_render: PixelComparisonReport
     camera_calibration_stable: bool
+    runtime_calibration_evidence: tuple[RuntimeCalibrationEvidenceV1, ...]
     environment_close_passed: bool
     same_environment_render_count: int = VISUAL_PROBE_SAME_ENVIRONMENT_RENDER_COUNT
     fresh_environment_render_count: int = VISUAL_PROBE_FRESH_ENVIRONMENT_RENDER_COUNT
@@ -422,6 +425,18 @@ class VisualCompatibilityReport:
         if self.verifier_component_count != 38:
             raise ManiSkillVisualProbeError(
                 "visual probe must reproduce exactly 38 verifier components"
+            )
+        runtime_calibration_evidence = tuple(self.runtime_calibration_evidence)
+        if any(
+            not isinstance(item, RuntimeCalibrationEvidenceV1)
+            for item in runtime_calibration_evidence
+        ) or tuple(item.camera_id for item in runtime_calibration_evidence) != (
+            "front_oblique",
+            "overhead",
+            "side_oblique",
+        ):
+            raise ManiSkillVisualProbeError(
+                "visual probe runtime calibration evidence inventory is invalid"
             )
         if (
             type(self.state_comparison_tolerance) is not float
@@ -487,6 +502,9 @@ class VisualCompatibilityReport:
             raise ManiSkillVisualProbeError(
                 "visual compatibility report schema version is unsupported"
             )
+        object.__setattr__(
+            self, "runtime_calibration_evidence", runtime_calibration_evidence
+        )
         identity = _digest_payload(
             self._semantic_payload(), context="PickCubeVisualCompatibility"
         )
@@ -512,6 +530,7 @@ class VisualCompatibilityReport:
             and self.repeated_render.exact_match
             and self.fresh_environment_render.exact_match
             and self.camera_calibration_stable
+            and len(self.runtime_calibration_evidence) == 3
             and self.renderer_api.camera_intrinsics_available
             and self.renderer_api.camera_extrinsics_available
             and self.renderer_api.camera_groups_ready
@@ -519,6 +538,15 @@ class VisualCompatibilityReport:
             and self.renderer_api.runtime_intrinsics_dtype != "unobserved"
             and self.renderer_api.runtime_extrinsics_dtype != "unobserved"
             and self.renderer_api.raw_extrinsic_matrix_shape != "unobserved"
+            and self.renderer_api.runtime_camera_pose_dtype != "unobserved"
+            and self.renderer_api.raw_camera_pose_shape != "unobserved"
+            and self.renderer_api.runtime_camera_pose_device_type != "unobserved"
+            and self.renderer_api.runtime_pose_component_count == 7
+            and self.renderer_api.runtime_underlying_pose_type != "unobserved"
+            and self.renderer_api.runtime_underlying_pose_dtype != "unobserved"
+            and self.renderer_api.runtime_underlying_pose_component_count == 7
+            and self.renderer_api.underlying_camera_pose_pre_post_bitwise
+            and self.renderer_api.runtime_extrinsic_component_count == 12
             and self.environment_close_passed
         )
 
@@ -555,6 +583,9 @@ class VisualCompatibilityReport:
             ),
             "renderer_api": dict(self.renderer_api.as_mapping()),
             "renderer_semantic_version": self.renderer_semantic_version,
+            "runtime_calibration_evidence": [
+                dict(item.as_mapping()) for item in self.runtime_calibration_evidence
+            ],
             "repeated_render": self.repeated_render.to_dict(),
             "sapien_version": self.sapien_version,
             "same_environment_render_count": self.same_environment_render_count,
@@ -811,6 +842,9 @@ def probe_maniskill_pickcube_visual(
         repeated_render=repeated_pixels,
         fresh_environment_render=fresh_pixels,
         camera_calibration_stable=calibration_stable,
+        runtime_calibration_evidence=tuple(
+            view.runtime_calibration_evidence for view in baseline
+        ),
         environment_close_passed=all(
             session.environment_close_passed for session in all_sessions
         ),
@@ -925,6 +959,7 @@ def load_visual_compatibility_report(
             "renderer_api",
             "renderer_semantic_version",
             "repeated_render",
+            "runtime_calibration_evidence",
             "same_environment_render_count",
             "sapien_version",
             "schema_version",
@@ -1018,6 +1053,13 @@ def load_visual_compatibility_report(
         ),
         repeated_render=_decode_pixel_report(item["repeated_render"]),
         fresh_environment_render=_decode_pixel_report(item["fresh_environment_render"]),
+        runtime_calibration_evidence=tuple(
+            _decode_runtime_calibration_evidence(entry)
+            for entry in _load_sequence(
+                item["runtime_calibration_evidence"],
+                "VisualCompatibilityReport.runtime_calibration_evidence",
+            )
+        ),
         same_environment_render_count=_load_integer(
             item["same_environment_render_count"],
             "VisualCompatibilityReport.same_environment_render_count",
@@ -1126,6 +1168,46 @@ def _decode_probe_source(value: object) -> VisualProbeSourceEvidenceV1:
     )
 
 
+def _decode_runtime_calibration_evidence(
+    value: object,
+) -> RuntimeCalibrationEvidenceV1:
+    item = _load_mapping(value, "RuntimeCalibrationEvidenceV1")
+    _exact_fields(
+        item,
+        {
+            "camera_configuration_digest",
+            "camera_id",
+            "expected_runtime_extrinsics_digest",
+            "runtime_extrinsics_digest",
+            "semantic",
+        },
+        "RuntimeCalibrationEvidenceV1",
+    )
+    semantic = _load_text(item["semantic"], "RuntimeCalibrationEvidenceV1.semantic")
+    if semantic != RUNTIME_CALIBRATION_EVIDENCE_SEMANTIC:
+        raise ManiSkillVisualProbeError(
+            "RuntimeCalibrationEvidenceV1.semantic is unsupported"
+        )
+    return RuntimeCalibrationEvidenceV1(
+        camera_id=_load_text(
+            item["camera_id"], "RuntimeCalibrationEvidenceV1.camera_id"
+        ),
+        camera_configuration_digest=_load_text(
+            item["camera_configuration_digest"],
+            "RuntimeCalibrationEvidenceV1.camera_configuration_digest",
+        ),
+        runtime_extrinsics_digest=_load_text(
+            item["runtime_extrinsics_digest"],
+            "RuntimeCalibrationEvidenceV1.runtime_extrinsics_digest",
+        ),
+        expected_runtime_extrinsics_digest=_load_text(
+            item["expected_runtime_extrinsics_digest"],
+            "RuntimeCalibrationEvidenceV1.expected_runtime_extrinsics_digest",
+        ),
+        semantic=semantic,
+    )
+
+
 def _decode_renderer_api(value: object) -> VisualRendererApiObservation:
     item = _load_mapping(value, "VisualRendererApiObservation")
     fields = {
@@ -1144,11 +1226,28 @@ def _decode_renderer_api(value: object) -> VisualRendererApiObservation:
         "renderer_backend",
         "rendering_requires_sensor_update_calls",
         "raw_color_texture_dtype",
+        "raw_camera_pose_shape",
         "raw_extrinsic_matrix_shape",
+        "raw_underlying_position_shape",
+        "raw_underlying_quaternion_shape",
         "rgb_conversion_semantic",
         "runtime_extrinsics_dtype",
         "runtime_extrinsics_semantic",
         "runtime_intrinsics_dtype",
+        "runtime_camera_pose_device_type",
+        "runtime_camera_pose_dtype",
+        "runtime_extrinsic_component_count",
+        "runtime_pose_component_count",
+        "runtime_pose_verification_semantic",
+        "runtime_public_extrinsic_derivation_semantic",
+        "packet_extrinsic_canonicalization_semantic",
+        "runtime_underlying_pose_component_count",
+        "runtime_underlying_pose_dtype",
+        "runtime_underlying_pose_type",
+        "runtime_underlying_position_type",
+        "runtime_underlying_quaternion_type",
+        "underlying_camera_pose_pre_post_bitwise",
+        "underlying_camera_pose_verification_semantic",
         "scene_type",
         "sensor_update_calls",
         "shader_configuration",
@@ -1269,6 +1368,74 @@ def _decode_renderer_api(value: object) -> VisualRendererApiObservation:
         runtime_extrinsics_semantic=_load_text(
             item["runtime_extrinsics_semantic"],
             "VisualRendererApiObservation.runtime_extrinsics_semantic",
+        ),
+        runtime_camera_pose_dtype=_load_text(
+            item["runtime_camera_pose_dtype"],
+            "VisualRendererApiObservation.runtime_camera_pose_dtype",
+        ),
+        raw_camera_pose_shape=_load_text(
+            item["raw_camera_pose_shape"],
+            "VisualRendererApiObservation.raw_camera_pose_shape",
+        ),
+        runtime_camera_pose_device_type=_load_text(
+            item["runtime_camera_pose_device_type"],
+            "VisualRendererApiObservation.runtime_camera_pose_device_type",
+        ),
+        runtime_pose_component_count=_load_integer(
+            item["runtime_pose_component_count"],
+            "VisualRendererApiObservation.runtime_pose_component_count",
+        ),
+        runtime_extrinsic_component_count=_load_integer(
+            item["runtime_extrinsic_component_count"],
+            "VisualRendererApiObservation.runtime_extrinsic_component_count",
+        ),
+        runtime_pose_verification_semantic=_load_text(
+            item["runtime_pose_verification_semantic"],
+            "VisualRendererApiObservation.runtime_pose_verification_semantic",
+        ),
+        runtime_public_extrinsic_derivation_semantic=_load_text(
+            item["runtime_public_extrinsic_derivation_semantic"],
+            "VisualRendererApiObservation.runtime_public_extrinsic_derivation_semantic",
+        ),
+        packet_extrinsic_canonicalization_semantic=_load_text(
+            item["packet_extrinsic_canonicalization_semantic"],
+            "VisualRendererApiObservation.packet_extrinsic_canonicalization_semantic",
+        ),
+        runtime_underlying_pose_type=_load_text(
+            item["runtime_underlying_pose_type"],
+            "VisualRendererApiObservation.runtime_underlying_pose_type",
+        ),
+        runtime_underlying_position_type=_load_text(
+            item["runtime_underlying_position_type"],
+            "VisualRendererApiObservation.runtime_underlying_position_type",
+        ),
+        runtime_underlying_quaternion_type=_load_text(
+            item["runtime_underlying_quaternion_type"],
+            "VisualRendererApiObservation.runtime_underlying_quaternion_type",
+        ),
+        runtime_underlying_pose_dtype=_load_text(
+            item["runtime_underlying_pose_dtype"],
+            "VisualRendererApiObservation.runtime_underlying_pose_dtype",
+        ),
+        raw_underlying_position_shape=_load_text(
+            item["raw_underlying_position_shape"],
+            "VisualRendererApiObservation.raw_underlying_position_shape",
+        ),
+        raw_underlying_quaternion_shape=_load_text(
+            item["raw_underlying_quaternion_shape"],
+            "VisualRendererApiObservation.raw_underlying_quaternion_shape",
+        ),
+        runtime_underlying_pose_component_count=_load_integer(
+            item["runtime_underlying_pose_component_count"],
+            "VisualRendererApiObservation.runtime_underlying_pose_component_count",
+        ),
+        underlying_camera_pose_pre_post_bitwise=_load_boolean(
+            item["underlying_camera_pose_pre_post_bitwise"],
+            "VisualRendererApiObservation.underlying_camera_pose_pre_post_bitwise",
+        ),
+        underlying_camera_pose_verification_semantic=_load_text(
+            item["underlying_camera_pose_verification_semantic"],
+            "VisualRendererApiObservation.underlying_camera_pose_verification_semantic",
         ),
     )
 
@@ -1623,10 +1790,26 @@ def _calibration_stable(
     )
     return all(
         left.camera_configuration_digest == right.camera_configuration_digest
-        and np.array_equal(left.intrinsics, right.intrinsics)
-        and np.array_equal(left.extrinsics, right.extrinsics)
+        and _calibration_array_bits_equal(left.intrinsics, right.intrinsics)
+        and _calibration_array_bits_equal(left.extrinsics, right.extrinsics)
+        and _calibration_array_bits_equal(
+            left.runtime_extrinsics, right.runtime_extrinsics
+        )
+        and left.runtime_extrinsics_digest == right.runtime_extrinsics_digest
+        and left.expected_runtime_extrinsics_digest
+        == right.expected_runtime_extrinsics_digest
         for comparison in comparisons
         for left, right in zip(baseline, comparison, strict=True)
+    )
+
+
+def _calibration_array_bits_equal(left: NDArray[Any], right: NDArray[Any]) -> bool:
+    """Return exact calibration equality including dtype and signed-zero bits."""
+
+    return (
+        left.shape == right.shape
+        and left.dtype == right.dtype
+        and left.tobytes(order="C") == right.tobytes(order="C")
     )
 
 

@@ -93,10 +93,14 @@ tampering, and orphan files are rejected.
 The packet also content-binds the observed 38-component verifier comparison,
 its exact zero error, the elapsed-step values before and after rendering, and a
 successful environment close. Runtime intrinsics and extrinsics dtypes are
-observed by the compatibility probe and bound into its identity; calibration is
-then compared exactly after casting the frozen planned matrices to those single
-declared dtypes. Validation never searches across several dtypes or relaxes the
-calibration comparison dynamically.
+observed by the compatibility probe and bound into its identity. For every
+camera, the raw public runtime extrinsics are compared bitwise with an
+independently derived expected matrix on the same device. The reviewed
+compatibility report binds the ordered three-camera raw/expected digest
+inventory. `VisualViewRecordV1` schema 1.1 persists both digests, requires them
+to match exactly, and includes them in the packet content identity. Validation
+never searches across several dtypes or relaxes the calibration comparison
+dynamically.
 
 Images are stored once per anchor/domain/view. Candidate records reference the
 three packets assigned to their anchor without copying image or action arrays.

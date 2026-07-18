@@ -10,6 +10,7 @@ from latentguard.vision_data import (
     MILD_CAMERA_DOMAIN_ID,
     MILD_LIGHTING_DOMAIN_ID,
     PICKCUBE_CAMERA_IDS,
+    PICKCUBE_MULTIVIEW_RIG_SEMANTIC_VERSION,
     RENDER_SEED_DERIVATION,
     STRONG_CAMERA_DOMAIN_ID,
     STRONG_LIGHTING_DOMAIN_ID,
@@ -23,6 +24,7 @@ from latentguard.vision_data import (
     assigned_render_domain_ids,
     load_camera_rig_configuration,
     load_render_domain_configuration,
+    opencv_world_to_camera_extrinsics,
 )
 from latentguard.vision_data.configuration import load_strict_json_mapping
 
@@ -48,6 +50,15 @@ def test_checked_in_visual_configuration_is_strict_and_complete() -> None:
     domains = load_render_domain_configuration(_CONFIG_ROOT / "render-domains-v1.json")
 
     assert tuple(camera.camera_id for camera in rig.cameras) == PICKCUBE_CAMERA_IDS
+    assert rig.semantic_version == PICKCUBE_MULTIVIEW_RIG_SEMANTIC_VERSION == "2.0.0"
+    assert all(
+        camera.extrinsics
+        == opencv_world_to_camera_extrinsics(
+            camera.world_pose.position,
+            camera.world_pose.quaternion_wxyz,
+        )
+        for camera in rig.cameras
+    )
     assert all((camera.width, camera.height) == (224, 224) for camera in rig.cameras)
     assert tuple(domain.domain_id for domain in domains.domains) == (
         CANONICAL_DOMAIN_ID,
@@ -58,6 +69,48 @@ def test_checked_in_visual_configuration_is_strict_and_complete() -> None:
     )
     assert rig.content_digest.startswith("sha256:")
     assert domains.content_digest.startswith("sha256:")
+
+
+def test_opencv_extrinsics_use_the_fixed_ros_camera_axis_conversion() -> None:
+    assert opencv_world_to_camera_extrinsics(
+        (1.0, 2.0, 3.0),
+        (1.0, 0.0, 0.0, 0.0),
+    ) == (
+        (0.0, -1.0, 0.0, 2.0),
+        (0.0, 0.0, -1.0, 3.0),
+        (1.0, 0.0, 0.0, -1.0),
+        (0.0, 0.0, 0.0, 1.0),
+    )
+    assert opencv_world_to_camera_extrinsics(
+        (1.0, 2.0, 3.0),
+        (0.0, 0.0, 0.0, 1.0),
+    ) == (
+        (0.0, 1.0, 0.0, -2.0),
+        (0.0, 0.0, -1.0, 3.0),
+        (-1.0, 0.0, 0.0, 1.0),
+        (0.0, 0.0, 0.0, 1.0),
+    )
+
+
+def test_configuration_rejects_extrinsics_not_exactly_derived_from_pose() -> None:
+    changed = _rig_mapping()
+    cameras = changed["cameras"]
+    assert isinstance(cameras, list) and isinstance(cameras[0], dict)
+    extrinsics = cameras[0]["extrinsics"]
+    assert isinstance(extrinsics, list) and isinstance(extrinsics[0], list)
+    extrinsics[0][0] = float(extrinsics[0][0]) + 1e-12
+    with pytest.raises(VisionDataValidationError, match="exactly derive"):
+        PickCubeMultiViewRigV1.from_mapping(changed)
+
+    signed_zero = _rig_mapping()
+    cameras = signed_zero["cameras"]
+    assert isinstance(cameras, list) and isinstance(cameras[0], dict)
+    extrinsics = cameras[0]["extrinsics"]
+    assert isinstance(extrinsics, list) and isinstance(extrinsics[3], list)
+    assert extrinsics[3][0] == 0.0
+    extrinsics[3][0] = -0.0
+    with pytest.raises(VisionDataValidationError, match="exactly derive"):
+        PickCubeMultiViewRigV1.from_mapping(signed_zero)
 
 
 def test_configuration_rejects_unknown_and_duplicate_fields(tmp_path: Path) -> None:

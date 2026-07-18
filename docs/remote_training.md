@@ -323,9 +323,12 @@ camera/domain digests, available disk, renderer initialization, and one complete
 packet. An unresolved preflight gate prevents the long run.
 
 The probe report records the exact source archive/episode/state digests and the
-single observed intrinsics/extrinsics dtypes. Subsequent validation uses those
-facts as reviewed trust roots; it does not accept a coherently rewritten render
-manifest or search across alternate calibration dtypes.
+single observed intrinsics/extrinsics dtypes. It also records the ordered
+three-camera inventory of raw public runtime extrinsics digests and independently
+derived expected extrinsics digests, with exact equality required for every
+camera. Subsequent validation uses those facts as reviewed trust roots; it does
+not accept a coherently rewritten render manifest or search across alternate
+calibration dtypes.
 
 An initialized environment may be reused inside one rendering worker, but every
 packet independently performs reset with its bound seed, exact anchor-state

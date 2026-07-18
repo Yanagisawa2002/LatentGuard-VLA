@@ -93,9 +93,23 @@ present a changed identity under an old name.
 - Repeated and fresh-environment rendering must first pass byte equality. Pixel
   drift is a hard discovery blocker pending a narrow reviewed rule.
 - The probe report content-binds the exact archive, episode, trajectory, reset
-  seed, state index, and state/verifier digests used for discovery. Calibration
-  comparison uses only the observed intrinsics/extrinsics dtypes recorded in
-  that report; no dynamic dtype or numeric fallback is allowed.
+  seed, state index, and state/verifier digests used for discovery. Frozen
+  camera extrinsics are project-owned ideal OpenCV world-to-camera matrices
+  exactly derived from each declared world pose with the versioned fixed
+  ROS-camera-to-OpenCV axis conversion. Runtime verification separately
+  requires the raw float32 CUDA world pose to match the planned pose bit for
+  bit, independently derives the expected public `[1,3,4]` extrinsics from a
+  new plan-bound ManiSkill Pose on the same device, and compares all 12 public
+  components bit for bit before and after capture. It also directly reads the
+  uncached underlying SAPIEN RenderCameraComponent local position and
+  quaternion, requires all seven native float32 NumPy components to match the
+  unmounted world-camera plan bit for bit, and repeats that direct check after
+  capture so wrapper caches cannot hide drift. Repeated and fresh-session raw
+  calibration remains exact. Packets store the content-bound ideal matrix cast
+  to the reviewed runtime dtype, not the independently rounded public CUDA
+  matrix. These semantics and observed dtype, device class, shapes, and
+  component counts are bound into the visual compatibility identity; no
+  dynamic tolerance or numeric fallback is allowed.
 - Every packet content-binds the exact 38-component verifier result, unchanged
   elapsed-step evidence, successful environment close, and complete per-view
   physical-state audit needed to reconstruct compact integrity reports.
@@ -332,20 +346,59 @@ The final completion report records observed facts only and must state:
   batched render-system initialization, the required order is regression-tested,
   and the complete local validation, commit, push, and exact synchronization
   gates pass again.
+- Phase A attempt 4 used run ID
+  `20260718T081400Z_m4a-phase-a-discovery_55d02cb_seed271828` from clean pushed
+  SHA `55d02cb8614ec75365e6fa629035e61dd5479021`. It passed shader selection,
+  three camera-group initialization, lighting order, and the first image
+  capture, then failed after 30 seconds at the first camera-calibration gate.
+  No formal output root, packet, or image was published.
+- The checked-in matrices represented the prior ROS/SAPIEN camera-coordinate
+  inverse pose and omitted ManiSkill 3.0.1's fixed public OpenCV axis transform.
+  In addition, directly comparing a CPU ideal matrix with the public CUDA
+  float32 matrix is not a valid exact contract for shifted camera domains:
+  independent runtime rounding produces finite differences up to approximately
+  `2.98e-7` even when the runtime pose is exact. This is a comparison-contract
+  defect, not authorization for a tolerance.
+- The fourth raw log and wrapper status were retrieved into ignored temporary
+  storage and content-bound by the fourth sanitized compact failure summary.
+  No training or feature extraction began, and the GPU returned to zero
+  allocated memory. The server remains online under the user's standing
+  instruction.
+- This material defect authorizes one new Phase A run only after the local
+  configuration explicitly binds ideal OpenCV matrices, the runtime gate
+  verifies the plan-cast pose and independently re-derives the public matrix on
+  the same device bit for bit before and after capture, directly verifies the
+  uncached underlying camera component after every capture/calibration/image
+  call, binds each raw matrix to its independently expected digest, and rejects
+  canonical drift before packet serialization retains the exact plan-cast
+  calibration. The complete local validation, commit, push, and exact
+  synchronization gates must also pass.
 
 ## Current status
 
-The cost-aware implementation, shader-object fix, and version-bound GPU
-camera-group initialization were pushed and synchronized exactly. The third
-bounded Phase A command proved all three groups initialize, then exposed the
-SAPIEN ordering defect recorded above. A narrow local candidate now applies
-render-only lighting after all cameras are added but before the first
-`scene.update_render` creates the batched render system. The CPU fake enforces
-the same mutation prohibition and exact event order. Targeted tests, Ruff, and
-mypy pass. Complete local validation also passed with 1,429 tests and the three
-expected Windows directory-symlink privilege skips, full-repository Ruff,
-format, mypy, five-command help smoke, and diff checks; publication is pending.
-The paid server remains online. No trusted visual probe, raw visual dataset,
-model training, feature extraction, VLM, LangMani, video, or M4A smoke/full
-render has completed. The next gates are commit/push, exact remote
-synchronization, and one material-reason Phase A rerun.
+The cost-aware implementation and the first three narrow renderer fixes were
+pushed and synchronized exactly through SHA
+`55d02cb8614ec75365e6fa629035e61dd5479021`. The fourth bounded Phase A command
+passed those fixed boundaries and exposed the strict calibration-contract
+defect recorded above. The current local candidate introduces no calibration
+or pixel tolerance: it fixes the frozen OpenCV convention, verifies the raw
+runtime pose and independently derived public matrix bit for bit before and
+after capture, directly checks the uncached underlying SAPIEN camera pose after
+all renderer calls, preserves evidence-bound raw matrices for repeated/fresh
+stability, and permits packets to store only an exactly verified canonical
+plan-cast matrix. The compatibility identity binds the normalized ordered
+three-camera raw/expected digest inventory, and `VisualViewRecordV1` schema 1.1
+persists both exact digests in packet content identity. Component counts require
+strict integers; dtype, shape, device, every numeric bit, signed-zero bits, and
+lowercase SHA-256 syntax fail closed. Regression tests cover pose, axis,
+public-matrix, underlying-cache, post-image, same-device, pre/post-capture,
+fresh-session, configuration, evidence binding, strict report reload, one-shot
+inventory normalization, and packet canonicalization drift. Final local
+validation passed with `1462 passed, 3 skipped`; `ruff check .`, `ruff format
+--check .`, `mypy src`, all five M4A CLI help paths, and `git diff --check` also
+passed. The three skips are the existing Windows symbolic-link privilege cases.
+The paid server remains online. No
+trusted visual probe, raw visual dataset, model training, feature extraction,
+VLM, LangMani, video, or M4A smoke/full render has completed. The next gates are
+final review, commit/push, exact remote synchronization, and one
+material-reason Phase A rerun.

@@ -278,6 +278,12 @@ def _prepared(job: VisualPacketJobV1) -> _Prepared:
                     for row in camera.extrinsics.tolist()
                 ),
                 extrinsics_dtype=camera.extrinsics.dtype.name,
+                runtime_extrinsics_digest=_digest(
+                    f"runtime-extrinsics-{camera.camera_id}"
+                ),
+                expected_runtime_extrinsics_digest=_digest(
+                    f"runtime-extrinsics-{camera.camera_id}"
+                ),
                 camera_configuration_digest=(camera.camera_configuration_digest),
                 state_before_render_digest=runtime_state_digest,
                 state_after_render_digest=runtime_state_digest,
