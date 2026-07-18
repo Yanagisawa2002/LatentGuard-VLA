@@ -287,17 +287,56 @@ datasets, evidence payloads, and checkpoints remain outside Git.
 
 ## M4A single-GPU visual rendering
 
-M4A is rendering and data validation, not training. A remote run uses exactly
-one RTX 5090 and begins only from a clean pushed M4A revision. Before full
-rendering it validates the persistent M3A/M3C source artifacts, runs the visual
-compatibility probe, proves repeated and fresh-environment pixel equality, and
-passes one-state plus six-trajectory smoke gates. A failed gate stops the
-sequence.
+M4A is rendering and data validation, not training. It does not extract a
+backbone, frozen embeddings, or teacher logits, and it never starts M4B. Remote
+execution uses exactly one RTX 5090 and only clean pushed revisions. Accepted
+M3A/M3C states, anchors, candidates, evidence, outcomes, split identities,
+blind manifest, and candidate-pool bindings are reused; M4A does not regenerate
+their physical outcomes.
+
+Paid execution has exactly three phases unless a newly discovered material
+defect stops a phase:
+
+1. **Phase A -- discovery.** Run one bounded visual compatibility probe on one
+   archived state from one clean pushed SHA. It covers all three cameras and
+   required render APIs, three repeated renders in one initialized environment,
+   two renders from separately initialized fresh environments, and complete
+   state/verifier/task-integrity checks. Once these samples establish the pixel
+   result, do not repeat the equivalent probe. Pixel nondeterminism preserves a
+   compact diagnostic and stops execution; it does not trigger remote shader,
+   driver, tolerance, camera-rig, or rendering-workaround searches.
+2. **Phase B -- smoke.** After the visual configuration is frozen locally and
+   pushed, render exactly six M3A trajectories and six disjoint M3C
+   trajectories across all required domains and all three views. Run
+   transactional publication, independent reload, cross-dataset leakage,
+   resume, and physical-integrity validation once. A rerun requires a material
+   implementation/configuration defect fixed and validated locally, a pushed
+   fix, an exact-SHA remote synchronization, and a new run ID.
+3. **Phase C -- full.** After smoke acceptance, run exactly one full M3A
+   development render, one full M3C external render, one independent combined
+   validation, and one strict zero-work resume validation. Do not produce
+   comparison full datasets or rerender for cosmetic preference.
+
+Before each long command, fail-fast preflight validates source existence and
+digests, output-root emptiness or resumability, clean exact Git SHA,
+camera/domain digests, available disk, renderer initialization, and one complete
+packet. An unresolved preflight gate prevents the long run.
 
 The probe report records the exact source archive/episode/state digests and the
 single observed intrinsics/extrinsics dtypes. Subsequent validation uses those
 facts as reviewed trust roots; it does not accept a coherently rewritten render
 manifest or search across alternate calibration dtypes.
+
+An initialized environment may be reused inside one rendering worker, but every
+packet independently performs reset with its bound seed, exact anchor-state
+restoration, complete-state verification, restored-boundary verifier extraction,
+one-domain configuration, all-three-camera rendering without a physics step,
+and complete post-render state/verifier/task verification. Cross-packet drift
+fails closed. If safe reuse fails the smoke integrity gate, later work uses a
+fresh environment per packet without relaxing the integrity contract. One
+anchor/domain produces one three-view packet referenced by all applicable
+candidate samples; rendering never duplicates the packet per candidate or adds
+extra random variants.
 
 The probe publishes an immutable output directory containing
 `visual-compatibility-report.json` and `run-manifest.json` as one staged
@@ -324,10 +363,32 @@ image-inventory digest, and fixed nearest-rank physical/verifier state error
 statistics, but never the raw render root. Only a full-target validation may
 publish this acceptance inventory; partial validation remains mechanics-only.
 
+Compact operational reports also record environment initialization count,
+packet count, images rendered, average and fixed-percentile packet render time,
+total rendering time, validation time, resume-reused packet count, peak GPU
+memory when available, and reliably measured paid-server-active execution
+duration. These operational values do not enter semantic dataset identity.
+
+Before every implementation or result push, the complete required suite runs
+locally. The paid server normally runs only exact-SHA/clean-tree checks,
+dependency and renderer probes, relevant visual integration and ManiSkill
+PickCube tests, bounded rendering, dataset reload/validation, and resume
+validation. The complete Linux suite is repeated remotely only for the first
+exact Linux revision, a material platform-integration change, a defect that may
+affect general identity/serialization/replay contracts, or a final accepted
+revision that has never passed it. Unchanged CPU-only tests are not repeatedly
+run on the paid GPU.
+
 The rig and all five rendering domains are edited only locally and frozen by a
 new pushed revision before full M3A generation. M3C external rendering starts
 only after that freeze and cannot tune rendering from external images or
 outcomes. Remote outputs record runtime/config/source identities outside the
 checkout. Only compact sanitized reports return to Git; NPY/PNG images, state
-archives, action arrays, datasets, caches, and videos remain remote. After
-final report synchronization the paid server is shut down.
+archives, action arrays, datasets, caches, and videos remain remote.
+
+On a blocker, flush transactional state, preserve and retrieve a compact
+sanitized diagnostic, make no remote source change, and shut down the paid
+server. After successful completion, validate and package compact reports,
+retrieve and verify them locally, commit and push them locally, confirm exact
+SHA equality, and shut down the paid server immediately rather than leaving it
+running for review.

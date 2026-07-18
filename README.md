@@ -28,8 +28,12 @@ restored, pre-action boundary. Images are lossless NPY files outside Git;
 rendering advances no physics and is rejected unless the complete state,
 38-component verifier state, and restored task projection remain valid. M3A
 visual data preserves the 48/6/6 split, while M3C visual data is external
-evaluation-only. M4A performs no model training or VLM/LangMani work. See
-[the visual data contract](docs/visual_action_verifier_data.md).
+evaluation-only. M4A performs no model training, encoder/teacher feature
+extraction, or VLM/LangMani work and does not begin M4B automatically. Paid
+execution is limited to one bounded discovery, one smoke, and one full-render
+sequence with exact resume and integrity validation. See
+[the visual data contract](docs/visual_action_verifier_data.md) and
+[the M4A execution plan](docs/plans/m4a-multiview-visual-dataset.md).
 
 The current M2C checkout has passed a trusted real-runtime probe and accepted
 six official ManiSkill source trajectories with six independent successful

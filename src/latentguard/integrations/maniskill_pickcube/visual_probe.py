@@ -8,7 +8,7 @@ import math
 import os
 import tempfile
 from collections.abc import Mapping, Sequence
-from dataclasses import dataclass, field, replace
+from dataclasses import dataclass, field
 from pathlib import Path
 from typing import NoReturn, Protocol, cast, runtime_checkable
 
@@ -41,9 +41,20 @@ from .visual_rendering import (
 )
 from .visual_session import PickCubeVisualSession, PickCubeVisualSessionResult
 
-VISUAL_COMPATIBILITY_REPORT_SCHEMA_VERSION = "1.0"
+VISUAL_COMPATIBILITY_REPORT_SCHEMA_VERSION = "2.0"
 VISUAL_PROBE_SOURCE_SCHEMA_VERSION = "1.0"
 VISUAL_RENDER_OUTPUT_SHAPE = (224, 224, 3)
+VISUAL_PROBE_SAME_ENVIRONMENT_RENDER_COUNT = 3
+VISUAL_PROBE_FRESH_ENVIRONMENT_RENDER_COUNT = 2
+VISUAL_PROBE_ENVIRONMENT_INITIALIZATION_COUNT = 3
+_REPEATED_COMPARISON_IDS = (
+    "same_environment_render_2_vs_1",
+    "same_environment_render_3_vs_1",
+)
+_FRESH_COMPARISON_IDS = (
+    "fresh_environment_1_render_1_vs_same_environment_render_1",
+    "fresh_environment_2_render_1_vs_same_environment_render_1",
+)
 
 
 class ManiSkillVisualProbeError(RuntimeError):
@@ -159,10 +170,52 @@ class CameraPixelDifference:
 
 
 @dataclass(frozen=True, slots=True)
+class PixelComparisonSample:
+    """One exact three-view comparison against the probe baseline render."""
+
+    comparison_id: str
+    views: tuple[CameraPixelDifference, ...]
+    changed_pixel_count: int
+    maximum_per_channel_absolute_difference: int
+    mean_absolute_pixel_difference: float
+    exact_match: bool
+
+    def __post_init__(self) -> None:
+        """Require one complete, internally consistent three-view comparison."""
+        _load_text(self.comparison_id, "pixel comparison sample ID")
+        views = tuple(self.views)
+        _require_pixel_aggregate(
+            views=views,
+            changed_pixel_count=self.changed_pixel_count,
+            maximum_per_channel_absolute_difference=(
+                self.maximum_per_channel_absolute_difference
+            ),
+            mean_absolute_pixel_difference=self.mean_absolute_pixel_difference,
+            exact_match=self.exact_match,
+            context="pixel comparison sample",
+        )
+        object.__setattr__(self, "views", views)
+
+    def to_dict(self) -> dict[str, object]:
+        """Return canonical JSON-native sample evidence."""
+        return {
+            "changed_pixel_count": self.changed_pixel_count,
+            "comparison_id": self.comparison_id,
+            "exact_match": self.exact_match,
+            "maximum_per_channel_absolute_difference": (
+                self.maximum_per_channel_absolute_difference
+            ),
+            "mean_absolute_pixel_difference": self.mean_absolute_pixel_difference,
+            "views": [view.to_dict() for view in self.views],
+        }
+
+
+@dataclass(frozen=True, slots=True)
 class PixelComparisonReport:
-    """All-view exact comparison for repeated or fresh-session rendering."""
+    """All bounded samples and their worst-case three-view aggregate."""
 
     comparison: str
+    samples: tuple[PixelComparisonSample, ...]
     views: tuple[CameraPixelDifference, ...]
     changed_pixel_count: int
     maximum_per_channel_absolute_difference: int
@@ -171,34 +224,36 @@ class PixelComparisonReport:
     spatially_stable: bool
 
     def __post_init__(self) -> None:
-        """Require a complete ordered three-view aggregate."""
-        expected_ids = ("front_oblique", "overhead", "side_oblique")
-        views = tuple(self.views)
-        if tuple(view.camera_id for view in views) != expected_ids:
-            raise ManiSkillVisualProbeError(
-                "pixel report must contain the ordered three-view rig"
-            )
-        expected_changed = sum(view.changed_pixel_count for view in views)
-        expected_maximum = max(
-            view.maximum_per_channel_absolute_difference for view in views
-        )
-        expected_mean = sum(
-            view.mean_absolute_pixel_difference for view in views
-        ) / len(views)
-        expected_exact = all(view.exact_match for view in views)
-        if (
-            self.changed_pixel_count != expected_changed
-            or self.maximum_per_channel_absolute_difference != expected_maximum
-            or not math.isclose(
-                self.mean_absolute_pixel_difference,
-                expected_mean,
-                rel_tol=0.0,
-                abs_tol=1e-15,
-            )
-            or self.exact_match != expected_exact
-            or type(self.spatially_stable) is not bool
+        """Require every sample plus a consistent worst-case aggregate."""
+        _load_text(self.comparison, "pixel comparison group")
+        samples = tuple(self.samples)
+        if not samples or len({sample.comparison_id for sample in samples}) != len(
+            samples
         ):
-            raise ManiSkillVisualProbeError("pixel aggregate is inconsistent")
+            raise ManiSkillVisualProbeError(
+                "pixel report requires unique non-empty comparison samples"
+            )
+        views = tuple(self.views)
+        expected_views = _worst_case_views(samples)
+        if views != expected_views:
+            raise ManiSkillVisualProbeError(
+                "pixel report views differ from the complete sample inventory"
+            )
+        _require_pixel_aggregate(
+            views=views,
+            changed_pixel_count=self.changed_pixel_count,
+            maximum_per_channel_absolute_difference=(
+                self.maximum_per_channel_absolute_difference
+            ),
+            mean_absolute_pixel_difference=self.mean_absolute_pixel_difference,
+            exact_match=self.exact_match,
+            context="pixel report",
+        )
+        if type(self.spatially_stable) is not bool:
+            raise ManiSkillVisualProbeError(
+                "pixel report spatial stability must be boolean"
+            )
+        object.__setattr__(self, "samples", samples)
         object.__setattr__(self, "views", views)
 
     def to_dict(self) -> dict[str, object]:
@@ -211,9 +266,77 @@ class PixelComparisonReport:
                 self.maximum_per_channel_absolute_difference
             ),
             "mean_absolute_pixel_difference": self.mean_absolute_pixel_difference,
+            "samples": [sample.to_dict() for sample in self.samples],
             "spatially_stable": self.spatially_stable,
             "views": [view.to_dict() for view in self.views],
         }
+
+
+def _require_pixel_aggregate(
+    *,
+    views: tuple[CameraPixelDifference, ...],
+    changed_pixel_count: int,
+    maximum_per_channel_absolute_difference: int,
+    mean_absolute_pixel_difference: float,
+    exact_match: bool,
+    context: str,
+) -> None:
+    """Validate one ordered three-view aggregate without repairing values."""
+    expected_ids = ("front_oblique", "overhead", "side_oblique")
+    if tuple(view.camera_id for view in views) != expected_ids:
+        raise ManiSkillVisualProbeError(
+            f"{context} must contain the ordered three-view rig"
+        )
+    expected_changed = sum(view.changed_pixel_count for view in views)
+    expected_maximum = max(
+        view.maximum_per_channel_absolute_difference for view in views
+    )
+    expected_mean = sum(view.mean_absolute_pixel_difference for view in views) / len(
+        views
+    )
+    expected_exact = all(view.exact_match for view in views)
+    if (
+        changed_pixel_count != expected_changed
+        or maximum_per_channel_absolute_difference != expected_maximum
+        or not math.isclose(
+            mean_absolute_pixel_difference,
+            expected_mean,
+            rel_tol=0.0,
+            abs_tol=1e-15,
+        )
+        or exact_match != expected_exact
+    ):
+        raise ManiSkillVisualProbeError(f"{context} aggregate is inconsistent")
+
+
+def _worst_case_views(
+    samples: tuple[PixelComparisonSample, ...],
+) -> tuple[CameraPixelDifference, ...]:
+    """Return deterministic per-camera maxima while retaining every raw sample."""
+    expected_ids = ("front_oblique", "overhead", "side_oblique")
+    if any(
+        tuple(view.camera_id for view in sample.views) != expected_ids
+        for sample in samples
+    ):
+        raise ManiSkillVisualProbeError(
+            "pixel comparison samples must use the same ordered three-view rig"
+        )
+    result: list[CameraPixelDifference] = []
+    for camera_index, camera_id in enumerate(expected_ids):
+        values = tuple(sample.views[camera_index] for sample in samples)
+        changed = max(value.changed_pixel_count for value in values)
+        maximum = max(value.maximum_per_channel_absolute_difference for value in values)
+        mean = max(value.mean_absolute_pixel_difference for value in values)
+        result.append(
+            CameraPixelDifference(
+                camera_id=camera_id,
+                changed_pixel_count=changed,
+                maximum_per_channel_absolute_difference=maximum,
+                mean_absolute_pixel_difference=mean,
+                exact_match=all(value.exact_match for value in values),
+            )
+        )
+    return tuple(result)
 
 
 @dataclass(frozen=True, slots=True)
@@ -243,6 +366,11 @@ class VisualCompatibilityReport:
     fresh_environment_render: PixelComparisonReport
     camera_calibration_stable: bool
     environment_close_passed: bool
+    same_environment_render_count: int = VISUAL_PROBE_SAME_ENVIRONMENT_RENDER_COUNT
+    fresh_environment_render_count: int = VISUAL_PROBE_FRESH_ENVIRONMENT_RENDER_COUNT
+    environment_initialization_count: int = (
+        VISUAL_PROBE_ENVIRONMENT_INITIALIZATION_COUNT
+    )
     renderer_semantic_version: str = VISUAL_RENDERER_SEMANTIC_VERSION
     schema_version: str = VISUAL_COMPATIBILITY_REPORT_SCHEMA_VERSION
     visual_compatibility_identity: str = field(init=False)
@@ -314,6 +442,47 @@ class VisualCompatibilityReport:
                 raise ManiSkillVisualProbeError(
                     f"visual probe {field_name} must be boolean"
                 )
+        expected_counts = {
+            "same_environment_render_count": (
+                VISUAL_PROBE_SAME_ENVIRONMENT_RENDER_COUNT
+            ),
+            "fresh_environment_render_count": (
+                VISUAL_PROBE_FRESH_ENVIRONMENT_RENDER_COUNT
+            ),
+            "environment_initialization_count": (
+                VISUAL_PROBE_ENVIRONMENT_INITIALIZATION_COUNT
+            ),
+        }
+        if any(
+            type(getattr(self, name)) is not int or getattr(self, name) != expected
+            for name, expected in expected_counts.items()
+        ):
+            raise ManiSkillVisualProbeError(
+                "visual probe must bind exactly three same-environment renders, "
+                "two fresh-environment renders, and three environment initializations"
+            )
+        if (
+            len(self.repeated_render.samples)
+            != VISUAL_PROBE_SAME_ENVIRONMENT_RENDER_COUNT - 1
+            or len(self.fresh_environment_render.samples)
+            != VISUAL_PROBE_FRESH_ENVIRONMENT_RENDER_COUNT
+        ):
+            raise ManiSkillVisualProbeError(
+                "visual probe pixel inventory does not cover every bounded render"
+            )
+        if (
+            self.repeated_render.comparison != "repeated_render"
+            or tuple(sample.comparison_id for sample in self.repeated_render.samples)
+            != _REPEATED_COMPARISON_IDS
+            or self.fresh_environment_render.comparison != "fresh_environment_render"
+            or tuple(
+                sample.comparison_id for sample in self.fresh_environment_render.samples
+            )
+            != _FRESH_COMPARISON_IDS
+        ):
+            raise ManiSkillVisualProbeError(
+                "visual probe comparison inventory differs from the bounded 3+2 plan"
+            )
         if self.schema_version != VISUAL_COMPATIBILITY_REPORT_SCHEMA_VERSION:
             raise ManiSkillVisualProbeError(
                 "visual compatibility report schema version is unsupported"
@@ -330,6 +499,16 @@ class VisualCompatibilityReport:
             not self.state_changed_by_rendering
             and not self.task_projection_changed_by_rendering
             and not self.elapsed_simulation_step_changed
+            and self.same_environment_render_count
+            == VISUAL_PROBE_SAME_ENVIRONMENT_RENDER_COUNT
+            and self.fresh_environment_render_count
+            == VISUAL_PROBE_FRESH_ENVIRONMENT_RENDER_COUNT
+            and self.environment_initialization_count
+            == VISUAL_PROBE_ENVIRONMENT_INITIALIZATION_COUNT
+            and len(self.repeated_render.samples)
+            == VISUAL_PROBE_SAME_ENVIRONMENT_RENDER_COUNT - 1
+            and len(self.fresh_environment_render.samples)
+            == VISUAL_PROBE_FRESH_ENVIRONMENT_RENDER_COUNT
             and self.repeated_render.exact_match
             and self.fresh_environment_render.exact_match
             and self.camera_calibration_stable
@@ -359,8 +538,10 @@ class VisualCompatibilityReport:
             "camera_rig_digest": self.camera_rig_digest,
             "compared_state_component_count": self.compared_state_component_count,
             "elapsed_simulation_step_changed": self.elapsed_simulation_step_changed,
+            "environment_initialization_count": self.environment_initialization_count,
             "environment_close_passed": self.environment_close_passed,
             "fresh_environment_render": self.fresh_environment_render.to_dict(),
+            "fresh_environment_render_count": self.fresh_environment_render_count,
             "cuda_runtime_version": self.cuda_runtime_version,
             "gpu_capability": self.gpu_capability,
             "gpu_model": self.gpu_model,
@@ -375,6 +556,7 @@ class VisualCompatibilityReport:
             "renderer_semantic_version": self.renderer_semantic_version,
             "repeated_render": self.repeated_render.to_dict(),
             "sapien_version": self.sapien_version,
+            "same_environment_render_count": self.same_environment_render_count,
             "schema_version": self.schema_version,
             "state_changed_by_rendering": self.state_changed_by_rendering,
             "state_comparison_semantic": self.state_comparison_semantic,
@@ -405,14 +587,14 @@ class PickCubeVisualProbeRuntime(Protocol):
         source_episode: PickCubeStateIndexedEpisodeV1,
         source_state: PickCubeIndexedStateV1,
         render_plan: PickCubeVisualRenderPlan,
-    ) -> tuple[PickCubeVisualSessionResult, PickCubeVisualSessionResult]:
-        """Return one repeated-render session and one independent fresh session."""
+    ) -> tuple[PickCubeVisualSessionResult, tuple[PickCubeVisualSessionResult, ...]]:
+        """Return one repeated-render session and two independent fresh sessions."""
         ...
 
 
 @dataclass(frozen=True, slots=True)
 class SessionPickCubeVisualProbeRuntime:
-    """Production collector backed by two independently created visual sessions."""
+    """Production collector backed by three independently created environments."""
 
     session: PickCubeVisualSession
 
@@ -422,19 +604,22 @@ class SessionPickCubeVisualProbeRuntime:
         source_episode: PickCubeStateIndexedEpisodeV1,
         source_state: PickCubeIndexedStateV1,
         render_plan: PickCubeVisualRenderPlan,
-    ) -> tuple[PickCubeVisualSessionResult, PickCubeVisualSessionResult]:
-        """Render twice in the first environment and once in a fresh environment."""
+    ) -> tuple[PickCubeVisualSessionResult, tuple[PickCubeVisualSessionResult, ...]]:
+        """Render three times in one environment and once in each of two fresh ones."""
         repeated = self.session.render_state(
             source_episode=source_episode,
             source_state=source_state,
             render_plan=render_plan,
-            repeat_count=2,
+            repeat_count=VISUAL_PROBE_SAME_ENVIRONMENT_RENDER_COUNT,
         )
-        fresh = self.session.render_state(
-            source_episode=source_episode,
-            source_state=source_state,
-            render_plan=render_plan,
-            repeat_count=1,
+        fresh = tuple(
+            self.session.render_state(
+                source_episode=source_episode,
+                source_state=source_state,
+                render_plan=render_plan,
+                repeat_count=1,
+            )
+            for _ in range(VISUAL_PROBE_FRESH_ENVIRONMENT_RENDER_COUNT)
         )
         return repeated, fresh
 
@@ -526,19 +711,31 @@ def probe_maniskill_pickcube_visual(
         raise ManiSkillVisualProbeError(
             "probe archived state differs from the accepted PickCube compatibility"
         )
-    repeated, fresh = runtime.collect_sessions(
+    repeated, fresh_sessions = runtime.collect_sessions(
         source_episode=source_episode,
         source_state=source_state,
         render_plan=render_plan,
     )
     _require_session_result(
-        repeated, source_state=source_state, render_plan=render_plan, repeats=2
+        repeated,
+        source_state=source_state,
+        render_plan=render_plan,
+        repeats=VISUAL_PROBE_SAME_ENVIRONMENT_RENDER_COUNT,
     )
-    _require_session_result(
-        fresh, source_state=source_state, render_plan=render_plan, repeats=1
-    )
-    if dict(repeated.renderer_api.as_mapping()) != dict(
-        fresh.renderer_api.as_mapping()
+    fresh_sessions = tuple(fresh_sessions)
+    if len(fresh_sessions) != VISUAL_PROBE_FRESH_ENVIRONMENT_RENDER_COUNT:
+        raise ManiSkillVisualProbeError(
+            "visual probe requires exactly two independently initialized fresh sessions"
+        )
+    for fresh in fresh_sessions:
+        _require_session_result(
+            fresh, source_state=source_state, render_plan=render_plan, repeats=1
+        )
+    all_sessions = (repeated, *fresh_sessions)
+    if any(
+        dict(repeated.renderer_api.as_mapping())
+        != dict(session.renderer_api.as_mapping())
+        for session in fresh_sessions
     ):
         raise ManiSkillVisualProbeError(
             "fresh environment observed a different renderer API contract"
@@ -550,20 +747,44 @@ def probe_maniskill_pickcube_visual(
         raise ManiSkillVisualProbeError(
             "renderer observed a shader different from the frozen configuration"
         )
-    repeated_pixels, repeated_masks = _compare_view_sets(
+    baseline = repeated.render_repetitions[0]
+    repeated_comparisons = tuple(
+        _compare_view_sets(
+            comparison_id,
+            baseline,
+            observed,
+        )
+        for comparison_id, observed in zip(
+            _REPEATED_COMPARISON_IDS,
+            repeated.render_repetitions[1:],
+            strict=True,
+        )
+    )
+    fresh_comparisons = tuple(
+        _compare_view_sets(
+            comparison_id,
+            baseline,
+            fresh.render_repetitions[0],
+        )
+        for comparison_id, fresh in zip(
+            _FRESH_COMPARISON_IDS, fresh_sessions, strict=True
+        )
+    )
+    all_masks = tuple(
+        masks for _sample, masks in (*repeated_comparisons, *fresh_comparisons)
+    )
+    spatially_stable = _all_masks_equal(all_masks)
+    repeated_pixels = _aggregate_pixel_comparisons(
         "repeated_render",
-        repeated.render_repetitions[0],
-        repeated.render_repetitions[1],
+        tuple(sample for sample, _masks in repeated_comparisons),
+        spatially_stable=spatially_stable,
     )
-    fresh_pixels, fresh_masks = _compare_view_sets(
+    fresh_pixels = _aggregate_pixel_comparisons(
         "fresh_environment_render",
-        repeated.render_repetitions[0],
-        fresh.render_repetitions[0],
+        tuple(sample for sample, _masks in fresh_comparisons),
+        spatially_stable=spatially_stable,
     )
-    spatially_stable = _masks_equal(repeated_masks, fresh_masks)
-    repeated_pixels = replace(repeated_pixels, spatially_stable=spatially_stable)
-    fresh_pixels = replace(fresh_pixels, spatially_stable=spatially_stable)
-    calibration_stable = _calibration_stable(repeated, fresh)
+    calibration_stable = _calibration_stable(repeated, fresh_sessions)
     visual_report = VisualCompatibilityReport(
         pickcube_compatibility_identity=report.compatibility_identity,
         camera_rig_digest=camera_rig.rig_digest,
@@ -589,8 +810,13 @@ def probe_maniskill_pickcube_visual(
         repeated_render=repeated_pixels,
         fresh_environment_render=fresh_pixels,
         camera_calibration_stable=calibration_stable,
-        environment_close_passed=(
-            repeated.environment_close_passed and fresh.environment_close_passed
+        environment_close_passed=all(
+            session.environment_close_passed for session in all_sessions
+        ),
+        same_environment_render_count=VISUAL_PROBE_SAME_ENVIRONMENT_RENDER_COUNT,
+        fresh_environment_render_count=VISUAL_PROBE_FRESH_ENVIRONMENT_RENDER_COUNT,
+        environment_initialization_count=(
+            VISUAL_PROBE_ENVIRONMENT_INITIALIZATION_COUNT
         ),
     )
     if report_path is not None:
@@ -684,8 +910,10 @@ def load_visual_compatibility_report(
             "compared_state_component_count",
             "cuda_runtime_version",
             "elapsed_simulation_step_changed",
+            "environment_initialization_count",
             "environment_close_passed",
             "fresh_environment_render",
+            "fresh_environment_render_count",
             "gpu_capability",
             "gpu_model",
             "mani_skill_version",
@@ -696,6 +924,7 @@ def load_visual_compatibility_report(
             "renderer_api",
             "renderer_semantic_version",
             "repeated_render",
+            "same_environment_render_count",
             "sapien_version",
             "schema_version",
             "state_changed_by_rendering",
@@ -788,6 +1017,18 @@ def load_visual_compatibility_report(
         ),
         repeated_render=_decode_pixel_report(item["repeated_render"]),
         fresh_environment_render=_decode_pixel_report(item["fresh_environment_render"]),
+        same_environment_render_count=_load_integer(
+            item["same_environment_render_count"],
+            "VisualCompatibilityReport.same_environment_render_count",
+        ),
+        fresh_environment_render_count=_load_integer(
+            item["fresh_environment_render_count"],
+            "VisualCompatibilityReport.fresh_environment_render_count",
+        ),
+        environment_initialization_count=_load_integer(
+            item["environment_initialization_count"],
+            "VisualCompatibilityReport.environment_initialization_count",
+        ),
         camera_calibration_stable=_load_boolean(
             item["camera_calibration_stable"],
             "VisualCompatibilityReport.camera_calibration_stable",
@@ -1009,6 +1250,7 @@ def _decode_pixel_report(value: object) -> PixelComparisonReport:
             "exact_match",
             "maximum_per_channel_absolute_difference",
             "mean_absolute_pixel_difference",
+            "samples",
             "spatially_stable",
             "views",
         },
@@ -1018,8 +1260,13 @@ def _decode_pixel_report(value: object) -> PixelComparisonReport:
         _decode_camera_pixel_difference(view)
         for view in _load_sequence(item["views"], "PixelComparisonReport.views")
     )
+    samples = tuple(
+        _decode_pixel_sample(sample)
+        for sample in _load_sequence(item["samples"], "PixelComparisonReport.samples")
+    )
     return PixelComparisonReport(
         comparison=_load_text(item["comparison"], "PixelComparisonReport.comparison"),
+        samples=samples,
         views=views,
         changed_pixel_count=_load_integer(
             item["changed_pixel_count"], "PixelComparisonReport.changed_pixel_count"
@@ -1037,6 +1284,46 @@ def _decode_pixel_report(value: object) -> PixelComparisonReport:
         ),
         spatially_stable=_load_boolean(
             item["spatially_stable"], "PixelComparisonReport.spatially_stable"
+        ),
+    )
+
+
+def _decode_pixel_sample(value: object) -> PixelComparisonSample:
+    item = _load_mapping(value, "PixelComparisonSample")
+    _exact_fields(
+        item,
+        {
+            "changed_pixel_count",
+            "comparison_id",
+            "exact_match",
+            "maximum_per_channel_absolute_difference",
+            "mean_absolute_pixel_difference",
+            "views",
+        },
+        "PixelComparisonSample",
+    )
+    views = tuple(
+        _decode_camera_pixel_difference(view)
+        for view in _load_sequence(item["views"], "PixelComparisonSample.views")
+    )
+    return PixelComparisonSample(
+        comparison_id=_load_text(
+            item["comparison_id"], "PixelComparisonSample.comparison_id"
+        ),
+        views=views,
+        changed_pixel_count=_load_integer(
+            item["changed_pixel_count"], "PixelComparisonSample.changed_pixel_count"
+        ),
+        maximum_per_channel_absolute_difference=_load_integer(
+            item["maximum_per_channel_absolute_difference"],
+            "PixelComparisonSample.maximum_per_channel_absolute_difference",
+        ),
+        mean_absolute_pixel_difference=_load_float(
+            item["mean_absolute_pixel_difference"],
+            "PixelComparisonSample.mean_absolute_pixel_difference",
+        ),
+        exact_match=_load_boolean(
+            item["exact_match"], "PixelComparisonSample.exact_match"
         ),
     )
 
@@ -1205,7 +1492,7 @@ def _compare_view_sets(
     comparison: str,
     expected: tuple[RenderedVisualView, ...],
     observed: tuple[RenderedVisualView, ...],
-) -> tuple[PixelComparisonReport, tuple[NDArray[np.bool_], ...]]:
+) -> tuple[PixelComparisonSample, tuple[NDArray[np.bool_], ...]]:
     if tuple(view.camera_id for view in expected) != tuple(
         view.camera_id for view in observed
     ):
@@ -1233,8 +1520,8 @@ def _compare_view_sets(
         masks.append(np.array(mask, copy=True))
     views = tuple(evidence)
     return (
-        PixelComparisonReport(
-            comparison=comparison,
+        PixelComparisonSample(
+            comparison_id=comparison,
             views=views,
             changed_pixel_count=sum(view.changed_pixel_count for view in views),
             maximum_per_channel_absolute_difference=max(
@@ -1245,27 +1532,62 @@ def _compare_view_sets(
             )
             / len(views),
             exact_match=all(view.exact_match for view in views),
-            spatially_stable=False,
         ),
         tuple(masks),
     )
 
 
-def _masks_equal(
-    left: tuple[NDArray[np.bool_], ...],
-    right: tuple[NDArray[np.bool_], ...],
+def _aggregate_pixel_comparisons(
+    comparison: str,
+    samples: tuple[PixelComparisonSample, ...],
+    *,
+    spatially_stable: bool,
+) -> PixelComparisonReport:
+    """Retain every comparison and publish deterministic per-view worst cases."""
+    views = _worst_case_views(samples)
+    return PixelComparisonReport(
+        comparison=comparison,
+        samples=samples,
+        views=views,
+        changed_pixel_count=sum(view.changed_pixel_count for view in views),
+        maximum_per_channel_absolute_difference=max(
+            view.maximum_per_channel_absolute_difference for view in views
+        ),
+        mean_absolute_pixel_difference=sum(
+            view.mean_absolute_pixel_difference for view in views
+        )
+        / len(views),
+        exact_match=all(sample.exact_match for sample in samples),
+        spatially_stable=spatially_stable,
+    )
+
+
+def _all_masks_equal(
+    inventories: tuple[tuple[NDArray[np.bool_], ...], ...],
 ) -> bool:
-    return len(left) == len(right) and all(
-        np.array_equal(left_mask, right_mask)
-        for left_mask, right_mask in zip(left, right, strict=True)
+    """Return whether all bounded comparisons changed identical spatial pixels."""
+    if not inventories:
+        return False
+    reference = inventories[0]
+    return all(
+        len(inventory) == len(reference)
+        and all(
+            np.array_equal(reference_mask, observed_mask)
+            for reference_mask, observed_mask in zip(reference, inventory, strict=True)
+        )
+        for inventory in inventories[1:]
     )
 
 
 def _calibration_stable(
-    repeated: PickCubeVisualSessionResult, fresh: PickCubeVisualSessionResult
+    repeated: PickCubeVisualSessionResult,
+    fresh_sessions: Sequence[PickCubeVisualSessionResult],
 ) -> bool:
     baseline = repeated.render_repetitions[0]
-    comparisons = (*repeated.render_repetitions[1:], *fresh.render_repetitions)
+    comparisons = (
+        *repeated.render_repetitions[1:],
+        *(render for fresh in fresh_sessions for render in fresh.render_repetitions),
+    )
     return all(
         left.camera_configuration_digest == right.camera_configuration_digest
         and np.array_equal(left.intrinsics, right.intrinsics)
@@ -1295,9 +1617,13 @@ __all__ = [
     "CameraPixelDifference",
     "ManiSkillVisualProbeError",
     "PickCubeVisualProbeRuntime",
+    "PixelComparisonSample",
     "PixelComparisonReport",
     "SessionPickCubeVisualProbeRuntime",
     "VISUAL_COMPATIBILITY_REPORT_SCHEMA_VERSION",
+    "VISUAL_PROBE_ENVIRONMENT_INITIALIZATION_COUNT",
+    "VISUAL_PROBE_FRESH_ENVIRONMENT_RENDER_COUNT",
+    "VISUAL_PROBE_SAME_ENVIRONMENT_RENDER_COUNT",
     "VISUAL_PROBE_SOURCE_SCHEMA_VERSION",
     "VisualCompatibilityReport",
     "VisualProbeSourceEvidenceV1",

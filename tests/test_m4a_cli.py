@@ -1183,6 +1183,9 @@ def test_production_execute_persists_zero_work_resume_evidence(
     import latentguard.vision_data.run_manifest as run_manifest_module
     import latentguard.vision_data.serialization as serialization_module
     from latentguard.training.reporting import load_strict_report
+    from latentguard.vision_data.operational_metrics import (
+        load_render_operational_metrics,
+    )
     from latentguard.vision_data.rendering import ZeroWorkRenderResumeV1
     from latentguard.vision_data.reporting import M4A_RENDER_RESUME_REPORT_FILENAME
 
@@ -1212,13 +1215,21 @@ def test_production_execute_persists_zero_work_resume_evidence(
         packet_count=1,
         image_count=3,
         rendered_packet_ids=(),
+        reused_packet_ids=(job.packet_id,),
+        packet_render_durations_ns=(),
+        ledger=SimpleNamespace(content_digest=_digest("ledger")),
         zero_work_proof=proof,
     )
     monkeypatch.setattr(
         run_manifest_module, "load_m4a_run_manifest", lambda _path: object()
     )
     monkeypatch.setattr(
-        m4a, "_build_operational_run_manifest", lambda **_kwargs: object()
+        m4a,
+        "_build_operational_run_manifest",
+        lambda **_kwargs: SimpleNamespace(
+            content_digest=_digest("operational-manifest"),
+            selected_packet_inventory_digest=_digest("selected-packets"),
+        ),
     )
     monkeypatch.setattr(
         pipeline_module,
@@ -1257,6 +1268,147 @@ def test_production_execute_persists_zero_work_resume_evidence(
     )
     assert report.payload["zero_duplicate_work"] is True
     assert report.payload["source_identity_digest"] == inventory.source_identity_digest  # type: ignore[attr-defined]
+    operational = load_render_operational_metrics(output)
+    assert len(operational) == 1
+    assert operational[0].payload["invocation_kind"] == "zero_work_resume"
+    assert operational[0].payload["resume_reused_packet_count"] == 1
+    assert operational[0].payload["packet_render_time"] is None
+
+
+@pytest.mark.parametrize(
+    ("resume", "expected_kind"),
+    ((False, "render"), (True, "render_resume")),
+)
+def test_production_execute_persists_render_operational_bindings(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+    *,
+    resume: bool,
+    expected_kind: str,
+) -> None:
+    import latentguard.m4a_cli as m4a
+    import latentguard.vision_data.pipeline as pipeline_module
+    import latentguard.vision_data.run_manifest as run_manifest_module
+    from latentguard.vision_data.operational_metrics import (
+        load_render_operational_metrics,
+    )
+    from latentguard.vision_data.run_manifest import (
+        compute_selected_packet_inventory_digest,
+    )
+
+    packet_ids = tuple(
+        f"vop-{_digest(label).replace(':', '-')}" for label in ("packet-a", "packet-b")
+    )
+    rendered_packet_ids = packet_ids[1:] if resume else packet_ids
+    reused_packet_ids = packet_ids[:1] if resume else ()
+    durations = tuple(
+        (packet_id, duration)
+        for packet_id, duration in zip(packet_ids, (11, 29), strict=True)
+        if packet_id in rendered_packet_ids
+    )
+    scope = _scope()
+    inventory = SimpleNamespace(
+        content_digest=_digest("render-jobs"),
+        source_identity_digest=_digest("source"),
+        camera_rig_digest=scope.camera_rig.rig_digest,
+        render_domain_configuration_digest=scope.render_domains.content_digest,
+    )
+    plan = m4a._PreparedRenderPlan(
+        inventory=inventory,
+        contexts=(SimpleNamespace(candidates=(object(),)),),
+        context_by_packet_id={},
+        selected_packet_ids=packet_ids,
+        source_model=object(),
+        archive_digest=_digest("archive"),
+        manifest_digest=_digest("manifest"),
+        all_required_domains=False,
+    )
+    output = tmp_path / expected_kind
+    output.mkdir()
+    selected_digest = compute_selected_packet_inventory_digest(packet_ids)
+    operational_manifest = SimpleNamespace(
+        content_digest=_digest("operational-manifest"),
+        selected_packet_inventory_digest=selected_digest,
+    )
+    prior_manifest = object()
+
+    def build_manifest(**kwargs: object) -> SimpleNamespace:
+        assert kwargs["render_job_inventory_digest"] == inventory.content_digest
+        assert kwargs["selected_packet_inventory_digest"] == selected_digest
+        assert kwargs["prior_manifest"] is (prior_manifest if resume else None)
+        return operational_manifest
+
+    def callback_factory(
+        _plan: object, _scope: object, initialization_observer: object
+    ) -> object:
+        assert callable(initialization_observer)
+        initialization_observer()
+        return object()
+
+    def run_pipeline(*args: object, **kwargs: object) -> SimpleNamespace:
+        assert args[0] is inventory
+        assert kwargs["selected_packet_ids"] == packet_ids
+        assert kwargs["resume"] is resume
+        assert kwargs["operational_manifest"] is operational_manifest
+        return SimpleNamespace(
+            packets=(),
+            packet_count=2,
+            image_count=6,
+            rendered_packet_ids=rendered_packet_ids,
+            reused_packet_ids=reused_packet_ids,
+            packet_render_durations_ns=durations,
+            ledger=SimpleNamespace(content_digest=_digest("final-ledger")),
+            zero_work_proof=None,
+        )
+
+    monotonic_values = iter((100, 160))
+    monkeypatch.setattr(m4a, "_monotonic_ns", lambda: next(monotonic_values))
+    monkeypatch.setattr(
+        m4a, "_start_peak_gpu_memory_measurement", lambda: lambda: (None, None)
+    )
+    monkeypatch.setattr(m4a, "_build_operational_run_manifest", build_manifest)
+    monkeypatch.setattr(m4a, "_pipeline_callback", callback_factory)
+    monkeypatch.setattr(pipeline_module, "run_visual_render_pipeline", run_pipeline)
+    monkeypatch.setattr(
+        run_manifest_module,
+        "load_m4a_run_manifest",
+        lambda _path: prior_manifest,
+    )
+
+    result = m4a._PickCubeVisualDatasetRenderer._execute(
+        argparse.Namespace(
+            dry_run=False,
+            resume=resume,
+            output_root=output,
+            seed=271828,
+            retry_execution_errors=False,
+            trajectory_limit=1,
+            anchor_limit=1,
+            domain_limit=1,
+        ),
+        scope,
+        SimpleNamespace(dataset_digest=_digest("accepted-m3a")),
+        plan,
+        external=False,
+    )
+
+    assert result.rendered_packet_count == len(rendered_packet_ids)
+    operational = load_render_operational_metrics(output)
+    assert len(operational) == 1
+    payload = operational[0].payload
+    assert payload["invocation_kind"] == expected_kind
+    assert payload["environment_initialization_count"] == 1
+    assert payload["rendered_packet_ids"] == list(rendered_packet_ids)
+    assert payload["resume_reused_packet_ids"] == list(reused_packet_ids)
+    assert payload["packet_render_durations"] == [
+        {"duration_ns": duration, "packet_id": packet_id}
+        for packet_id, duration in durations
+    ]
+    assert payload["run_manifest_digest"] == operational_manifest.content_digest
+    assert payload["render_job_inventory_digest"] == inventory.content_digest
+    assert payload["selected_packet_inventory_digest"] == selected_digest
+    assert payload["ledger_content_digest"] == _digest("final-ledger")
+    assert payload["server_active_execution_duration_ns"] == 60
 
 
 def test_callback_invalid_context_is_persisted_as_nonretryable_invalid(
@@ -1368,35 +1520,10 @@ def test_validate_and_inspect_strict_serialized_partial_dataset(
         command="validate-visual-verifier-dataset",
         dataset_dir=[root],
         allow_partial=False,
-        report_dir=tmp_path / "compact-reports",
+        report_dir=None,
     )
     assert run_m4a_command(validate_args) == 0
     assert "images=9" in capsys.readouterr().out
-    report_dir = validate_args.report_dir
-    assert {item.name for item in report_dir.iterdir()} == {
-        "camera-rig-summary.json",
-        "compact-retrieval-manifest.json",
-        "development-domain-assignment.json",
-        "development-dataset-summary.json",
-        "development-image-digest-summary.json",
-        "development-state-integrity.json",
-        "render-determinism.json",
-        "render-domain-summary.json",
-    }
-    from latentguard.training.reporting import load_strict_report
-
-    integrity = load_strict_report(
-        report_dir / "development-state-integrity.json",
-        expected_report_type="m4a_render_state_integrity_v1",
-    )
-    assert integrity.payload["passed"] is True
-    retrieval = load_strict_report(
-        report_dir / "compact-retrieval-manifest.json",
-        expected_report_type="m4a_compact_retrieval_manifest_v1",
-    )
-    assert retrieval.payload["raw_images_included"] is False
-    assert retrieval.payload["raw_actions_included"] is False
-    assert retrieval.payload["raw_state_archives_included"] is False
 
     packet = dataset.packets[0]  # type: ignore[attr-defined]
     inspect_args = argparse.Namespace(
@@ -1419,6 +1546,11 @@ def test_validation_retrieves_only_a_live_bound_zero_work_resume_report(
 ) -> None:
     import latentguard.m4a_cli as m4a
     import latentguard.vision_data.dataset as visual_dataset
+    import latentguard.vision_data.run_manifest as run_manifest_module
+    from latentguard.vision_data.operational_metrics import (
+        M4ARenderOperationalMetricsV1,
+        persist_render_operational_metrics,
+    )
     from latentguard.vision_data.pipeline import load_render_job_inventory
     from latentguard.vision_data.rendering import (
         finish_render_attempt,
@@ -1461,6 +1593,51 @@ def test_validation_retrieves_only_a_live_bound_zero_work_resume_report(
             inventory.render_domain_configuration_digest
         ),
     )
+    common_metrics = {
+        "run_manifest_digest": _digest("operational-manifest"),
+        "render_job_inventory_digest": inventory.content_digest,
+        "selected_packet_inventory_digest": _digest("selected-packets"),
+        "ledger_content_digest": ledger.content_digest,
+        "peak_gpu_memory_bytes": None,
+        "peak_gpu_memory_source": None,
+        "server_active_duration_source": "python_perf_counter_ns_v1",
+    }
+    persist_render_operational_metrics(
+        M4ARenderOperationalMetricsV1(
+            invocation_kind="render",
+            environment_initialization_count=3,
+            packet_count=3,
+            image_inventory_count=9,
+            rendered_packet_count=3,
+            images_rendered_count=9,
+            resume_reused_packet_count=0,
+            rendered_packet_ids=inventory.packet_ids,
+            resume_reused_packet_ids=(),
+            packet_render_durations_ns=tuple(
+                zip(inventory.packet_ids, (10, 20, 30), strict=True)
+            ),
+            server_active_execution_duration_ns=100,
+            **common_metrics,
+        ),
+        render_root,
+    )
+    persist_render_operational_metrics(
+        M4ARenderOperationalMetricsV1(
+            invocation_kind="zero_work_resume",
+            environment_initialization_count=0,
+            packet_count=3,
+            image_inventory_count=9,
+            rendered_packet_count=0,
+            images_rendered_count=0,
+            resume_reused_packet_count=3,
+            rendered_packet_ids=(),
+            resume_reused_packet_ids=inventory.packet_ids,
+            packet_render_durations_ns=(),
+            server_active_execution_duration_ns=40,
+            **common_metrics,
+        ),
+        render_root,
+    )
 
     scope = _scope()
     monkeypatch.setattr(m4a, "_load_static_scope", lambda *_a, **_k: scope)
@@ -1471,6 +1648,14 @@ def test_validation_retrieves_only_a_live_bound_zero_work_resume_report(
         visual_dataset,
         "validate_visual_verifier_dataset",
         lambda *_args, **_kwargs: None,
+    )
+    monkeypatch.setattr(
+        run_manifest_module,
+        "load_m4a_run_manifest",
+        lambda _path: SimpleNamespace(
+            content_digest=_digest("operational-manifest"),
+            selected_packet_inventory_digest=_digest("selected-packets"),
+        ),
     )
     report_dir = tmp_path / "reports-with-resume"
     args = argparse.Namespace(
@@ -1499,7 +1684,15 @@ def test_validate_two_datasets_publishes_complete_compact_report_inventory(
 ) -> None:
     import latentguard.m4a_cli as m4a
     import latentguard.vision_data.dataset as visual_dataset
-    from latentguard.training.reporting import load_strict_report
+    import latentguard.vision_data.operational_metrics as operational_metrics_module
+    import latentguard.vision_data.pipeline as pipeline_module
+    import latentguard.vision_data.rendering as rendering_module
+    import latentguard.vision_data.reporting as reporting_module
+    import latentguard.vision_data.run_manifest as run_manifest_module
+    from latentguard.training.reporting import StrictReportV1, load_strict_report
+    from latentguard.vision_data.operational_metrics import (
+        M4ARenderOperationalMetricsV1,
+    )
 
     _, development, _ = _visual_bundle(tmp_path)
     external = _external_dataset_from_development(development)
@@ -1524,10 +1717,88 @@ def test_validate_two_datasets_publishes_complete_compact_report_inventory(
         "validate_visual_verifier_dataset",
         lambda *_args, **_kwargs: None,
     )
+    development_render_root = tmp_path / "development-render"
+    external_render_root = tmp_path / "external-render"
+    development_render_root.mkdir()
+    external_render_root.mkdir()
+    roots = {
+        development_render_root: (development, "development"),
+        external_render_root: (external, "external"),
+    }
+
+    def inventory_for(path: Path) -> SimpleNamespace:
+        dataset, label = roots[path]
+        return SimpleNamespace(
+            content_digest=_digest(f"{label}-jobs"),
+            source_identity_digest=_digest(f"{label}-source"),
+            camera_rig_digest=_scope().camera_rig.rig_digest,
+            render_domain_configuration_digest=_scope().render_domains.content_digest,
+            packet_ids=tuple(packet.packet_id for packet in dataset.packets),
+        )
+
+    def ledger_for(path: Path) -> SimpleNamespace:
+        _dataset, label = roots[path]
+        return SimpleNamespace(
+            run_id=f"{label}-run",
+            content_digest=_digest(f"{label}-ledger"),
+            entries=(object(),),
+        )
+
+    def manifest_for(path: Path) -> SimpleNamespace:
+        label = path.parent.name.removesuffix("-render")
+        return SimpleNamespace(
+            content_digest=_digest(f"{label}-manifest"),
+            selected_packet_inventory_digest=_digest(f"{label}-selected"),
+        )
+
+    def metrics_for(path: Path, **_kwargs: object) -> tuple[StrictReportV1, ...]:
+        dataset, label = roots[path]
+        packet_ids = tuple(packet.packet_id for packet in dataset.packets)
+        return (
+            M4ARenderOperationalMetricsV1(
+                invocation_kind="zero_work_resume",
+                run_manifest_digest=_digest(f"{label}-manifest"),
+                render_job_inventory_digest=_digest(f"{label}-jobs"),
+                selected_packet_inventory_digest=_digest(f"{label}-selected"),
+                ledger_content_digest=_digest(f"{label}-ledger"),
+                environment_initialization_count=0,
+                packet_count=len(packet_ids),
+                image_inventory_count=len(packet_ids) * 3,
+                rendered_packet_count=0,
+                images_rendered_count=0,
+                resume_reused_packet_count=len(packet_ids),
+                rendered_packet_ids=(),
+                resume_reused_packet_ids=packet_ids,
+                packet_render_durations_ns=(),
+                peak_gpu_memory_bytes=None,
+                peak_gpu_memory_source=None,
+                server_active_execution_duration_ns=10,
+                server_active_duration_source="python_perf_counter_ns_v1",
+            ).to_report(),
+        )
+
+    monkeypatch.setattr(pipeline_module, "load_render_job_inventory", inventory_for)
+    monkeypatch.setattr(rendering_module, "load_render_ledger", ledger_for)
+    monkeypatch.setattr(run_manifest_module, "load_m4a_run_manifest", manifest_for)
+    monkeypatch.setattr(
+        reporting_module,
+        "load_bound_render_resume_report",
+        lambda *_args, **_kwargs: StrictReportV1(
+            report_type="m4a_render_resume_v1",
+            payload={"schema_version": "1.0"},
+        ),
+    )
+    monkeypatch.setattr(
+        operational_metrics_module,
+        "load_render_operational_metrics",
+        metrics_for,
+    )
     report_dir = tmp_path / "dual-compact-reports"
     args = argparse.Namespace(
         command="validate-visual-verifier-dataset",
         dataset_dir=[tmp_path / "development", tmp_path / "external"],
+        development_render_root=development_render_root,
+        external_render_root=external_render_root,
         allow_partial=False,
         report_dir=report_dir,
     )
@@ -1541,12 +1812,15 @@ def test_validate_two_datasets_publishes_complete_compact_report_inventory(
         "development-domain-assignment.json",
         "development-dataset-summary.json",
         "development-image-digest-summary.json",
+        "development-resume.json",
         "development-state-integrity.json",
         "external-domain-assignment.json",
         "external-dataset-summary.json",
         "external-image-digest-summary.json",
+        "external-resume.json",
         "external-state-integrity.json",
         "external-training-prohibition.json",
+        "operational-cost-summary.json",
         "render-determinism.json",
         "render-domain-summary.json",
     }
@@ -1568,7 +1842,7 @@ def test_validate_two_datasets_publishes_complete_compact_report_inventory(
         report_dir / "compact-retrieval-manifest.json",
         expected_report_type="m4a_compact_retrieval_manifest_v1",
     )
-    assert retrieval.payload["report_file_count"] == 13
+    assert retrieval.payload["report_file_count"] == 16
     assert all(item.suffix == ".json" for item in report_dir.iterdir())
     serialized = "\n".join(
         item.read_text(encoding="utf-8") for item in report_dir.iterdir()

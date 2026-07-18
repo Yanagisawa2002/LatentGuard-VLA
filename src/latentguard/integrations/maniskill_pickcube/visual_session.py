@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import math
+from collections.abc import Callable
 from dataclasses import dataclass
 from types import MappingProxyType
 from typing import Protocol, cast, runtime_checkable
@@ -296,6 +297,7 @@ class PickCubeVisualSession:
     projection_factory: SourceEnvironmentFactory
     renderer: PickCubeVisualRenderer
     elapsed_step_reader: PickCubeElapsedStepReader
+    environment_initialized_observer: Callable[[], None] | None = None
 
     def render_state(
         self,
@@ -315,6 +317,8 @@ class PickCubeVisualSession:
         primary_error: BaseException | None = None
         close_passed = False
         try:
+            if self.environment_initialized_observer is not None:
+                self.environment_initialized_observer()
             self.state_runtime.reset_environment(environment, seed=source_episode.seed)
             prepared = self.state_runtime.prepare_state_tree(
                 environment, source_state.tree
@@ -486,6 +490,7 @@ def create_default_pickcube_visual_session(
     settings: ManiSkillPickCubeEnvironmentSettings,
     action_contract: PickCubeReplayActionContract,
     task_key_contract: PickCubeTaskKeyContract,
+    environment_initialized_observer: Callable[[], None] | None = None,
 ) -> PickCubeVisualSession:
     """Create the lazy production session without importing simulator packages."""
     return PickCubeVisualSession(
@@ -496,6 +501,7 @@ def create_default_pickcube_visual_session(
         projection_factory=LazyManiSkillSourceEnvironmentFactory(),
         renderer=LazyManiSkillPickCubeVisualRenderer(),
         elapsed_step_reader=ManiSkillElapsedStepReader(),
+        environment_initialized_observer=environment_initialized_observer,
     )
 
 

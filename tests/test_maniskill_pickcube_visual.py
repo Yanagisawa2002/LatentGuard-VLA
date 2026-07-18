@@ -1,7 +1,8 @@
 from __future__ import annotations
 
 import json
-from dataclasses import dataclass, replace
+from collections.abc import Callable
+from dataclasses import dataclass, field, replace
 from pathlib import Path
 from types import MappingProxyType, SimpleNamespace
 from typing import Any, cast
@@ -157,6 +158,7 @@ class _FakeStateRuntime:
     close_error: bool = False
     step_calls: int = 0
     environment: _Environment | None = None
+    created_environments: list[_Environment] = field(default_factory=list)
 
     def create_environment(
         self,
@@ -167,6 +169,7 @@ class _FakeStateRuntime:
     ) -> object:
         del settings, action_contract, execution_role
         self.environment = _Environment()
+        self.created_environments.append(self.environment)
         return self.environment
 
     def prepare_state_tree(self, environment: object, state_tree: object) -> object:
@@ -259,6 +262,7 @@ class _FakeRenderHandle:
     nondeterministic: bool
     mutate_state: bool
     fail: bool
+    fixed_drift: bool = False
     calls: int = 0
 
     @property
@@ -290,7 +294,9 @@ class _FakeRenderHandle:
         results: list[RenderedVisualView] = []
         for index, camera in enumerate(self.plan.cameras):
             rgb = np.full((224, 224, 3), index + 1, dtype=np.uint8)
-            if self.nondeterministic and self.calls > 1 and index == 0:
+            if (
+                self.fixed_drift or (self.nondeterministic and self.calls > 1)
+            ) and index == 0:
                 rgb[4, 5, 1] += 1
             results.append(
                 RenderedVisualView(
@@ -323,6 +329,29 @@ class _FakeRenderer:
         )
 
 
+@dataclass
+class _FreshEnvironmentDriftRenderer(_FakeRenderer):
+    drift_fresh_environment_index: int = 1
+    prepared_environment_count: int = 0
+
+    def prepare(
+        self, environment: object, plan: PickCubeVisualRenderPlan
+    ) -> _FakeRenderHandle:
+        assert isinstance(environment, _Environment)
+        self.prepared_environment_count += 1
+        return _FakeRenderHandle(
+            environment,
+            plan,
+            self.nondeterministic,
+            self.mutate_state,
+            self.fail,
+            fixed_drift=(
+                self.prepared_environment_count
+                == self.drift_fresh_environment_index + 1
+            ),
+        )
+
+
 class _ElapsedReader:
     def elapsed_steps(self, environment: object) -> int:
         assert isinstance(environment, _Environment)
@@ -333,6 +362,7 @@ def _session(
     *,
     renderer: _FakeRenderer | None = None,
     runtime: _FakeStateRuntime | None = None,
+    environment_initialized_observer: Callable[[], None] | None = None,
 ) -> tuple[PickCubeVisualSession, _FakeStateRuntime]:
     selected_runtime = runtime or _FakeStateRuntime()
     return (
@@ -359,6 +389,7 @@ def _session(
             projection_factory=_FakeProjectionFactory(),
             renderer=renderer or _FakeRenderer(),
             elapsed_step_reader=_ElapsedReader(),
+            environment_initialized_observer=environment_initialized_observer,
         ),
         selected_runtime,
     )
@@ -467,6 +498,27 @@ def test_visual_session_has_no_step_path_and_checks_every_repetition() -> None:
         replace(result.integrity, elapsed_steps_after=-1)
 
 
+def test_visual_session_records_only_successfully_initialized_environments() -> None:
+    episode, state = _source()
+    rig, configuration = _configuration()
+    plan = build_pickcube_visual_render_plan(
+        rig, configuration.domain("canonical"), configuration, 31
+    )
+    initialized = 0
+
+    def record() -> None:
+        nonlocal initialized
+        initialized += 1
+
+    session, _ = _session(environment_initialized_observer=record)
+    session.render_state(
+        source_episode=episode,
+        source_state=state,
+        render_plan=plan,
+    )
+    assert initialized == 1
+
+
 @pytest.mark.parametrize(
     ("renderer", "runtime", "message"),
     [
@@ -502,7 +554,7 @@ def test_probe_reports_exact_and_controlled_nondeterminism(tmp_path: Path) -> No
     plan = build_pickcube_visual_render_plan(
         rig, configuration.domain("canonical"), configuration, 41
     )
-    exact_session, _ = _session()
+    exact_session, exact_runtime = _session()
     report_path = tmp_path / "visual-report.json"
     archive = PickCubeStateIndexedArchiveV1(episodes=(episode,))
     exact = probe_maniskill_pickcube_visual(
@@ -525,6 +577,23 @@ def test_probe_reports_exact_and_controlled_nondeterminism(tmp_path: Path) -> No
     assert exact.probe_source.expected_state_digest == state.state_digest
     assert exact.repeated_render.changed_pixel_count == 0
     assert exact.fresh_environment_render.changed_pixel_count == 0
+    assert exact.same_environment_render_count == 3
+    assert exact.fresh_environment_render_count == 2
+    assert exact.environment_initialization_count == 3
+    assert len(exact.repeated_render.samples) == 2
+    assert len(exact.fresh_environment_render.samples) == 2
+    assert [sample.comparison_id for sample in exact.repeated_render.samples] == [
+        "same_environment_render_2_vs_1",
+        "same_environment_render_3_vs_1",
+    ]
+    assert [
+        sample.comparison_id for sample in exact.fresh_environment_render.samples
+    ] == [
+        "fresh_environment_1_render_1_vs_same_environment_render_1",
+        "fresh_environment_2_render_1_vs_same_environment_render_1",
+    ]
+    assert len(exact_runtime.created_environments) == 3
+    assert len({id(item) for item in exact_runtime.created_environments}) == 3
     assert exact.renderer_api.runtime_intrinsics_dtype == "float64"
     assert exact.renderer_api.runtime_extrinsics_dtype == "float64"
     assert load_visual_compatibility_report(report_path) == exact
@@ -556,8 +625,87 @@ def test_probe_reports_exact_and_controlled_nondeterminism(tmp_path: Path) -> No
     assert not unstable.trusted_visual_generation_ready
     assert unstable.repeated_render.changed_pixel_count == 1
     assert unstable.repeated_render.maximum_per_channel_absolute_difference == 1
+    assert tuple(
+        sample.changed_pixel_count for sample in unstable.repeated_render.samples
+    ) == (1, 1)
+    assert tuple(
+        sample.changed_pixel_count
+        for sample in unstable.fresh_environment_render.samples
+    ) == (0, 0)
     with pytest.raises(ManiSkillVisualProbeError, match="did not authorize"):
         unstable.require_trusted_visual_generation_ready()
+
+    payload = json.loads(report_path.read_text(encoding="utf-8"))
+    payload["same_environment_render_count"] = 2
+    changed_count = tmp_path / "changed-probe-count.json"
+    changed_count.write_text(json.dumps(payload), encoding="utf-8")
+    with pytest.raises(ManiSkillVisualProbeError, match="exactly three"):
+        load_visual_compatibility_report(changed_count)
+
+    payload = json.loads(report_path.read_text(encoding="utf-8"))
+    payload["repeated_render"]["samples"].pop()
+    missing_comparison = tmp_path / "missing-pixel-comparison.json"
+    missing_comparison.write_text(json.dumps(payload), encoding="utf-8")
+    with pytest.raises(ManiSkillVisualProbeError, match="pixel inventory"):
+        load_visual_compatibility_report(missing_comparison)
+
+    payload = json.loads(report_path.read_text(encoding="utf-8"))
+    payload["fresh_environment_render"]["samples"][0]["comparison_id"] = (
+        "unbound-fresh-comparison"
+    )
+    renamed_comparison = tmp_path / "renamed-pixel-comparison.json"
+    renamed_comparison.write_text(json.dumps(payload), encoding="utf-8")
+    with pytest.raises(ManiSkillVisualProbeError, match=r"bounded 3\+2 plan"):
+        load_visual_compatibility_report(renamed_comparison)
+
+
+@pytest.mark.parametrize(
+    ("fresh_environment_index", "expected_changed_pixel_counts"),
+    [(1, (1, 0)), (2, (0, 1))],
+)
+def test_probe_trusted_gate_rejects_each_fresh_environment_pixel_drift(
+    fresh_environment_index: int,
+    expected_changed_pixel_counts: tuple[int, int],
+) -> None:
+    episode, state = _source()
+    archive = PickCubeStateIndexedArchiveV1(episodes=(episode,))
+    rig, configuration = _configuration()
+    plan = build_pickcube_visual_render_plan(
+        rig, configuration.domain("canonical"), configuration, 42
+    )
+    renderer = _FreshEnvironmentDriftRenderer(
+        drift_fresh_environment_index=fresh_environment_index
+    )
+    session, _ = _session(renderer=renderer)
+
+    report = probe_maniskill_pickcube_visual(
+        compatibility_binding=_Binding(),  # type: ignore[arg-type]
+        runtime=SessionPickCubeVisualProbeRuntime(session),
+        source_archive=archive,
+        source_episode=episode,
+        source_state=state,
+        camera_rig=rig,
+        render_domain_configuration=configuration,
+        render_plan=plan,
+        require_trusted_generation=False,
+    )
+
+    assert renderer.prepared_environment_count == 3
+    assert report.repeated_render.exact_match
+    assert tuple(
+        sample.changed_pixel_count for sample in report.repeated_render.samples
+    ) == (0, 0)
+    assert not report.fresh_environment_render.exact_match
+    assert (
+        tuple(
+            sample.changed_pixel_count
+            for sample in report.fresh_environment_render.samples
+        )
+        == expected_changed_pixel_counts
+    )
+    assert not report.trusted_visual_generation_ready
+    with pytest.raises(ManiSkillVisualProbeError, match="did not authorize"):
+        report.require_trusted_visual_generation_ready()
 
 
 def test_probe_rejects_unbound_archive_state_and_source_evidence_tampering(

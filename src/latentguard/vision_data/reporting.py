@@ -804,6 +804,7 @@ _VALIDATION_REPORT_TYPES_BY_NAME = {
     "external-resume.json": "m4a_render_resume_v1",
     "external-state-integrity.json": "m4a_render_state_integrity_v1",
     "external-training-prohibition.json": ("m4a_external_training_prohibition_v1"),
+    "operational-cost-summary.json": "m4a_operational_cost_summary_v1",
     "render-determinism.json": "m4a_render_determinism_v1",
     "render-domain-summary.json": "m4a_render_domain_summary_v1",
 }

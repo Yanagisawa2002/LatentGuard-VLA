@@ -10,6 +10,7 @@ from __future__ import annotations
 import argparse
 import json
 import sys
+import time
 from collections.abc import Callable, Mapping
 from dataclasses import dataclass
 from datetime import UTC, datetime
@@ -62,6 +63,7 @@ DEFAULT_RENDER_DOMAINS = Path("configs/vision/m4a/render-domains-v1.json")
 VISUAL_PROBE_REPORT_FILENAME = "visual-compatibility-report.json"
 
 OperationalCommandRunner = Callable[[tuple[str, ...], Path | None], str]
+PeakGpuMemoryReader = Callable[[], tuple[int | None, str | None]]
 
 
 class M4ACommandError(ValueError):
@@ -96,6 +98,42 @@ def _run_operational_command(
     if completed.returncode != 0:
         _fail("operational manifest", "metadata command failed")
     return completed.stdout.strip()
+
+
+def _monotonic_ns() -> int:
+    """Return the process monotonic clock used only for operational reporting."""
+
+    return time.perf_counter_ns()
+
+
+def _start_peak_gpu_memory_measurement() -> PeakGpuMemoryReader:
+    """Start a best-effort torch CUDA peak measurement without weakening execution."""
+
+    try:
+        import torch
+
+        cuda = cast(Any, torch.cuda)
+        if not cuda.is_available():
+            return lambda: (None, None)
+        if cuda.is_initialized():
+            cuda.synchronize()
+            cuda.reset_peak_memory_stats()
+    except Exception:
+        return lambda: (None, None)
+
+    def read() -> tuple[int | None, str | None]:
+        try:
+            if not cuda.is_initialized():
+                return None, None
+            cuda.synchronize()
+            value = int(cuda.max_memory_allocated())
+        except Exception:
+            return None, None
+        if value < 0:
+            return None, None
+        return value, "torch_cuda_max_memory_allocated_v1"
+
+    return read
 
 
 def _git_operational_identity(
@@ -1287,7 +1325,11 @@ def _build_render_plan(
     )
 
 
-def _create_visual_session(scope: M4AStaticScope) -> Any:
+def _create_visual_session(
+    scope: M4AStaticScope,
+    *,
+    environment_initialized_observer: Callable[[], None] | None = None,
+) -> Any:
     from latentguard.integrations.maniskill_pickcube.serialization import (
         action_contract_from_compatibility,
         environment_settings_from_compatibility,
@@ -1310,11 +1352,14 @@ def _create_visual_session(scope: M4AStaticScope) -> Any:
         task_key_contract=PickCubeTaskKeyContract.from_compatibility_report(
             binding.report
         ),
+        environment_initialized_observer=environment_initialized_observer,
     )
 
 
 def _pipeline_callback(
-    plan: _PreparedRenderPlan, scope: M4AStaticScope
+    plan: _PreparedRenderPlan,
+    scope: M4AStaticScope,
+    environment_initialized_observer: Callable[[], None] | None = None,
 ) -> Callable[[Any], Any]:
     from latentguard.integrations.maniskill_pickcube.visual_rendering import (
         ManiSkillVisualContractError,
@@ -1326,7 +1371,14 @@ def _pipeline_callback(
     )
     from latentguard.vision_data.pipeline import InvalidVisualRenderPacketError
 
-    session = _create_visual_session(scope)
+    session = (
+        _create_visual_session(scope)
+        if environment_initialized_observer is None
+        else _create_visual_session(
+            scope,
+            environment_initialized_observer=environment_initialized_observer,
+        )
+    )
     visual = scope.visual_probe_report
     if visual is None:
         _fail("render callback", "trusted visual compatibility is absent")
@@ -1637,6 +1689,13 @@ class _PickCubeVisualDatasetRenderer:
                 candidate_count=candidate_count,
                 rendered_packet_count=0,
             )
+        invocation_started_ns = _monotonic_ns()
+        peak_gpu_memory_reader = _start_peak_gpu_memory_measurement()
+        from latentguard.vision_data.operational_metrics import (
+            M4AEnvironmentInitializationRecorder,
+            M4ARenderOperationalMetricsV1,
+            persist_render_operational_metrics,
+        )
         from latentguard.vision_data.pipeline import run_visual_render_pipeline
         from latentguard.vision_data.run_manifest import (
             M4A_RUN_MANIFEST_FILENAME,
@@ -1667,14 +1726,20 @@ class _PickCubeVisualDatasetRenderer:
             ),
             prior_manifest=prior_manifest,
         )
+        initialization_recorder = M4AEnvironmentInitializationRecorder()
         pipeline_result = run_visual_render_pipeline(
             plan.inventory,
             args.output_root,
             run_id=run_id,
-            render_callback=_pipeline_callback(plan, scope),
+            render_callback=_pipeline_callback(
+                plan,
+                scope,
+                initialization_recorder.record_success,
+            ),
             selected_packet_ids=plan.selected_packet_ids,
             resume=args.resume,
             retry_execution_errors=args.retry_execution_errors,
+            monotonic_ns_factory=_monotonic_ns,
             operational_manifest=operational_manifest,
         )
         dataset_digest: str | None = None
@@ -1725,6 +1790,45 @@ class _PickCubeVisualDatasetRenderer:
             )
             zero_work_resume_verified = True
         rendered = len(pipeline_result.rendered_packet_ids)
+        peak_gpu_memory_bytes, peak_gpu_memory_source = peak_gpu_memory_reader()
+        invocation_finished_ns = _monotonic_ns()
+        if invocation_finished_ns < invocation_started_ns:
+            _fail("operational metrics", "monotonic invocation clock regressed")
+        selected_inventory_digest = (
+            operational_manifest.selected_packet_inventory_digest
+        )
+        if selected_inventory_digest is None:
+            _fail("operational metrics", "selected packet inventory binding is absent")
+        invocation_kind = (
+            "zero_work_resume"
+            if pipeline_result.zero_work_proof is not None
+            else ("render_resume" if args.resume else "render")
+        )
+        persist_render_operational_metrics(
+            M4ARenderOperationalMetricsV1(
+                invocation_kind=invocation_kind,
+                run_manifest_digest=operational_manifest.content_digest,
+                render_job_inventory_digest=plan.inventory.content_digest,
+                selected_packet_inventory_digest=selected_inventory_digest,
+                ledger_content_digest=pipeline_result.ledger.content_digest,
+                environment_initialization_count=initialization_recorder.count,
+                packet_count=pipeline_result.packet_count,
+                image_inventory_count=pipeline_result.image_count,
+                rendered_packet_count=rendered,
+                images_rendered_count=rendered * 3,
+                resume_reused_packet_count=len(pipeline_result.reused_packet_ids),
+                rendered_packet_ids=pipeline_result.rendered_packet_ids,
+                resume_reused_packet_ids=pipeline_result.reused_packet_ids,
+                packet_render_durations_ns=(pipeline_result.packet_render_durations_ns),
+                peak_gpu_memory_bytes=peak_gpu_memory_bytes,
+                peak_gpu_memory_source=peak_gpu_memory_source,
+                server_active_execution_duration_ns=(
+                    invocation_finished_ns - invocation_started_ns
+                ),
+                server_active_duration_source="python_perf_counter_ns_v1",
+            ),
+            Path(args.output_root),
+        )
         return M4ARenderCommandResult(
             dataset_digest=dataset_digest,
             packet_count=pipeline_result.packet_count,
@@ -1838,6 +1942,7 @@ def _run_validate_visual_verifier_dataset(args: argparse.Namespace) -> int:
                 "cannot publish acceptance reports",
             )
 
+    validation_started_ns = _monotonic_ns()
     from latentguard.vision_data.dataset import validate_visual_verifier_dataset
     from latentguard.vision_data.models import (
         VisualVerifierDevelopmentDatasetV1,
@@ -1885,11 +1990,18 @@ def _run_validate_visual_verifier_dataset(args: argparse.Namespace) -> int:
             external_reset_seeds=external_seeds,
         )
         leakage = "passed"
+    validation_finished_ns = _monotonic_ns()
+    if validation_finished_ns < validation_started_ns:
+        _fail("visual validation metrics", "monotonic validation clock regressed")
+    validation_duration_ns = validation_finished_ns - validation_started_ns
     report_count: int | None = None
     if report_dir is not None:
         from latentguard.training.reporting import StrictReportV1
+        from latentguard.vision_data.operational_metrics import (
+            build_operational_cost_summary_report,
+            load_render_operational_metrics,
+        )
         from latentguard.vision_data.reporting import (
-            M4A_RENDER_RESUME_REPORT_FILENAME,
             build_camera_rig_summary_report,
             build_domain_assignment_report,
             build_external_training_prohibition_report,
@@ -1941,6 +2053,7 @@ def _run_validate_visual_verifier_dataset(args: argparse.Namespace) -> int:
                 scope.render_domains
             ),
         }
+        operational_reports: list[StrictReportV1] = []
         for dataset in datasets:
             if isinstance(dataset, VisualVerifierDevelopmentDatasetV1):
                 prefix = "development"
@@ -1968,36 +2081,64 @@ def _run_validate_visual_verifier_dataset(args: argparse.Namespace) -> int:
                 compact_reports["external-training-prohibition.json"] = (
                     build_external_training_prohibition_report(dataset)
                 )
-            if render_root is not None:
-                if not isinstance(render_root, Path):
-                    _fail(f"{prefix} resume report", "render root must be a path")
-                resume_path = render_root / M4A_RENDER_RESUME_REPORT_FILENAME
-                if resume_path.exists() or not args.allow_partial:
-                    from latentguard.vision_data.pipeline import (
-                        load_render_job_inventory,
-                    )
-                    from latentguard.vision_data.rendering import load_render_ledger
+            if not isinstance(render_root, Path):
+                _fail(
+                    f"{prefix} render root",
+                    "full acceptance reports require the exact render root",
+                )
+            from latentguard.vision_data.pipeline import load_render_job_inventory
+            from latentguard.vision_data.rendering import load_render_ledger
+            from latentguard.vision_data.run_manifest import (
+                M4A_RUN_MANIFEST_FILENAME,
+                load_m4a_run_manifest,
+            )
 
-                    inventory = load_render_job_inventory(render_root)
-                    ledger = load_render_ledger(render_root)
-                    compact_reports[f"{prefix}-resume.json"] = (
-                        load_bound_render_resume_report(
-                            render_root,
-                            run_id=ledger.run_id,
-                            source_identity_digest=inventory.source_identity_digest,
-                            camera_rig_digest=inventory.camera_rig_digest,
-                            render_domain_configuration_digest=(
-                                inventory.render_domain_configuration_digest
-                            ),
-                            ledger_content_digest=ledger.content_digest,
-                            packet_count=len(inventory.packet_ids),
-                            ledger_entry_count=len(ledger.entries),
-                        )
-                    )
+            inventory = load_render_job_inventory(render_root)
+            ledger = load_render_ledger(render_root)
+            run_manifest = load_m4a_run_manifest(
+                render_root / M4A_RUN_MANIFEST_FILENAME
+            )
+            selected_inventory_digest = run_manifest.selected_packet_inventory_digest
+            if selected_inventory_digest is None:
+                _fail(
+                    f"{prefix} operational metrics",
+                    "selected packet inventory binding is absent",
+                )
+            compact_reports[f"{prefix}-resume.json"] = load_bound_render_resume_report(
+                render_root,
+                run_id=ledger.run_id,
+                source_identity_digest=inventory.source_identity_digest,
+                camera_rig_digest=inventory.camera_rig_digest,
+                render_domain_configuration_digest=(
+                    inventory.render_domain_configuration_digest
+                ),
+                ledger_content_digest=ledger.content_digest,
+                packet_count=len(inventory.packet_ids),
+                ledger_entry_count=len(ledger.entries),
+            )
+            render_operational_reports = load_render_operational_metrics(
+                render_root,
+                expected_run_manifest_digest=run_manifest.content_digest,
+                expected_render_job_inventory_digest=inventory.content_digest,
+                expected_selected_packet_inventory_digest=(selected_inventory_digest),
+                expected_final_ledger_content_digest=ledger.content_digest,
+                expected_packet_ids=inventory.packet_ids,
+            )
+            operational_reports.extend(render_operational_reports)
         if leakage_report is not None:
             compact_reports["cross-dataset-leakage.json"] = build_leakage_report(
                 leakage_report
             )
+        validated_packet_count = sum(len(item.packets) for item in datasets)
+        compact_reports["operational-cost-summary.json"] = (
+            build_operational_cost_summary_report(
+                tuple(operational_reports),
+                validated_packet_count=validated_packet_count,
+                validated_image_count=validated_packet_count * 3,
+                validation_duration_ns=validation_duration_ns,
+                total_server_active_duration_ns=None,
+            )
+        )
         published = publish_visual_validation_reports(
             compact_reports,
             report_dir,

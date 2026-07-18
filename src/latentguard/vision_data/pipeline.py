@@ -14,6 +14,7 @@ import re
 import shutil
 import stat as stat_module
 import tempfile
+import time
 from collections.abc import Callable, Mapping, Sequence
 from dataclasses import dataclass
 from datetime import UTC, datetime
@@ -639,9 +640,40 @@ class VisualRenderPipelineResultV1:
     packet_bundle_roots: tuple[Path, ...]
     packets: tuple[VisualObservationPacketV1, ...]
     rendered_packet_ids: tuple[str, ...]
+    reused_packet_ids: tuple[str, ...]
+    packet_render_durations_ns: tuple[tuple[str, int], ...]
     recovered_packet_ids: tuple[str, ...]
     retried_packet_ids: tuple[str, ...]
     zero_work_proof: ZeroWorkRenderResumeV1 | None = None
+
+    def __post_init__(self) -> None:
+        """Require exact, disjoint packet accounting and timing coverage."""
+
+        completed = tuple(packet.packet_id for packet in self.packets)
+        rendered = self.rendered_packet_ids
+        reused = self.reused_packet_ids
+        if (
+            len(completed) != len(set(completed))
+            or len(rendered) != len(set(rendered))
+            or len(reused) != len(set(reused))
+            or set(rendered).intersection(reused)
+            or set(rendered).union(reused) != set(completed)
+        ):
+            _fail(
+                "render pipeline result",
+                "rendered and reused packet accounting differs",
+            )
+        duration_ids = tuple(
+            packet_id for packet_id, _ in self.packet_render_durations_ns
+        )
+        if duration_ids != rendered or any(
+            type(duration) is not int or duration <= 0
+            for _, duration in self.packet_render_durations_ns
+        ):
+            _fail(
+                "render pipeline result",
+                "positive packet timings must exactly cover newly rendered packets",
+            )
 
     @property
     def planned_packet_count(self) -> int:
@@ -1143,6 +1175,7 @@ def run_visual_render_pipeline(
     retry_execution_errors: bool = False,
     selected_packet_ids: Sequence[str] | None = None,
     timestamp_factory: Callable[[], str] = _timestamp,
+    monotonic_ns_factory: Callable[[], int] = time.perf_counter_ns,
     operational_manifest: M4AOperationalRunManifestV1 | None = None,
 ) -> VisualRenderPipelineResultV1:
     """Render or resume an exact inventory with durable per-packet evidence."""
@@ -1225,6 +1258,8 @@ def run_visual_render_pipeline(
             packet_bundle_roots=roots,
             packets=packets,
             rendered_packet_ids=(),
+            reused_packet_ids=tuple(packet.packet_id for packet in packets),
+            packet_render_durations_ns=(),
             recovered_packet_ids=(),
             retried_packet_ids=(),
             zero_work_proof=proof,
@@ -1232,6 +1267,7 @@ def run_visual_render_pipeline(
 
     work = set(selected_work)
     rendered: list[str] = []
+    packet_render_durations: list[tuple[str, int]] = []
     for job in inventory.jobs:
         if job.packet_id not in work:
             continue
@@ -1255,13 +1291,28 @@ def run_visual_render_pipeline(
                     _invalid(job.packet_id, "unexpected pre-existing packet store")
                 packet = _load_packet_for_job(bundle_root, job)
             else:
+                render_started_ns = monotonic_ns_factory()
+                if type(render_started_ns) is not int or render_started_ns < 0:
+                    _fail(
+                        job.packet_id,
+                        "monotonic render clock returned an invalid value",
+                    )
                 prepared = render_callback(job)
+                render_finished_ns = monotonic_ns_factory()
+                if (
+                    type(render_finished_ns) is not int
+                    or render_finished_ns <= render_started_ns
+                ):
+                    _fail(job.packet_id, "monotonic render clock did not advance")
                 if not isinstance(prepared, PreparedVisualPacket):
                     _invalid(job.packet_id, "renderer returned an unsupported result")
                 _validate_packet_for_job(prepared.packet, job)
                 save_visual_packet(prepared.packet, prepared.images, bundle_root)
                 packet = _load_packet_for_job(bundle_root, job)
                 rendered.append(job.packet_id)
+                packet_render_durations.append(
+                    (job.packet_id, render_finished_ns - render_started_ns)
+                )
             completed = finish_render_attempt(
                 ledger,
                 job.packet_id,
@@ -1301,12 +1352,19 @@ def run_visual_render_pipeline(
     ledger = load_render_ledger(root)
     _validate_packet_store_inventory(root, inventory, ledger)
     roots, packets = _load_complete_packets(root, inventory, ledger)
+    rendered_set = set(rendered)
     return VisualRenderPipelineResultV1(
         inventory_content_digest=inventory.content_digest,
         ledger=ledger,
         packet_bundle_roots=roots,
         packets=packets,
         rendered_packet_ids=tuple(rendered),
+        reused_packet_ids=tuple(
+            packet.packet_id
+            for packet in packets
+            if packet.packet_id not in rendered_set
+        ),
+        packet_render_durations_ns=tuple(packet_render_durations),
         recovered_packet_ids=tuple(
             item for item in plan.recovered_packet_ids if item in selected_set
         ),

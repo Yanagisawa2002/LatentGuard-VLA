@@ -903,3 +903,39 @@ def test_camera_shift_packet_uses_seed_resolved_calibration(tmp_path: Path) -> N
         tuple(view.camera_configuration_digest for view in result.packets[0].views)
         == shifted.camera_configuration_digests
     )
+
+
+def test_pipeline_records_exact_packet_timings_and_zero_work_reuse(
+    tmp_path: Path,
+) -> None:
+    inventory = _inventory()
+    manifest = _operational_manifest(inventory=inventory)
+    clock_values = iter((100, 110, 200, 220, 300, 330))
+    output = tmp_path / "timed-render"
+    first = run_visual_render_pipeline(
+        inventory,
+        output,
+        run_id=_RUN_ID,
+        render_callback=_prepared,
+        operational_manifest=manifest,
+        monotonic_ns_factory=lambda: next(clock_values),
+    )
+    assert first.rendered_packet_ids == inventory.packet_ids
+    assert first.reused_packet_ids == ()
+    assert first.packet_render_durations_ns == tuple(
+        zip(inventory.packet_ids, (10, 20, 30), strict=True)
+    )
+
+    resumed = run_visual_render_pipeline(
+        inventory,
+        output,
+        run_id=_RUN_ID,
+        render_callback=lambda _job: pytest.fail("zero-work resume rendered"),
+        operational_manifest=manifest,
+        resume=True,
+        monotonic_ns_factory=lambda: pytest.fail("zero-work resume read render clock"),
+    )
+    assert resumed.rendered_packet_ids == ()
+    assert resumed.reused_packet_ids == inventory.packet_ids
+    assert resumed.packet_render_durations_ns == ()
+    assert resumed.zero_work_proof is not None

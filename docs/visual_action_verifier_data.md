@@ -2,24 +2,35 @@
 
 M4A adds deterministic RGB observations to the accepted PickCube action-verifier
 contracts. It is a data-generation and validation milestone only. It does not
-train a visual model, fine-tune an encoder, run a VLM/LLM, use LangMani, or
-change any accepted M3A or M3C outcome.
+train a visual model, fine-tune or extract a visual encoder, compute teacher
+logits or frozen embeddings, run large-scale augmentation or normalization
+fitting, run a VLM/LLM, use LangMani, or change any accepted M3A or M3C outcome.
+M4A ends after visual data generation, strict validation, compact result
+retrieval, Git closeout, and paid-server shutdown; it does not begin M4B
+automatically.
 
 ## Exact render boundary
 
-Every packet is rendered in a fresh compatible session at one exact physical
-anchor:
+Every packet is rendered at one exact physical anchor in a compatible session:
 
 ```text
 reset(bound source seed)
 -> set_state_dict(anchor state)
 -> verify the complete restored state
 -> capture the restored-boundary 38D verifier state and task projection
--> configure the fixed domain and three world cameras
--> render RGB views without stepping
+-> configure exactly one fixed render domain
+-> render all three fixed RGB cameras without stepping
 -> recapture and verify state, verifier state, and task projection
--> close the session
 ```
+
+One rendering worker may reuse an initialized environment to reduce startup
+cost, but every packet still performs the complete sequence above with an
+independent reset and exact state restoration. No state from a previous packet
+may substitute for that restoration, camera/domain changes may not step
+physics, and cross-packet drift fails closed. The worker closes its environment
+when its bounded work completes or fails. If safe reuse fails the smoke
+integrity gate, production falls back to a fresh compatible environment per
+packet without weakening any check.
 
 The render path has no candidate action and no physics/contact refresh step.
 The complete state comparison still covers all 70 numeric components under the

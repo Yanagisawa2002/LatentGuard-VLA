@@ -65,9 +65,11 @@ The accepted PickCube compatibility identity is
 Only compact sanitized M3A/M3C reports are present in the local checkout. The
 authoritative state archives, M3A verifier bundle, M3C candidate pool, and
 selected/remainder replay datasets are not local and must be located on
-persistent remote storage before rendering. If unavailable, they must be
-regenerated from the exact accepted contracts and seeds; smoke data may not be
-substituted and a changed identity may not be presented under an old name.
+persistent remote storage before rendering. If an accepted source artifact is
+unavailable, M4A stops and preserves a compact diagnostic while the exact
+existing artifact is located or restored from persistent storage. M4A must not
+regenerate the accepted M3A or M3C physical outcomes, substitute smoke data, or
+present a changed identity under an old name.
 
 ## Visual contract assumptions
 
@@ -145,21 +147,20 @@ candidate-by-domain association count.
 ## Remote discovery and freeze gates
 
 The prior paid server is shut down. Remote work begins only after the discovery
-commit is pushed and an exact one-RTX-5090 checkout is synchronized. Gates are:
+commit is pushed and an exact one-RTX-5090 checkout is synchronized. The
+authoritative execution schedule is exactly Phase A, Phase B, and Phase C under
+the cost-aware amendment below; it replaces the earlier expanded gate list.
+Before Phase A, a fail-fast preflight validates the persistent source artifacts
+and identities, output-root state, exact Git SHA, camera/domain digests, disk,
+renderer initialization, and one complete packet. Preflight does not regenerate
+accepted physical outcomes.
 
-1. validate persistent source artifacts and exact identities;
-2. renderer import smoke;
-3. visual compatibility probe on one archived state;
-4. one-state canonical three-view render;
-5. repeated and fresh-environment byte determinism;
-6. full state, verifier-state, and task-projection integrity;
-7. six-trajectory M3A and disjoint six-trajectory M3C smokes;
-8. independent smoke reload and zero-work resume;
-9. local review and freeze commit for the rig/domains;
-10. exact-SHA probe rerun with agreement;
-11. full M3A rendering and validation;
-12. full M3C evaluation-only rendering;
-13. cross-dataset leakage, independent reload, and zero-work resume.
+Phase A contains the single bounded compatibility probe, including its
+three-view render, exact repeated/fresh-environment determinism samples, and all
+physical-integrity checks. There is no unconditional post-freeze probe rerun.
+If a newly discovered material defect requires a local code or configuration
+change, the phase stops; the fix is validated, committed, pushed, synchronized
+to a new exact SHA, and recorded as the material reason for any new run.
 
 Formal probe output contains exactly `visual-compatibility-report.json` and
 `run-manifest.json`. Formal render roots publish the run manifest together with
@@ -219,14 +220,37 @@ shuts the server down.
 
 M4A performs no model training, backbone or teacher feature extraction,
 augmentation job, normalization fitting, M4B smoke, or architecture selection,
-and it does not begin M4B automatically. Future M4B should start with one seed,
-prefer and cache a frozen backbone once, cache privileged teacher logits once,
-reuse both caches across permitted heads/seeds, retain one raw-RGB end-to-end
-inference check, expand only selected models to seeds `0, 1, 2`, apply the
-project-wide five-seed escalation rule, and run the frozen M3C external visual
-evaluation exactly once. Required future comparisons remain visual-only,
-RGB+action fusion, teacher-distilled RGB+action, strongest structured-state
-teacher, canonical/shifted domains, and blind selection after model freeze.
+and it does not begin M4B automatically.
+
+### Future project-wide model screening
+
+Future model milestones screen each proposed architecture once with seed `0`,
+full training data, validation-only selection, ordinary early stopping, and
+checkpoint/resume validation. Only the best validation model, strongest direct
+baseline, and one technically essential ablation may advance to final seeds
+`0, 1, 2`. Add seeds `3` and `4` only when the top validation gap is below
+`0.02`, three-seed standard deviation exceeds `0.03`, rankings change across
+seeds, a seed collapses, or a publication-level statistical claim requires it.
+Poor external-test performance must never trigger extra seeds or test tuning.
+This policy reduces repeated training without reducing required architectures,
+ablations, external evaluation, or technical scope.
+
+### Future M4B efficiency requirements
+
+These requirements are documentation for a later milestone; M4A neither
+implements nor runs them. The first visual baseline should prefer a frozen
+visual backbone. Its frozen image embeddings and the privileged teacher logits
+are each cached once and reused across permitted seeds and fusion heads, while
+one raw-RGB end-to-end inference validation is retained. Initial training uses
+one seed, and only the selected models advance to seeds `0, 1, 2` under the
+project-wide escalation rule. The frozen M3C external visual evaluation runs
+exactly once. M4B must not automatically execute
+`architecture_count x 5 seeds`.
+
+Required future comparisons remain visual-only, RGB+action fusion,
+teacher-distilled RGB+action, the strongest structured-state teacher,
+canonical/shifted-domain evaluation, and blind candidate selection after model
+freeze. None of those quality components is removed.
 
 ## Remote outputs and closeout
 
@@ -236,17 +260,35 @@ count, determinism, integrity, domain, leakage, training-prohibition, resume,
 manifest-summary, and human-review reports are retrieved under `reports/m4a/`.
 After full acceptance, update this plan, rerun local checks, commit
 `docs(m4a): record multi-view visual dataset acceptance`, push, verify clean
-local/upstream/remote SHA equality, and shut down the paid server.
+local/upstream/remote SHA equality, and shut down the paid server immediately;
+do not leave it running while awaiting review.
+
+The final completion report records observed facts only and must state:
+
+- which discovery, smoke, and full phases actually ran;
+- every rerun and its exact material reason;
+- packet and image counts;
+- physical-integrity statistics and the pixel-determinism result;
+- the M3A development and M3C external visual dataset digests;
+- the cross-dataset leakage result and strict zero-work resume result;
+- total reliably measured remote execution time;
+- confirmation that no model training or feature extraction occurred;
+- paid-server shutdown status;
+- branch and commits;
+- local, upstream, and GitHub SHA equality; and
+- clean working-tree status.
 
 ## Current status
 
-The local discovery candidate is implemented. Python 3.11 passed all 191 M4A
-tests; the repository environment passed 1,409 tests with three Windows
+The local discovery candidate and cost-aware execution amendment are
+implemented. The repository environment passed 1,420 tests with three Windows
 directory-symlink tests skipped for missing host privilege. `ruff check .`,
 `ruff format --check .`, `mypy src`, all five installed CLI help paths, and the
 CPU-import boundary also pass. No visual compatibility probe, trusted render,
 raw visual dataset, model training, VLM, LangMani, video, or remote M4A
-execution has yet occurred. The paid server is currently available. Its clean
-checkout has been synchronized to the pushed discovery commit and the complete
-accepted M3A/M3C source bindings have passed. The next gate is the single
-bounded visual compatibility discovery probe; no training process has run.
+probe/render phase has yet occurred. The paid server is currently available.
+Its clean checkout remains on the pushed discovery implementation while this
+amendment candidate is reviewed and pushed; the complete accepted M3A/M3C
+source bindings have already passed. The next gate after exact synchronization
+is the single bounded visual compatibility discovery probe; no training process
+has run.
