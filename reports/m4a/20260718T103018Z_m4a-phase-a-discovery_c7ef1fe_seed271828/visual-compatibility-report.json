@@ -1,0 +1,307 @@
+{
+  "camera_calibration_stable": true,
+  "camera_rig_digest": "sha256:f6345d8c01554a8def7a84f2cd01707523192338d1082578cc27652d7ee42f1f",
+  "compared_state_component_count": 70,
+  "cuda_runtime_version": "12.8",
+  "elapsed_simulation_step_changed": false,
+  "environment_close_passed": true,
+  "environment_initialization_count": 3,
+  "fresh_environment_render": {
+    "changed_pixel_count": 0,
+    "comparison": "fresh_environment_render",
+    "exact_match": true,
+    "maximum_per_channel_absolute_difference": 0,
+    "mean_absolute_pixel_difference": 0.0,
+    "samples": [
+      {
+        "changed_pixel_count": 0,
+        "comparison_id": "fresh_environment_1_render_1_vs_same_environment_render_1",
+        "exact_match": true,
+        "maximum_per_channel_absolute_difference": 0,
+        "mean_absolute_pixel_difference": 0.0,
+        "views": [
+          {
+            "camera_id": "front_oblique",
+            "changed_pixel_count": 0,
+            "exact_match": true,
+            "maximum_per_channel_absolute_difference": 0,
+            "mean_absolute_pixel_difference": 0.0
+          },
+          {
+            "camera_id": "overhead",
+            "changed_pixel_count": 0,
+            "exact_match": true,
+            "maximum_per_channel_absolute_difference": 0,
+            "mean_absolute_pixel_difference": 0.0
+          },
+          {
+            "camera_id": "side_oblique",
+            "changed_pixel_count": 0,
+            "exact_match": true,
+            "maximum_per_channel_absolute_difference": 0,
+            "mean_absolute_pixel_difference": 0.0
+          }
+        ]
+      },
+      {
+        "changed_pixel_count": 0,
+        "comparison_id": "fresh_environment_2_render_1_vs_same_environment_render_1",
+        "exact_match": true,
+        "maximum_per_channel_absolute_difference": 0,
+        "mean_absolute_pixel_difference": 0.0,
+        "views": [
+          {
+            "camera_id": "front_oblique",
+            "changed_pixel_count": 0,
+            "exact_match": true,
+            "maximum_per_channel_absolute_difference": 0,
+            "mean_absolute_pixel_difference": 0.0
+          },
+          {
+            "camera_id": "overhead",
+            "changed_pixel_count": 0,
+            "exact_match": true,
+            "maximum_per_channel_absolute_difference": 0,
+            "mean_absolute_pixel_difference": 0.0
+          },
+          {
+            "camera_id": "side_oblique",
+            "changed_pixel_count": 0,
+            "exact_match": true,
+            "maximum_per_channel_absolute_difference": 0,
+            "mean_absolute_pixel_difference": 0.0
+          }
+        ]
+      }
+    ],
+    "spatially_stable": true,
+    "views": [
+      {
+        "camera_id": "front_oblique",
+        "changed_pixel_count": 0,
+        "exact_match": true,
+        "maximum_per_channel_absolute_difference": 0,
+        "mean_absolute_pixel_difference": 0.0
+      },
+      {
+        "camera_id": "overhead",
+        "changed_pixel_count": 0,
+        "exact_match": true,
+        "maximum_per_channel_absolute_difference": 0,
+        "mean_absolute_pixel_difference": 0.0
+      },
+      {
+        "camera_id": "side_oblique",
+        "changed_pixel_count": 0,
+        "exact_match": true,
+        "maximum_per_channel_absolute_difference": 0,
+        "mean_absolute_pixel_difference": 0.0
+      }
+    ]
+  },
+  "fresh_environment_render_count": 2,
+  "gpu_capability": "12.0",
+  "gpu_model": "NVIDIA GeForce RTX 5090",
+  "mani_skill_version": "3.0.1",
+  "pickcube_compatibility_identity": "sha256:05a560fd89e0989b6d94017c6456efc535de4a0bf87ededaf468f5e2d9ef71f7",
+  "probe_source": {
+    "expected_state_digest": "sha256:9cc12bd4ed9ef3f90e9b13f4dceb25fe3071def98d144fd1c325efc41b52da70",
+    "schema_version": "1.0",
+    "source_archive_digest": "sha256:cc48c42f1c8395d348f968be72102b857eb2994702c6ca85bf8e6239f2fb36d5",
+    "source_episode_content_digest": "sha256:adadfae6d38d9eb69f1831b82f094e4b3c8cb1d80e7130db61a4293c1803908a",
+    "source_episode_id": "mspc-episode-b3696ccab9f6ade9385be8d8b2527e51068fc72acb5f001e8d7fa3bb16c1ef1e",
+    "source_reset_seed": 0,
+    "source_trajectory_id": "mspc-trajectory-6086ce65cdf5fd4d9e22f3bd49f0a8a8dcf03935f0897ebce22ad8dd65ddbc61",
+    "state_content_digest": "sha256:134c2a3f743e1dcc8e66e98c0010499e5cacc5cea0c7a1b78807d2cd3d7cc326",
+    "state_index": 0,
+    "verifier_state_digest": "sha256:401ed84ba0814bd14ba44406c079c3eef139ab6a2c25adbe790d2ff7b85b0df5"
+  },
+  "render_domain_configuration_digest": "sha256:ce16fe22b8b143a714f10b43653a30f86d409402d756cc55b60de9fee158abc2",
+  "render_output_shape": [
+    224,
+    224,
+    3
+  ],
+  "renderer_api": {
+    "calibration_comparison_semantic": "exact_intrinsics_after_runtime_cast_and_exact_pose_bound_device_recomputed_extrinsics_v1",
+    "camera_configuration_api": "ManiSkillScene.add_camera(intrinsic,world_pose)+RenderSystemGroup.create_camera_group(RenderCamera._render_cameras)",
+    "camera_extrinsics_available": true,
+    "camera_group_count": 3,
+    "camera_group_initialization_semantic": "sapien_render_system_3_0_one_group_per_runtime_camera_v1",
+    "camera_group_texture_names": [
+      "Color",
+      "PositionSegmentation"
+    ],
+    "camera_groups_ready": true,
+    "camera_intrinsics_available": true,
+    "camera_type": "mani_skill.utils.structs.render_camera.RenderCamera",
+    "color_space_assumption": "sRGB_after_versioned_mani_skill_color_conversion",
+    "image_channel_order": "RGB",
+    "image_dtype": "uint8",
+    "packet_extrinsic_canonicalization_semantic": "content_bound_ideal_opencv_plan_cast_to_runtime_dtype_v1",
+    "raw_camera_pose_shape": "[1,7]",
+    "raw_color_texture_dtype": "uint8",
+    "raw_extrinsic_matrix_shape": "[1,3,4]",
+    "raw_underlying_position_shape": "[3]",
+    "raw_underlying_quaternion_shape": "[4]",
+    "renderer_backend": "BackendInfo(device=device(type='cuda'), sim_device=Device(\"cuda:0\"), sim_backend='physx_cuda', render_device=Device(\"cuda:0\"), render_backend='sapien_cuda')",
+    "rendering_requires_sensor_update_calls": false,
+    "rgb_conversion_semantic": "drop_alpha_identity_uint8_v1",
+    "runtime_camera_pose_device_type": "cuda",
+    "runtime_camera_pose_dtype": "float32",
+    "runtime_extrinsic_component_count": 12,
+    "runtime_extrinsics_dtype": "float32",
+    "runtime_extrinsics_semantic": "mani_skill_public_opencv_world_to_camera_3x4_to_homogeneous_4x4_v1",
+    "runtime_intrinsics_dtype": "float32",
+    "runtime_pose_component_count": 7,
+    "runtime_pose_verification_semantic": "exact_world_pose_float32_cuda_7_components_v1",
+    "runtime_public_extrinsic_derivation_semantic": "independent_maniskill_pose_inverse_ros_to_opencv_float32_cuda_matmul_bitwise_v1",
+    "runtime_underlying_pose_component_count": 7,
+    "runtime_underlying_pose_dtype": "float32",
+    "runtime_underlying_pose_type": "sapien.pysapien.Pose",
+    "runtime_underlying_position_type": "numpy.ndarray",
+    "runtime_underlying_quaternion_type": "numpy.ndarray",
+    "scene_type": "mani_skill.envs.scene.ManiSkillScene",
+    "sensor_update_calls": [
+      "scene.update_render(update_sensors=False,update_human_render_cameras=False) for group initialization",
+      "render_system_group.create_camera_group(camera._render_cameras,shader_texture_names)",
+      "scene.update_render(update_sensors=False,update_human_render_cameras=False) for capture",
+      "camera.take_picture()",
+      "camera.get_picture(['Color'])"
+    ],
+    "shader_configuration": "minimal",
+    "underlying_camera_count_per_group": 1,
+    "underlying_camera_pose_pre_post_bitwise": true,
+    "underlying_camera_pose_verification_semantic": "unmounted_sapien_render_camera_component_local_pose_float32_numpy_plan_and_pre_post_bitwise_v1",
+    "vertical_orientation": "top_row_first_as_returned_by_mani_skill",
+    "world_camera_pose_representation": "sapien.Pose(position,quaternion_wxyz)"
+  },
+  "renderer_semantic_version": "maniskill_pickcube_multiview_rgb_v3",
+  "repeated_render": {
+    "changed_pixel_count": 0,
+    "comparison": "repeated_render",
+    "exact_match": true,
+    "maximum_per_channel_absolute_difference": 0,
+    "mean_absolute_pixel_difference": 0.0,
+    "samples": [
+      {
+        "changed_pixel_count": 0,
+        "comparison_id": "same_environment_render_2_vs_1",
+        "exact_match": true,
+        "maximum_per_channel_absolute_difference": 0,
+        "mean_absolute_pixel_difference": 0.0,
+        "views": [
+          {
+            "camera_id": "front_oblique",
+            "changed_pixel_count": 0,
+            "exact_match": true,
+            "maximum_per_channel_absolute_difference": 0,
+            "mean_absolute_pixel_difference": 0.0
+          },
+          {
+            "camera_id": "overhead",
+            "changed_pixel_count": 0,
+            "exact_match": true,
+            "maximum_per_channel_absolute_difference": 0,
+            "mean_absolute_pixel_difference": 0.0
+          },
+          {
+            "camera_id": "side_oblique",
+            "changed_pixel_count": 0,
+            "exact_match": true,
+            "maximum_per_channel_absolute_difference": 0,
+            "mean_absolute_pixel_difference": 0.0
+          }
+        ]
+      },
+      {
+        "changed_pixel_count": 0,
+        "comparison_id": "same_environment_render_3_vs_1",
+        "exact_match": true,
+        "maximum_per_channel_absolute_difference": 0,
+        "mean_absolute_pixel_difference": 0.0,
+        "views": [
+          {
+            "camera_id": "front_oblique",
+            "changed_pixel_count": 0,
+            "exact_match": true,
+            "maximum_per_channel_absolute_difference": 0,
+            "mean_absolute_pixel_difference": 0.0
+          },
+          {
+            "camera_id": "overhead",
+            "changed_pixel_count": 0,
+            "exact_match": true,
+            "maximum_per_channel_absolute_difference": 0,
+            "mean_absolute_pixel_difference": 0.0
+          },
+          {
+            "camera_id": "side_oblique",
+            "changed_pixel_count": 0,
+            "exact_match": true,
+            "maximum_per_channel_absolute_difference": 0,
+            "mean_absolute_pixel_difference": 0.0
+          }
+        ]
+      }
+    ],
+    "spatially_stable": true,
+    "views": [
+      {
+        "camera_id": "front_oblique",
+        "changed_pixel_count": 0,
+        "exact_match": true,
+        "maximum_per_channel_absolute_difference": 0,
+        "mean_absolute_pixel_difference": 0.0
+      },
+      {
+        "camera_id": "overhead",
+        "changed_pixel_count": 0,
+        "exact_match": true,
+        "maximum_per_channel_absolute_difference": 0,
+        "mean_absolute_pixel_difference": 0.0
+      },
+      {
+        "camera_id": "side_oblique",
+        "changed_pixel_count": 0,
+        "exact_match": true,
+        "maximum_per_channel_absolute_difference": 0,
+        "mean_absolute_pixel_difference": 0.0
+      }
+    ]
+  },
+  "runtime_calibration_evidence": [
+    {
+      "camera_configuration_digest": "sha256:b5a3ace3336575eb30dc72d026aeafa81e6ebd67704e3c779f4e498f113c116e",
+      "camera_id": "front_oblique",
+      "expected_runtime_extrinsics_digest": "sha256:fdff7384021a0f712d93f70e162172a0bce6e3722ae960e3b4dc63def8d10624",
+      "runtime_extrinsics_digest": "sha256:fdff7384021a0f712d93f70e162172a0bce6e3722ae960e3b4dc63def8d10624",
+      "semantic": "camera_plan_bound_public_vs_independent_expected_digest_v1"
+    },
+    {
+      "camera_configuration_digest": "sha256:360960c666ce14c86c5287e6458f09b5e581077f5c5c7be219037dff7e43be7b",
+      "camera_id": "overhead",
+      "expected_runtime_extrinsics_digest": "sha256:3dce1bc35122ca2287e3519ab835ac744c9c279fc67a7b1d7db6625203e49af7",
+      "runtime_extrinsics_digest": "sha256:3dce1bc35122ca2287e3519ab835ac744c9c279fc67a7b1d7db6625203e49af7",
+      "semantic": "camera_plan_bound_public_vs_independent_expected_digest_v1"
+    },
+    {
+      "camera_configuration_digest": "sha256:c3fe169def3c976172ab8ce0528ddfb3d64abde5f9b754d35f55df56071c00fc",
+      "camera_id": "side_oblique",
+      "expected_runtime_extrinsics_digest": "sha256:589e78b0ff822c9bcb5a8816c513794a25012bcdb0ab48331e777bb7e5cc833c",
+      "runtime_extrinsics_digest": "sha256:589e78b0ff822c9bcb5a8816c513794a25012bcdb0ab48331e777bb7e5cc833c",
+      "semantic": "camera_plan_bound_public_vs_independent_expected_digest_v1"
+    }
+  ],
+  "same_environment_render_count": 3,
+  "sapien_version": "3.0.3",
+  "schema_version": "4.0",
+  "state_changed_by_rendering": false,
+  "state_comparison_semantic": "tolerance_verified_full_state_v1",
+  "state_comparison_tolerance": 1e-06,
+  "task_projection_changed_by_rendering": false,
+  "torch_version": "2.8.0+cu128",
+  "trusted_visual_generation_ready": true,
+  "verifier_component_count": 38,
+  "visual_compatibility_identity": "sha256:d4d4b18156eeb390541b0fd184f0a0e0ad67c36450f45c69e36c8c3426d03312"
+}

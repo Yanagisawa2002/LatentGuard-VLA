@@ -373,32 +373,36 @@ The final completion report records observed facts only and must state:
   canonical drift before packet serialization retains the exact plan-cast
   calibration. The complete local validation, commit, push, and exact
   synchronization gates must also pass.
+- Phase A attempt 5 used run ID
+  `20260718T103018Z_m4a-phase-a-discovery_c7ef1fe_seed271828` from clean pushed
+  SHA `c7ef1fea4a843d934c2ee51d7422375ff46e8bab`. It completed in 34 seconds,
+  published exactly one compact compatibility report and one operational
+  manifest, and left the GPU idle.
+- The trusted visual compatibility identity is
+  `sha256:d4d4b18156eeb390541b0fd184f0a0e0ad67c36450f45c69e36c8c3426d03312`.
+  All three same-environment renders, both fresh-environment renders, all 70
+  complete-state components, all 38 verifier components, the elapsed-step
+  boundary, camera calibration, and environment close passed exactly. The
+  ordered three-camera runtime calibration inventory matched its independently
+  derived expected inventory for every camera.
+- Only the 12,820-byte compatibility report and 2,534-byte sanitized manifest
+  were retrieved. Their exact file SHA-256 values are respectively
+  `0a2b6d001018c910cfa3af85751bb187f39b3e0b15a6ec3fe0a2f59ba2786ef7` and
+  `9761923d604bf950d5b3f8b58dbfedb974f0ed37639dffcd9f8faff03124e550`.
+  Independent local strict reload verified both content identities, the exact
+  Git SHA, branch, seed, source identity, rig/domain digests, and compatibility
+  cross-reference. No raw RGB, packet, training, or feature artifact was
+  retrieved.
 
 ## Current status
 
-The cost-aware implementation and the first three narrow renderer fixes were
-pushed and synchronized exactly through SHA
-`55d02cb8614ec75365e6fa629035e61dd5479021`. The fourth bounded Phase A command
-passed those fixed boundaries and exposed the strict calibration-contract
-defect recorded above. The current local candidate introduces no calibration
-or pixel tolerance: it fixes the frozen OpenCV convention, verifies the raw
-runtime pose and independently derived public matrix bit for bit before and
-after capture, directly checks the uncached underlying SAPIEN camera pose after
-all renderer calls, preserves evidence-bound raw matrices for repeated/fresh
-stability, and permits packets to store only an exactly verified canonical
-plan-cast matrix. The compatibility identity binds the normalized ordered
-three-camera raw/expected digest inventory, and `VisualViewRecordV1` schema 1.1
-persists both exact digests in packet content identity. Component counts require
-strict integers; dtype, shape, device, every numeric bit, signed-zero bits, and
-lowercase SHA-256 syntax fail closed. Regression tests cover pose, axis,
-public-matrix, underlying-cache, post-image, same-device, pre/post-capture,
-fresh-session, configuration, evidence binding, strict report reload, one-shot
-inventory normalization, and packet canonicalization drift. Final local
-validation passed with `1462 passed, 3 skipped`; `ruff check .`, `ruff format
---check .`, `mypy src`, all five M4A CLI help paths, and `git diff --check` also
-passed. The three skips are the existing Windows symbolic-link privilege cases.
-The paid server remains online. No
-trusted visual probe, raw visual dataset, model training, feature extraction,
-VLM, LangMani, video, or M4A smoke/full render has completed. The next gates are
-final review, commit/push, exact remote synchronization, and one
-material-reason Phase A rerun.
+The exact runtime-calibration fix and complete local validation were committed
+and pushed at SHA `c7ef1fea4a843d934c2ee51d7422375ff46e8bab`; the remote checkout was
+fast-forwarded to that exact clean revision. The fifth and final Phase A probe
+then passed every strict trust gate and its two compact artifacts passed
+independent local reload as recorded above. This closes discovery without a
+calibration or pixel tolerance. The paid server remains online. No raw visual
+dataset, model training, feature extraction, VLM, LangMani, video, or M4A
+smoke/full render has completed. The next gate is one Phase B smoke render of
+exactly six M3A development packets and six M3C external packets, followed by
+strict reload, leakage, resume, and physical-integrity validation.
