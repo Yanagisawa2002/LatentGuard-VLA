@@ -587,29 +587,7 @@ def _run_evaluate(args: argparse.Namespace) -> int:
         for (selector, domain), values in sorted(grouped.items())
     }
     bootstrap = load_bootstrap_configuration(args.bootstrap_config)
-    fixed = grouped[("fixed_primary_v1", "not_applicable")]
-    comparisons = {}
-    for selector in (
-        "action_only_ensemble_v1",
-        "privileged_structured_ensemble_v1",
-    ):
-        comparisons[f"{selector}/not_applicable_vs_fixed_primary"] = (
-            paired_trajectory_bootstrap(
-                grouped[(selector, "not_applicable")],
-                fixed,
-                configuration=bootstrap,
-            )
-        )
-    for selector in (
-        "direct_visual_ensemble_v1",
-        "distilled_visual_ensemble_v1",
-    ):
-        for domain in ("canonical", "strong_camera_shift", "strong_lighting_shift"):
-            comparisons[f"{selector}/{domain}_vs_fixed_primary"] = (
-                paired_trajectory_bootstrap(
-                    grouped[(selector, domain)], fixed, configuration=bootstrap
-                )
-            )
+    comparisons = _predeclared_bootstrap_comparisons(grouped, bootstrap=bootstrap)
     payload = {
         "aggregate_metrics": aggregates,
         "benchmark_complete": True,
@@ -633,6 +611,51 @@ def _run_evaluate(args: argparse.Namespace) -> int:
         f"episodes={len(episodes)} report={args.output}"
     )
     return 0
+
+
+def _predeclared_bootstrap_comparisons(
+    grouped: Mapping[tuple[str, str], Sequence[Any]],
+    *,
+    bootstrap: Any,
+) -> dict[str, object]:
+    """Build every predeclared trajectory-paired M4C comparison."""
+
+    primary_selector = "distilled_visual_ensemble_v1"
+    domains = ("canonical", "strong_camera_shift", "strong_lighting_shift")
+    nonvisual_comparators = (
+        "deterministic_random_v1",
+        "fixed_primary_v1",
+        "action_only_ensemble_v1",
+        "privileged_structured_ensemble_v1",
+    )
+    comparisons: dict[str, object] = {}
+    for domain in domains:
+        primary = grouped[(primary_selector, domain)]
+        for comparator in nonvisual_comparators:
+            comparisons[f"{primary_selector}/{domain}_vs_{comparator}"] = (
+                paired_trajectory_bootstrap(
+                    primary,
+                    grouped[(comparator, "not_applicable")],
+                    configuration=bootstrap,
+                )
+            )
+        comparisons[
+            f"{primary_selector}/{domain}_vs_direct_visual_ensemble_v1/{domain}"
+        ] = paired_trajectory_bootstrap(
+            primary,
+            grouped[("direct_visual_ensemble_v1", domain)],
+            configuration=bootstrap,
+        )
+    canonical = grouped[(primary_selector, "canonical")]
+    for domain in ("strong_camera_shift", "strong_lighting_shift"):
+        comparisons[f"{primary_selector}/canonical_vs_{domain}"] = (
+            paired_trajectory_bootstrap(
+                canonical,
+                grouped[(primary_selector, domain)],
+                configuration=bootstrap,
+            )
+        )
+    return comparisons
 
 
 def _run_inspect(args: argparse.Namespace) -> int:

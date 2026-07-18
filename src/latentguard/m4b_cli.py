@@ -658,8 +658,10 @@ def _run_benchmark(args: argparse.Namespace) -> int:
     else:
         if args.promotion_record is None:
             _fail("promoted benchmark", "--promotion-record is required")
-        promotion = json.loads(args.promotion_record.read_text(encoding="utf-8"))
-        promoted = tuple(promotion.get("promoted_model_ids", ()))
+        promotion_payload = json.loads(
+            args.promotion_record.read_text(encoding="utf-8")
+        )
+        promoted = tuple(promotion_payload.get("promoted_model_ids", ()))
         if len(promoted) > policy.maximum_promoted_families:
             _fail("promoted benchmark", "promotion exceeds three families")
         observed = {(item.model_id, item.seed) for item in results}  # type: ignore[attr-defined]
@@ -681,10 +683,12 @@ def _run_benchmark(args: argparse.Namespace) -> int:
         }
     if args.output.exists() and args.resume:
         try:
-            observed = json.loads(args.output.read_text(encoding="utf-8"))
+            existing_payload = json.loads(args.output.read_text(encoding="utf-8"))
         except (OSError, UnicodeError, json.JSONDecodeError) as exc:
             raise M4BCommandError(f"benchmark resume: {exc}") from exc
-        if observed != _finalize_report_payload(cast(Mapping[str, object], payload)):
+        if existing_payload != _finalize_report_payload(
+            cast(Mapping[str, object], payload)
+        ):
             _fail("benchmark resume", "completed report identity differs")
         print("benchmark-visual-action-verifier OK: zero_work_resume=true")
         return 0

@@ -21,7 +21,10 @@ from collections.abc import Mapping, Sequence
 from dataclasses import dataclass
 from datetime import UTC, datetime
 from pathlib import Path
-from typing import Any, NoReturn, cast
+from typing import TYPE_CHECKING, Any, NoReturn, cast
+
+if TYPE_CHECKING:
+    from latentguard.training.reporting import StrictReportV1
 
 import numpy as np
 from numpy.typing import NDArray
@@ -428,7 +431,9 @@ def _git_sha() -> str:
     return value
 
 
-def _strict_report_payload(report_type: str, payload: Mapping[str, object]) -> object:
+def _strict_report_payload(
+    report_type: str, payload: Mapping[str, object]
+) -> StrictReportV1:
     from latentguard.training.reporting import StrictReportV1
 
     return StrictReportV1(report_type=report_type, payload=dict(payload))
@@ -2232,7 +2237,7 @@ def _run_select_action_candidates(args: argparse.Namespace) -> int:
             "verifier_bundle_digests": bundle_digests,
         }
     )
-    latency_report = cast(
+    new_latency_report = cast(
         Any,
         _strict_report_payload("m3c_inference_latency_v1", latency_payload),
     )
@@ -2253,7 +2258,7 @@ def _run_select_action_candidates(args: argparse.Namespace) -> int:
                     "latency output",
                     "dry-run latency output must stay outside Stage A root",
                 )
-            save_strict_report(latency_report, args.latency_output)
+            save_strict_report(new_latency_report, args.latency_output)
     else:
         if args.latency_output is not None and _resolved(
             args.latency_output
@@ -2290,7 +2295,7 @@ def _run_select_action_candidates(args: argparse.Namespace) -> int:
             latency_path = staging_root / (
                 f"inference-latency-{str(args.device).replace(':', '-')}.json"
             )
-            save_strict_report(latency_report, latency_path)
+            save_strict_report(new_latency_report, latency_path)
             _load_selector_configuration_report(
                 staging_root / SELECTOR_CONFIGURATION_REPORT,
                 expected_digest=selector_digest,
@@ -2310,7 +2315,7 @@ def _run_select_action_candidates(args: argparse.Namespace) -> int:
             staging_root.rename(args.output_dir)
             published = True
             if args.latency_output is not None:
-                save_strict_report(latency_report, args.latency_output)
+                save_strict_report(new_latency_report, args.latency_output)
         except BaseException:
             if not published:
                 shutil.rmtree(staging_root, ignore_errors=True)

@@ -29,6 +29,7 @@ class EpisodeMetricRowV1:
     executed_control_steps: int
     decision_count: int
     intervention_count: int
+    decisions_before_first_intervention: int | None
     selected_probability_sum: float
     selected_probability_count: int
     risk_margin_sum: float
@@ -58,6 +59,23 @@ class EpisodeMetricRowV1:
             value = getattr(self, name)
             if type(value) is not int or value < 0:
                 raise ValueError(f"EpisodeMetricRowV1.{name}: invalid count")
+        if self.decisions_before_first_intervention is not None:
+            if (
+                type(self.decisions_before_first_intervention) is not int
+                or self.decisions_before_first_intervention < 0
+                or self.decisions_before_first_intervention >= self.decision_count
+            ):
+                raise ValueError(
+                    "EpisodeMetricRowV1.decisions_before_first_intervention: "
+                    "invalid count"
+                )
+        if (self.intervention_count == 0) != (
+            self.decisions_before_first_intervention is None
+        ):
+            raise ValueError(
+                "EpisodeMetricRowV1 first-intervention count disagrees with "
+                "intervention count"
+            )
         for name in (
             "selected_probability_sum",
             "risk_margin_sum",
@@ -95,6 +113,7 @@ def episode_metric_row(
     if len(values) != len(episode.boundaries):
         raise ValueError("episode decisions do not match boundary count")
     interventions = 0
+    first_intervention: int | None = None
     probability_sum = 0.0
     probability_count = 0
     margin_sum = 0.0
@@ -106,7 +125,10 @@ def episode_metric_row(
         ):
             raise ValueError("decision digest differs from episode ledger")
         primary_id = decision.ordered_candidate_ids[primary_candidate_ordinal]
-        interventions += int(decision.selected_candidate_id != primary_id)
+        intervened = decision.selected_candidate_id != primary_id
+        interventions += int(intervened)
+        if intervened and first_intervention is None:
+            first_intervention = decision.decision_ordinal
         if decision.selected_predicted_failure_probability is not None:
             probability_sum += decision.selected_predicted_failure_probability
             probability_count += 1
@@ -121,6 +143,7 @@ def episode_metric_row(
         executed_control_steps=episode.executed_control_steps,
         decision_count=len(episode.boundaries),
         intervention_count=interventions,
+        decisions_before_first_intervention=first_intervention,
         selected_probability_sum=probability_sum,
         selected_probability_count=probability_count,
         risk_margin_sum=margin_sum,
@@ -287,6 +310,17 @@ def intervention_diagnostics(
         "mean_repeated_interventions_per_episode": float(
             np.mean([item.intervention_count for item in values])
         ),
+        "decisions_before_first_intervention": (
+            None
+            if not intervened
+            else _distribution(
+                [
+                    float(item.decisions_before_first_intervention)
+                    for item in intervened
+                    if item.decisions_before_first_intervention is not None
+                ]
+            )
+        ),
         "schema_version": "1.0",
         "success_conditional_on_intervention": success_rate(intervened),
         "success_conditional_on_no_intervention": success_rate(untouched),
@@ -319,18 +353,43 @@ def content_identical_decision_agreement(
     pair_count = 0
     same_top = 0
     same_ranking = 0
+    pairwise: dict[tuple[str, str], list[int]] = defaultdict(lambda: [0, 0, 0])
     for group in eligible:
         for left_index, left in enumerate(group):
             for right in group[left_index + 1 :]:
-                if left.selector_id == right.selector_id:
+                left_participant = f"{left.selector_id}/{left.visual_domain}"
+                right_participant = f"{right.selector_id}/{right.visual_domain}"
+                if left_participant == right_participant:
                     continue
+                pair_key = (
+                    (left_participant, right_participant)
+                    if left_participant < right_participant
+                    else (right_participant, left_participant)
+                )
                 pair_count += 1
-                same_top += int(
+                top_match = int(
                     left.selected_candidate_id == right.selected_candidate_id
                 )
-                same_ranking += int(
+                ranking_match = int(
                     left.deterministic_ranking == right.deterministic_ranking
                 )
+                same_top += top_match
+                same_ranking += ranking_match
+                pairwise[pair_key][0] += 1
+                pairwise[pair_key][1] += top_match
+                pairwise[pair_key][2] += ranking_match
+    pairwise_payload = {}
+    for (pair_left, pair_right), (
+        count,
+        pair_top,
+        pair_ranking,
+    ) in sorted(pairwise.items()):
+        pairwise_payload[f"{pair_left}_vs_{pair_right}"] = {
+            "content_identical_boundary_count": count,
+            "full_ranking_agreement_rate": pair_ranking / count,
+            "top_selection_agreement_rate": pair_top / count,
+            "top_selection_disagreement_rate": 1.0 - (pair_top / count),
+        }
     payload: dict[str, object] = {
         "content_identical_boundary_group_count": len(eligible),
         "cross_selector_pair_count": pair_count,
@@ -343,6 +402,7 @@ def content_identical_decision_agreement(
             "pre_decision_state_digest",
         ],
         "ordinal_only_join_prohibited": True,
+        "pairwise_selector_agreement": pairwise_payload,
         "schema_version": "1.0",
         "top_selection_agreement_rate": None
         if pair_count == 0

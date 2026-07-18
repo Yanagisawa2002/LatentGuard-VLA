@@ -27,7 +27,10 @@ from latentguard.visual_training.data import (
     TEST_DOMAIN_IDS,
 )
 from latentguard.visual_training.models import build_visual_action_verifier
-from latentguard.visual_training.training import action_normalization_from_mapping
+from latentguard.visual_training.training import (
+    ActionNormalizationV1,
+    action_normalization_from_mapping,
+)
 
 
 class ExternalVisualEvaluationError(ValueError):
@@ -150,7 +153,7 @@ def select_external_visual_candidates(
     )
     target = torch.device(device)
     models = []
-    normalization = None
+    normalization: ActionNormalizationV1 | None = None
     checkpoint_digests = freeze.get("checkpoint_digests")
     if not isinstance(checkpoint_digests, list) or len(checkpoint_digests) != 3:
         _fail("external visual selection", "checkpoint freeze inventory differs")
