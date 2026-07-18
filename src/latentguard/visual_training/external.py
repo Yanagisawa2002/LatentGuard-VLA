@@ -74,6 +74,29 @@ def load_model_freeze_manifest(path: Path) -> Mapping[str, object]:
     return value
 
 
+def _checkpoint_matches_external_freeze(
+    metadata: object,
+    *,
+    seed: int,
+    model_config_digest: str,
+    observed_checkpoint_digest: str,
+    expected_checkpoint_digest: object,
+    freeze_git_sha: object,
+    feature_backbone_digest: str,
+) -> bool:
+    """Bind a trained checkpoint to its freeze, not a later cache execution."""
+    binding = cast(Any, metadata).progress.binding
+    return bool(
+        binding.seed == seed
+        and binding.model_config_digest == model_config_digest
+        and observed_checkpoint_digest == expected_checkpoint_digest
+        and cast(Any, metadata).progress.complete
+        and isinstance(freeze_git_sha, str)
+        and binding.git_sha == freeze_git_sha
+        and binding.backbone_digest == feature_backbone_digest
+    )
+
+
 def select_external_visual_candidates(
     *,
     visual_dataset: VisualVerifierExternalDatasetV1,
@@ -133,15 +156,14 @@ def select_external_visual_candidates(
         _fail("external visual selection", "checkpoint freeze inventory differs")
     for seed, path in enumerate(checkpoints):
         metadata = inspect_visual_checkpoint(path)
-        if (
-            metadata.progress.binding.seed != seed
-            or metadata.progress.binding.model_config_digest
-            != model_config.content_digest
-            or checkpoint_content_digest(path) != checkpoint_digests[seed]
-            or not metadata.progress.complete
-            or metadata.progress.binding.git_sha != feature_cache.git_sha
-            or metadata.progress.binding.backbone_digest
-            != feature_cache.backbone_digest
+        if not _checkpoint_matches_external_freeze(
+            metadata,
+            seed=seed,
+            model_config_digest=model_config.content_digest,
+            observed_checkpoint_digest=checkpoint_content_digest(path),
+            expected_checkpoint_digest=checkpoint_digests[seed],
+            freeze_git_sha=freeze.get("git_sha"),
+            feature_backbone_digest=feature_cache.backbone_digest,
         ):
             _fail("external visual selection", "checkpoint binding differs")
         if normalization is None:

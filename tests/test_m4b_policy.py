@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+from types import SimpleNamespace
+
 import numpy as np
 import pytest
 
@@ -12,6 +14,7 @@ from latentguard.visual_training.data import (
     require_development_training_dataset,
 )
 from latentguard.visual_training.evaluation import _summary, _trajectory_bootstrap
+from latentguard.visual_training.external import _checkpoint_matches_external_freeze
 from latentguard.visual_training.training import (
     DomainValidationResultV1,
     VisualTrainingError,
@@ -104,3 +107,43 @@ def test_three_seed_statistics_and_trajectory_bootstrap_are_deterministic() -> N
     assert one == two
     assert one["bootstrap_samples"] == 2000
     assert one["resampling_unit"] == "source_trajectory"
+
+
+def test_external_checkpoint_binds_training_sha_from_freeze() -> None:
+    """A later feature-cache execution SHA does not invalidate frozen weights."""
+    training_sha = "a" * 40
+    later_cache_execution_sha = "b" * 40
+    digest = "sha256:" + "c" * 64
+    backbone = "sha256:" + "d" * 64
+    model_config = "sha256:" + "e" * 64
+    metadata = SimpleNamespace(
+        progress=SimpleNamespace(
+            complete=True,
+            binding=SimpleNamespace(
+                seed=0,
+                model_config_digest=model_config,
+                git_sha=training_sha,
+                backbone_digest=backbone,
+            ),
+        )
+    )
+
+    assert training_sha != later_cache_execution_sha
+    assert _checkpoint_matches_external_freeze(
+        metadata,
+        seed=0,
+        model_config_digest=model_config,
+        observed_checkpoint_digest=digest,
+        expected_checkpoint_digest=digest,
+        freeze_git_sha=training_sha,
+        feature_backbone_digest=backbone,
+    )
+    assert not _checkpoint_matches_external_freeze(
+        metadata,
+        seed=0,
+        model_config_digest=model_config,
+        observed_checkpoint_digest=digest,
+        expected_checkpoint_digest=digest,
+        freeze_git_sha=later_cache_execution_sha,
+        feature_backbone_digest=backbone,
+    )
