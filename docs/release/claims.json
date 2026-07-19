@@ -1,0 +1,226 @@
+{
+  "schema_version": "1.0",
+  "content_digest": "sha256:fb9c98c4775c2b1ba72624d2b237b130963e43ee6d6ace838550e805e0fb5614",
+  "claims": [
+    {
+      "claim_id": "C-SUP-EXACT-REPLAY",
+      "wording": "LatentGuard-VLA implemented generic exact-state paired replay and physically validated it for a pinned ManiSkill PickCube integration.",
+      "support_status": "supported",
+      "scope": "ManiSkill PickCube adapter version 1.1.1 under its content-bound compatibility identity and 1e-6 complete-state runtime comparison contract.",
+      "evidence_references": ["m2c-strong-replays", "m2c-restoration-error"],
+      "counterevidence_references": [],
+      "limitations": ["The physical result does not automatically extend to other simulators, tasks, controllers, or adapters."],
+      "permitted_usage_surfaces": ["README", "resume", "interview", "technical report", "research discussion"]
+    },
+    {
+      "claim_id": "C-SUP-EVIDENCE-SCALE",
+      "wording": "The project generated thousands of strong simulator-verified PickCube counterfactual outcomes with trajectory-grouped provenance.",
+      "support_status": "supported",
+      "scope": "The accepted M3A state-indexed dataset contains 2,880 evaluated corrupted proposals from 60 source trajectories and 360 anchors.",
+      "evidence_references": ["m3a-source-trajectories", "m3a-anchor-count", "m3a-verified-outcomes", "m3a-leakage-gate"],
+      "counterevidence_references": [],
+      "limitations": ["Scale comes from synthetic action corruptions in one fixed PickCube task, not independent robot tasks."],
+      "permitted_usage_surfaces": ["README", "resume", "interview", "technical report", "research discussion"]
+    },
+    {
+      "claim_id": "C-SUP-STRUCTURED-LEARNING",
+      "wording": "Structured state-plus-action failure prediction was learnable in the fixed PickCube corruption scope.",
+      "support_status": "supported",
+      "scope": "Five fixed seeds, validation-only architecture selection, and untouched test evaluation on the accepted M3A dataset.",
+      "evidence_references": ["m3b-validation-auprc", "m3b-test-auprc", "m3b-test-roc-auc", "m3b-test-ece", "m3b-test-ranking"],
+      "counterevidence_references": [],
+      "limitations": ["The learned result does not establish visual, language, cross-task, real-robot, or general-safety performance."],
+      "permitted_usage_surfaces": ["README", "resume", "interview", "technical report", "research discussion"]
+    },
+    {
+      "claim_id": "C-SUP-ONE-SHOT",
+      "wording": "Blind verifier-guided one-shot candidate selection outperformed deterministic random selection on untouched PickCube groups.",
+      "support_status": "supported",
+      "scope": "M3C identical eight-candidate pools across 360 groups; selection was frozen before outcomes were loaded.",
+      "evidence_references": ["m3c-random-success", "m3c-action-only-success", "m3c-joint-success", "m3c-temporal-success", "m3c-temporal-vs-random-ci-low", "m3c-temporal-vs-random-ci-high"],
+      "counterevidence_references": [],
+      "limitations": ["One-shot success does not imply performance under repeated intervention; the joint MLP, not the temporal model, was the strongest learned selector."],
+      "permitted_usage_surfaces": ["README", "resume", "interview", "technical report", "research discussion"]
+    },
+    {
+      "claim_id": "C-SUP-VISUAL-ROBUSTNESS",
+      "wording": "Frozen visual one-shot selection remained strong under predeclared camera and lighting shifts and outperformed random selection.",
+      "support_status": "supported",
+      "scope": "M4B external evaluation on the fixed M4A camera rig and render domains; no external data was used for training or tuning.",
+      "evidence_references": ["m4b-external-visual-success", "m4b-visual-vs-random-ci-low", "m4b-visual-vs-random-ci-high", "m4b-strong-camera-success", "m4b-strong-lighting-success"],
+      "counterevidence_references": [],
+      "limitations": ["The result is one-shot and narrowly rendered; it was not statistically better than action-only selection."],
+      "permitted_usage_surfaces": ["README", "resume", "interview", "technical report", "research discussion"]
+    },
+    {
+      "claim_id": "C-SUP-RESUME",
+      "wording": "Content-bound transactional publication and zero-work resume were validated across the largest data and benchmark runs.",
+      "support_status": "supported",
+      "scope": "Accepted M3A and M4D compact evidence, with analogous accepted resume reports in intervening milestones.",
+      "evidence_references": ["m3a-resume-reuse", "m4d-resume-zero-work"],
+      "counterevidence_references": [],
+      "limitations": ["This establishes application-level idempotence for the tested workflows, not a universal distributed-systems durability guarantee."],
+      "permitted_usage_surfaces": ["README", "resume", "interview", "technical report", "research discussion"]
+    },
+    {
+      "claim_id": "C-SUP-CLEAN-PRESERVATION",
+      "wording": "The conservative M4D gate preserved clean nominal PickCube performance without false intervention.",
+      "support_status": "supported",
+      "scope": "Primary gated direct visual selector on clean canonical M4D episodes.",
+      "evidence_references": ["m4d-clean-success", "m4d-clean-intervention"],
+      "counterevidence_references": [],
+      "limitations": ["Clean preservation alone does not establish fault detection or general safety."],
+      "permitted_usage_surfaces": ["README", "resume", "interview", "technical report", "research discussion"]
+    },
+    {
+      "claim_id": "C-SUP-LIMITED-FAULT-BENEFIT",
+      "wording": "Conservative gating produced a measurable but limited benefit over accepting injected nominal faults.",
+      "support_status": "supported",
+      "scope": "M4D controlled injected-fault canonical schedule with a frozen gate and paired source-trajectory bootstrap.",
+      "evidence_references": ["m4d-fault-accept-success", "m4d-fault-gated-success", "m4d-intervention-rate"],
+      "counterevidence_references": ["m4d-fault-fallback-success", "m4d-fault-ungated-success", "m4d-override-recall"],
+      "limitations": ["Success remained below ungated direct and always-fallback baselines, and override recall was only 4.03 percent."],
+      "permitted_usage_surfaces": ["README", "resume", "interview", "technical report", "research discussion"]
+    },
+    {
+      "claim_id": "C-PART-VISUAL-ADDED-VALUE",
+      "wording": "Visual information adds deployment value beyond actions alone.",
+      "support_status": "partially_supported",
+      "scope": "M4B external one-shot comparison only.",
+      "evidence_references": ["m4b-external-visual-success"],
+      "counterevidence_references": ["m4b-visual-vs-action-estimate"],
+      "limitations": ["The visual-minus-action-only confidence interval included zero; repeated visual intervention also underperformed action-only in M4C."],
+      "permitted_usage_surfaces": ["interview", "technical report", "research discussion"]
+    },
+    {
+      "claim_id": "C-PART-DISTILLATION",
+      "wording": "Privileged structured-teacher distillation improves deployment behavior.",
+      "support_status": "partially_supported",
+      "scope": "M4B internal prediction and one-shot evidence, tested further in M4C closed loop.",
+      "evidence_references": ["m4b-external-visual-success"],
+      "counterevidence_references": ["m4c-distilled-success", "m4c-privileged-success"],
+      "limitations": ["The distilled visual selector did not beat the privileged or fixed baselines under repeated intervention."],
+      "permitted_usage_surfaces": ["interview", "technical report", "research discussion"]
+    },
+    {
+      "claim_id": "C-PART-CLOSED-LOOP",
+      "wording": "Verifier-guided shielding improves full closed-loop control.",
+      "support_status": "partially_supported",
+      "scope": "M4C repeated intervention and M4D controlled injected-fault evaluation.",
+      "evidence_references": ["m4c-action-success", "m4d-fault-gated-success"],
+      "counterevidence_references": ["m4c-distilled-vs-fixed", "m4d-fault-fallback-success", "m4d-fault-ungated-success"],
+      "limitations": ["M4C overall targets failed, while M4D improved only over accept-nominal and missed four predeclared targets."],
+      "permitted_usage_surfaces": ["interview", "technical report", "research discussion"]
+    },
+    {
+      "claim_id": "C-PART-APPROACHES-FALLBACK",
+      "wording": "Conservative gating approaches trusted fallback performance while intervening less.",
+      "support_status": "partially_supported",
+      "scope": "M4D injected-fault canonical evaluation.",
+      "evidence_references": ["m4d-intervention-rate", "m4d-fallback-rate"],
+      "counterevidence_references": ["m4d-fault-gated-success", "m4d-fault-fallback-success", "m4d-override-recall"],
+      "limitations": ["The 0.20 success-rate gap to always fallback was material; the within-0.05 target failed."],
+      "permitted_usage_surfaces": ["interview", "technical report", "research discussion"]
+    },
+    {
+      "claim_id": "C-UNSUP-DISTILLED-BEATS-FIXED",
+      "wording": "The distilled visual shield outperforms the fixed primary in repeated closed-loop control.",
+      "support_status": "unsupported",
+      "scope": "M4C canonical repeated-intervention benchmark.",
+      "evidence_references": [],
+      "counterevidence_references": ["m4c-distilled-vs-fixed", "m4c-distilled-intervention-rate"],
+      "limitations": ["Observed success was 0.266667 lower than fixed primary and intervention was 93.48 percent."],
+      "permitted_usage_surfaces": ["technical report", "research discussion"]
+    },
+    {
+      "claim_id": "C-NT-GENERAL-SAFETY",
+      "wording": "LatentGuard-VLA establishes general robot safety.",
+      "support_status": "not_tested",
+      "scope": "Outside the frozen PickCube evidence boundary.",
+      "evidence_references": [],
+      "counterevidence_references": [],
+      "limitations": ["No general hazard model, safety certification, or broad task distribution was evaluated."],
+      "permitted_usage_surfaces": ["interview", "technical report", "research discussion"]
+    },
+    {
+      "claim_id": "C-NT-REAL-ROBOT",
+      "wording": "The system is robust on real robots.",
+      "support_status": "not_tested",
+      "scope": "No real-robot execution occurred.",
+      "evidence_references": [],
+      "counterevidence_references": [],
+      "limitations": ["All physical evaluation used the pinned ManiSkill PickCube simulator integration."],
+      "permitted_usage_surfaces": ["interview", "technical report", "research discussion"]
+    },
+    {
+      "claim_id": "C-NT-CROSS-TASK",
+      "wording": "The verifier transfers across robot tasks.",
+      "support_status": "not_tested",
+      "scope": "Only PickCube was evaluated.",
+      "evidence_references": [],
+      "counterevidence_references": [],
+      "limitations": ["No second task adapter or untouched task distribution was run."],
+      "permitted_usage_surfaces": ["interview", "technical report", "research discussion"]
+    },
+    {
+      "claim_id": "C-NT-CROSS-ROBOT",
+      "wording": "The verifier transfers across robot embodiments.",
+      "support_status": "not_tested",
+      "scope": "Only one robot/controller contract was evaluated.",
+      "evidence_references": [],
+      "counterevidence_references": [],
+      "limitations": ["No cross-robot dataset, calibration, or control integration exists."],
+      "permitted_usage_surfaces": ["interview", "technical report", "research discussion"]
+    },
+    {
+      "claim_id": "C-NT-VLA-GENERALIZATION",
+      "wording": "The results demonstrate VLA generalization.",
+      "support_status": "not_tested",
+      "scope": "No learned VLA policy was executed.",
+      "evidence_references": [],
+      "counterevidence_references": [],
+      "limitations": ["The project evaluated solver-derived action candidates rather than arbitrary VLA outputs."],
+      "permitted_usage_surfaces": ["interview", "technical report", "research discussion"]
+    },
+    {
+      "claim_id": "C-NT-ARBITRARY-REPLANNING",
+      "wording": "The shield supports arbitrary motion replanning.",
+      "support_status": "not_tested",
+      "scope": "Fixed eight-candidate chunk pools and a fixed-primary fallback only.",
+      "evidence_references": [],
+      "counterevidence_references": [],
+      "limitations": ["The selector cannot synthesize arbitrary new trajectories."],
+      "permitted_usage_surfaces": ["interview", "technical report", "research discussion"]
+    },
+    {
+      "claim_id": "C-NT-HARDWARE-FAULTS",
+      "wording": "The verifier detects real hardware faults.",
+      "support_status": "not_tested",
+      "scope": "M4D used controlled action-level fault injection in simulation.",
+      "evidence_references": [],
+      "counterevidence_references": [],
+      "limitations": ["Injected nominal-action perturbations are not measurements of actuator, sensor, network, or hardware failures."],
+      "permitted_usage_surfaces": ["interview", "technical report", "research discussion"]
+    },
+    {
+      "claim_id": "C-NT-LANGUAGE",
+      "wording": "The verifier performs language-conditioned verification.",
+      "support_status": "not_tested",
+      "scope": "No language input was authorized as a deployable feature.",
+      "evidence_references": [],
+      "counterevidence_references": [],
+      "limitations": ["No language model, instruction distribution, or language-grounded evidence was evaluated."],
+      "permitted_usage_surfaces": ["interview", "technical report", "research discussion"]
+    },
+    {
+      "claim_id": "C-NT-LANGMANI",
+      "wording": "LatentGuard-VLA improves LangMani policy performance.",
+      "support_status": "not_tested",
+      "scope": "LangMani remained outside the frozen PickCube line.",
+      "evidence_references": [],
+      "counterevidence_references": [],
+      "limitations": ["No LangMani adapter, policy, data, or benchmark was executed."],
+      "permitted_usage_surfaces": ["interview", "technical report", "research discussion"]
+    }
+  ]
+}

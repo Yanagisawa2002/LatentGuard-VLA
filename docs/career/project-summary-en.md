@@ -1,0 +1,7 @@
+# Project summary (English)
+
+LatentGuard-VLA is a contract-first framework for verifying robot action chunks before execution. I built simulator-independent data, corruption, evidence, exact-state replay, selection, and transactional recovery layers, then added a pinned ManiSkill PickCube adapter for physical validation. The accepted pipeline generated 2,880 strong simulator-verified corrupted outcomes from 60 trajectories, trained structured and visual failure predictors, and froze every selector before untouched evaluation.
+
+Blind one-shot selection was strongly positive: a temporal ensemble achieved 98.33% success versus 88.89% random, and a visual selector reached 98.89% on the external canonical domain and 98.06% under fixed camera and lighting shifts. The project also preserved the important negative result: repeated distilled visual intervention reached only 73.33% success versus 100% for the fixed primary. A conservative redesign restored 100% clean success with zero intervention and improved controlled injected-fault success from 73.33% to 80.00% at 1.17% intervention, but recall was only 4.03%.
+
+The final release is evidence-bound rather than marketing-bound: public metrics resolve to committed report digests and JSON fields; negative and partial findings remain visible; raw datasets/checkpoints stay outside Git; and no general safety, real-robot, transfer, VLA, language, or LangMani claim is made.

@@ -1,403 +1,97 @@
 # LatentGuard-VLA
 
-LatentGuard-VLA is a simulator-independent foundation for action-conditioned
-robot-policy verification, evaluation, and failure analysis. Milestone M0
-provides typed episode data, deterministic synthetic fixtures, safe local
-serialization, validation, and exact-revision remote synchronization.
-Milestone M1 adds deterministic, action-semantics-aware corruption that turns
-existing action chunks into provenance-preserving, unlabeled proposals.
-Milestone M2A adds a simulator-independent evidence contract, a typed evaluator
-boundary, and an incrementally persisted evaluation runner that can resume
-without duplicating completed attempts. Milestone M2B-Core adds a generic,
-exact-state paired-replay boundary that content-binds M0 and M1 data and reuses
-the M2A runner for baseline-gated original/corrupted comparisons. Milestone M2C
-adds a version-locked ManiSkill `3.0.1` `PickCube-v1` reference adapter behind
-those same contracts. It probes the installed simulator before trusting it,
-records official Panda motion-planning sources, independently replays every
-accepted source, and keeps exact runtime state archives outside Git. It does not
-use LangMani or train a model.
+LatentGuard-VLA is an action-conditioned verification and failure-analysis framework for robot policies. It builds content-bound counterfactual evidence from exact simulator states, learns structured and visual action verifiers, and tests whether those verifiers can improve action choice. On ManiSkill PickCube, blind one-shot selection was strong and robust to fixed visual shifts; repeated intervention then exposed a deployment failure, and a conservative redesign recovered nominal behavior with only a limited injected-fault benefit. The project is technically significant because the negative result is preserved alongside the positive result under the same typed evidence, replay, and recovery contracts.
 
-Milestone M3C adds a blind, one-shot candidate-selection protocol around the
-frozen M3B verifiers. It finalizes immutable rankings before simulator outcomes
-exist, excludes the original source action, and reuses the exact-state replay
-ledger to evaluate selected candidates before the complete pool. See
-[the blind candidate-selection contract](docs/blind_candidate_selection.md).
+**Achieved:** physically validated paired replay, 2,880 strong simulator-verified corrupted outcomes, validation-selected failure prediction, blind one-shot improvement over random, state-preserving multi-view data, and transactional large-run resume. **Not achieved:** a general safety system, repeated learned shielding that beats the fixed primary, high-recall fault interception, cross-task transfer, or real-robot validation.
 
-Milestone M4A adds a content-bound three-view RGB data layer at the exact
-restored, pre-action boundary. Images are lossless NPY files outside Git;
-rendering advances no physics and is rejected unless the complete state,
-38-component verifier state, and restored task projection remain valid. M3A
-visual data preserves the 48/6/6 split, while M3C visual data is external
-evaluation-only. M4A performs no model training, encoder/teacher feature
-extraction, or VLM/LangMani work and does not begin M4B automatically. Paid
-execution is limited to one bounded discovery, one smoke, and one full-render
-sequence with exact resume and integrity validation. See
-[the visual data contract](docs/visual_action_verifier_data.md) and
-[the M4A execution plan](docs/plans/m4a-multiview-visual-dataset.md).
+## Problem
 
-Milestone M4B adds a cost-aware visual-action training and evaluation layer.
-It screens exactly four ResNet-18 visual/action models at seed `0`, reuses a
-single content-bound frozen-feature cache and one five-seed privileged-teacher
-cache, and advances at most three validation-selected families to seeds
-`0, 1, 2`. The student receives only ordered RGB/features, the candidate
-action chunk, and its mask. M3C images remain external-only and their outcomes
-cannot enter selection. See
-[the M4B training contract](docs/visual_action_verifier_training.md) and
-[the M4B execution plan](docs/plans/m4b-visual-action-verifier.md).
+A robot policy can emit a plausible action chunk that fails after execution. Evaluating only nominal rollouts hides the counterfactual question: from the same physical state, which alternative action would have produced a better terminal outcome? LatentGuard separates that question into explicit contracts for state identity, candidate generation, paired replay, evidence strength, deployable features, blind selection, and transactional execution.
 
-The current M2C checkout has passed a trusted real-runtime probe and accepted
-six official ManiSkill source trajectories with six independent successful
-baseline replays. The first 12-proposal paired-replay smoke was rejected because
-the public Gym wrapper had not been initialized before stepping; its 12 runtime
-errors were preserved without fabricating task failures. The adapter-local
-`1.1.1` correction binds the archived source seed and initializes each fresh
-wrapper before exact state restoration. The corrected 12-proposal rerun produced
-eight conclusive successes and four conclusive task failures, with 12 valid
-baselines, 12 strong simulator-verified evidence records, and zero execution
-errors. Resume reused all 12 records without rerunning them. No training is
-included.
+## Main contributions
 
-Tracked source is developed and validated in the local repository, which is
-authoritative. Remote servers only pull committed revisions and execute them;
-they must never be used to edit tracked source files.
+- Generic exact-state paired replay with independent baseline/corrupted sessions, exact archive integrity, and adapter-bound complete-state comparison.
+- A 60-trajectory, 360-anchor PickCube dataset with 2,880 strong simulator-verified corrupted outcomes and trajectory-level split integrity. <!-- LG-RESULT:m2c-strong-replays --> <!-- LG-RESULT:m3a-verified-outcomes -->
+- Structured and visual verifier evaluation with validation-only selection, untouched test/external evaluation, calibration, ranking, and coverage-risk reporting. <!-- LG-RESULT:m3b-test-auprc -->
+- Blind one-shot selection that beat random, followed by a deliberately honest receding-horizon negative result. <!-- LG-RESULT:m3c-temporal-success --> <!-- LG-RESULT:m4b-external-visual-success --> <!-- LG-RESULT:m4c-distilled-vs-fixed -->
+- A conservative fallback-aware redesign that preserved clean success but intercepted only 4.03% of injected-fault override opportunities. <!-- LG-RESULT:m4d-fault-gated-success --> <!-- LG-RESULT:m4d-override-recall -->
+- Content digests, exact-SHA remote execution, immutable source artifacts, transactional publication, crash recovery, and zero-work resume.
 
-## Install locally
+## Architecture
 
-Python 3.11 or newer is required. From the repository root:
+```mermaid
+flowchart LR
+    S["Source trajectory"] --> X["Content-bound exact state"]
+    X --> C["Candidate action corruptions"]
+    C --> R["Independent paired replay"]
+    R --> E["Strong outcome evidence"]
+    E --> V["Structured / visual verifier"]
+    V --> B["Blind selection or conservative gate"]
+    B --> T["Transactional execution + resume"]
+```
 
-```text
-python -m venv .venv
-.\.venv\Scripts\Activate.ps1
-python -m pip install --upgrade pip
+The detailed [architecture guide](docs/portfolio/architecture.md) shows the data/evidence, training/evaluation, closed-loop, and release-evidence graphs.
+
+## Key validated results
+
+| Stage | Result | Interpretation |
+| --- | --- | --- |
+| M2C–M3A | 12/12 trusted replay attempts and 2,880 accepted corrupted outcomes | Physical replay and evidence generation worked in the pinned PickCube scope. |
+| M3B | Selected temporal verifier untouched-test failure AUPRC **0.8986** | Structured state+action failure was learnable; no cross-task claim. |
+| M3C | Temporal one-shot success **98.33%** vs random **88.89%**; 95% difference CI **[6.39, 12.50] pp** | Blind selection improved one-shot action choice, although joint MLP reached 99.44%. |
+| M4B | External visual one-shot success **98.89%**; strong camera/light shifts **98.06%** | Robust to the fixed rendered shifts; visual-minus-action-only CI included zero. |
+| M4D | Clean success **100%**, clean intervention **0%** | Conservative gating preserved the tested nominal behavior. |
+
+The canonical positive, partial, and negative table is [docs/portfolio/key-results.md](docs/portfolio/key-results.md).
+
+## Honest negative results
+
+M4C showed that one-shot ranking did not transfer automatically to repeated intervention. The distilled visual selector achieved **73.33%** canonical success versus **100%** for the fixed primary, a **-26.67 percentage-point** difference, while selecting non-primary candidates on **93.48%** of decisions. M4D reduced fault-schedule intervention to **1.17%** and raised success from **73.33%** (accept nominal) to **80.00%**, but remained below ungated direct (**90%**) and always fallback (**100%**); override recall was only **4.03%**. M4D therefore passed 10/14 targets and is a partial engineering success, not a completed research claim.
+
+## Repository structure
+
+- `src/latentguard/`: simulator-independent data, corruption, evidence, replay, selection, visual, control, and release modules.
+- `configs/`: versioned semantic configurations; no credentials or machine-private paths.
+- `tests/`: CPU core tests plus explicitly marked integration/GPU boundaries.
+- `reports/`: compact sanitized accepted evidence; no raw states, images, datasets, caches, or checkpoints.
+- `docs/release/`: authoritative milestone, claim, result, and release-manifest registries.
+- `docs/portfolio/` and `docs/career/`: technical report, case study, diagrams, demo plan, and employment-ready summaries.
+
+## Reproducibility
+
+Install Python 3.11 and the development dependencies, then run:
+
+```bash
 python -m pip install -e ".[dev]"
-```
-
-M3B neural baselines use an optional PyTorch dependency and remain isolated from
-the simulator-independent core:
-
-```text
-python -m pip install -e ".[dev,training]"
-```
-
-On POSIX systems, activate with `source .venv/bin/activate` instead. The
-remaining validation and CLI commands assume the environment is active.
-
-## Validate locally
-
-```text
 python -m pytest
 ruff check .
 ruff format --check .
 mypy src
+latentguard audit-release --strict
 ```
 
-## Train the structured-state verifier baselines
+Large accepted datasets, images, states, checkpoints, and caches remain outside Git. Their continued availability is audited separately without making the ordinary local suite depend on a server.
 
-M3B adds strict, leakage-resistant Direct Action Verifier training over the
-accepted M3A dataset. The four learned baselines use only the verifier state,
-candidate action chunk, and action mask; provenance and corruption metadata are
-reporting-only. Inspect a bounded run without training with:
+## Quick smoke
 
-```text
-latentguard train-action-verifier --help
-latentguard evaluate-action-verifier --help
-latentguard benchmark-action-verifier --help
+```bash
+latentguard portfolio-smoke
 ```
 
-The full protocol, model-selection boundary, metrics, calibration, and scope
-limitations are documented in `docs/direct_action_verifier.md`. A frozen
-selection authorizes only its exact best-checkpoint bytes and validation
-prediction digest; calibration and thresholds are bound to that same identity
-before the test split can be inferred. Training, checkpoints, and authoritative
-predictions belong outside the repository and require the exact accepted M3A
-dataset digest. M3B performs no simulator rollout, LangMani execution, or VLM
-training. Completed benchmarks revalidate all run and evaluation artifacts and
-emit a compact content-bound Markdown result summary.
+This deterministic CPU command exercises synthetic source generation, corruption, non-physical fixture replay, weak evidence projection, a compact verifier/selection fixture, zero-work resume, and release-registry loading. It is explicitly **not** a simulator or research-result reproduction.
 
-## Evaluate blind candidate selection
+## Evidence and claims
 
-M3C exposes six strict orchestration commands:
+Every published number maps to a committed report, exact file digest, execution commit, run ID, and JSON pointer in [results.json](docs/release/results.json). Public wording is governed by [claims.json](docs/release/claims.json) and its [readable view](docs/release/claims.md). Run `latentguard audit-release --strict` to verify references, digests, result values, links, public-surface hygiene, and unsupported-claim boundaries.
 
-```text
-latentguard prepare-selection-checkpoints --help
-latentguard build-blind-candidate-pools --help
-latentguard select-action-candidates --help
-latentguard replay-selected-candidates --help
-latentguard replay-complete-candidate-pools --help
-latentguard evaluate-candidate-selection --help
-```
+## Limitations
 
-`select-action-candidates` deliberately accepts no evidence, outcome, or replay
-path. The candidate pool, selector configuration, checkpoint bundles, ensemble
-validation thresholds, and full seed range are frozen before full evaluation.
-Simulator execution remains a single-GPU remote operation after exact revision
-synchronization; ordinary tests are CPU-only and network-free.
+The accepted research line covers one ManiSkill PickCube task, one robot/controller contract, synthetic action corruptions, fixed candidate pools, fixed rendered domains, and controlled injected faults. It does not establish general safety, real-robot robustness, VLA generalization, arbitrary replanning, hardware-fault detection, cross-task/robot transfer, language-conditioned verification, or LangMani improvement.
 
-Stage A is isolated at the capability boundary: its process receives only a
-strict blinded pool containing opaque group/candidate IDs and the deployable
-state/action/mask tensors. It receives neither the full pool's corruption,
-severity, distribution, or source provenance nor any evidence manifest, replay
-output, or outcome-dataset capability. This is more precise than assuming the
-whole machine contains no unrelated outcome file.
-Complete-pool replay evidence and outcomes are first generated or loaded by
-Stage B/C, after the immutable Stage A envelope exists.
+## Future integrations
 
-The frozen Stage A inventory is exactly eleven selectors: deterministic random,
-the M3B action-magnitude heuristic, three learned five-seed ensembles
-(action-only, state+action MLP, and temporal), and six temporal policies (two
-validation operating points plus approximately 90/80/70/50 percent coverage).
-Only those three learned families form verifier bundles, for 15 checkpoints in
-total. Oracle is not one of the eleven; it is analysis-only after Stage C.
+Potential extensions include learned-policy proposals, a contract-frozen LangMani adapter, multiple task adapters, broader robot embodiments, and real-robot evaluation. Each requires a new milestone, untouched evidence, and its own compatibility and claim boundary; M5 starts none of them.
 
-Preparation validates calibration and threshold strict-report envelope digests
-against the committed M3B compact benchmark summary, rather than trusting a
-self-consistent rewritten runtime file. It also recomputes each ordered M3B
-validation prediction digest before fitting the frozen ensemble policies.
-Selector configuration, policy report, pool, bundle, and preparation-report
-digests are reloaded before replay.
+## Development and remote execution policy
 
-Preparation additionally executes a fixed outcome-free CPU/GPU forward smoke
-before new source collection and can persist its digest-only proof with
-`--inference-smoke-output`. Loading checkpoints without running a forward pass
-does not satisfy that gate.
-
-Stage ordering is proven with persisted timestamps, requiring selection before
-the selected-union run and that completed run before the complementary run; the
-bound outcome time is the actual remainder-run completion time, never a
-synthesized timestamp. CPU and GPU inference runs emit compact latency reports
-with per-candidate/group p50/p95/p99, throughput, peak allocated memory, bundle
-loading time, and the joint-versus-temporal difference, without raw
-predictions.
-
-Stage A is atomically published only after its manifest, selector
-configuration, and internal latency report all reload. Replay identity excludes
-host/path/time metadata while a separate archive-audit digest still binds the
-exact selected/remainder datasets. Completed resumes produce zero-work strict
-reports, and final evaluation emits a byte-bound `review.md` plus a combined
-`resume-summary.json`.
-
-The one-RTX-5090 M3C run at `a632a702c709edb1fc21e702c83e30964652ff79`
-completed 60 disjoint source trajectories, 360 blind groups, and all 2,880
-strong simulator-verified outcomes. The frozen temporal ensemble selected a
-successful candidate in 354/360 groups versus 320/360 for deterministic random;
-its trajectory-bootstrap success difference was 0.09444 with a 95% interval of
-[0.06389, 0.12500]. The joint MLP reached 358/360 and was not statistically
-inferior to temporal, so no temporal-over-joint claim is made. Compact results
-are under
-[`reports/m3c/20260716T152012Z_m3c-full_a632a70_seed271828`](reports/m3c/20260716T152012Z_m3c-full_a632a70_seed271828).
-M3C remains one-shot selection followed by the archived fixed continuation, not
-receding-horizon control; VLM and LangMani remain outside this milestone.
-
-## Generate multi-view visual verifier data
-
-M4A exposes a strict discovery/render/validation interface:
-
-```text
-latentguard probe-maniskill-pickcube-visual --help
-latentguard render-m3a-visual-dataset --help
-latentguard render-m3c-external-visual-dataset --help
-latentguard validate-visual-verifier-dataset --help
-latentguard inspect-visual-packet --help
-```
-
-Ordinary tests use fake render sessions and require no simulator or GPU. Real
-RGB rendering is single-GPU remote work from an exact pushed revision. The
-camera rig and render domains are frozen after a successful compatibility
-probe; raw images and full visual datasets are never committed.
-
-Formal probe runs use an absent `--output-root` and atomically publish
-`visual-compatibility-report.json` plus a sanitized `run-manifest.json`.
-Render roots bind the same operational evidence to a Git revision with no
-tracked or untracked drift, one RTX 5090 runtime, fixed seed, the complete
-canonical accepted-source identity, job inventory, and ordered packet
-selection. A completed zero-work resume publishes a content-bound immutable
-resume report beside the run. `validate-visual-verifier-dataset --report-dir`
-publishes a fixed, strictly reloaded compact JSON inventory only after
-full-target validation. Partial validation cannot publish acceptance reports.
-The inventory covers camera/domain summaries, split-by-domain counts,
-image-inventory digests, determinism, fixed nearest-rank physical/verifier state
-error statistics, leakage, training prohibition, and observed resume evidence;
-it never copies raw images, actions, states, or evidence payloads.
-
-The accepted M4A Phase C result was rendered and validated from pushed SHA
-`7a2a073666e455b36da8e72a2b87350a2baf3582`. The M3A development dataset
-contains 1,080 packets, 3,240 RGB images, 3,240 candidate bindings, and 9,720
-derived visual samples. The disjoint M3C external dataset contains 1,080
-packets, 3,240 images, 2,880 candidate bindings, and 8,640 derived samples and
-remains evaluation-only with `training_allowed=false`. Exact zero-work resume,
-state integrity, pixel determinism, training-loader rejection, and
-cross-dataset leakage gates passed. The fixed 17-file sanitized acceptance
-inventory is under
-[`reports/m4a/20260718T141800Z_m4a-phase-c-full-acceptance_7a2a073_seed271828`](reports/m4a/20260718T141800Z_m4a-phase-c-full-acceptance_7a2a073_seed271828/compact-retrieval-manifest.json).
-Each logical full dataset required one exact transactional resume after its
-initial native renderer process stopped at 864 packets; both final datasets and
-their later zero-work resumes validate completely. Operational timing and GPU
-memory coverage remain intentionally incomplete because the initial native
-processes did not publish per-packet telemetry and renderer allocations are
-outside the PyTorch allocator.
-
-## Train and evaluate the visual action verifier
-
-M4B exposes eight strict commands. Their default help and dry-run paths remain
-CPU-safe and do not download weights or open datasets:
-
-```text
-latentguard prepare-visual-backbone --help
-latentguard extract-visual-features --help
-latentguard prepare-visual-teacher-targets --help
-latentguard train-visual-action-verifier --help
-latentguard benchmark-visual-action-verifier --help
-latentguard evaluate-visual-action-verifier --help
-latentguard select-visual-action-candidates --help
-latentguard evaluate-external-visual-selection --help
-```
-
-Install `.[visual-training]` only in the persistent remote environment used for
-single-GPU execution. Raw images, feature/teacher arrays, checkpoints, and raw
-predictions stay outside Git. External feature extraction requires the
-explicit `--evaluation-only` gate, and external selection has no outcome or
-replay argument. A five-seed M4B benchmark is always refused.
-
-Generate, validate, save, reload, and compare a small deterministic dataset:
-
-```text
-latentguard sanity-data --seed 42 --output-dir .tmp/m0-sanity --episode-count 3 --episode-length 8 --action-dim 7 --robot-state-dim 10 --camera-count 2 --depth
-```
-
-For transactional safety, the output directory must be absent or empty.
-
-## Generate unlabeled corruption proposals
-
-First create an M0 source dataset, then run the checked-in synthetic-compatible
-M1 corruption configuration:
-
-```text
-latentguard sanity-data --seed 42 --output-dir .tmp/m1-source --episode-count 3 --episode-length 8 --action-dim 7 --robot-state-dim 10 --camera-count 2
-latentguard corrupt-data --input-dir .tmp/m1-source --output-dir .tmp/m1-corrupted --config configs/corruptions/m1-smoke.json --seed 314159
-```
-
-The configuration declares the action dimension and the indices and semantics
-of each named field; the engine never guesses translation, rotation, or gripper
-indices from the action dimension. `corrupt-data` writes transformed actions
-and single-source provenance, reloads the output for validation, and reports
-source counts, proposal counts, applicability skips, and counts by corruption
-type. Every proposal remains unlabeled: corruption alone is not evidence of
-failure, unsafe behavior, zero progress, or simulator verification.
-Use `--strict-applicability` when any non-applicable source/transformation pair
-should fail the command instead of being counted as a deterministic skip.
-
-Both M0 dataset generation and M1 corruption run locally on CPU. M1 does not
-require or connect to AutoDL or any other SSH server. See
-[the corruption-engine contract](docs/corruption_engine.md) for deterministic
-identifiers, applicability behavior, and the M1/M2 outcome boundary.
-
-## Evaluate proposals with the fixture runner
-
-The checked-in M2A evaluator exists only to test evidence, persistence, resume,
-and reporting infrastructure. This workflow is local, CPU-only, network-free,
-and does not use SSH, a simulator, LangMani, ManiSkill, or a GPU:
-
-```text
-latentguard evaluate-data --corruption-dir .tmp/m1-corrupted --output-dir .tmp/m2a-evaluated --evaluator deterministic_fixture --config configs/evaluation/m2a-fixture.json --seed 271828
-latentguard evaluate-data --corruption-dir .tmp/m1-corrupted --output-dir .tmp/m2a-evaluated --evaluator deterministic_fixture --config configs/evaluation/m2a-fixture.json --seed 271828 --resume
-```
-
-Use `--dry-run` with an absent output path to validate and display the planned
-proposal, seed, and evidence identities without evaluating anything or creating
-output. `--retry-execution-errors` is the only way to append a new attempt after
-an evaluator runtime error; ordinary resume preserves the error without
-rerunning it.
-
-`deterministic_fixture` produces weak synthetic evidence from action statistics.
-It is not a simulator, is not physically meaningful, never sets simulator replay
-verification, and must not be used for training, benchmarking, or research
-claims. Only complete `conclusive` evidence can be explicitly projected to an
-M0 `OutcomeLabel`; indeterminate, invalid, skipped, and execution-error records
-cannot become task failures. See [the M2A evidence contract](docs/evaluation_evidence.md).
-
-## Exercise exact-state paired replay locally
-
-`replay-data` binds the complete M0 source and M1 corruption contents, resolves
-each proposal to its original action, restores one opaque state reference in
-two independent sessions, and requires the original action to succeed before
-the transformed action is interpreted. The built-in adapter is a deterministic
-numeric state machine for infrastructure tests only:
-
-```text
-latentguard replay-data --source-dir .tmp/m1-source --corruption-dir .tmp/m1-corrupted --output-dir .tmp/m2b-replayed --adapter deterministic_replay_fixture --config configs/replay/m2b-fixture.json --seed 161803
-latentguard replay-data --source-dir .tmp/m1-source --corruption-dir .tmp/m1-corrupted --output-dir .tmp/m2b-replayed --adapter deterministic_replay_fixture --config configs/replay/m2b-fixture.json --seed 161803 --resume
-```
-
-Use `--dry-run` with a separate absent output path to validate both datasets,
-resolve every selected replay case, and plan M2A attempt identities without
-creating a session or output. Fixture evidence is weak,
-`deterministic_evaluator` evidence: it is not a simulator, is not physically
-meaningful, is unsuitable for research or training claims, and can never set
-simulator verification. See [the exact-replay contract](docs/exact_replay.md).
-
-## Probe the optional ManiSkill PickCube integration
-
-The ordinary core install does not include or import ManiSkill, SAPIEN, mplib,
-Vulkan, or CUDA. M2C uses a separate probe requirement file whose
-discovery-verified pins are `mani_skill==3.0.1`, `mplib==0.1.1`, and
-`sapien==3.0.3`, and then runs:
-
-```text
-latentguard probe-maniskill-pickcube --help
-latentguard collect-maniskill-pickcube --help
-latentguard replay-maniskill-pickcube --help
-```
-
-The successful schema-1.1 discovery and trusted probes resolved and confirmed
-the dependency, compatibility, and action contracts without guessing them.
-Key-only access and six-source collection are verified. The first paired replay
-correctly exposed a wrapper-initialization runtime error; the pushed `1.1.1`
-correction then passed the one-proposal gate, the 12-proposal class-balance
-smoke, and idempotent resume. See the
-[PickCube reference integration](docs/maniskill_pickcube_reference.md).
-
-Preview an exact-revision remote synchronization without network access:
-
-```text
-latentguard remote-sync --dry-run --host example-training-host --repo-dir /example/latentguard-vla --branch codex/m0-data-contract --commit 0000000000000000000000000000000000000000
-```
-
-## Audit, summarize, and inspect Episodes offline
-
-The Robot Episode Toolkit adds read-only quality checks, candidate-denominator
-metrics, and exact-index offline iteration without invoking a simulator:
-
-```text
-latentguard audit-data --input-dir .tmp/m0-sanity --output .tmp/audit.json
-latentguard summarize-data --input-dir .tmp/m0-sanity --output .tmp/metrics.json
-latentguard replay-episode --input-dir .tmp/m0-sanity --episode-id synthetic-s00000042-e0000 --candidate-id synthetic-s00000042-e0000-candidate-000 --output .tmp/replay.jsonl
-```
-
-Offline iteration is not M2B simulator replay and produces no physical or
-simulator-verified evidence. See [the Robot Episode Toolkit contract](docs/robot_episode_toolkit.md).
-
-The remote-sync example values are placeholders. Store machine-specific values
-in environment variables or an ignored local file; never commit credentials
-or private paths. See [the remote workflow](docs/remote_training.md),
-[architecture](docs/architecture.md), and [data contract](docs/data_contract.md).
-
-## Evaluate the frozen M4C receding-horizon shield
-
-M4C adds six commands for bounded source-plan preparation, one-selector runs,
-the fixed selector/domain benchmark, exact resume, evaluation, and episode
-inspection:
-
-```text
-latentguard prepare-closed-loop-source-plans --help
-latentguard run-receding-horizon-selector --help
-latentguard benchmark-receding-horizon-selectors --help
-latentguard resume-receding-horizon-benchmark --help
-latentguard evaluate-receding-horizon-benchmark --help
-latentguard inspect-closed-loop-episode --help
-```
-
-It reuses frozen M3B/M4B checkpoints without training. Each decision uses the
-same eight non-source M3C candidates, horizon 16, stride 4, transactional
-pre-execution persistence, and exact recovery. Visual inference always sends a
-fixed 128-image batch and consumes only its three real feature rows. See the
-[M4C protocol](docs/receding_horizon_visual_shield.md).
+Tracked source, tests, configs, and reports are authored and validated locally, committed, and pushed. Remote execution may use only that exact clean SHA and writes large artifacts outside the tracked tree. Bugs are fixed locally and resynchronized; remote-only tracked-source edits are invalid. The accepted server artifacts are preserved, and the server remains online unless the user explicitly authorizes shutdown in the current task.

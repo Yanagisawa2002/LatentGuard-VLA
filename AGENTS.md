@@ -267,6 +267,14 @@ restoration.
 - A transformation must never silently clip, normalize, reshape, repair, retarget, or otherwise change its configured meaning. Applicability failures must be explicit skips or descriptive errors.
 - Do not commit machine-specific absolute paths or credentials. Copy training configurations into run outputs.
 
+## Release freeze and public-claim rules
+
+- The PickCube research line is frozen after M4D. Release preparation must not rewrite accepted results, start training, or launch simulator benchmarks.
+- Every public claim must map to committed evidence. Positive, partial, negative, unsupported, and untested findings must remain distinguishable.
+- Portfolio summaries must state the exact PickCube scope and corresponding limitations; future task or robot integrations require a separate milestone and evidence chain.
+- Raw datasets, images, simulator states, checkpoints, and caches remain outside Git. Compact evidence reports and release registries may be committed.
+- Release work must preserve accepted remote artifacts and keep the server online unless the user explicitly authorizes shutdown in the current task.
+
 Every derived sample must identify source episode, source policy, source task, transformation/corruption type and parameters, seed, split-group ID, and schema version. Evaluated derivatives must additionally record label source, strength, and simulator-replay status; unlabeled proposals must not fabricate those fields.
 
 ## Required validation and completion report

@@ -1,0 +1,29 @@
+{
+  "schema_version": "1.0",
+  "content_digest": "sha256:6769e652cf8a2b95002ba2faf8e2049f7e1c95f657f8f3986a5c64044dc30e0a",
+  "release_id": "m5-pickcube-evidence-release-v1",
+  "release_source_git_sha": "942c6572914ef9c7fa6e5f8affdd8c9004ed4916",
+  "package_version": "0.1.0",
+  "registry_digests": {
+    "docs/release/milestones.json": "sha256:d8a54a5274d98b6cfa51f5b8457a214c41d4399381daa6e3ec98eac0e8e4c112",
+    "docs/release/claims.json": "sha256:fb9c98c4775c2b1ba72624d2b237b130963e43ee6d6ace838550e805e0fb5614",
+    "docs/release/results.json": "sha256:c344b01e8a07db2131958798707087935679fa4ee0364ca10fbbbebe3d8aa13b"
+  },
+  "document_digests": {
+    "README.md": "sha256:6860b011c19f56de15427154b5ca20fa12a14911663b8b3cf0e9118767e7d24e",
+    "docs/portfolio/technical-report.md": "sha256:31b89a606e082a2919a8892c0c520c1e5437bc1dee6befadf39a67ee67a3b02b",
+    "docs/portfolio/case-study.md": "sha256:d92c1e0bacd89906a5263aea482656f563d445d78612a6f6a5562c5619679ac1"
+  },
+  "portfolio_smoke_semantic_version": "1.0.0",
+  "audit_release_semantic_version": "1.0.0",
+  "test_summary": {
+    "ordinary_suite": "1565 passed, 3 Windows symlink-privilege skips",
+    "portfolio_smoke": "passed deterministic CPU infrastructure path with zero-work resume",
+    "strict_release_audit": "passed with 12 milestones, 22 claims, 57 results, and zero issues"
+  },
+  "server_artifact_availability": {
+    "audit_mode": "read_only",
+    "status": "pending post-implementation preservation review",
+    "server_lifecycle": "must remain online"
+  }
+}
