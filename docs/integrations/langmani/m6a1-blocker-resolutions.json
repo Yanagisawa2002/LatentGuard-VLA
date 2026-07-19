@@ -9,7 +9,7 @@
   "resolutions": [
     {
       "blocker_id": "M6A-B003",
-      "status": "resolved_by_frozen_contract",
+      "status": "blocked_pending_real_content_bound_candidate_identities",
       "evidence": "ProjectedPrefixPerturbationPoolV1 configuration is frozen with identity plus three lexically selected existing corruptions; actual content-bound candidate identities remain unavailable until a real proposal exists"
     },
     {

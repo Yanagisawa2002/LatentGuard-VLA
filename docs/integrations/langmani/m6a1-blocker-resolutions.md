@@ -7,7 +7,7 @@ for an artifact-validated binding and the single real probe.
 
 | Blocker | Bounded-M6B disposition | Retained limitation |
 | --- | --- | --- |
-| M6A-B003 | Candidate-source configuration frozen for four candidates; actual candidate identities require a real proposal | No alternate candidate source is authorized |
+| M6A-B003 | Candidate-source configuration frozen; blocker retained until four blind, content-bound identities exist from a real proposal | No alternate candidate source is authorized |
 | M6A-B004 | `scope_resolved_initial_state_only` | No complete ACT queue/processor snapshot |
 | M6A-B005 | Action-only allowlist and bitwise comparison frozen; accepted-checkpoint mask gate blocked | No structured LangMani verifier state |
 | M6A-B006 | `scope_resolved_seeded_initial_reset_and_fixed_continuation` | No intermediate paired replay |

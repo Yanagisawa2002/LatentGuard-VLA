@@ -2,7 +2,7 @@
   "schema_version": "latentguard-m6a1-blocker-resolution-summary-v1",
   "readiness_status": "blocked",
   "resolutions": {
-    "M6A-B003": "resolved_by_frozen_candidate_source_configuration_actual_candidate_identities_pending",
+    "M6A-B003": "blocked_pending_real_content_bound_candidate_identities",
     "M6A-B004": "scope_resolved_initial_state_only",
     "M6A-B005": "blocked_pending_accepted_checkpoint_mask_invariance_gate",
     "M6A-B006": "scope_resolved_seeded_initial_reset_and_fixed_continuation",

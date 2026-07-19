@@ -7,7 +7,7 @@
   "files": [
     {"path": "reports/m6a1/m6a1-preflight-ea43e816-9713f750/action-projection-contract.json", "sha256": "sha256:b11603cdd340d6c388736f9c459fa032d214a0ebbd634a135f9e09f0553e976d", "bytes": 766},
     {"path": "reports/m6a1/m6a1-preflight-ea43e816-9713f750/blind-ranking-manifest-summary.json", "sha256": "sha256:64ce99553cc4690cb7ea14442cf520430f1d037f22bc5aba1ad6f2b05c0c5a8d", "bytes": 644},
-    {"path": "reports/m6a1/m6a1-preflight-ea43e816-9713f750/blocker-resolution-summary.json", "sha256": "sha256:931e5ab2dfa7443922a5b09d8ad44e7c3827ea71eae756635175930e2b3194c2", "bytes": 873},
+    {"path": "reports/m6a1/m6a1-preflight-ea43e816-9713f750/blocker-resolution-summary.json", "sha256": "sha256:3069718e8383bbf9f253f47b4d9bd80af1f2810644a987169cba61840b9764d8", "bytes": 843},
     {"path": "reports/m6a1/m6a1-preflight-ea43e816-9713f750/bridge-probe-summary.json", "sha256": "sha256:fb8797f1344981f5c6d0db77e0cff2f02db40d9639a4fb89372e6bb93207bfba", "bytes": 537},
     {"path": "reports/m6a1/m6a1-preflight-ea43e816-9713f750/cross-process-dependency-summary.json", "sha256": "sha256:3b8466bfd121bdfd45479ffc5cfffe9c12187d9fb2593705426d9769873b3714", "bytes": 661},
     {"path": "reports/m6a1/m6a1-preflight-ea43e816-9713f750/final-review.json", "sha256": "sha256:49b8dc81a584e1afd5851f30ceb6076c74dda09e5638062182b786b9b66f04d3", "bytes": 1464},
