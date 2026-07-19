@@ -1,0 +1,20 @@
+{
+  "schema_version": "latentguard-m6a1-blocker-resolution-summary-v1",
+  "readiness_status": "blocked",
+  "resolutions": {
+    "M6A-B003": "resolved_by_frozen_candidate_source_configuration_actual_candidate_identities_pending",
+    "M6A-B004": "scope_resolved_initial_state_only",
+    "M6A-B005": "blocked_pending_accepted_checkpoint_mask_invariance_gate",
+    "M6A-B006": "scope_resolved_seeded_initial_reset_and_fixed_continuation",
+    "M6A-B007": "blocked_missing_actual_python312_json_python311_exchange",
+    "M6A-B009": "blocked_missing_artifact_validated_binding"
+  },
+  "original_m6a_blocker_registry_preserved": true,
+  "future_limitations": [
+    "no_intermediate_policy_snapshot",
+    "no_intermediate_exact_replay",
+    "no_same_policy_continuation_after_divergence",
+    "no_closed_loop_langmani_shielding",
+    "no_structured_langmani_verifier_state"
+  ]
+}

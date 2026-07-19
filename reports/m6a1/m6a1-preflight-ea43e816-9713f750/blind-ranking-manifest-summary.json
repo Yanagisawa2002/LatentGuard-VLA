@@ -1,0 +1,12 @@
+{
+  "schema_version": "latentguard-m6a1-blind-ranking-manifest-summary-v1",
+  "scorer_bundle_digest": "sha256:f4c28ec414e7b68abb4f49cd395572a2f52f1ee6e6fc110d41c13ffbcc30affb",
+  "selector_configuration_report_digest": "sha256:b07601a29b618b0b06723d8fb66b5f44c969077cd3f80ca8b6954b47a5e88f66",
+  "ensemble_seed_count": 5,
+  "task_distribution_status": "langmani_task_out_of_distribution_integration_smoke_only",
+  "outcomes_available_during_selection": false,
+  "ranking_status": "not_generated",
+  "ranking_manifest_digest": null,
+  "selected_candidate_id": null,
+  "reason": "no real candidate pool or projected-candidate manifest existed"
+}

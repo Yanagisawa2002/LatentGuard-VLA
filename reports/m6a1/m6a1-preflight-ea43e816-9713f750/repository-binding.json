@@ -1,0 +1,24 @@
+{
+  "schema_version": "latentguard-m6a1-repository-binding-v1",
+  "latentguard": {
+    "repository": "Yanagisawa2002/LatentGuard-VLA",
+    "starting_commit": "2afdd438e1baf303c112e652877e58f96f8b6cb",
+    "branch": "codex/m6a1-langmani-initial-state-bridge",
+    "implementation_commit": "ea43e816f53b070d27f695db6c13b9365cc9d470",
+    "implementation_commit_pushed": true,
+    "linux_worktree_clean": true
+  },
+  "langmani": {
+    "repository": "Yanagisawa2002/LangMani",
+    "starting_commit": "b0fd9115496d3cc3d700c4eac7fb9f3f3ad401fd",
+    "branch": "codex/m5b-latentguard-proposal-bridge",
+    "implementation_commit": "9713f7503dae6612309d0ef8a499d93f6c3899a3",
+    "implementation_commit_pushed": true,
+    "linux_worktree_clean": true
+  },
+  "preserved_frozen_latentguard_checkout": {
+    "commit": "942c6572914ef9c7fa6e5f8affdd8c9004ed4916",
+    "clean": true,
+    "modified": false
+  }
+}

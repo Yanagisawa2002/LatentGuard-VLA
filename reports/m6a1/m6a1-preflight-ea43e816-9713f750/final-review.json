@@ -1,0 +1,31 @@
+{
+  "schema_version": "latentguard-m6a1-final-review-v1",
+  "milestone": "Initial-State LangMani Bridge and M6B Readiness Remediation",
+  "implementation_complete": true,
+  "real_probe_complete": false,
+  "bounded_m6b_readiness": "blocked",
+  "summary": "Both JSON-only bridge implementations and bounded contracts are committed, pushed, and tested. Real preflight stopped before reset because the current server lacks accepted LangMani binding artifacts.",
+  "positive_findings": [
+    "separate Python 3.12 and Python 3.11 bridge schemas are implemented",
+    "deterministic task-selection and four-candidate source configurations are frozen",
+    "ten-to-sixteen action-only mask and fixed-continuation semantics are frozen",
+    "M5 release bytes and historical M6A evidence remain unchanged"
+  ],
+  "retained_failures": [
+    "no artifact-validated task/checkpoint binding on the current server",
+    "no real cross-process proposal/projection exchange",
+    "no accepted-ensemble mask-invariance result",
+    "no actual candidate-pool or blind-ranking digest",
+    "LangMani Linux repository suite did not fully pass in the isolated validation environment"
+  ],
+  "prohibited_work_confirmed_absent": {
+    "training": true,
+    "candidate_action_execution": true,
+    "candidate_outcomes": true,
+    "langmani_rollout": true,
+    "vlm_or_llm": true,
+    "multi_gpu": true,
+    "m6b_execution": true
+  },
+  "server_disposition": "online_ssh_ready_gpu_idle"
+}

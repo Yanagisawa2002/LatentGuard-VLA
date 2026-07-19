@@ -1,0 +1,23 @@
+{
+  "schema_version": "latentguard-m6a1-retrieval-manifest-v1",
+  "audit_id": "m6a1-preflight-ea43e816-9713f750",
+  "sanitized": true,
+  "raw_artifacts_included": false,
+  "private_paths_included": false,
+  "files": [
+    {"path": "reports/m6a1/m6a1-preflight-ea43e816-9713f750/action-projection-contract.json", "sha256": "sha256:b11603cdd340d6c388736f9c459fa032d214a0ebbd634a135f9e09f0553e976d", "bytes": 766},
+    {"path": "reports/m6a1/m6a1-preflight-ea43e816-9713f750/blind-ranking-manifest-summary.json", "sha256": "sha256:64ce99553cc4690cb7ea14442cf520430f1d037f22bc5aba1ad6f2b05c0c5a8d", "bytes": 644},
+    {"path": "reports/m6a1/m6a1-preflight-ea43e816-9713f750/blocker-resolution-summary.json", "sha256": "sha256:931e5ab2dfa7443922a5b09d8ad44e7c3827ea71eae756635175930e2b3194c2", "bytes": 873},
+    {"path": "reports/m6a1/m6a1-preflight-ea43e816-9713f750/bridge-probe-summary.json", "sha256": "sha256:fb8797f1344981f5c6d0db77e0cff2f02db40d9639a4fb89372e6bb93207bfba", "bytes": 537},
+    {"path": "reports/m6a1/m6a1-preflight-ea43e816-9713f750/cross-process-dependency-summary.json", "sha256": "sha256:3b8466bfd121bdfd45479ffc5cfffe9c12187d9fb2593705426d9769873b3714", "bytes": 661},
+    {"path": "reports/m6a1/m6a1-preflight-ea43e816-9713f750/final-review.json", "sha256": "sha256:49b8dc81a584e1afd5851f30ceb6076c74dda09e5638062182b786b9b66f04d3", "bytes": 1464},
+    {"path": "reports/m6a1/m6a1-preflight-ea43e816-9713f750/mask-invariance-result.json", "sha256": "sha256:ce95175dc59f2a0a1615b828a961a06d4be1a132aebbcce8c92c3ff38bc3e10e", "bytes": 553},
+    {"path": "reports/m6a1/m6a1-preflight-ea43e816-9713f750/readiness-gates.json", "sha256": "sha256:25c362200bac9dbf87d20401a2fc4b26090f1c83c63d10a0033043055408f2b8", "bytes": 994},
+    {"path": "reports/m6a1/m6a1-preflight-ea43e816-9713f750/repository-binding.json", "sha256": "sha256:cabc9f695558b76b968500e0cd793f3cf620f0391ba1cb44ccaae68dea14afb2", "bytes": 898},
+    {"path": "reports/m6a1/m6a1-preflight-ea43e816-9713f750/selected-candidate-source-configuration.json", "sha256": "sha256:1597e1d267df9902bd7445b68bfe3d307e0d9b037f9cb6eea9bff6d5ac3c68ba", "bytes": 1009},
+    {"path": "reports/m6a1/m6a1-preflight-ea43e816-9713f750/selected-task-checkpoint-binding.json", "sha256": "sha256:b6ca5e6d21b13f47dad2e6dd87b350263874016be3efe96de57fe032ae6087d5", "bytes": 1502},
+    {"path": "reports/m6a1/m6a1-preflight-ea43e816-9713f750/server-preservation-summary.json", "sha256": "sha256:5dce5a91554966d1e9abbbfe0d6c3aaa5f82371a3b7eab477867ac3e6bd46b40", "bytes": 545},
+    {"path": "reports/m6a1/m6a1-preflight-ea43e816-9713f750/test-summary.json", "sha256": "sha256:03a42491a30d2c66b0a0b94f9a06248bdbc0ffe86bc20390a803dac8d1313148", "bytes": 1766},
+    {"path": "reports/m6a1/m6a1-preflight-ea43e816-9713f750/zero-action-execution-evidence.json", "sha256": "sha256:db24a70e4bd2cda5c7975362ea83aa732f45cd90b03b581affff96770578c4b0", "bytes": 382}
+  ]
+}

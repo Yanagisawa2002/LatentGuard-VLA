@@ -1,0 +1,15 @@
+{
+  "schema_version": "latentguard-m6a1-bridge-probe-summary-v1",
+  "probe_seed": 986203210,
+  "probe_seed_semantic": "sha256_prefix_u31_m6a1_bridge_probe_v1",
+  "status": "not_run_preflight_blocked",
+  "preflight_failure": "accepted LangMani registry, runtime-selection record, checkpoint, and processor artifacts absent",
+  "reset_count": 0,
+  "policy_query_count": 0,
+  "environment_step_count": 0,
+  "proposal_count": 0,
+  "candidate_projection_count": 0,
+  "scorer_call_count": 0,
+  "outcome_count": 0,
+  "rerun_attempted": false
+}

@@ -1,0 +1,106 @@
+{
+  "schema_version": "latentguard-langmani-m6b-bounded-smoke-contract-v1",
+  "status": "blocked",
+  "implementation_revisions": {
+    "latentguard": "ea43e816f53b070d27f695db6c13b9365cc9d470",
+    "langmani": "9713f7503dae6612309d0ef8a499d93f6c3899a3"
+  },
+  "binding_status": "registry_declared_not_artifact_revalidated_on_current_server",
+  "task": {
+    "task_id": "langmani-pick-place-task-v0:blue_cube:left_bin:canonical_v0",
+    "instruction": "Pick up the blue cube and place it in the left bin.",
+    "object_identity": "blue_cube",
+    "destination_identity": "left_bin",
+    "task_semantic": {
+      "instruction_template_id": "canonical_v0",
+      "target_bin_id": "left_bin",
+      "target_object_id": "blue_cube"
+    }
+  },
+  "controller": {
+    "controller_registry_digest": "sha256:01c52fbcc24b17e9989bfafb041937586dcdc5550f9cc98624e944a1b403bd88",
+    "checkpoint_digest": "sha256:0aa8add02a8675a802fde163a32e0c3a48dd97113a141d6faede28cc6167f6e4",
+    "model_configuration_digest": "sha256:2d852a356e1fa6243f288267126b9703d2b2df86a201fcc4ae1160f4a3319acc",
+    "preprocessor_digest": "sha256:42595a392adc0e96a6d35a380ea30108055e656fb841a8b7bf6bc5f6d2007276",
+    "postprocessor_digest": "sha256:9be1493dbf99b5878220f88a2052d7363557590638f7217e44673bfb207162a2",
+    "normalization_identity": "sha256:a2bc3331d052f188f9d40f669858037002b25151c641287727d849fa90a65038",
+    "producer_langmani_sha": "ceb73db1a0fe88fa7f58f347b51c542aa76663a0",
+    "control_mode": "pd_joint_pos",
+    "control_frequency_hz": 20,
+    "action_shape": [8],
+    "action_bounds_digest": "sha256:0efc8ca05ef2677c46f55160b30f5985b8c17df51d5af351144b9fd750fcf299",
+    "action_bounds": {
+      "lower": [-2.8973000049591064, -1.7627999782562256, -2.8973000049591064, -3.0717999935150146, -2.8973000049591064, -0.017500000074505806, -2.8973000049591064, -1.0],
+      "upper": [2.8973000049591064, 1.7627999782562256, 2.8973000049591064, -0.0697999969124794, 2.8973000049591064, 3.752500057220459, 2.8973000049591064, 1.0],
+      "dtype": "float32"
+    },
+    "act_chunk_length": 50,
+    "execution_queue_horizon": 10
+  },
+  "schemas": {
+    "raw_policy_proposal": "LangManiLatentGuardInitialProposalV1",
+    "raw_candidates": "LatentGuardRawCandidateRequestV1",
+    "projected_candidates": "LangManiProjectedCandidatesV1"
+  },
+  "candidate_source": {
+    "semantic": "ProjectedPrefixPerturbationPoolV1",
+    "digest": "sha256:bd44f02ef82e2932c4a62e7cfc403a8e246a19e429679c136b42acd399cba8ac",
+    "selected_transformation_ids": ["additive_gaussian_noise", "constant_bias", "local_temporal_permutation"],
+    "candidate_count": 4,
+    "candidate_pool_digest": null,
+    "candidate_pool_status": "not_generated_no_real_proposal"
+  },
+  "verifier_input": {
+    "semantic": "LangManiActionOnlyVerifierInputV1",
+    "dtype": "float32",
+    "model_horizon": 16,
+    "action_dimension": 8,
+    "executable_prefix_horizon": 10,
+    "padding": "canonical_zero_slots_10_through_15",
+    "mask_semantic": "ten_true_then_six_false_zero_padding_v1",
+    "allowed_inputs": ["projected_executable_actions", "action_mask"],
+    "comparison_semantic": "bitwise_equal_float64_logits_and_probabilities_v1"
+  },
+  "scorer": {
+    "architecture": "action_only_mlp",
+    "ensemble_seed_count": 5,
+    "bundle_digest": "sha256:f4c28ec414e7b68abb4f49cd395572a2f52f1ee6e6fc110d41c13ffbcc30affb",
+    "selector_configuration_report_digest": "sha256:b07601a29b618b0b06723d8fb66b5f44c969077cd3f80ca8b6954b47a5e88f66",
+    "task_distribution_status": "langmani_task_out_of_distribution_integration_smoke_only",
+    "accepted_artifact_mask_invariance": "not_run"
+  },
+  "execution_semantics": {
+    "initial_reset": "seeded_initial_reset_only_no_policy_state_restore_v1",
+    "fixed_continuation": "candidate_prefix_10_then_recorded_projected_nominal_from_index_10_v1",
+    "policy_requery_after_divergence": false
+  },
+  "probe": {
+    "seed": 986203210,
+    "seed_semantic": "sha256_prefix_u31_m6a1_bridge_probe_v1",
+    "status": "not_run_missing_accepted_langmani_artifacts"
+  },
+  "m6b_source_seed_schedule": {
+    "semantic": "sha256_prefix_u31_m6b_bounded_source_seed_index_v1",
+    "seeds": [282896382, 571862862, 1651966581]
+  },
+  "blindness_requirements": {
+    "candidate_manifest_before_outcomes": true,
+    "outcome_inputs_prohibited": true,
+    "reporting_metadata_inputs_prohibited": true
+  },
+  "planned_workload": {
+    "source_count": 3,
+    "candidate_count_per_source": 4,
+    "candidate_outcome_count": 12,
+    "nominal_baseline_count": 3,
+    "ranking_baselines": ["deterministic_random", "frozen_action_only"],
+    "executed": false
+  },
+  "retained_limitations": [
+    "no_intermediate_policy_snapshot",
+    "no_intermediate_exact_replay",
+    "no_same_policy_continuation_after_divergence",
+    "no_closed_loop_langmani_shielding",
+    "no_structured_langmani_verifier_state"
+  ]
+}

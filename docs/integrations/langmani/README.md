@@ -43,11 +43,13 @@ The synthetic adapter always reports:
 
 ## M6A.1 bounded remediation
 
-M6A.1 adds a narrower initial-state-only path without changing the historical M6A audit. Its
-pre-probe status is `conditionally_ready`. It freezes one lexically selected accepted PerTask
+M6A.1 adds a narrower initial-state-only path without changing the historical M6A audit. It
+freezes one lexically selected accepted PerTask
 controller, four deterministic candidates, the accepted M3B action-only ensemble, a ten-to-sixteen
-mask contract, and recorded fixed continuation. Actual readiness still requires one exact pushed
-cross-process probe and accepted-checkpoint mask-invariance evidence.
+mask contract, and recorded fixed continuation. Final bounded-M6B readiness is `blocked`: the
+current server lacks the accepted LangMani registry, runtime-selection record, checkpoint, and
+processor artifacts needed for the exact binding, cross-process probe, and accepted-checkpoint
+mask-invariance evidence.
 
 The LatentGuard commands are:
 
@@ -58,5 +60,7 @@ latentguard score-langmani-initial-candidates ...
 latentguard audit-langmani-m6b-readiness --strict ...
 ```
 
-The probe performs one reset and one policy query, executes zero actions, generates zero outcomes,
-and does not start M6B. See [m6a1-blocker-resolutions.md](m6a1-blocker-resolutions.md).
+The authorized probe would perform one reset and one policy query, execute zero actions, generate
+zero outcomes, and not start M6B. Preflight stopped before that probe, so observed counts are zero
+for resets, queries, steps, candidate pools, scorer calls, and outcomes. See
+[m6a1-blocker-resolutions.md](m6a1-blocker-resolutions.md).

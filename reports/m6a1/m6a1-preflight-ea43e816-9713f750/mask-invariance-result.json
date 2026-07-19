@@ -1,0 +1,14 @@
+{
+  "schema_version": "latentguard-m6a1-mask-invariance-result-v1",
+  "verifier_input_semantic": "LangManiActionOnlyVerifierInputV1",
+  "model_horizon": 16,
+  "source_executable_horizon": 10,
+  "action_dimension": 8,
+  "dtype": "float32",
+  "mask_semantic": "ten_true_then_six_false_zero_padding_v1",
+  "comparison_semantic": "bitwise_equal_float64_logits_and_probabilities_v1",
+  "fixture_gate": "passed",
+  "accepted_action_only_ensemble_gate": "not_run",
+  "passed_for_bounded_m6b": false,
+  "reason": "no real projected candidates were available"
+}

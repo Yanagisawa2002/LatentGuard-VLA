@@ -1,17 +1,18 @@
 {
   "schema_version": "1.0",
-  "content_digest": "sha256:4e3806c7d38f31b43dbef00acf123e5d13b63d08af9723fbe340c31bee5d6ccc",
-  "manifest_id": "m6a-langmani-integration-readiness-v1",
+  "content_digest": "sha256:947be7f98cdfcd5578672da96b78ba2a310830a55d4e7cc29500ef275ad246f9",
+  "manifest_id": "m6a1-langmani-initial-state-bridge-readiness-v1",
   "base_release_id": "m5-pickcube-evidence-release-v1",
   "base_release_manifest_sha256": "sha256:4023dad2253156b56fc094ddee2e1e99afce5ee8843a3caf27bbaafc6ce07377",
-  "implementation_commit": "c06eed9f83325909ce44073705c7628d69a09c6a",
-  "integration_contract": "docs/integrations/langmani/integration-contract.json",
+  "implementation_commit": "ea43e816f53b070d27f695db6c13b9365cc9d470",
+  "paired_langmani_implementation_commit": "9713f7503dae6612309d0ef8a499d93f6c3899a3",
+  "integration_contract": "docs/integrations/langmani/m6b-bounded-smoke-contract.json",
   "registry_digests": {
-    "docs/release/post-release-milestones.json": "sha256:f7f40956a480fa2421b5937f56caa29f03f10dbaef9dc64c69de64091c546ab8",
-    "docs/release/post-release-claims.json": "sha256:5a90b73343cd575ee109ced5b1a0e03cc3e9649a18c75c4855c879e3f43a7433",
-    "docs/release/post-release-results.json": "sha256:86861b0fb5bf5984fc389956007fc6bdf8923a43b6c3f90124c1aff20240b966"
+    "docs/release/post-release-milestones.json": "sha256:def860a9da4e1c731fb0666c2a3c518747cf54b9a78d6602fdfcbd576872c675",
+    "docs/release/post-release-claims.json": "sha256:e5c3ba85ba343255549e01c0abe873105d446a93c582b5f58591de4668be4262",
+    "docs/release/post-release-results.json": "sha256:aaa7a00a58b18f1cee4f79e6035a7116237def9b319f1d988fa4da0e4de3aae2"
   },
   "overall_readiness": "blocked",
   "m6b_executed": false,
-  "server_lifecycle": "online_after_read_only_audit"
+  "server_lifecycle": "online_ssh_ready_gpu_idle_after_blocked_preflight"
 }

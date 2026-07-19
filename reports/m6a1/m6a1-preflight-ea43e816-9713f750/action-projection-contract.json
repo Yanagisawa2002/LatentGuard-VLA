@@ -1,0 +1,16 @@
+{
+  "schema_version": "latentguard-m6a1-action-projection-contract-v1",
+  "raw_policy_proposal_identity": "distinct_not_generated",
+  "raw_transformed_candidate_identity": "distinct_not_generated",
+  "projected_executable_candidate_identity": "distinct_not_generated",
+  "actually_executed_action_identity": "distinct_empty",
+  "projection_owner": "LangMani BoundedActionEnvPostprocessorV0",
+  "latentguard_reimplements_projection": false,
+  "action_shape": [8],
+  "act_chunk_length": 50,
+  "executable_prefix_horizon": 10,
+  "action_bounds_digest": "sha256:0efc8ca05ef2677c46f55160b30f5985b8c17df51d5af351144b9fd750fcf299",
+  "projection_probe_status": "not_run_missing_artifact_validated_binding",
+  "nonfinite_values_observed": null,
+  "correction_count": null
+}

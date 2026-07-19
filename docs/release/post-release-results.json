@@ -1,6 +1,6 @@
 {
   "schema_version": "1.0",
-  "content_digest": "sha256:86861b0fb5bf5984fc389956007fc6bdf8923a43b6c3f90124c1aff20240b966",
+  "content_digest": "sha256:aaa7a00a58b18f1cee4f79e6035a7116237def9b319f1d988fa4da0e4de3aae2",
   "base_release_id": "m5-pickcube-evidence-release-v1",
   "results": [
     {
@@ -38,6 +38,51 @@
       "value": [2, 4, 0],
       "claim_status": "documented",
       "source": "docs/integrations/langmani/blockers.json#/counts"
+    },
+    {
+      "result_id": "m6a1-implementation-revisions",
+      "milestone_id": "M6A.1",
+      "category": "infrastructure",
+      "metric": "pushed LatentGuard and LangMani implementation revisions",
+      "value": ["ea43e816f53b070d27f695db6c13b9365cc9d470", "9713f7503dae6612309d0ef8a499d93f6c3899a3"],
+      "claim_status": "documented",
+      "source": "reports/m6a1/m6a1-preflight-ea43e816-9713f750/repository-binding.json"
+    },
+    {
+      "result_id": "m6a1-candidate-source-freeze",
+      "milestone_id": "M6A.1",
+      "category": "infrastructure",
+      "metric": "frozen candidate-source configuration digest",
+      "value": "sha256:bd44f02ef82e2932c4a62e7cfc403a8e246a19e429679c136b42acd399cba8ac",
+      "claim_status": "documented",
+      "source": "reports/m6a1/m6a1-preflight-ea43e816-9713f750/selected-candidate-source-configuration.json"
+    },
+    {
+      "result_id": "m6a1-real-probe-counts",
+      "milestone_id": "M6A.1",
+      "category": "infrastructure",
+      "metric": "reset/policy-query/environment-step/outcome counts",
+      "value": [0, 0, 0, 0],
+      "claim_status": "negative",
+      "source": "reports/m6a1/m6a1-preflight-ea43e816-9713f750/bridge-probe-summary.json"
+    },
+    {
+      "result_id": "m6a1-accepted-mask-gate",
+      "milestone_id": "M6A.1",
+      "category": "infrastructure",
+      "metric": "accepted-ensemble mask-invariance gate",
+      "value": "not_run",
+      "claim_status": "unsupported",
+      "source": "reports/m6a1/m6a1-preflight-ea43e816-9713f750/mask-invariance-result.json"
+    },
+    {
+      "result_id": "m6a1-bounded-m6b-readiness",
+      "milestone_id": "M6A.1",
+      "category": "infrastructure",
+      "metric": "bounded M6B readiness",
+      "value": "blocked",
+      "claim_status": "documented",
+      "source": "reports/m6a1/m6a1-preflight-ea43e816-9713f750/readiness-gates.json"
     }
   ]
 }

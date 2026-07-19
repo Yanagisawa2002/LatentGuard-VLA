@@ -1,0 +1,26 @@
+{
+  "schema_version": "latentguard-m6a1-selected-task-checkpoint-binding-v1",
+  "selection_semantic": "lexically_first_eligible_canonical_task_v1",
+  "binding_status": "blocked_missing_current_server_artifacts",
+  "registry_declared_selection": {
+    "task_id": "langmani-pick-place-task-v0:blue_cube:left_bin:canonical_v0",
+    "instruction": "Pick up the blue cube and place it in the left bin.",
+    "object_identity": "blue_cube",
+    "destination_identity": "left_bin",
+    "controller_registry_digest": "sha256:01c52fbcc24b17e9989bfafb041937586dcdc5550f9cc98624e944a1b403bd88",
+    "checkpoint_digest": "sha256:0aa8add02a8675a802fde163a32e0c3a48dd97113a141d6faede28cc6167f6e4",
+    "model_configuration_digest": "sha256:2d852a356e1fa6243f288267126b9703d2b2df86a201fcc4ae1160f4a3319acc",
+    "preprocessor_digest": "sha256:42595a392adc0e96a6d35a380ea30108055e656fb841a8b7bf6bc5f6d2007276",
+    "postprocessor_digest": "sha256:9be1493dbf99b5878220f88a2052d7363557590638f7217e44673bfb207162a2",
+    "normalization_identity": "sha256:a2bc3331d052f188f9d40f669858037002b25151c641287727d849fa90a65038",
+    "producer_langmani_sha": "ceb73db1a0fe88fa7f58f347b51c542aa76663a0"
+  },
+  "current_server_validation": {
+    "controller_registry_present": false,
+    "runtime_selection_present": false,
+    "checkpoint_present": false,
+    "processors_present": false,
+    "artifact_digest_validation_passed": false
+  },
+  "claim_boundary": "registry declaration is not an artifact-validated policy binding"
+}

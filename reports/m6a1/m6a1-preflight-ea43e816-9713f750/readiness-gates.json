@@ -1,0 +1,23 @@
+{
+  "schema_version": "latentguard-m6a1-readiness-gates-v1",
+  "readiness_status": "blocked",
+  "gates": {
+    "both_implementation_commits_pushed": true,
+    "both_linux_worktrees_clean": true,
+    "m5_release_manifest_unchanged": true,
+    "m6a_historical_evidence_preserved": true,
+    "candidate_source_configuration_frozen": true,
+    "initial_state_only_semantic_frozen": true,
+    "fixed_continuation_semantic_frozen": true,
+    "verifier_input_contract_frozen": true,
+    "artifact_validated_task_checkpoint_binding": false,
+    "actual_cross_process_bridge_passed": false,
+    "one_reset_zero_steps_probe_passed": false,
+    "four_content_bound_candidate_identities_frozen": false,
+    "accepted_ensemble_mask_invariance_passed": false,
+    "blind_ranking_finalized": false,
+    "zero_candidate_outcomes": true,
+    "m6b_not_started": true
+  },
+  "blocking_reason": "current server lacks the accepted LangMani registry, runtime-selection record, checkpoint, and processor artifacts"
+}

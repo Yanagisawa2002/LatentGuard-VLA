@@ -160,3 +160,9 @@ model.
 The mandatory equivalence contract is bitwise equality of float64-exported logits and calibrated
 probabilities after replacing only masked input padding with deterministic finite nonzero values.
 There is no post-observation tolerance adjustment.
+
+The implementation and fixture gates pass, but the accepted-artifact gate was not run on the
+current server because its LangMani registry, runtime-selection record, checkpoint, and processor
+artifacts are absent. No real proposal, projected candidate, candidate-pool digest, scorer result,
+or blind ranking exists. The bounded contract remains frozen and `blocked`; fixture equivalence is
+not reported as accepted-ensemble mask invariance.

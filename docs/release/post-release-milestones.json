@@ -1,6 +1,6 @@
 {
   "schema_version": "1.0",
-  "content_digest": "sha256:f7f40956a480fa2421b5937f56caa29f03f10dbaef9dc64c69de64091c546ab8",
+  "content_digest": "sha256:def860a9da4e1c731fb0666c2a3c518747cf54b9a78d6602fdfcbd576872c675",
   "base_release_id": "m5-pickcube-evidence-release-v1",
   "milestones": [
     {
@@ -18,6 +18,27 @@
       "known_limitations": [
         "No M6B candidate source, compact verifier input, continuation semantic, or policy-state snapshot is frozen.",
         "Replay readiness is initial_state_only and the two repositories require a separate-process boundary."
+      ]
+    },
+    {
+      "milestone_id": "M6A.1",
+      "title": "Initial-state LangMani bridge and M6B readiness remediation",
+      "branch": "codex/m6a1-langmani-initial-state-bridge",
+      "implementation_commit": "ea43e816f53b070d27f695db6c13b9365cc9d470",
+      "paired_langmani_branch": "codex/m5b-latentguard-proposal-bridge",
+      "paired_langmani_implementation_commit": "9713f7503dae6612309d0ef8a499d93f6c3899a3",
+      "research_status": "infrastructure_only_blocked_preflight",
+      "overall_readiness": "blocked",
+      "training_occurred": false,
+      "simulator_execution_occurred": false,
+      "new_outcomes_generated": false,
+      "m6b_executed": false,
+      "primary_contract": "docs/integrations/langmani/m6b-bounded-smoke-contract.json",
+      "primary_report": "reports/m6a1/m6a1-preflight-ea43e816-9713f750/final-review.json",
+      "known_limitations": [
+        "The current server lacks the accepted LangMani registry, runtime-selection record, ACT checkpoint, and processor artifacts required for a real bridge probe.",
+        "No candidate-pool digest, blind ranking, or accepted-ensemble mask-invariance result exists.",
+        "Intermediate policy-state restoration, intermediate exact replay, same-policy continuation after divergence, and closed-loop shielding remain unsupported."
       ]
     }
   ]

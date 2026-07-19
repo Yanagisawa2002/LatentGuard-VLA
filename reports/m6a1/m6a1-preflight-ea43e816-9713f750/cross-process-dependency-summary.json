@@ -1,0 +1,21 @@
+{
+  "schema_version": "latentguard-m6a1-cross-process-dependency-summary-v1",
+  "langmani_runtime": {
+    "python": "3.12.3",
+    "torch": "2.11.0+cu130",
+    "maniskill": "3.0.1",
+    "lerobot": "0.6.0",
+    "numpy": "2.2.6"
+  },
+  "latentguard_runtime": {
+    "python": "3.11.15",
+    "torch": "2.8.0+cu128"
+  },
+  "boundary": "canonical_utf8_json_only",
+  "in_process_cross_import": false,
+  "schemas_implemented": true,
+  "fixture_round_trip_passed": true,
+  "actual_python312_to_json_to_python311_exchange": "not_run",
+  "actual_reverse_projection_exchange": "not_run",
+  "reason": "accepted LangMani policy artifacts were absent before proposal export"
+}

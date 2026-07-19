@@ -3,14 +3,14 @@
   "scope": "bounded_m6b_initial_state_only",
   "original_registry": "docs/integrations/langmani/blockers.json",
   "original_registry_preserved": true,
-  "readiness_status": "conditionally_ready",
+  "readiness_status": "blocked",
   "outcomes_generated": false,
   "m6b_executed": false,
   "resolutions": [
     {
       "blocker_id": "M6A-B003",
       "status": "resolved_by_frozen_contract",
-      "evidence": "ProjectedPrefixPerturbationPoolV1 with identity plus three lexically selected existing corruptions"
+      "evidence": "ProjectedPrefixPerturbationPoolV1 configuration is frozen with identity plus three lexically selected existing corruptions; actual content-bound candidate identities remain unavailable until a real proposal exists"
     },
     {
       "blocker_id": "M6A-B004",
@@ -19,8 +19,8 @@
     },
     {
       "blocker_id": "M6A-B005",
-      "status": "pending_real_mask_invariance_gate",
-      "evidence": "LangManiActionOnlyVerifierInputV1 structurally frozen"
+      "status": "blocked_pending_accepted_checkpoint_mask_invariance_gate",
+      "evidence": "LangManiActionOnlyVerifierInputV1 and bitwise comparison semantic are frozen; only fixture-level invariance has passed"
     },
     {
       "blocker_id": "M6A-B006",
@@ -29,13 +29,13 @@
     },
     {
       "blocker_id": "M6A-B007",
-      "status": "pending_real_cross_process_probe",
-      "evidence": "canonical strict JSON schemas implemented in both repositories"
+      "status": "blocked_missing_actual_python312_json_python311_exchange",
+      "evidence": "canonical strict JSON schemas are implemented in both repositories, but no real proposal or reverse projection message was produced"
     },
     {
       "blocker_id": "M6A-B009",
-      "status": "pending_exact_remote_binding",
-      "evidence": "lexically first eligible canonical task rule implemented"
+      "status": "blocked_missing_artifact_validated_binding",
+      "evidence": "the frozen registry declares one lexical task and exact digests, but the current server lacks the registry, runtime-selection record, checkpoint, and processor artifacts needed for validation"
     }
   ]
 }

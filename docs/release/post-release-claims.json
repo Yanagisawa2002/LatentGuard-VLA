@@ -1,6 +1,6 @@
 {
   "schema_version": "1.0",
-  "content_digest": "sha256:5a90b73343cd575ee109ced5b1a0e03cc3e9649a18c75c4855c879e3f43a7433",
+  "content_digest": "sha256:e5c3ba85ba343255549e01c0abe873105d446a93c582b5f58591de4668be4262",
   "base_release_id": "m5-pickcube-evidence-release-v1",
   "claims": [
     {
@@ -22,6 +22,36 @@
         "docs/integrations/langmani/compatibility-matrix.json",
         "docs/integrations/langmani/blockers.json",
         "reports/m6a/20260719T150000Z_m6a-contract-c06eed9/contract-audit.json"
+      ]
+    },
+    {
+      "claim_id": "m6a1-langmani-json-bridges-implemented",
+      "milestone_id": "M6A.1",
+      "statement": "Separate strict canonical-JSON bridge implementations and an initial-state-only bounded smoke contract are committed and CPU-tested in LatentGuard and LangMani.",
+      "support_status": "documented",
+      "evidence": [
+        "docs/integrations/langmani/m6b-bounded-smoke-contract.json",
+        "reports/m6a1/m6a1-preflight-ea43e816-9713f750/test-summary.json"
+      ]
+    },
+    {
+      "claim_id": "m6a1-real-probe-blocked-before-reset",
+      "milestone_id": "M6A.1",
+      "statement": "The real bridge probe was blocked before environment construction because accepted LangMani binding artifacts were absent on the current server.",
+      "support_status": "negative",
+      "evidence": [
+        "reports/m6a1/m6a1-preflight-ea43e816-9713f750/selected-task-checkpoint-binding.json",
+        "reports/m6a1/m6a1-preflight-ea43e816-9713f750/bridge-probe-summary.json"
+      ]
+    },
+    {
+      "claim_id": "m6a1-bounded-m6b-readiness-blocked",
+      "milestone_id": "M6A.1",
+      "statement": "Bounded M6B readiness remains blocked and M6B was not started.",
+      "support_status": "documented",
+      "evidence": [
+        "reports/m6a1/m6a1-preflight-ea43e816-9713f750/readiness-gates.json",
+        "reports/m6a1/m6a1-preflight-ea43e816-9713f750/final-review.json"
       ]
     }
   ]

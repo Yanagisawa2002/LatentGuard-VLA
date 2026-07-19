@@ -1,0 +1,12 @@
+{
+  "schema_version": "latentguard-m6a1-zero-action-execution-evidence-v1",
+  "bridge_probe_started": false,
+  "reset_count": 0,
+  "policy_query_count": 0,
+  "environment_step_count": 0,
+  "candidate_actions_executed": 0,
+  "candidate_outcomes_generated": 0,
+  "langmani_rollout_started": false,
+  "m6b_started": false,
+  "note": "preflight stopped before simulator construction"
+}

@@ -1,0 +1,18 @@
+{
+  "schema_version": "latentguard-m6a1-server-preservation-summary-v1",
+  "server_power": "online",
+  "ssh": "available",
+  "gpu": {
+    "count": 1,
+    "model": "NVIDIA GeForce RTX 5090",
+    "compute_processes": 0,
+    "status": "idle"
+  },
+  "preserved_frozen_latentguard_checkout_unchanged": true,
+  "validation_worktrees_clean": true,
+  "accepted_m3a_through_m4d_artifacts_deleted": false,
+  "checkpoints_or_caches_deleted": false,
+  "shutdown_or_suspend_requested": false,
+  "shutdown_automation_created": false,
+  "m6b_started": false
+}

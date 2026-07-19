@@ -1,0 +1,40 @@
+{
+  "schema_version": "latentguard-m6a1-test-summary-v1",
+  "latentguard_local": {
+    "pytest": "1589 passed, 3 skipped",
+    "ruff_check": "passed",
+    "ruff_format_check": "passed",
+    "mypy_src": "passed, 181 source files",
+    "portfolio_smoke": "passed",
+    "strict_release_audit": "passed, 12 milestones, 22 claims, 57 results",
+    "strict_langmani_contract_audit": "passed",
+    "structural_m6b_readiness_audit": "passed with conditionally_ready pre-probe status"
+  },
+  "langmani_local": {
+    "pytest": "1389 passed, 30 skipped, 2 warnings",
+    "ruff_check": "passed",
+    "ruff_format_check": "passed, 268 files",
+    "build": "passed",
+    "cpu_safe_install_diagnostic": "passed with expected non-target warnings",
+    "mypy_src": "516 pre-existing errors in 55 legacy files; new bridge module contributed none"
+  },
+  "latentguard_linux": {
+    "pytest": "1592 passed",
+    "ruff_check": "passed",
+    "ruff_format_check": "passed, 273 files",
+    "mypy_src": "passed, 181 source files",
+    "cli_audits": "passed"
+  },
+  "langmani_linux": {
+    "bridge_unit_subset": "6 passed",
+    "targeted_m43_import_corrected_subset": "23 passed",
+    "ruff_check": "passed",
+    "ruff_format_check": "passed",
+    "build": "passed",
+    "new_bridge_module_mypy": "passed",
+    "repository_linux_suite": "1377 passed, 16 deselected, 26 failed",
+    "repository_linux_suite_failure_scope": "23 installed-package import-context failures later passing with the worktree source path, one interpreter-symlink expectation, and two legacy native-Linux physical-smoke initializations outside M6A.1 authorization",
+    "mypy_src": "516 existing legacy errors in 55 files"
+  },
+  "claim_boundary": "remote failures are retained and are not reported as passing gates"
+}

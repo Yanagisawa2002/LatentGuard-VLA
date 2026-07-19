@@ -1,0 +1,25 @@
+{
+  "schema_version": "latentguard-m6a1-candidate-source-configuration-v1",
+  "semantic": "ProjectedPrefixPerturbationPoolV1",
+  "candidate_source_digest": "sha256:bd44f02ef82e2932c4a62e7cfc403a8e246a19e429679c136b42acd399cba8ac",
+  "candidate_count": 4,
+  "identity_candidate_ordinal": 0,
+  "selection_semantic": "lexically_first_three_eligible_existing_corruptions_v1",
+  "selected_transformations": [
+    {
+      "id": "additive_gaussian_noise",
+      "configuration_digest": "sha256:563eec2078ddb1b244ff647eefcdb0b8d7e462c18eaf92740fc5aef9a9ab066c"
+    },
+    {
+      "id": "constant_bias",
+      "configuration_digest": "sha256:fcddfbb4e379a937d204e416310d771abac769e8b00572e7e12daa8f69d026b6"
+    },
+    {
+      "id": "local_temporal_permutation",
+      "configuration_digest": "sha256:5e553442e4aa6ce8c5ea8116f7d19a12a3c5a6f82b9f2b2d0903cbc094403974"
+    }
+  ],
+  "candidate_pool_digest": null,
+  "candidate_pool_status": "not_generated_no_real_proposal",
+  "outcomes_available_during_freeze": false
+}

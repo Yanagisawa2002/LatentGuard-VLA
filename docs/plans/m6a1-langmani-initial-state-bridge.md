@@ -42,3 +42,17 @@ drift. A failed real gate remains retained evidence and readiness stays blocked.
 No training, fine-tuning, added seed, candidate execution, rollout, task outcome, threshold fit,
 calibration, model selection, VLM/LLM, multi-GPU work, M6B execution, intermediate policy snapshot,
 or closed-loop claim is authorized. The server remains online after completion.
+
+## Final preflight disposition
+
+Both implementation revisions were committed, pushed, and validated in separate clean Linux
+worktrees. The current execution server did not contain the accepted LangMani controller registry,
+runtime-selection record, ACT checkpoint, or processor artifacts required to rebuild and verify the
+selected binding. The deterministic registry declaration identifies the blue-cube/left-bin task and
+its exact digests, but that declaration is not a substitute for current-server artifact validation.
+
+The real probe therefore stopped before environment construction. It performed zero resets, zero
+policy queries, zero `env.step` calls, zero candidate projections, zero scorer calls, and produced no
+candidate pool, ranking, or outcome. The cross-process and mask-invariance implementations passed
+CPU fixture tests, but their accepted-artifact gates remain unexecuted. Bounded M6B readiness is
+`blocked`; M6B was not started. The server remains online and GPU-idle.
