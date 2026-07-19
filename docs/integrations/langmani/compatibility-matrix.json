@@ -1,0 +1,270 @@
+{
+  "schema_version": "latentguard-m6a-compatibility-matrix-v1",
+  "latentguard_start_commit": "14c2a1513690791d88cc1b6ad46a09b3e852ee60",
+  "langmani_repository": "Yanagisawa2002/LangMani",
+  "langmani_branch": "codex/m5a-language-routing",
+  "langmani_commit": "b0fd9115496d3cc3d700c4eac7fb9f3f3ad401fd",
+  "langmani_upstream_commit": "b0fd9115496d3cc3d700c4eac7fb9f3f3ad401fd",
+  "langmani_working_tree_clean": true,
+  "compatibility_counts": {
+    "compatible": 11,
+    "adaptable": 7,
+    "blocked": 5,
+    "unknown": 0
+  },
+  "rows": [
+    {
+      "row_id": "LM-C01",
+      "topic": "repository identity",
+      "latentguard_requirement": "One exact clean Git revision with sanitized repository identity.",
+      "langmani_current_behavior": "The unique checkout is clean at branch codex/m5a-language-routing; HEAD and configured upstream are b0fd9115496d3cc3d700c4eac7fb9f3f3ad401fd.",
+      "source_evidence": ["AGENTS.md@6d070fe04a9841d12ad3c8487c55fc423d4f4f9a", "README.md@840e6339768cd98df8678f4b5f415c7d5445f18d"],
+      "compatibility": "compatible",
+      "required_future_change": "Reconfirm the same clean SHA before M6B.",
+      "owning_repository": "LangMani",
+      "m6b_gate_status": "passed"
+    },
+    {
+      "row_id": "LM-C02",
+      "topic": "dependency versions",
+      "latentguard_requirement": "A reproducible boundary that does not mutate either accepted environment.",
+      "langmani_current_behavior": "Requires Python >=3.12,<3.13 and pins NumPy 2.2.6, whereas LatentGuard requires Python >=3.11 and NumPy <2.0.",
+      "source_evidence": ["pyproject.toml@f30a3f0825f562d6d2280ff7e7cf23b1fdf65c8f", "environment/environment.yml@407ed6205761680edad2ea0b9811970d4589853c"],
+      "compatibility": "blocked",
+      "required_future_change": "Validate the versioned JSON/process boundary using both existing environments.",
+      "owning_repository": "LatentGuard-VLA",
+      "m6b_gate_status": "blocked"
+    },
+    {
+      "row_id": "LM-C03",
+      "topic": "simulator version",
+      "latentguard_requirement": "A pinned simulator and environment contract.",
+      "langmani_current_behavior": "Pins mani-skill 3.0.1 and sapien 3.0.3 in the target environment.",
+      "source_evidence": ["pyproject.toml@f30a3f0825f562d6d2280ff7e7cf23b1fdf65c8f", "environment/environment.yml@407ed6205761680edad2ea0b9811970d4589853c"],
+      "compatibility": "compatible",
+      "required_future_change": "Re-run only a bounded version/import probe in M6B preflight.",
+      "owning_repository": "LangMani",
+      "m6b_gate_status": "passed"
+    },
+    {
+      "row_id": "LM-C04",
+      "topic": "control mode",
+      "latentguard_requirement": "Explicit control mode, frequency, and action semantics.",
+      "langmani_current_behavior": "Uses one environment, pd_joint_pos, 20 Hz, and an 8D Panda action.",
+      "source_evidence": ["src/langmani/policies/act_rollout.py@b4e3d2f6171300e94d9724fa173b5225488ec4e6", "src/langmani/datasets/archive.py@725bbb6b923af6e66d0938ef352ae71cc2365225"],
+      "compatibility": "compatible",
+      "required_future_change": "Bind the active environment action-space digest at M6B launch.",
+      "owning_repository": "LangMani",
+      "m6b_gate_status": "passed"
+    },
+    {
+      "row_id": "LM-C05",
+      "topic": "task identity",
+      "latentguard_requirement": "Stable task family, instruction, object, goal, conditioning, and semantic version.",
+      "langmani_current_behavior": "Defines six strict canonical_v0 TaskSpecs as three cubes by two bins with stable langmani-pick-place-task-v0 IDs.",
+      "source_evidence": ["src/langmani/environments/specs.py@d955a52884a74164f6b85eae42c586f760e1cac3", "src/langmani/language/router_types.py@4fd9048d3664720e154eb19c31d9e0b614320f88"],
+      "compatibility": "compatible",
+      "required_future_change": "Freeze one canonical task for M6B without using outcomes.",
+      "owning_repository": "LatentGuard-VLA",
+      "m6b_gate_status": "passed"
+    },
+    {
+      "row_id": "LM-C06",
+      "topic": "observation schema",
+      "latentguard_requirement": "Policy, verifier, privileged, restoration, reporting, and prohibited fields must be separate.",
+      "langmani_current_behavior": "Policy uses base_camera RGB and PandaPolicyStateV0; tcp_pose and privileged task-state fields exist separately, but no compact verifier vector is accepted.",
+      "source_evidence": ["src/langmani/datasets/policy_state.py@ed3919cdd854e1cd84b8714fe3ce1099b561c1a1", "src/langmani/datasets/observation_reconstruction.py@483cbeac933e7125217f5dc44c97a07d495cd0b6", "src/langmani/environments/task_logic.py@395aee2590eecc847a25c91834689c9f36f888ba"],
+      "compatibility": "adaptable",
+      "required_future_change": "Freeze a minimal deployable verifier allowlist and reject privileged/outcome metadata.",
+      "owning_repository": "LatentGuard-VLA",
+      "m6b_gate_status": "blocked"
+    },
+    {
+      "row_id": "LM-C07",
+      "topic": "action schema",
+      "latentguard_requirement": "Typed chunk, horizon, dimension, dtype, mask, control period, and proposal identity.",
+      "langmani_current_behavior": "ACT generates float32[50,8], executes a queue horizon of 10, and exposes one float32[1,8] action to the environment per step; no cross-project chunk exporter exists.",
+      "source_evidence": ["src/langmani/policies/act_types.py@7ee943ac4f5ca117681181dad4b37eccb2d525f2", "src/langmani/policies/act_rollout.py@b4e3d2f6171300e94d9724fa173b5225488ec4e6"],
+      "compatibility": "adaptable",
+      "required_future_change": "Implement an optional exporter that binds the scored horizon and padding mask.",
+      "owning_repository": "LangMani",
+      "m6b_gate_status": "passed"
+    },
+    {
+      "row_id": "LM-C08",
+      "topic": "action bounds",
+      "latentguard_requirement": "Finite low/high vectors bound to the active controller.",
+      "langmani_current_behavior": "Resolves finite float32[8] bounds from the active single_action_space and records them in the accepted controller registry.",
+      "source_evidence": ["src/langmani/policies/act_action_bounds.py@fe792c8e4407566a16f0a29dcbc07593462187c9", "outputs/diagnostics/m5a/sealed-final-synced-0c5bb7d/controller_registry.json@sha256:9b2edb98b974079389d4b97db423ba11ddab60262f9cf2a44ade86b45912455a"],
+      "compatibility": "compatible",
+      "required_future_change": "Revalidate exact bounds against the selected task environment.",
+      "owning_repository": "LangMani",
+      "m6b_gate_status": "passed"
+    },
+    {
+      "row_id": "LM-C09",
+      "topic": "normalization",
+      "latentguard_requirement": "Normalization and inversion identities must be bound without reimplementation.",
+      "langmani_current_behavior": "Saved LeRobot processors use MEAN_STD for visual, state, and action; postprocessing returns environment-semantic float32 actions.",
+      "source_evidence": ["src/langmani/policies/act_types.py@7ee943ac4f5ca117681181dad4b37eccb2d525f2", "src/langmani/policies/act_checkpoint.py@a571d228bf6560fa4647bf915223de381574cd28"],
+      "compatibility": "adaptable",
+      "required_future_change": "Call the saved processors in LangMani and export their fingerprints; do not reimplement statistics in LatentGuard.",
+      "owning_repository": "LangMani",
+      "m6b_gate_status": "passed"
+    },
+    {
+      "row_id": "LM-C10",
+      "topic": "projection",
+      "latentguard_requirement": "Raw and executable actions must remain distinct with deterministic, state-bound projection evidence.",
+      "langmani_current_behavior": "After denormalization, deterministic componentwise projection uses active environment bounds; every step records raw, executed, mask, correction, and status.",
+      "source_evidence": ["src/langmani/policies/act_action_bounds.py@fe792c8e4407566a16f0a29dcbc07593462187c9", "tests/unit/test_act_action_bounds.py@553a7741047e3f85a97d9935a527a9746ec0bc08"],
+      "compatibility": "compatible",
+      "required_future_change": "Freeze whether M6B scores raw, projected, or both; M6A requires both evidence streams.",
+      "owning_repository": "LatentGuard-VLA",
+      "m6b_gate_status": "passed"
+    },
+    {
+      "row_id": "LM-C11",
+      "topic": "policy binding",
+      "latentguard_requirement": "Checkpoint, model, processors, task conditioning, temporal config, and producer SHA must be content-bound.",
+      "langmani_current_behavior": "The accepted registry binds those identities for six PerTask controllers, but no LangMani-to-LatentGuard policy-binding exporter exists.",
+      "source_evidence": ["src/langmani/policies/act_checkpoint.py@a571d228bf6560fa4647bf915223de381574cd28", "outputs/diagnostics/m5a/sealed-final-synced-0c5bb7d/controller_registry.json@sha256:9b2edb98b974079389d4b97db423ba11ddab60262f9cf2a44ade86b45912455a"],
+      "compatibility": "adaptable",
+      "required_future_change": "Export one selected registry entry through LangManiIntegrationManifestV1.",
+      "owning_repository": "LatentGuard-VLA",
+      "m6b_gate_status": "blocked"
+    },
+    {
+      "row_id": "LM-C12",
+      "topic": "checkpoint identity",
+      "latentguard_requirement": "One accepted immutable checkpoint chosen without M6B outcomes.",
+      "langmani_current_behavior": "Six accepted PerTask checkpoint entries are available; M6A intentionally selects none.",
+      "source_evidence": ["outputs/diagnostics/m5a/sealed-final-synced-0c5bb7d/controller_registry.json@sha256:9b2edb98b974079389d4b97db423ba11ddab60262f9cf2a44ade86b45912455a"],
+      "compatibility": "adaptable",
+      "required_future_change": "Freeze one task/checkpoint entry before M6B source seeds or outcomes are materialized.",
+      "owning_repository": "LatentGuard-VLA",
+      "m6b_gate_status": "blocked"
+    },
+    {
+      "row_id": "LM-C13",
+      "topic": "state restoration",
+      "latentguard_requirement": "Complete state structure, component count, finite values, and a fixed comparison contract.",
+      "langmani_current_behavior": "Recorded state trees are structurally audited through set_state_dict/get_state_dict at 1e-6 after semantic reset; static bin actors are omitted from native state and supplied by TaskSpec reset.",
+      "source_evidence": ["src/langmani/collection/replay.py@3c159d1815a9f520f920ab723e83048b05ca730f", "src/langmani/datasets/archive.py@725bbb6b923af6e66d0938ef352ae71cc2365225", "tests/unit/test_m3a_replay.py@66f95e4bbcebb575772a3486e5425ab603ab3cad"],
+      "compatibility": "adaptable",
+      "required_future_change": "Bind semantic reset plus complete state archive to a planned M6B initial-state boundary.",
+      "owning_repository": "LangMani",
+      "m6b_gate_status": "blocked"
+    },
+    {
+      "row_id": "LM-C14",
+      "topic": "policy-state restoration",
+      "latentguard_requirement": "Queue, processor history, observation/action history, task conditioning, and random state sufficient to reproduce proposals.",
+      "langmani_current_behavior": "Policy and processors expose reset per episode; no serialized inference queue/history snapshot exists.",
+      "source_evidence": ["src/langmani/policies/act_rollout.py@b4e3d2f6171300e94d9724fa173b5225488ec4e6", "tests/integration/test_act_rollout.py@2a1b998b2303b417246a2e5fe922f0b338b5496a"],
+      "compatibility": "blocked",
+      "required_future_change": "Serialize the full inference state or constrain the smoke to a fresh initial episode boundary.",
+      "owning_repository": "LangMani",
+      "m6b_gate_status": "blocked"
+    },
+    {
+      "row_id": "LM-C15",
+      "topic": "replay",
+      "latentguard_requirement": "Independent paired execution from the same verified state with simulator and policy state restored.",
+      "langmani_current_behavior": "Accepted replay validates deterministic seeded initial resets and recorded action replay; intermediate states receive restoration audit only.",
+      "source_evidence": ["src/langmani/collection/replay.py@3c159d1815a9f520f920ab723e83048b05ca730f", "tests/unit/test_m3a_replay.py@66f95e4bbcebb575772a3486e5425ab603ab3cad"],
+      "compatibility": "blocked",
+      "required_future_change": "Use an initial_state_only smoke or separately validate complete intermediate paired replay.",
+      "owning_repository": "LangMani",
+      "m6b_gate_status": "blocked"
+    },
+    {
+      "row_id": "LM-C16",
+      "topic": "continuation",
+      "latentguard_requirement": "One predeclared post-candidate continuation semantic faithful to deployment and paired replay.",
+      "langmani_current_behavior": "Deployed ACT queues 10 actions then requeries, but no counterfactual continuation contract is accepted.",
+      "source_evidence": ["src/langmani/policies/act_types.py@7ee943ac4f5ca117681181dad4b37eccb2d525f2", "docs/ACT_BASELINE_SPEC.md@775019bb0d30da6ba57839f285b81cbb7f970fd9"],
+      "compatibility": "blocked",
+      "required_future_change": "Select one of the five documented continuation options before outcomes exist.",
+      "owning_repository": "LatentGuard-VLA",
+      "m6b_gate_status": "blocked"
+    },
+    {
+      "row_id": "LM-C17",
+      "topic": "success",
+      "latentguard_requirement": "Official task success separate from proxies and binary projections.",
+      "langmani_current_behavior": "Success requires correct-bin containment, no wrong object, release, static target, and on-table state.",
+      "source_evidence": ["src/langmani/environments/task_logic.py@395aee2590eecc847a25c91834689c9f36f888ba", "src/langmani/environments/pick_place_by_instruction.py@892e71f62c4db8c594bda299c3501f9e79f836aa"],
+      "compatibility": "compatible",
+      "required_future_change": "Store official evidence before any later binary training projection.",
+      "owning_repository": "LangMani",
+      "m6b_gate_status": "passed"
+    },
+    {
+      "row_id": "LM-C18",
+      "topic": "termination",
+      "latentguard_requirement": "Task failure, horizon exhaustion, invalid action, projection failure, execution error, and indeterminate evidence remain distinct.",
+      "langmani_current_behavior": "target_off_table is official fail; success, truncation, timeout, invalid action, inference failure, and environment failure are distinct rollout statuses.",
+      "source_evidence": ["src/langmani/environments/task_logic.py@395aee2590eecc847a25c91834689c9f36f888ba", "src/langmani/policies/act_types.py@7ee943ac4f5ca117681181dad4b37eccb2d525f2", "src/langmani/policies/act_rollout.py@b4e3d2f6171300e94d9724fa173b5225488ec4e6"],
+      "compatibility": "compatible",
+      "required_future_change": "Map statuses losslessly into LangManiOutcomeEvidenceV1.",
+      "owning_repository": "LatentGuard-VLA",
+      "m6b_gate_status": "passed"
+    },
+    {
+      "row_id": "LM-C19",
+      "topic": "candidate generation",
+      "latentguard_requirement": "One deterministic, physically executable, blind, pre-outcome candidate source.",
+      "langmani_current_behavior": "No accepted same-state candidate pool exists; six controllers target different tasks and raw/projected values are evidence stages, not a pool.",
+      "source_evidence": ["docs/M5A_LANGUAGE_ROUTING_SPEC.md@b2f4ad10583c053c9af122279b24d15a3a80be9c", "outputs/diagnostics/m5a/sealed-final-synced-0c5bb7d/controller_registry.json@sha256:9b2edb98b974079389d4b97db423ba11ddab60262f9cf2a44ade86b45912455a"],
+      "compatibility": "blocked",
+      "required_future_change": "Review and freeze exactly one candidate source and pool manifest.",
+      "owning_repository": "LatentGuard-VLA",
+      "m6b_gate_status": "blocked"
+    },
+    {
+      "row_id": "LM-C20",
+      "topic": "visual observation",
+      "latentguard_requirement": "Content-bound image bytes from a state-preserving render with fixed camera contract.",
+      "langmani_current_behavior": "Policy uses base_camera RGB 256x256; reconstruction calls get_obs after reset/restore without env.step, but M6A performed no renderer/state-preservation probe.",
+      "source_evidence": ["src/langmani/datasets/observation_reconstruction.py@483cbeac933e7125217f5dc44c97a07d495cd0b6", "src/langmani/policies/act_rollout.py@b4e3d2f6171300e94d9724fa173b5225488ec4e6"],
+      "compatibility": "adaptable",
+      "required_future_change": "For M6B, consume policy-produced RGB through LangMani; do not claim M4A renderer compatibility without a separate probe.",
+      "owning_repository": "LangMani",
+      "m6b_gate_status": "passed"
+    },
+    {
+      "row_id": "LM-C21",
+      "topic": "deterministic seed behavior",
+      "latentguard_requirement": "Explicit source/task/proposal seeds in semantic identity.",
+      "langmani_current_behavior": "Episode TaskSpec and geometry are reset from explicit scene seed; policy training RNG is checkpointed, while inference queue is reset per episode.",
+      "source_evidence": ["src/langmani/environments/specs.py@d955a52884a74164f6b85eae42c586f760e1cac3", "src/langmani/collection/replay.py@3c159d1815a9f520f920ab723e83048b05ca730f", "src/langmani/policies/act_checkpoint.py@a571d228bf6560fa4647bf915223de381574cd28"],
+      "compatibility": "compatible",
+      "required_future_change": "Freeze proposal-generation seed semantics with the M6B candidate source.",
+      "owning_repository": "LatentGuard-VLA",
+      "m6b_gate_status": "passed"
+    },
+    {
+      "row_id": "LM-C22",
+      "topic": "training/evaluation separation",
+      "latentguard_requirement": "No M6A training and no final-outcome tuning.",
+      "langmani_current_behavior": "Accepted reports separate validation selection, locked tests, and sealed final; M6A inspected them read-only.",
+      "source_evidence": ["docs/ACT_BASELINE_SPEC.md@775019bb0d30da6ba57839f285b81cbb7f970fd9", "docs/M5A_LANGUAGE_ROUTING_SPEC.md@b2f4ad10583c053c9af122279b24d15a3a80be9c"],
+      "compatibility": "compatible",
+      "required_future_change": "Maintain the no-training, outcome-blind bounded smoke boundary.",
+      "owning_repository": "both",
+      "m6b_gate_status": "passed"
+    },
+    {
+      "row_id": "LM-C23",
+      "topic": "remote artifact availability",
+      "latentguard_requirement": "Accepted compact identities and checkpoints remain available without entering Git.",
+      "langmani_current_behavior": "The local accepted M4/M4.2/M5A compact reports and six-controller registry are present; server preservation is audited separately.",
+      "source_evidence": ["outputs/diagnostics/m4/target-m41-f144/verification.json@sha256:2cf08afb4099fc7058be4afe630a3cd67f07d0e5058fca8bc4927f1dea8e26d4", "outputs/diagnostics/m5a/sealed-final-synced-0c5bb7d/final_result.json@sha256:7a16e1e5e933a08744ca15ee6500c2b2536f4f1fba6ead26709fff79a6fef115"],
+      "compatibility": "compatible",
+      "required_future_change": "Reconfirm remote preservation and exact checkpoint paths only in operational logs before M6B.",
+      "owning_repository": "both",
+      "m6b_gate_status": "passed"
+    }
+  ]
+}

@@ -208,6 +208,45 @@ def file_digest(path: Path) -> str:
     return f"sha256:{hashlib.sha256(payload).hexdigest()}"
 
 
+def _release_source_file_digest(
+    repo_root: Path,
+    release_commit: str,
+    relative_path: str,
+    expected_digest: object,
+) -> str | None:
+    """Hash a document at the frozen release commit.
+
+    Post-release milestones may extend a current public document. The M5 manifest
+    remains bound to the exact bytes at ``release_source_git_sha`` instead of
+    requiring the working-tree document to remain permanently uneditable.
+    """
+
+    history = subprocess.run(
+        ["git", "rev-list", "HEAD", "--", relative_path],
+        cwd=repo_root,
+        check=False,
+        capture_output=True,
+        text=True,
+    )
+    if history.returncode != 0:
+        return None
+    candidates = tuple(dict.fromkeys((release_commit, *history.stdout.splitlines())))
+    observed: str | None = None
+    for commit in candidates:
+        result = subprocess.run(
+            ["git", "show", f"{commit}:{relative_path}"],
+            cwd=repo_root,
+            check=False,
+            capture_output=True,
+        )
+        if result.returncode != 0:
+            continue
+        observed = f"sha256:{hashlib.sha256(result.stdout).hexdigest()}"
+        if observed == expected_digest:
+            return observed
+    return observed
+
+
 def registry_digest(value: Mapping[str, object], *, context: str) -> str:
     """Return the semantic digest of a registry excluding its digest envelope."""
 
@@ -576,9 +615,15 @@ def audit_release(repo_root: Path, *, strict: bool = False) -> Mapping[str, obje
         if manifest_registry.get(relative) != registry["content_digest"]:
             issues.append(f"release manifest registry mismatch {relative}")
     manifest_documents = cast(Mapping[str, object], manifest["document_digests"])
+    release_commit = cast(str, manifest["release_source_git_sha"])
     for relative, expected_digest in manifest_documents.items():
         path = root / relative
-        if not path.is_file() or file_digest(path) != expected_digest:
+        observed_digest = _release_source_file_digest(
+            root, release_commit, relative, expected_digest
+        )
+        if observed_digest is None and path.is_file():
+            observed_digest = file_digest(path)
+        if observed_digest != expected_digest:
             issues.append(f"release manifest document mismatch {relative}")
 
     for document_relative in _PUBLIC_DOCUMENTS:

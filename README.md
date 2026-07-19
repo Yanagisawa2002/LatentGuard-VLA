@@ -92,6 +92,8 @@ The accepted research line covers one ManiSkill PickCube task, one robot/control
 
 Potential extensions include learned-policy proposals, a contract-frozen LangMani adapter, multiple task adapters, broader robot embodiments, and real-robot evaluation. Each requires a new milestone, untouched evidence, and its own compatibility and claim boundary; M5 starts none of them.
 
+The PickCube release remains frozen. M6A has started only the LangMani contract and readiness phase; no LangMani integration run or performance experiment has executed. See the [LangMani compatibility matrix](docs/integrations/langmani/compatibility-matrix.md) for the source-backed status and unresolved gates.
+
 ## Development and remote execution policy
 
 Tracked source, tests, configs, and reports are authored and validated locally, committed, and pushed. Remote execution may use only that exact clean SHA and writes large artifacts outside the tracked tree. Bugs are fixed locally and resynchronized; remote-only tracked-source edits are invalid. The accepted server artifacts are preserved, and the server remains online unless the user explicitly authorizes shutdown in the current task.

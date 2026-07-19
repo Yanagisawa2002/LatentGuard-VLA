@@ -1,0 +1,77 @@
+{
+  "schema_version": "latentguard-m6a-blocker-registry-v1",
+  "overall_readiness": "blocked",
+  "counts": {
+    "critical": 2,
+    "major": 4,
+    "minor": 0
+  },
+  "blockers": [
+    {
+      "blocker_id": "M6A-B003",
+      "severity": "critical",
+      "description": "No M6B candidate source and blind pool identity is frozen.",
+      "evidence": ["compatibility-matrix.json#LM-C19", "m6b-smoke-design.md"],
+      "owning_repository": "LatentGuard-VLA",
+      "required_decision_or_change": "Choose exactly one reviewed candidate source, count, seed semantic, and pre-outcome manifest.",
+      "m6b_can_proceed": false,
+      "workaround_status": "not_authorized",
+      "workaround_risk": "Ad-hoc candidates invalidate blindness and paired evidence."
+    },
+    {
+      "blocker_id": "M6A-B004",
+      "severity": "critical",
+      "description": "ACT queue, processor history, and episode-prefix state have no serialized inference snapshot.",
+      "evidence": ["src/langmani/policies/act_rollout.py@b4e3d2f6171300e94d9724fa173b5225488ec4e6", "tests/integration/test_act_rollout.py@2a1b998b2303b417246a2e5fe922f0b338b5496a"],
+      "owning_repository": "LangMani",
+      "required_decision_or_change": "Serialize complete policy state or freeze an initial-state-only smoke that never claims intermediate same-policy continuation.",
+      "m6b_can_proceed": false,
+      "workaround_status": "bounded_design_available",
+      "workaround_risk": "Resetting policy state at an intermediate simulator state changes deployed behavior."
+    },
+    {
+      "blocker_id": "M6A-B005",
+      "severity": "major",
+      "description": "No compact deployable LangMani verifier vector is frozen.",
+      "evidence": ["architecture.md#layer-b-observation", "compatibility-matrix.json#LM-C06"],
+      "owning_repository": "LatentGuard-VLA",
+      "required_decision_or_change": "Freeze a minimal field allowlist with no task target index, outcome, candidate provenance, or reporting metadata.",
+      "m6b_can_proceed": false,
+      "workaround_status": "not_authorized",
+      "workaround_risk": "Concatenating all fields leaks privileged task and outcome information."
+    },
+    {
+      "blocker_id": "M6A-B006",
+      "severity": "major",
+      "description": "Intermediate state round trips are audited, but accepted paired action execution from restored intermediate states is absent.",
+      "evidence": ["src/langmani/collection/replay.py@3c159d1815a9f520f920ab723e83048b05ca730f", "tests/unit/test_m3a_replay.py@66f95e4bbcebb575772a3486e5425ab603ab3cad"],
+      "owning_repository": "LangMani",
+      "required_decision_or_change": "Validate complete intermediate paired replay or limit M6B to verified seeded initial resets.",
+      "m6b_can_proceed": false,
+      "workaround_status": "initial_state_only",
+      "workaround_risk": "Calling restore audit exact replay would overstate physical evidence."
+    },
+    {
+      "blocker_id": "M6A-B007",
+      "severity": "major",
+      "description": "LatentGuard and LangMani dependency pins are incompatible in one Python environment.",
+      "evidence": ["LangMani pyproject.toml@f30a3f0825f562d6d2280ff7e7cf23b1fdf65c8f", "LatentGuard pyproject.toml"],
+      "owning_repository": "LatentGuard-VLA",
+      "required_decision_or_change": "Validate canonical JSON interchange between the unchanged environments.",
+      "m6b_can_proceed": false,
+      "workaround_status": "designed_not_validated",
+      "workaround_risk": "Forcing a shared NumPy/Python version can invalidate accepted environments."
+    },
+    {
+      "blocker_id": "M6A-B009",
+      "severity": "major",
+      "description": "M6B has not frozen one task and its exact accepted checkpoint registry entry.",
+      "evidence": ["outputs/diagnostics/m5a/sealed-final-synced-0c5bb7d/controller_registry.json@sha256:9b2edb98b974079389d4b97db423ba11ddab60262f9cf2a44ade86b45912455a", "compatibility-matrix.json#LM-C12"],
+      "owning_repository": "LatentGuard-VLA",
+      "required_decision_or_change": "Choose one canonical task and bind its checkpoint/model/processor/runtime identities before source seeds or outcomes exist.",
+      "m6b_can_proceed": false,
+      "workaround_status": "not_authorized",
+      "workaround_risk": "Post-outcome task or checkpoint choice creates selection leakage."
+    }
+  ]
+}
