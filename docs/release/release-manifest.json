@@ -1,6 +1,6 @@
 {
   "schema_version": "1.0",
-  "content_digest": "sha256:6769e652cf8a2b95002ba2faf8e2049f7e1c95f657f8f3986a5c64044dc30e0a",
+  "content_digest": "sha256:709cb28ecbbac2452eb1bc860c508102c6116b96dda3cc0a2e5dc8a460917ce2",
   "release_id": "m5-pickcube-evidence-release-v1",
   "release_source_git_sha": "942c6572914ef9c7fa6e5f8affdd8c9004ed4916",
   "package_version": "0.1.0",
@@ -23,7 +23,15 @@
   },
   "server_artifact_availability": {
     "audit_mode": "read_only",
-    "status": "pending post-implementation preservation review",
-    "server_lifecycle": "must remain online"
+    "status": "available and preserved",
+    "accepted_environment_present": true,
+    "major_runtime_roots_present": true,
+    "checkpoints_present": true,
+    "feature_and_teacher_caches_present": true,
+    "gpu_compute_processes": 0,
+    "shutdown_automation_found": false,
+    "remote_checkout_clean": true,
+    "remote_checkout_matches_release_source_git_sha": true,
+    "server_lifecycle": "online after read-only audit"
   }
 }

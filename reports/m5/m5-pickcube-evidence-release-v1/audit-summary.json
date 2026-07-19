@@ -1,0 +1,47 @@
+{
+  "schema_version": "1.0",
+  "release_id": "m5-pickcube-evidence-release-v1",
+  "release_source_git_sha": "942c6572914ef9c7fa6e5f8affdd8c9004ed4916",
+  "implementation_commit": "4320f696d42ca6c724b36a9e91916375be6774cf",
+  "implementation_commit_parity": {
+    "local_equals_upstream": true,
+    "github_equals_local": true,
+    "working_tree_clean_at_review": true
+  },
+  "strict_release_audit": {
+    "passed": true,
+    "milestone_count": 12,
+    "claim_count": 22,
+    "result_count": 57,
+    "issue_count": 0
+  },
+  "claim_status_counts": {
+    "supported": 8,
+    "partially_supported": 4,
+    "unsupported": 1,
+    "not_tested": 9
+  },
+  "result_status_counts": {
+    "supported": 44,
+    "partially_supported": 7,
+    "unsupported": 6
+  },
+  "registry_digests": {
+    "milestones": "sha256:d8a54a5274d98b6cfa51f5b8457a214c41d4399381daa6e3ec98eac0e8e4c112",
+    "claims": "sha256:fb9c98c4775c2b1ba72624d2b237b130963e43ee6d6ace838550e805e0fb5614",
+    "results": "sha256:c344b01e8a07db2131958798707087935679fa4ee0364ca10fbbbebe3d8aa13b"
+  },
+  "sanitization": {
+    "private_infrastructure_identifiers_in_public_surfaces": 0,
+    "secret_like_assignments_in_public_surfaces": 0,
+    "broken_internal_links": 0,
+    "raw_model_or_array_artifacts_added": 0,
+    "large_generated_artifacts_added": 0
+  },
+  "research_execution": {
+    "training_performed": false,
+    "simulator_benchmark_performed": false,
+    "new_outcomes_generated": false,
+    "rendering_performed": false
+  }
+}

@@ -1,0 +1,37 @@
+{
+  "schema_version": "1.0",
+  "release_documents": [
+    "README.md",
+    "docs/release/milestones.json",
+    "docs/release/claims.json",
+    "docs/release/claims.md",
+    "docs/release/results.json",
+    "docs/release/release-manifest.json"
+  ],
+  "portfolio_documents": [
+    "docs/portfolio/architecture.md",
+    "docs/portfolio/case-study.md",
+    "docs/portfolio/demo-script.md",
+    "docs/portfolio/key-results.md",
+    "docs/portfolio/presentation-outline.md",
+    "docs/portfolio/technical-report.md"
+  ],
+  "career_documents": [
+    "docs/career/interview-brief.md",
+    "docs/career/project-summary-en.md",
+    "docs/career/project-summary-zh.md",
+    "docs/career/resume-bullets.md"
+  ],
+  "public_result_markers_verified": [
+    "m2c-strong-replays",
+    "m3a-verified-outcomes",
+    "m3b-test-auprc",
+    "m3c-temporal-success",
+    "m4b-external-visual-success",
+    "m4c-distilled-vs-fixed",
+    "m4d-fault-gated-success",
+    "m4d-override-recall"
+  ],
+  "negative_results_visible": true,
+  "scope_limitations_visible": true
+}

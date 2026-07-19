@@ -1,0 +1,25 @@
+{
+  "schema_version": "1.0",
+  "status": "final_validation_passed",
+  "ordinary_test_suite": {
+    "collected": 1568,
+    "passed": 1565,
+    "skipped": 3,
+    "failed": 0,
+    "skip_reason": "Windows directory-symlink privilege unavailable"
+  },
+  "ruff_check": "passed",
+  "ruff_format_check": "passed for 264 files",
+  "mypy": "passed for 174 source files",
+  "git_diff_check": "passed",
+  "portfolio_smoke": {
+    "passed": true,
+    "deterministic_identity_digest": "sha256:4214cb1368ca31a8a8d8d5577a5f4b6df0b7eb8ac04c0d4742791f6ed20da57e",
+    "resume_zero_work": true,
+    "trust": "non_physical_infrastructure_only"
+  },
+  "strict_release_audit": {
+    "passed": true,
+    "issue_count": 0
+  }
+}

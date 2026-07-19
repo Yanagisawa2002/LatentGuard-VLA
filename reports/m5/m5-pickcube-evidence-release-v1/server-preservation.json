@@ -1,0 +1,46 @@
+{
+  "schema_version": "1.0",
+  "audit_mode": "read_only",
+  "ssh_available": true,
+  "server_online_after_audit": true,
+  "remote_checkout": {
+    "clean": true,
+    "git_sha": "942c6572914ef9c7fa6e5f8affdd8c9004ed4916",
+    "matches_release_source_git_sha": true,
+    "m5_release_branch_synced": false,
+    "reason_not_modified": "M5 server audit explicitly prohibits altering remote Git"
+  },
+  "accepted_environment": {
+    "present": true,
+    "python_version": "3.11.15"
+  },
+  "major_runtime_root_counts": {
+    "M3A": 12,
+    "M3B": 2,
+    "M3C": 6,
+    "M4A": 6,
+    "M4B": 2,
+    "M4C": 2,
+    "M4D": 1
+  },
+  "preserved_artifacts": {
+    "checkpoint_like_files": 105,
+    "accepted_m4b_checkpoint_files": 28,
+    "development_feature_cache_present": true,
+    "external_feature_cache_present": true,
+    "teacher_cache_present": true,
+    "development_feature_cache_files": 2,
+    "external_feature_cache_files": 2,
+    "teacher_cache_files": 4
+  },
+  "operational_state": {
+    "gpu_compute_processes": 0,
+    "shutdown_cron_matches": 0,
+    "shutdown_timer_matches": 0,
+    "scheduled_at_jobs": 0,
+    "storage_total_gib": 250.0,
+    "storage_available_gib": 231.46,
+    "storage_use_percent": 8
+  },
+  "changes_made_remotely": false
+}
