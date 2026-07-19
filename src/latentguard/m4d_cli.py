@@ -266,17 +266,30 @@ def _summary_payload(summary: Any, *, phase: str) -> dict[str, object]:
     }
 
 
+def _phase_sources(
+    sources: Sequence[Any], *, phase: str, development_source_limit: int | None
+) -> tuple[Any, ...]:
+    """Return the exact source inventory authorized for one M4D phase."""
+
+    values = tuple(sources)
+    if phase == "development" and development_source_limit is not None:
+        values = values[:development_source_limit]
+    expected = 60 if phase == "final" else (development_source_limit or 12)
+    if len(values) != expected:
+        raise ValueError(f"M4D {phase} requires exactly {expected} sources")
+    return values
+
+
 def _run_schedule(args: argparse.Namespace, *, phase: str, resume: bool) -> int:
     matrix = load_fallback_selector_matrix(args.m4d_selector_matrix_config)
     archive = load_state_indexed_archive(args.source_archive_dir)
-    sources = load_source_plans(args.source_plan_manifest, archive=archive)
-    if phase == "development" and args.source_limit is not None:
-        sources = sources[: args.source_limit]
-    expected_source_count = 60 if phase == "final" else (args.source_limit or 12)
-    if len(sources) != expected_source_count:
-        raise ValueError(
-            f"M4D {phase} requires exactly {expected_source_count} sources"
-        )
+    sources = _phase_sources(
+        load_source_plans(args.source_plan_manifest, archive=archive),
+        phase=phase,
+        development_source_limit=(
+            args.source_limit if phase == "development" else None
+        ),
+    )
     selected: Mapping[str, str] | None = None
     gate_selection_digest: str | None = None
     selected_profiles_digest: str | None = None
@@ -302,8 +315,15 @@ def _run_schedule(args: argparse.Namespace, *, phase: str, resume: bool) -> int:
         )
         return 0
     assets = _build_m4d_assets(args)
-    summary = run_fallback_benchmark_schedule(
+    runtime_sources = _phase_sources(
         cast(Sequence[Any], assets["sources"]),
+        phase=phase,
+        development_source_limit=(
+            args.source_limit if phase == "development" else None
+        ),
+    )
+    summary = run_fallback_benchmark_schedule(
+        runtime_sources,
         phase=phase,
         matrix=cast(Any, assets["m4d_matrix"]),
         selected_profiles=selected,
@@ -331,7 +351,7 @@ def _run_schedule(args: argparse.Namespace, *, phase: str, resume: bool) -> int:
     write_atomic_json(args.output_root / name, payload)
     if phase == "development" and not resume:
         results = _evaluate_records(
-            sources=cast(Sequence[Any], assets["sources"]),
+            sources=runtime_sources,
             matrix=cast(Any, assets["m4d_matrix"]),
             benchmark_root=args.output_root,
             phase="development",
