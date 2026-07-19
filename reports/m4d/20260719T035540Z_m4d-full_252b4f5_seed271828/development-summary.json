@@ -1,0 +1,17 @@
+{
+  "completed_episode_count": 384,
+  "executed_episode_count": 384,
+  "gate_selection_digest": null,
+  "outcome_counts": {
+    "execution_error": 0,
+    "horizon_exhausted": 24,
+    "success": 360,
+    "task_failure": 0,
+    "unsafe": 0
+  },
+  "phase": "development",
+  "planned_episode_count": 384,
+  "schema_version": "1.0",
+  "zero_work_episode_count": 0,
+  "zero_work_resume": false
+}

@@ -1,0 +1,6 @@
+{
+  "pytest": 0,
+  "ruff_check": 0,
+  "ruff_format_check": 0,
+  "mypy": 0
+}

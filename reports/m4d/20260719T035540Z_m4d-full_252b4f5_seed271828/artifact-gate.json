@@ -1,0 +1,21 @@
+{
+  "candidate_pool_bound": true,
+  "compatibility_bound": true,
+  "m4d_scorer_ids": [
+    "action_only_ensemble_v1",
+    "direct_visual_ensemble_v1",
+    "distilled_visual_ensemble_v1",
+    "privileged_structured_ensemble_v1"
+  ],
+  "runtime_content_loaded": true,
+  "selector_ids": [
+    "action_only_ensemble_v1",
+    "deterministic_random_v1",
+    "direct_visual_ensemble_v1",
+    "distilled_visual_ensemble_v1",
+    "fixed_primary_v1",
+    "privileged_structured_ensemble_v1"
+  ],
+  "source_count": 60,
+  "status": "passed"
+}

@@ -1,0 +1,29 @@
+{
+  "benchmark": {
+    "completed_episode_count": 1560,
+    "decision_count": 24414,
+    "execution_error_count": 0,
+    "planned_episode_count": 1560,
+    "visual_episode_count": 1080
+  },
+  "final_source_set": {
+    "archive_content_digest": "sha256:bd201c34282a9d32f66a356293dd1c5c5caff97323ce199988a42d1cb0f90160",
+    "fresh_state_compared_component_count": 70,
+    "fresh_state_maximum_absolute_error": 1.1920928955078125e-07,
+    "fresh_state_restoration_tolerance": 1e-06,
+    "fresh_state_verification_count": 65,
+    "fresh_verifier_state_compared_component_count": 38,
+    "fresh_verifier_state_maximum_absolute_error": 0.0,
+    "source_count": 60,
+    "source_disjointness_verified": true,
+    "source_plan_binding_exact": true,
+    "source_plan_set_digest": "sha256:ab43b605ca01a723fabe818f01eba02568237ef2ed42757f2032bacf55a5a8fa"
+  },
+  "render_contract": {
+    "camera_rig_frozen": true,
+    "render_domains_frozen": true,
+    "render_integrity_failure_count": 0,
+    "verification_basis": "all visual episodes completed under the adapter-bound render gate with zero execution errors"
+  },
+  "schema_version": "1.0"
+}

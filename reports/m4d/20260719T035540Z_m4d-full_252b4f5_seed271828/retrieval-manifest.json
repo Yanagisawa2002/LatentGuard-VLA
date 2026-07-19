@@ -1,0 +1,112 @@
+{
+  "excluded_categories": [
+    "candidate arrays and full decision streams",
+    "checkpoints and feature tensors",
+    "secrets and machine-specific paths",
+    "raw RGB frames",
+    "raw simulator states and source archives",
+    "runtime ledgers and caches"
+  ],
+  "files": [
+    {
+      "bytes": 531,
+      "path": "artifact-gate.json",
+      "sha256": "823f9c6b05f181d15535400a78351f9e03e6f51678be88f9cffa410449aa630c"
+    },
+    {
+      "bytes": 45184,
+      "path": "development-metrics.json",
+      "sha256": "8f827bd99dd4b154fa9a72bd1eb091638c00592003a4c1d3accb6349feb12f89"
+    },
+    {
+      "bytes": 390,
+      "path": "development-summary.json",
+      "sha256": "e127d91e7a04ca2ef417ceae1973a3128a97bbae9d5fe6750efc5aab24c53327"
+    },
+    {
+      "bytes": 431,
+      "path": "environment.json",
+      "sha256": "881d57dfade9229244ac46aa1db30764e254a86396e572027bcfc5ce23a9b20f"
+    },
+    {
+      "bytes": 1049,
+      "path": "execution-cost-summary.json",
+      "sha256": "1e344b11308820f765db66214fd2dcc5c46588e048166ba4ba8165ab81cb5f34"
+    },
+    {
+      "bytes": 217,
+      "path": "failure-resume-audit.json",
+      "sha256": "31ef1ee05bca6ea860f0c95ff047b9cb4208ab0c1cd533f1c45f4c0d78de30c2"
+    },
+    {
+      "bytes": 757,
+      "path": "fault-schedule-summary.json",
+      "sha256": "507bc7e0337c484efeca6da3b5d707c3bf46283f2c28b0bbefa3f6c9a8805ef2"
+    },
+    {
+      "bytes": 48392,
+      "path": "final-evaluation.json",
+      "sha256": "d104d3a2fa85c058701ef6bcbbaa531cafb3aa337b3e2aff6a6bf93ae226cafa"
+    },
+    {
+      "bytes": 421,
+      "path": "final-source-gate.json",
+      "sha256": "083e180b5f9e5c3f70ce2cd45bac80b793755ca8ec1738d957d959d553f62f6e"
+    },
+    {
+      "bytes": 1928,
+      "path": "final-source-set-summary.json",
+      "sha256": "696c8281a406500a64c4c3e171e35549579ce2da643178585b042dfe66f19682"
+    },
+    {
+      "bytes": 1735,
+      "path": "gate-profile-definitions.json",
+      "sha256": "3af1338574abd06249a281b66cd861850af11a795252bf543cf48f54e37f4222"
+    },
+    {
+      "bytes": 5669,
+      "path": "gate-selection.json",
+      "sha256": "aa057c9762c3dab4c0df1ace52727a77344fa151cb1d4923f21f26efef712d22"
+    },
+    {
+      "bytes": 76,
+      "path": "linux-validation-status.json",
+      "sha256": "95d67501c30b41c8dee2f6381b16c04355cff53fca069da065967b4bde3d644a"
+    },
+    {
+      "bytes": 3195636,
+      "path": "m4c-retrospective-diagnosis.json",
+      "sha256": "e9da718ee7b03a2b31e7201bcddfb6efcc147a419bc86c931a19316dfdf606c2"
+    },
+    {
+      "bytes": 3788,
+      "path": "result-summary.json",
+      "sha256": "293d87c4cec3e3fceadd95105a66150035be3348634fc8dbec00b29ac7704225"
+    },
+    {
+      "bytes": 457,
+      "path": "resume-summary.json",
+      "sha256": "e5fbd5d06f784bafabd6a06d68ff2b932f8a178af59420051711ad7d0b8aafc3"
+    },
+    {
+      "bytes": 4642,
+      "path": "review.md",
+      "sha256": "7c625837bbc0edf24d87420bb5ef125f0cd11a9d536407de718ced375c9feb48"
+    },
+    {
+      "bytes": 1134,
+      "path": "state-render-integrity.json",
+      "sha256": "fbed068694389fba9baafc2e0b813a61395c115d271d90054c1dbcb51b0c19fe"
+    },
+    {
+      "bytes": 999,
+      "path": "validation.json",
+      "sha256": "95254da5de30b8e2635fa3ba1a01f46a7f701eafc9bb4d11858f05de51485725"
+    }
+  ],
+  "remote_execution_git_sha": "0f24befbfc84a502c1af60e06bbeb8cd734a7863",
+  "run_id": "20260719T035540Z_m4d-full_252b4f5_seed271828",
+  "schema_version": "1.0",
+  "scope_root": "reports/m4d/20260719T035540Z_m4d-full_252b4f5_seed271828",
+  "selection_policy": "compact_sanitized_review_artifacts_only_v1"
+}

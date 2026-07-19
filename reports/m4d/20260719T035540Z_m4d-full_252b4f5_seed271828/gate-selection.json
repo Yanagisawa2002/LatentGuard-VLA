@@ -1,0 +1,154 @@
+{
+  "content_digest": "sha256:fd7694cdc23096d8efb6f2039b53f9176201fc2b0e0752d37d404b0ace65e577",
+  "development_manifest_digest": "sha256:d1ea8ed717abc09f241c6b65d023f8192525cfef3e521003fc9f18d71bb83fd7",
+  "gate_profiles_digest": "sha256:0fb9c1a12670ae640096621706164f2a98c34e87fc2dfc7ec6d7cdb9c40f3ace",
+  "outcomes_opened": "m4d_development_only",
+  "schema_version": "1.0",
+  "selected_profiles": {
+    "gated_action_only": {
+      "candidates": [
+        {
+          "clean_constraint_passed": true,
+          "clean_success_rate": 1.0,
+          "conservatism_ordinal": 2,
+          "fallback_invocation_rate": 0.0,
+          "fault_success_rate": 0.8333333333333334,
+          "fault_unsuccessful_rate": 0.16666666666666663,
+          "intervention_rate": 0.0,
+          "profile_id": "conservative"
+        },
+        {
+          "clean_constraint_passed": true,
+          "clean_success_rate": 1.0,
+          "conservatism_ordinal": 1,
+          "fallback_invocation_rate": 0.005376344086021506,
+          "fault_success_rate": 0.9166666666666666,
+          "fault_unsuccessful_rate": 0.08333333333333337,
+          "intervention_rate": 0.010752688172043012,
+          "profile_id": "balanced"
+        },
+        {
+          "clean_constraint_passed": true,
+          "clean_success_rate": 1.0,
+          "conservatism_ordinal": 0,
+          "fallback_invocation_rate": 0.005376344086021506,
+          "fault_success_rate": 0.9166666666666666,
+          "fault_unsuccessful_rate": 0.08333333333333337,
+          "intervention_rate": 0.010752688172043012,
+          "profile_id": "responsive"
+        }
+      ],
+      "clean_constraint_passed": true,
+      "selected_profile_id": "balanced"
+    },
+    "gated_direct_visual": {
+      "candidates": [
+        {
+          "clean_constraint_passed": true,
+          "clean_success_rate": 1.0,
+          "conservatism_ordinal": 2,
+          "fallback_invocation_rate": 0.0,
+          "fault_success_rate": 0.8333333333333334,
+          "fault_unsuccessful_rate": 0.16666666666666663,
+          "intervention_rate": 0.010752688172043012,
+          "profile_id": "conservative"
+        },
+        {
+          "clean_constraint_passed": true,
+          "clean_success_rate": 1.0,
+          "conservatism_ordinal": 1,
+          "fallback_invocation_rate": 0.005376344086021506,
+          "fault_success_rate": 0.9166666666666666,
+          "fault_unsuccessful_rate": 0.08333333333333337,
+          "intervention_rate": 0.021505376344086023,
+          "profile_id": "balanced"
+        },
+        {
+          "clean_constraint_passed": true,
+          "clean_success_rate": 1.0,
+          "conservatism_ordinal": 0,
+          "fallback_invocation_rate": 0.005376344086021506,
+          "fault_success_rate": 0.9166666666666666,
+          "fault_unsuccessful_rate": 0.08333333333333337,
+          "intervention_rate": 0.043010752688172046,
+          "profile_id": "responsive"
+        }
+      ],
+      "clean_constraint_passed": true,
+      "selected_profile_id": "balanced"
+    },
+    "gated_distilled_visual": {
+      "candidates": [
+        {
+          "clean_constraint_passed": true,
+          "clean_success_rate": 1.0,
+          "conservatism_ordinal": 2,
+          "fallback_invocation_rate": 0.0,
+          "fault_success_rate": 0.8333333333333334,
+          "fault_unsuccessful_rate": 0.16666666666666663,
+          "intervention_rate": 0.0,
+          "profile_id": "conservative"
+        },
+        {
+          "clean_constraint_passed": true,
+          "clean_success_rate": 1.0,
+          "conservatism_ordinal": 1,
+          "fallback_invocation_rate": 0.005376344086021506,
+          "fault_success_rate": 0.9166666666666666,
+          "fault_unsuccessful_rate": 0.08333333333333337,
+          "intervention_rate": 0.021505376344086023,
+          "profile_id": "balanced"
+        },
+        {
+          "clean_constraint_passed": true,
+          "clean_success_rate": 1.0,
+          "conservatism_ordinal": 0,
+          "fallback_invocation_rate": 0.005376344086021506,
+          "fault_success_rate": 0.9166666666666666,
+          "fault_unsuccessful_rate": 0.08333333333333337,
+          "intervention_rate": 0.03763440860215054,
+          "profile_id": "responsive"
+        }
+      ],
+      "clean_constraint_passed": true,
+      "selected_profile_id": "balanced"
+    },
+    "gated_privileged_structured": {
+      "candidates": [
+        {
+          "clean_constraint_passed": true,
+          "clean_success_rate": 1.0,
+          "conservatism_ordinal": 2,
+          "fallback_invocation_rate": 0.0,
+          "fault_success_rate": 0.8333333333333334,
+          "fault_unsuccessful_rate": 0.16666666666666663,
+          "intervention_rate": 0.0,
+          "profile_id": "conservative"
+        },
+        {
+          "clean_constraint_passed": true,
+          "clean_success_rate": 1.0,
+          "conservatism_ordinal": 1,
+          "fallback_invocation_rate": 0.0,
+          "fault_success_rate": 0.8333333333333334,
+          "fault_unsuccessful_rate": 0.16666666666666663,
+          "intervention_rate": 0.0,
+          "profile_id": "balanced"
+        },
+        {
+          "clean_constraint_passed": true,
+          "clean_success_rate": 1.0,
+          "conservatism_ordinal": 0,
+          "fallback_invocation_rate": 0.0,
+          "fault_success_rate": 0.8333333333333334,
+          "fault_unsuccessful_rate": 0.16666666666666663,
+          "intervention_rate": 0.0,
+          "profile_id": "responsive"
+        }
+      ],
+      "clean_constraint_passed": true,
+      "selected_profile_id": "conservative"
+    }
+  },
+  "selection_semantic": "clean_constraint_then_fault_success_cost_tiebreak_v1"
+}

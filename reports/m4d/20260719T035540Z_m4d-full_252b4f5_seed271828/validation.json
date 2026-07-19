@@ -1,0 +1,31 @@
+{
+  "local": {
+    "git_diff_check": "passed",
+    "mypy": "success: 172 source files",
+    "pytest": "1543 passed, 3 skipped",
+    "ruff_check": "passed",
+    "ruff_format_check": "260 files already formatted",
+    "windows_skip_reason": "directory symbolic-link privilege unavailable"
+  },
+  "remote_linux": {
+    "mypy": "success: 172 source files",
+    "pytest": "1546 passed",
+    "ruff_check": "passed",
+    "ruff_format_check": "260 files already formatted"
+  },
+  "result_reload": {
+    "acceptance_target_count": 14,
+    "acceptance_target_pass_count": 10,
+    "aggregate_metric_count": 26,
+    "bootstrap_comparison_count": 8,
+    "compact_json_reload": "passed",
+    "final_episode_count": 1560,
+    "gate_profile_digest_match": "passed",
+    "gate_selection_digest_match": "passed",
+    "source_count": 60,
+    "strict_zero_work_resume": "passed"
+  },
+  "sanitization_scan": "passed",
+  "schema_version": "1.0",
+  "validated_source_git_sha": "0f24befbfc84a502c1af60e06bbeb8cd734a7863"
+}

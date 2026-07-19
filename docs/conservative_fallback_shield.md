@@ -59,3 +59,28 @@ seed, or final-set tuning. Raw simulator states, images, candidates, checkpoints
 and features stay outside Git. A restarted M4D server remains online and
 SSH-ready after completion unless the user explicitly authorizes shutdown in
 the current task.
+
+## Accepted M4D result
+
+The frozen 60-source benchmark completed all 1,560 episodes: 1,393 success and
+167 horizon exhaustion, with zero task failure, unsafe outcome, or execution
+error. Balanced gates were frozen for action-only, direct visual, and distilled
+visual; privileged structured used the conservative gate.
+
+Gated direct preserved 1.0000 clean success with zero false overrides. Under
+canonical injected faults it reached 0.8000 success versus 0.7333 for accepting
+the nominal proposal, while invoking any intervention on only 0.0117 of
+boundaries. Always fallback reached 1.0000 success with a 0.2907 fallback rate,
+and ungated direct reached 0.9000 success with a 0.9052 intervention rate.
+
+The result is therefore a cost/success tradeoff rather than a full acceptance.
+Ten of fourteen targets passed, but fault-override recall was only 0.0403, the
+success gain over accept-nominal was below 0.10, and gated direct did not come
+within 0.05 of always-fallback success or reduce unsuccessful episodes by the
+required 40%. Strong-camera and strong-lighting success each declined only
+0.0167 from canonical, so the domain-robustness targets passed. These values are
+preserved without final-set tuning in the compact M4D report.
+
+The first final process ended with native exit 139 after 864 complete episodes.
+Transactional recovery found no partial episode, completed the remaining 696,
+and a strict resume subsequently executed zero work for all 1,560 identities.

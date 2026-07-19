@@ -1,0 +1,113 @@
+{
+  "acceptance_targets": {
+    "all_targets_passed": false,
+    "failed": [
+      "fault_override_recall_at_least_0p60",
+      "fault_success_improvement_at_least_0p10",
+      "fault_success_within_0p05_of_fallback",
+      "fault_unsuccessful_relative_reduction_at_least_0p40"
+    ],
+    "passed_count": 10,
+    "target_count": 14
+  },
+  "benchmark": {
+    "decision_count": 24414,
+    "episode_count": 1560,
+    "outcome_counts": {
+      "execution_error": 0,
+      "horizon_exhausted": 167,
+      "success": 1393,
+      "task_failure": 0,
+      "unsafe": 0
+    },
+    "source_trajectory_count": 60
+  },
+  "commits": {
+    "implementation": "252b4f565519ee34d5dca9c76e0f25aa02b3b421",
+    "remote_execution": "0f24befbfc84a502c1af60e06bbeb8cd734a7863",
+    "smoke_source_limit_fix": "0f24befbfc84a502c1af60e06bbeb8cd734a7863"
+  },
+  "fault_injected_canonical": {
+    "accept_nominal_success_rate": 0.7333333333333333,
+    "always_fallback_success_rate": 1.0,
+    "gated_action_only_success_rate": 0.7333333333333333,
+    "gated_direct_alternative_invocation_rate": 0.008519701810436636,
+    "gated_direct_fallback_invocation_rate": 0.003194888178913738,
+    "gated_direct_intervention_rate": 0.011714589989350373,
+    "gated_direct_nominal_risk_auprc": 0.47057563871056496,
+    "gated_direct_nominal_risk_auroc": 0.5945945945945946,
+    "gated_direct_override_recall": 0.040293040293040296,
+    "gated_direct_success_rate": 0.8,
+    "gated_distilled_success_rate": 0.7666666666666667,
+    "gated_privileged_success_rate": 0.7333333333333333,
+    "ungated_direct_intervention_rate": 0.9052183173588925,
+    "ungated_direct_success_rate": 0.9
+  },
+  "gate_selection": {
+    "content_digest": "sha256:fd7694cdc23096d8efb6f2039b53f9176201fc2b0e0752d37d404b0ace65e577",
+    "gated_action_only": "balanced",
+    "gated_direct_visual": "balanced",
+    "gated_distilled_visual": "balanced",
+    "gated_privileged_structured": "conservative"
+  },
+  "primary_bootstrap_success_rate_differences": {
+    "versus_accept_nominal": {
+      "estimate": 0.06666666666666667,
+      "lower_95": 0.016666666666666666,
+      "upper_95": 0.13333333333333333
+    },
+    "versus_always_fallback": {
+      "estimate": -0.2,
+      "lower_95": -0.31666666666666665,
+      "upper_95": -0.1
+    },
+    "versus_gated_action_only": {
+      "estimate": 0.06666666666666667,
+      "lower_95": 0.016666666666666666,
+      "upper_95": 0.13333333333333333
+    },
+    "versus_gated_distilled": {
+      "estimate": 0.03333333333333333,
+      "lower_95": -0.03333333333333333,
+      "upper_95": 0.1
+    },
+    "versus_gated_privileged": {
+      "estimate": 0.06666666666666667,
+      "lower_95": 0.016666666666666666,
+      "upper_95": 0.13333333333333333
+    },
+    "versus_ungated_direct": {
+      "estimate": -0.1,
+      "lower_95": -0.23333333333333334,
+      "upper_95": 0.03333333333333333
+    }
+  },
+  "primary_clean_canonical": {
+    "execution_error_rate": 0.0,
+    "false_override_rate": 0.0,
+    "intervention_rate": 0.0,
+    "success_rate": 1.0,
+    "unsafe_rate": 0.0
+  },
+  "primary_strong_domains_fault_injected": {
+    "strong_camera_shift_success_rate": 0.7833333333333333,
+    "strong_lighting_shift_success_rate": 0.7833333333333333
+  },
+  "prohibitions": {
+    "distributed_or_multi_gpu": false,
+    "langmani": false,
+    "model_training_or_tuning": false,
+    "new_model_seeds": false,
+    "outcomes_available_during_selection": false,
+    "vlm_or_llm": false
+  },
+  "remote_run_id": "20260719T035540Z_m4d-full_252b4f5_seed271828",
+  "research_conclusion": "partial_engineering_success_research_targets_not_met",
+  "schema_version": "1.0",
+  "strict_resume": {
+    "completed_episode_count": 1560,
+    "executed_episode_count": 0,
+    "zero_work_episode_count": 1560,
+    "zero_work_resume": true
+  }
+}

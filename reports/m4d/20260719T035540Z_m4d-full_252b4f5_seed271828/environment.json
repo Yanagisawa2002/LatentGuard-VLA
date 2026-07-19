@@ -1,0 +1,20 @@
+{
+  "cuda_available": true,
+  "cuda_runtime": "12.8",
+  "gpu": {
+    "driver": "580.76.05",
+    "memory_mib": 32607,
+    "model": "NVIDIA GeForce RTX 5090"
+  },
+  "packages": {
+    "mani_skill": "3.0.1",
+    "numpy": "1.26.4",
+    "pillow": "12.3.0",
+    "sapien": "3.0.3"
+  },
+  "platform_release": "5.15.0-119-generic",
+  "platform_system": "Linux",
+  "python": "3.11.15",
+  "pytorch": "2.8.0+cu128",
+  "schema_version": "1.0"
+}

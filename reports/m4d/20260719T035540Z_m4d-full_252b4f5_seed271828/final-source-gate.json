@@ -1,0 +1,11 @@
+{
+  "archive_content_digest": "sha256:bd201c34282a9d32f66a356293dd1c5c5caff97323ce199988a42d1cb0f90160",
+  "attempt_count": 60,
+  "fresh_state_verification_count": 65,
+  "prior_archive_count": 7,
+  "source_count": 60,
+  "source_disjointness_verified": true,
+  "source_plan_binding_exact": true,
+  "source_plan_set_digest": "sha256:ab43b605ca01a723fabe818f01eba02568237ef2ed42757f2032bacf55a5a8fa",
+  "status": "passed"
+}

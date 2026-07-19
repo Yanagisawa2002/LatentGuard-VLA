@@ -1,0 +1,40 @@
+{
+  "configuration_byte_sha256": "f4c0f928cadf7bfea5b55f577e782e922a6780d28d03c89569d837636dfa54f6",
+  "derivation_semantic": "direct_visual_m4b_validation_threshold_quantiles_v1",
+  "profiles": [
+    {
+      "alternative_uncertainty_threshold": 0.03535064734036564,
+      "conservatism_ordinal": 2,
+      "improvement_margin_threshold": 0.12748229794340032,
+      "nominal_risk_threshold": 0.5525069578578139,
+      "nominal_uncertainty_threshold": 0.03535064734036564,
+      "profile_id": "conservative",
+      "quantile_semantic": "risk_q75_margin_q75_uncertainty_q25_linear_v1"
+    },
+    {
+      "alternative_uncertainty_threshold": 0.07070129468073127,
+      "conservatism_ordinal": 1,
+      "improvement_margin_threshold": 0.0967662181448126,
+      "nominal_risk_threshold": 0.48867840133324947,
+      "nominal_uncertainty_threshold": 0.07070129468073127,
+      "profile_id": "balanced",
+      "quantile_semantic": "risk_q50_margin_q50_uncertainty_q50_linear_v1"
+    },
+    {
+      "alternative_uncertainty_threshold": 0.09841534948733482,
+      "conservatism_ordinal": 0,
+      "improvement_margin_threshold": 0.06846312406634227,
+      "nominal_risk_threshold": 0.36195995776744433,
+      "nominal_uncertainty_threshold": 0.09841534948733482,
+      "profile_id": "responsive",
+      "quantile_semantic": "risk_q25_margin_q25_uncertainty_q75_linear_v1"
+    }
+  ],
+  "schema_version": "1.0",
+  "source_model_id": "frozen_resnet18_multiview_action",
+  "validation_prediction_digests": [
+    "sha256:d750e72d2420351c7b872260c81b50a5e21f615132aa1c35e5f8b9661c4a244c",
+    "sha256:ccc75463673bc57f1ead94b1d0eba4618c7b04b3256c3367fa17569598ea51aa",
+    "sha256:83700453786a8383fad149ab639c396f0a2c7021e2200f7eb2d337ea59853a49"
+  ]
+}

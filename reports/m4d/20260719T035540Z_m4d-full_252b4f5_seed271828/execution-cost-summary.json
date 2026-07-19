@@ -1,0 +1,30 @@
+{
+  "benchmark": {
+    "average_recorded_episode_seconds": 3.633783086604224,
+    "completed_episode_count": 1560,
+    "recorded_episode_seconds_total": 5668.701615102589
+  },
+  "fastest_group": {
+    "average_episode_seconds": 2.532647939585149,
+    "identity": "always_fixed_primary_fallback/none/fault_injected/not_applicable"
+  },
+  "native_process_recovery": {
+    "completed_before_exit_139": 864,
+    "executed_after_resume": 696,
+    "incomplete_episode_count_at_failure": 0,
+    "native_exit_count": 1,
+    "strict_zero_work_episode_count": 1560,
+    "transactional_resume_authorized": true
+  },
+  "primary_group_average_episode_seconds": {
+    "clean_canonical": 4.083965939531724,
+    "fault_injected_canonical": 4.104839613599082,
+    "fault_injected_strong_camera_shift": 4.107564614154398,
+    "fault_injected_strong_lighting_shift": 4.0950494427854816
+  },
+  "schema_version": "1.0",
+  "slowest_group": {
+    "average_episode_seconds": 4.151311858557165,
+    "identity": "ungated_direct_visual/none/clean/strong_lighting_shift"
+  }
+}

@@ -49,3 +49,31 @@ all eight M4D CLI dry-run/inspection smokes, and `git diff --check`. On the
 accepted final execution SHA, run one combined Linux validation suite after the
 artifact gate, integration smoke, development/freeze, final benchmark, and
 strict zero-work resume.
+
+## Completion evidence
+
+The artifact gate loaded and content-bound all accepted scorers, selectors,
+checkpoints, camera/render definitions, candidate pool, and compatibility
+identity. The 12-source development matrix completed 384/384 episodes and froze
+balanced gates for action-only, direct visual, and distilled visual, plus a
+conservative privileged gate. The 60-source final set was accepted in 60
+attempts, passed disjointness against seven prior archives, and completed the
+fixed 1,560-episode matrix on
+`0f24befbfc84a502c1af60e06bbeb8cd734a7863`.
+
+The final benchmark recorded 1,393 successes and 167 horizon exhaustions, with
+zero task failures, unsafe outcomes, or execution errors. Gated direct preserved
+1.0000 clean success with zero false overrides and improved injected-fault
+success from 0.7333 for accept-nominal to 0.8000 while intervening on 0.0117 of
+boundaries. It nevertheless failed four predeclared targets: the required 0.10
+success gain, 40% relative unsuccessful reduction, success within 0.05 of
+always fallback, and 0.60 fault-override recall. The negative result is retained
+without tuning.
+
+A native exit 139 occurred after 864 complete episodes. The preserved audit
+found no partial episode; transactional resume reused all 864 and executed the
+remaining 696. The final strict resume executed zero work for all 1,560
+identities. Linux validation passed with 1,546 tests, Ruff, formatting, and mypy
+over 172 source files. Compact sanitized evidence is stored under
+`reports/m4d/20260719T035540Z_m4d-full_252b4f5_seed271828/`. The server remains
+online and SSH-ready.
