@@ -142,3 +142,21 @@ No row authorizes a candidate pool in M6A.
 | Execute one action, replan | yes | no accepted policy-state snapshot | plausible | blocked | largest query cost |
 
 M6A selects no outcome-label continuation semantic.
+
+## M6A.1 bounded action-only bridge
+
+M6A.1 resolves only the initial-state integration smoke. LangMani exports raw postprocessed and
+projected executable action identities; LatentGuard transforms only the raw ten-action prefix;
+LangMani projects every transformed prefix with its existing action-bound implementation; and
+LatentGuard scores only projected actions plus the fixed boolean mask.
+
+`LangManiActionOnlyVerifierInputV1` has shape `[4,16,8]`, float32 model values, the first ten slots
+from executable projected actions, exact zero padding in slots 10 through 15, and mask values true
+then false over the same ranges. The scorer adapter creates only a constant internal placeholder
+for the legacy model function's ignored state argument. No LangMani structured state, RGB, task,
+instruction, provenance, projection count, fault identity, or outcome reaches the action-only
+model.
+
+The mandatory equivalence contract is bitwise equality of float64-exported logits and calibrated
+probabilities after replacing only masked input padding with deterministic finite nonzero values.
+There is no post-observation tolerance adjustment.

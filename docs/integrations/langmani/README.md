@@ -40,3 +40,23 @@ The synthetic adapter always reports:
 
 > Synthetic LangMani adapter validation does not establish compatibility with
 > the real LangMani simulator or policy.
+
+## M6A.1 bounded remediation
+
+M6A.1 adds a narrower initial-state-only path without changing the historical M6A audit. Its
+pre-probe status is `conditionally_ready`. It freezes one lexically selected accepted PerTask
+controller, four deterministic candidates, the accepted M3B action-only ensemble, a ten-to-sixteen
+mask contract, and recorded fixed continuation. Actual readiness still requires one exact pushed
+cross-process probe and accepted-checkpoint mask-invariance evidence.
+
+The LatentGuard commands are:
+
+```bash
+latentguard freeze-langmani-smoke-contract ...
+latentguard build-langmani-initial-candidates ...
+latentguard score-langmani-initial-candidates ...
+latentguard audit-langmani-m6b-readiness --strict ...
+```
+
+The probe performs one reset and one policy query, executes zero actions, generates zero outcomes,
+and does not start M6B. See [m6a1-blocker-resolutions.md](m6a1-blocker-resolutions.md).

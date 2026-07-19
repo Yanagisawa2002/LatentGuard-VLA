@@ -1,0 +1,41 @@
+{
+  "schema_version": "latentguard-m6a1-blocker-resolutions-v1",
+  "scope": "bounded_m6b_initial_state_only",
+  "original_registry": "docs/integrations/langmani/blockers.json",
+  "original_registry_preserved": true,
+  "readiness_status": "conditionally_ready",
+  "outcomes_generated": false,
+  "m6b_executed": false,
+  "resolutions": [
+    {
+      "blocker_id": "M6A-B003",
+      "status": "resolved_by_frozen_contract",
+      "evidence": "ProjectedPrefixPerturbationPoolV1 with identity plus three lexically selected existing corruptions"
+    },
+    {
+      "blocker_id": "M6A-B004",
+      "status": "scope_resolved_initial_state_only",
+      "future_limitation": "complete intermediate ACT policy-state restoration remains unavailable"
+    },
+    {
+      "blocker_id": "M6A-B005",
+      "status": "pending_real_mask_invariance_gate",
+      "evidence": "LangManiActionOnlyVerifierInputV1 structurally frozen"
+    },
+    {
+      "blocker_id": "M6A-B006",
+      "status": "scope_resolved_seeded_initial_reset_and_fixed_continuation",
+      "future_limitation": "intermediate paired replay remains unavailable"
+    },
+    {
+      "blocker_id": "M6A-B007",
+      "status": "pending_real_cross_process_probe",
+      "evidence": "canonical strict JSON schemas implemented in both repositories"
+    },
+    {
+      "blocker_id": "M6A-B009",
+      "status": "pending_exact_remote_binding",
+      "evidence": "lexically first eligible canonical task rule implemented"
+    }
+  ]
+}

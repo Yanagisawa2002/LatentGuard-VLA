@@ -78,3 +78,23 @@ resolved dependency manifests, task/checkpoint binding, blind candidate manifest
 raw/projected action records, replay and continuation evidence, outcome taxonomy,
 resume ledger, strict validation summary, and a sanitized retrieval manifest.
 Datasets, simulator states, images, checkpoints, and caches stay outside Git.
+
+## M6A.1 frozen bounded workload
+
+This section supersedes the provisional counts above after M6A.1 implementation, while execution
+remains prohibited until the real probe passes.
+
+- one canonical task and one accepted PerTask checkpoint;
+- three untouched content-derived M6B source seeds;
+- one nominal baseline per source;
+- four candidates per source and twelve total candidate outcome executions;
+- one deterministic-random ranking baseline and one frozen action-only ranking;
+- independently seeded initial resets for paired execution;
+- exactly ten candidate-prefix actions;
+- recorded projected nominal continuation beginning at nominal index ten;
+- no policy requery after candidate divergence;
+- no training, visual model, or performance-improvement claim.
+
+Fixed continuation is reproducible but is not faithful same-policy continuation. Intermediate
+policy-state restoration, intermediate exact replay, serialized ACT queue restoration, and
+closed-loop LangMani shielding remain explicitly unsupported.
