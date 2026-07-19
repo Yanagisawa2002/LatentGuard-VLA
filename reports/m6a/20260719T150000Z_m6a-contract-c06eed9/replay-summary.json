@@ -1,0 +1,14 @@
+{
+  "schema_version": "latentguard-m6a-replay-summary-v1",
+  "replay_readiness": "initial_state_only",
+  "seeded_initial_reset_replay_available": true,
+  "complete_recorded_state_tree_audit_available": true,
+  "state_comparison_semantic": "complete tree, exact keys/shapes, finite values, maximum absolute error",
+  "maximum_absolute_tolerance": 1e-6,
+  "intermediate_set_get_round_trip_audited": true,
+  "intermediate_paired_action_execution_accepted": false,
+  "static_bin_state_requires_semantic_reset": true,
+  "policy_state_snapshot_available": false,
+  "exact_ready": false,
+  "m6a_simulator_executed": false
+}

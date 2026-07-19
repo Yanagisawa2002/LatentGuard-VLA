@@ -1,0 +1,28 @@
+{
+  "schema_version": "1.0",
+  "content_digest": "sha256:5a90b73343cd575ee109ced5b1a0e03cc3e9649a18c75c4855c879e3f43a7433",
+  "base_release_id": "m5-pickcube-evidence-release-v1",
+  "claims": [
+    {
+      "claim_id": "m6a-langmani-contract-documented",
+      "milestone_id": "M6A",
+      "statement": "A versioned, import-safe LangMani cross-project integration contract is documented and CPU-tested.",
+      "support_status": "documented",
+      "evidence": [
+        "docs/integrations/langmani/integration-contract.json",
+        "reports/m6a/20260719T150000Z_m6a-contract-c06eed9/test-summary.json"
+      ]
+    },
+    {
+      "claim_id": "m6a-langmani-readiness-audited",
+      "milestone_id": "M6A",
+      "statement": "The exact clean LangMani revision was audited read-only and M6B readiness is blocked by explicit gates.",
+      "support_status": "documented",
+      "evidence": [
+        "docs/integrations/langmani/compatibility-matrix.json",
+        "docs/integrations/langmani/blockers.json",
+        "reports/m6a/20260719T150000Z_m6a-contract-c06eed9/contract-audit.json"
+      ]
+    }
+  ]
+}

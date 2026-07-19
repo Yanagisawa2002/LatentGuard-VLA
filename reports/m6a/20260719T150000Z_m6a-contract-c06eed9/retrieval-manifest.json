@@ -1,0 +1,64 @@
+{
+  "schema_version": "latentguard-m6a-retrieval-manifest-v1",
+  "audit_id": "20260719T150000Z_m6a-contract-c06eed9",
+  "sanitized": true,
+  "raw_artifacts_included": false,
+  "private_paths_included": false,
+  "files": [
+    {
+      "path": "reports/m6a/20260719T150000Z_m6a-contract-c06eed9/contract-audit.json",
+      "sha256": "sha256:8f38fe7ebd7d89fab97f41c8622199f6dfd77d223c49348fd8a06c2d48c5a11d",
+      "bytes": 18899
+    },
+    {
+      "path": "reports/m6a/20260719T150000Z_m6a-contract-c06eed9/repository-identity.json",
+      "sha256": "sha256:5569a029066d3a865b61e5465f0cacf385f22aefd4baa58a1bb6b6ba9fcb20ce",
+      "bytes": 710
+    },
+    {
+      "path": "reports/m6a/20260719T150000Z_m6a-contract-c06eed9/compatibility-summary.json",
+      "sha256": "sha256:571e6cc4204f748e85aecfb6ff5cd07849c9531b6e9f65c47150d96191804d1d",
+      "bytes": 448
+    },
+    {
+      "path": "reports/m6a/20260719T150000Z_m6a-contract-c06eed9/action-projection-summary.json",
+      "sha256": "sha256:423485fa7e011734eee6e6048dc75dcd1db6f11b0070c50916bc8e02e56d7f07",
+      "bytes": 1014
+    },
+    {
+      "path": "reports/m6a/20260719T150000Z_m6a-contract-c06eed9/replay-summary.json",
+      "sha256": "sha256:c1a80a5d8957449b911d08064825a159d4ae9fda056e0635fdb7975c9d7425f2",
+      "bytes": 617
+    },
+    {
+      "path": "reports/m6a/20260719T150000Z_m6a-contract-c06eed9/policy-state-summary.json",
+      "sha256": "sha256:1b4b44f7afeadcab3798b5063c139e314e99acc26a6236ebf71d861fc9cb0d12",
+      "bytes": 964
+    },
+    {
+      "path": "reports/m6a/20260719T150000Z_m6a-contract-c06eed9/readiness-gates.json",
+      "sha256": "sha256:c93a050fc49885262f892f041f0e6bdfe3c14227fb5f7ea5ac7b3efc50401b9d",
+      "bytes": 2273
+    },
+    {
+      "path": "reports/m6a/20260719T150000Z_m6a-contract-c06eed9/blocker-summary.json",
+      "sha256": "sha256:a5cafbbe1efa847c08f0571ea738f5523501a424adaff05075178efbc95d28fa",
+      "bytes": 297
+    },
+    {
+      "path": "reports/m6a/20260719T150000Z_m6a-contract-c06eed9/test-summary.json",
+      "sha256": "sha256:1d86b3d5ae607ad7f44d523d26b448673af55e3dfe4d64bfacb2233ec71c8198",
+      "bytes": 868
+    },
+    {
+      "path": "reports/m6a/20260719T150000Z_m6a-contract-c06eed9/server-preservation.json",
+      "sha256": "sha256:dc831260a947acadee446d322fda30578c720ef37fc7c1c66c5b8626e31c4836",
+      "bytes": 918
+    },
+    {
+      "path": "reports/m6a/20260719T150000Z_m6a-contract-c06eed9/final-review.md",
+      "sha256": "sha256:2966fdaf706c8775504eaa0daf407fd4c963d3d56fae8bd4dd24169b655d8951",
+      "bytes": 2210
+    }
+  ]
+}

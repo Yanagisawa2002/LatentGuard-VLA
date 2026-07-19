@@ -64,7 +64,33 @@ runtime bridge remain unresolved. Replay readiness is `initial_state_only`.
 
 ## Validation and completion log
 
-The implementation and final review commands, commit identities, report IDs, and
-server-preservation result are recorded in the final compact M6A report. This plan
-is updated only with observed results; it does not treat a blocked M6B gate as an
-M6A failure when the audit itself is complete and truthful.
+The implementation commit is
+`c06eed9f83325909ce44073705c7628d69a09c6a` and was pushed before the final
+read-only audit. The compact audit ID is
+`20260719T150000Z_m6a-contract-c06eed9`; its strict contract audit passed with
+zero audit issues while correctly reporting overall M6B readiness as `blocked`.
+
+Observed validation at the implementation revision:
+
+- `python -m pytest`: 1,580 passed and three pre-existing Windows
+  symbolic-link privilege skips.
+- `ruff check .`, `ruff format --check .`, `mypy src`, and `git diff --check`:
+  passed.
+- `latentguard portfolio-smoke`: passed with deterministic CPU infrastructure
+  identity and zero-work resume.
+- `latentguard audit-release --strict`: passed with 12 milestones, 22 claims,
+  57 results, and zero issues.
+- `latentguard audit-langmani-contract --strict`: passed with zero audit issues.
+
+The final matrix records 11 compatible, seven adaptable, five blocked, and zero
+unknown rows. Six of 15 M6B readiness gates remain blocked by six explicit
+blockers (two critical and four major). Replay readiness is
+`initial_state_only`; M6B was not executed.
+
+The server preservation audit was read-only: SSH remained available, no GPU
+compute process was running, accepted run roots/environments/checkpoints/caches
+remained present, no remote change was made, and the server remained online.
+The final compact review and sanitized retrieval manifest are under the audit ID
+above. A separate result commit records these additive reports and registries;
+the frozen M5 release-manifest byte digest remains
+`4023dad2253156b56fc094ddee2e1e99afce5ee8843a3caf27bbaafc6ce07377`.

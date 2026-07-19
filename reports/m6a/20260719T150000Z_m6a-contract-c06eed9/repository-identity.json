@@ -1,0 +1,19 @@
+{
+  "schema_version": "latentguard-m6a-repository-identity-v1",
+  "latentguard": {
+    "repository": "Yanagisawa2002/LatentGuard-VLA",
+    "branch": "codex/m6a-langmani-integration-contract",
+    "implementation_commit": "c06eed9f83325909ce44073705c7628d69a09c6a",
+    "implementation_commit_local_upstream_github_equal": true,
+    "clean_at_final_audit_start": true
+  },
+  "langmani": {
+    "repository": "Yanagisawa2002/LangMani",
+    "branch": "codex/m5a-language-routing",
+    "head_commit": "b0fd9115496d3cc3d700c4eac7fb9f3f3ad401fd",
+    "upstream_commit": "b0fd9115496d3cc3d700c4eac7fb9f3f3ad401fd",
+    "clean": true,
+    "tracked_source_modified": false,
+    "operational_path_committed": false
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "schema_version": "latentguard-m6a-blocker-summary-v1",
+  "overall_readiness": "blocked",
+  "critical": 2,
+  "major": 4,
+  "minor": 0,
+  "blocker_ids": ["M6A-B003", "M6A-B004", "M6A-B005", "M6A-B006", "M6A-B007", "M6A-B009"],
+  "m6b_may_start": false,
+  "missing_evidence_downgraded": false
+}

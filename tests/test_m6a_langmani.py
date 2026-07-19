@@ -34,6 +34,7 @@ from latentguard.integrations.langmani.synthetic import (
     SyntheticLangManiAdapter,
     validate_synthetic_adapter,
 )
+from latentguard.release import registry_digest
 
 
 def _task() -> LangManiTaskContextV1:
@@ -390,3 +391,51 @@ def test_compatibility_and_blocker_registries_are_complete() -> None:
     assert len(blockers["blockers"]) == 6
     assert blockers["overall_readiness"] == "blocked"
     assert all(not item["m6b_can_proceed"] for item in blockers["blockers"])
+
+    integration = json.loads(
+        (root / "docs/integrations/langmani/integration-contract.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    parsed = LangManiIntegrationManifestV1.from_dict(integration)
+    assert parsed.overall_readiness == "blocked"
+    assert parsed.unresolved_blocker_ids == (
+        "M6A-B003",
+        "M6A-B004",
+        "M6A-B005",
+        "M6A-B006",
+        "M6A-B007",
+        "M6A-B009",
+    )
+
+    registry_paths = {
+        "docs/release/post-release-milestones.json": "M6A milestone registry",
+        "docs/release/post-release-claims.json": "M6A claim registry",
+        "docs/release/post-release-results.json": "M6A result registry",
+    }
+    registries: dict[str, dict[str, object]] = {}
+    for relative_path, context in registry_paths.items():
+        registry = json.loads((root / relative_path).read_text(encoding="utf-8"))
+        assert registry["content_digest"] == registry_digest(
+            registry,
+            context=context,
+        )
+        registries[relative_path] = registry
+
+    claims = registries["docs/release/post-release-claims.json"]["claims"]
+    assert isinstance(claims, list)
+    assert all("performance" not in str(claim).lower() for claim in claims)
+    results = registries["docs/release/post-release-results.json"]["results"]
+    assert isinstance(results, list)
+    assert all(result["category"] == "infrastructure" for result in results)
+
+    post_release_manifest = json.loads(
+        (root / "docs/release/post-release-manifest.json").read_text(encoding="utf-8")
+    )
+    assert post_release_manifest["content_digest"] == registry_digest(
+        post_release_manifest,
+        context="M6A post-release manifest",
+    )
+    assert post_release_manifest["registry_digests"] == {
+        path: registries[path]["content_digest"] for path in registry_paths
+    }

@@ -1,0 +1,23 @@
+{
+  "latentguard_commit": "c06eed9f83325909ce44073705c7628d69a09c6a",
+  "langmani_commit": "b0fd9115496d3cc3d700c4eac7fb9f3f3ad401fd",
+  "integration_schema_version": "latentguard-langmani-contract-v1",
+  "task_contract_digest": "sha256:04686ee61f3ab9f704079ca0cdbedf85cab5e21f7b50e68a50b22418e0537299",
+  "observation_contract_digest": "sha256:e0fdb3bc6bb0d199921c64df76dd078f4277d200b77d9d18c5ca96684598cce9",
+  "action_contract_digest": "sha256:ed5ce370e754e6c6fafc8e9edb136887a42e3e7d533c295d0876e4b124356e2b",
+  "projection_contract_digest": "sha256:29ee0335b9db86668a5b0595275c1b3197c508d7d59b0ec1163fd147887c370e",
+  "replay_contract_digest": "sha256:e83f94b8eeeab3783f35cc8ec6d8c5def65eaeb4c185d2d659cd2c3a7556d74b",
+  "success_contract_digest": "sha256:8f4220be6533731a250fd5ef17a8b5a297cec24f4d24358afff10820d71f1d5a",
+  "compatibility_matrix_digest": "sha256:4ca04ead5bf3b5c765ef4d180d9c95d1df9722a3639f0ba61054ef7cc98aea6e",
+  "readiness_gate_digest": "sha256:fc6a2d94ac1e29f2d73801458688c2d677180d4f7c6b1f74201a3e3183b3d169",
+  "overall_readiness": "blocked",
+  "unresolved_blocker_ids": [
+    "M6A-B003",
+    "M6A-B004",
+    "M6A-B005",
+    "M6A-B006",
+    "M6A-B007",
+    "M6A-B009"
+  ],
+  "schema_version": "latentguard-langmani-contract-v1"
+}

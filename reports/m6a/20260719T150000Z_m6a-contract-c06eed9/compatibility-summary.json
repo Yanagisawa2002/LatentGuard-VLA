@@ -1,0 +1,15 @@
+{
+  "schema_version": "latentguard-m6a-compatibility-summary-v1",
+  "matrix_row_count": 23,
+  "compatible": 11,
+  "adaptable": 7,
+  "blocked": 5,
+  "unknown": 0,
+  "overall_readiness": "blocked",
+  "in_process_dependency_compatible": false,
+  "separate_process_json_boundary_required": true,
+  "task_contract_frozen": true,
+  "action_projection_boundary_frozen": true,
+  "compact_verifier_input_frozen": false,
+  "candidate_source_frozen": false
+}

@@ -1,0 +1,27 @@
+{
+  "schema_version": "latentguard-m6a-server-preservation-v1",
+  "audit_mode": "read_only",
+  "ssh_available": true,
+  "server_online_after_audit": true,
+  "gpu_compute_processes": 0,
+  "remote_research_checkout": {
+    "clean": true,
+    "git_sha": "942c6572914ef9c7fa6e5f8affdd8c9004ed4916",
+    "modified": false
+  },
+  "major_runtime_root_counts": {"M3A": 12, "M3B": 4, "M3C": 6, "M4A": 7, "M4B": 2, "M4C": 2, "M4D": 1},
+  "accepted_environments": {
+    "m2c_python": "3.11.15",
+    "m3b_python": "3.11.15"
+  },
+  "preserved_artifacts": {
+    "checkpoint_like_files": 105,
+    "feature_cache_directories": 3,
+    "teacher_cache_directories": 2
+  },
+  "shutdown_automation": {"cron_matches": 0, "timer_matches": 0, "at_jobs": 0},
+  "storage": {"total_gib": 250, "available_gib": 232, "use_percent": 8},
+  "changes_made_remotely": false,
+  "server_shutdown_requested": false,
+  "server_shutdown_performed": false
+}

@@ -1,0 +1,14 @@
+{
+  "schema_version": "latentguard-m6a-test-summary-v1",
+  "implementation_commit": "c06eed9f83325909ce44073705c7628d69a09c6a",
+  "ordinary_suite": {"passed": 1580, "skipped": 3, "failed": 0},
+  "skip_reason": "Windows symbolic-link privilege unavailable in three pre-existing serialization safety tests",
+  "ruff_check": "passed",
+  "ruff_format_check": "passed",
+  "mypy_src": "passed",
+  "git_diff_check": "passed",
+  "portfolio_smoke": "passed with deterministic CPU infrastructure identity and zero-work resume",
+  "strict_release_audit": {"passed": true, "milestones": 12, "claims": 22, "results": 57, "issues": 0},
+  "strict_langmani_audit": {"passed": true, "audit_issues": 0, "overall_readiness": "blocked"},
+  "synthetic_adapter_warning": "Synthetic LangMani adapter validation does not establish compatibility with the real LangMani simulator or policy."
+}

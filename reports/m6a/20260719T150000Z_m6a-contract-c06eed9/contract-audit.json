@@ -1,0 +1,474 @@
+{
+  "accepted_artifact_status": {
+    "artifacts": {
+      "m42_verification": {
+        "present": true,
+        "relative_path": "outputs/diagnostics/m42/verification.json",
+        "sha256": "sha256:a347caea231397e1ebb82e19e9760cf7253f4f418754fe7e7a1b997a146b7b91"
+      },
+      "m4_projection_verification": {
+        "present": true,
+        "relative_path": "outputs/diagnostics/m4/target-m41-f144/verification.json",
+        "sha256": "sha256:2cf08afb4099fc7058be4afe630a3cd67f07d0e5058fca8bc4927f1dea8e26d4"
+      },
+      "m5a_controller_registry": {
+        "present": true,
+        "relative_path": "outputs/diagnostics/m5a/sealed-final-synced-0c5bb7d/controller_registry.json",
+        "sha256": "sha256:9b2edb98b974079389d4b97db423ba11ddab60262f9cf2a44ade86b45912455a"
+      },
+      "m5a_final_result": {
+        "present": true,
+        "relative_path": "outputs/diagnostics/m5a/sealed-final-synced-0c5bb7d/final_result.json",
+        "sha256": "sha256:7a16e1e5e933a08744ca15ee6500c2b2536f4f1fba6ead26709fff79a6fef115"
+      },
+      "m5a_summary": {
+        "present": true,
+        "relative_path": "outputs/diagnostics/m5a/sealed-final-synced-0c5bb7d/summary.md",
+        "sha256": "sha256:e5a66e5b655867a8b2f4ed719f839d68c173c5f07359d1e632535f62989b82c4"
+      }
+    },
+    "controller_registry": {
+      "controller_count": 6,
+      "registry_fingerprint": "sha256:01c52fbcc24b17e9989bfafb041937586dcdc5550f9cc98624e944a1b403bd88",
+      "task_ids": [
+        "langmani-pick-place-task-v0:red_cube:left_bin:canonical_v0",
+        "langmani-pick-place-task-v0:red_cube:right_bin:canonical_v0",
+        "langmani-pick-place-task-v0:green_cube:left_bin:canonical_v0",
+        "langmani-pick-place-task-v0:green_cube:right_bin:canonical_v0",
+        "langmani-pick-place-task-v0:blue_cube:left_bin:canonical_v0",
+        "langmani-pick-place-task-v0:blue_cube:right_bin:canonical_v0"
+      ]
+    }
+  },
+  "audit_issues": [],
+  "audit_mode": "static_read_only",
+  "blocker_counts": {
+    "critical": 2,
+    "major": 4,
+    "minor": 0
+  },
+  "blockers": [
+    {
+      "blocker_id": "M6A-B003",
+      "description": "No M6B candidate source and blind pool identity is frozen.",
+      "evidence": "M6A static source and accepted-artifact audit",
+      "m6b_can_proceed": false,
+      "owning_repository": "LatentGuard-VLA",
+      "required_decision_or_change": "Choose one available source and freeze the outcome-blind pool before execution.",
+      "severity": "critical",
+      "workaround_risk": "Ad-hoc candidates would invalidate paired selection evidence.",
+      "workaround_status": "not_authorized"
+    },
+    {
+      "blocker_id": "M6A-B004",
+      "description": "ACT action-queue, processor history, and episode-prefix state have no serialized policy snapshot.",
+      "evidence": "M6A static source and accepted-artifact audit",
+      "m6b_can_proceed": false,
+      "owning_repository": "LangMani",
+      "required_decision_or_change": "Add or avoid mid-episode policy-state restoration; freeze an initial-state-only smoke.",
+      "severity": "critical",
+      "workaround_risk": "Resetting the queue at an intermediate state changes the deployed policy distribution.",
+      "workaround_status": "not_authorized"
+    },
+    {
+      "blocker_id": "M6A-B005",
+      "description": "No compact deployable LangMani verifier vector is frozen.",
+      "evidence": "M6A static source and accepted-artifact audit",
+      "m6b_can_proceed": false,
+      "owning_repository": "LatentGuard-VLA",
+      "required_decision_or_change": "Freeze a minimal allowlist without privileged task or outcome metadata.",
+      "severity": "major",
+      "workaround_risk": "Concatenating available fields would leak privileged information.",
+      "workaround_status": "not_authorized"
+    },
+    {
+      "blocker_id": "M6A-B006",
+      "description": "Intermediate set_state_dict round trips are audited but paired action execution from restored states is not accepted evidence.",
+      "evidence": "M6A static source and accepted-artifact audit",
+      "m6b_can_proceed": false,
+      "owning_repository": "LangMani",
+      "required_decision_or_change": "Either validate complete intermediate paired replay or constrain M6B to seeded initial resets.",
+      "severity": "major",
+      "workaround_risk": "Treating restore audit as exact replay would overstate physical evidence.",
+      "workaround_status": "not_authorized"
+    },
+    {
+      "blocker_id": "M6A-B007",
+      "description": "LatentGuard and LangMani dependency pins are incompatible in one Python environment.",
+      "evidence": "M6A static source and accepted-artifact audit",
+      "m6b_can_proceed": false,
+      "owning_repository": "LatentGuard-VLA",
+      "required_decision_or_change": "Use the versioned JSON/process boundary for M6B and verify both environments.",
+      "severity": "major",
+      "workaround_risk": "Forcing NumPy or Python pins can invalidate accepted environments.",
+      "workaround_status": "not_authorized"
+    },
+    {
+      "blocker_id": "M6A-B009",
+      "description": "M6B has not frozen one task and its accepted checkpoint entry.",
+      "evidence": "M6A static source and accepted-artifact audit",
+      "m6b_can_proceed": false,
+      "owning_repository": "LatentGuard-VLA",
+      "required_decision_or_change": "Select one canonical task and bind its registry entry before M6B.",
+      "severity": "major",
+      "workaround_risk": "Choosing after outcomes would create selection leakage.",
+      "workaround_status": "not_authorized"
+    }
+  ],
+  "dependency_contract": {
+    "compatibility_reason": "LangMani pins Python 3.12 and NumPy 2.2.6 while LatentGuard supports Python 3.11+ with NumPy <2.0; use a serialized process boundary.",
+    "in_process_compatible": false,
+    "langmani_dependencies": {
+      "gymnasium": "gymnasium==1.2.3",
+      "h5py": "h5py==3.16.0",
+      "lerobot": "lerobot[dataset]==0.6.0",
+      "mani-skill": "mani-skill==3.0.1",
+      "numpy": "numpy==2.2.6",
+      "outlines": "outlines[transformers]==1.3.1",
+      "pillow": "Pillow==12.3.0",
+      "safetensors": "safetensors==0.8.0",
+      "tokenizers": "tokenizers==0.22.2",
+      "torch": "torch==2.11.0",
+      "transformers": "transformers==5.4.0"
+    },
+    "langmani_python": ">=3.12,<3.13",
+    "latentguard_python": ">=3.11"
+  },
+  "import_probe": {
+    "executed": false,
+    "reason": "disabled_by_default"
+  },
+  "m6b_executed": false,
+  "observed_contract": {
+    "bounds_source": "active environment single_action_space",
+    "control_frequency_hz": 20,
+    "control_mode": "pd_joint_pos",
+    "environment_id": "LangMani-PickPlaceByInstruction-v0",
+    "execution_horizon": 10,
+    "normalization": "saved LeRobot MEAN_STD processors",
+    "official_failure": "target_off_table only; other unsuccessful endings remain distinct",
+    "official_success": "target in correct bin, no wrong object in target bin, released, static, on table",
+    "policy_chunk_shape": [
+      50,
+      8
+    ],
+    "policy_observation": "base_camera uint8[256,256,3] plus PandaPolicyStateV0 float32[9]",
+    "policy_state_restoration": "not_supported",
+    "projection": "deterministic per-component min(max(raw, low), high)",
+    "proposal_stages": [
+      "raw_policy_proposal",
+      "projected_executable_proposal",
+      "actually_executed_action_sequence"
+    ],
+    "replay_readiness": "initial_state_only",
+    "state_round_trip_tolerance": 1e-06,
+    "task_count": 6,
+    "task_template": "canonical_v0"
+  },
+  "overall_readiness": "blocked",
+  "passed": true,
+  "readiness_gates": [
+    {
+      "evidence": "M6A static code, accepted-report, and synthetic-adapter audit",
+      "gate_id": "M6B-G01",
+      "name": "Exact LangMani Git revision identified",
+      "remediation": "none",
+      "status": "passed"
+    },
+    {
+      "evidence": "M6A static code, accepted-report, and synthetic-adapter audit",
+      "gate_id": "M6B-G02",
+      "name": "Working tree and accepted result status understood",
+      "remediation": "none",
+      "status": "passed"
+    },
+    {
+      "evidence": "M6A static code, accepted-report, and synthetic-adapter audit",
+      "gate_id": "M6B-G03",
+      "name": "Task ID and instruction contract frozen",
+      "remediation": "none",
+      "status": "passed"
+    },
+    {
+      "evidence": "M6A static code, accepted-report, and synthetic-adapter audit",
+      "gate_id": "M6B-G04",
+      "name": "Executable proposal tensor contract frozen",
+      "remediation": "none",
+      "status": "passed"
+    },
+    {
+      "evidence": "M6A static code, accepted-report, and synthetic-adapter audit",
+      "gate_id": "M6B-G05",
+      "name": "Raw/projected action boundary frozen",
+      "remediation": "none",
+      "status": "passed"
+    },
+    {
+      "evidence": "M6A static code, accepted-report, and synthetic-adapter audit",
+      "gate_id": "M6B-G06",
+      "name": "Action normalization and bounds frozen",
+      "remediation": "none",
+      "status": "passed"
+    },
+    {
+      "evidence": "M6A static code, accepted-report, and synthetic-adapter audit",
+      "gate_id": "M6B-G07",
+      "name": "Policy checkpoint identity frozen",
+      "remediation": "Freeze one task-specific controller registry entry.",
+      "status": "blocked"
+    },
+    {
+      "evidence": "M6A static code, accepted-report, and synthetic-adapter audit",
+      "gate_id": "M6B-G08",
+      "name": "Official success and termination frozen",
+      "remediation": "none",
+      "status": "passed"
+    },
+    {
+      "evidence": "M6A static code, accepted-report, and synthetic-adapter audit",
+      "gate_id": "M6B-G09",
+      "name": "Candidate source for smoke frozen",
+      "remediation": "Freeze a blind candidate source.",
+      "status": "blocked"
+    },
+    {
+      "evidence": "M6A static code, accepted-report, and synthetic-adapter audit",
+      "gate_id": "M6B-G10",
+      "name": "Outcome blindness enforceable",
+      "remediation": "Bind the candidate manifest before outcomes.",
+      "status": "blocked"
+    },
+    {
+      "evidence": "M6A static code, accepted-report, and synthetic-adapter audit",
+      "gate_id": "M6B-G11",
+      "name": "Simulator state restoration sufficient for planned smoke",
+      "remediation": "Constrain the smoke to initial reset or validate restored execution.",
+      "status": "blocked"
+    },
+    {
+      "evidence": "M6A static code, accepted-report, and synthetic-adapter audit",
+      "gate_id": "M6B-G12",
+      "name": "Policy state/history sufficient for planned continuation",
+      "remediation": "Freeze initial-state-only handling or serialize policy state.",
+      "status": "blocked"
+    },
+    {
+      "evidence": "M6A static code, accepted-report, and synthetic-adapter audit",
+      "gate_id": "M6B-G13",
+      "name": "Cross-project dependency versions compatible",
+      "remediation": "Use and validate an out-of-process JSON boundary.",
+      "status": "blocked"
+    },
+    {
+      "evidence": "M6A static code, accepted-report, and synthetic-adapter audit",
+      "gate_id": "M6B-G14",
+      "name": "No training required for first smoke",
+      "remediation": "none",
+      "status": "passed"
+    },
+    {
+      "evidence": "M6A static code, accepted-report, and synthetic-adapter audit",
+      "gate_id": "M6B-G15",
+      "name": "Bounded smoke can run on one GPU",
+      "remediation": "none",
+      "status": "passed"
+    }
+  ],
+  "repository_identity": {
+    "branch": "codex/m5a-language-routing",
+    "checkout_locator": "redacted_local_operational_path",
+    "head_matches_upstream": true,
+    "head_sha": "b0fd9115496d3cc3d700c4eac7fb9f3f3ad401fd",
+    "origin_matches_expected_repository": true,
+    "repository": "Yanagisawa2002/LangMani",
+    "upstream_sha": "b0fd9115496d3cc3d700c4eac7fb9f3f3ad401fd",
+    "working_tree_clean": true
+  },
+  "schema_version": "latentguard-m6a-langmani-audit-v1",
+  "simulator_executed": false,
+  "source_checks": [
+    {
+      "check_id": "src:langmani:environments:specs.py",
+      "missing_tokens": [],
+      "passed": true
+    },
+    {
+      "check_id": "src:langmani:environments:task_logic.py",
+      "missing_tokens": [],
+      "passed": true
+    },
+    {
+      "check_id": "src:langmani:datasets:policy_state.py",
+      "missing_tokens": [],
+      "passed": true
+    },
+    {
+      "check_id": "src:langmani:datasets:observation_reconstruction.py",
+      "missing_tokens": [],
+      "passed": true
+    },
+    {
+      "check_id": "src:langmani:policies:act_types.py",
+      "missing_tokens": [],
+      "passed": true
+    },
+    {
+      "check_id": "src:langmani:policies:act_action_bounds.py",
+      "missing_tokens": [],
+      "passed": true
+    },
+    {
+      "check_id": "src:langmani:policies:act_rollout.py",
+      "missing_tokens": [],
+      "passed": true
+    },
+    {
+      "check_id": "src:langmani:policies:act_checkpoint.py",
+      "missing_tokens": [],
+      "passed": true
+    },
+    {
+      "check_id": "src:langmani:collection:replay.py",
+      "missing_tokens": [],
+      "passed": true
+    },
+    {
+      "check_id": "src:langmani:language:dispatcher.py",
+      "missing_tokens": [],
+      "passed": true
+    }
+  ],
+  "source_evidence": [
+    {
+      "git_blob": "6d070fe04a9841d12ad3c8487c55fc423d4f4f9a",
+      "path": "AGENTS.md",
+      "sha256": "sha256:c21c18e21b1c87ad5e3d1bc225c47e439c93489e926e800ad59df675211979f6"
+    },
+    {
+      "git_blob": "840e6339768cd98df8678f4b5f415c7d5445f18d",
+      "path": "README.md",
+      "sha256": "sha256:96de392eab9572c5bfaef202803be25b3d61cb141f4217460099489aae98011c"
+    },
+    {
+      "git_blob": "f30a3f0825f562d6d2280ff7e7cf23b1fdf65c8f",
+      "path": "pyproject.toml",
+      "sha256": "sha256:32e4974d69ba1f5ad88f95cfd5da4f03cec08bb62b6c7eaa1a0f8923cbcf08ed"
+    },
+    {
+      "git_blob": "407ed6205761680edad2ea0b9811970d4589853c",
+      "path": "environment/environment.yml",
+      "sha256": "sha256:98956c1c42f3ed83bdb3b426761c98f36046a6b9ea0186ad48bd1ebc4fb5bc8a"
+    },
+    {
+      "git_blob": "b7a7ea2345881568d9c75fd6bf0b026dcb44138f",
+      "path": "docs/ARCHITECTURE.md",
+      "sha256": "sha256:5f61dc015703e14b254e6460ebcd7f30930474346a68ac069680926dc93afdf3"
+    },
+    {
+      "git_blob": "775019bb0d30da6ba57839f285b81cbb7f970fd9",
+      "path": "docs/ACT_BASELINE_SPEC.md",
+      "sha256": "sha256:ea2c6f7015264ba650ffca3ca367959fdd376fe1d26e4ff1a2688102b11505aa"
+    },
+    {
+      "git_blob": "22c5caba722b8d685deb9363f1d78d51521ed5f2",
+      "path": "docs/M42_ORACLE_CONTROL_SPEC.md",
+      "sha256": "sha256:b42d7753a25a66014a0903db558a141856cb5694b45371521438c9d32b6eca29"
+    },
+    {
+      "git_blob": "b2f4ad10583c053c9af122279b24d15a3a80be9c",
+      "path": "docs/M5A_LANGUAGE_ROUTING_SPEC.md",
+      "sha256": "sha256:14dc619544a305e2195315f2dc8e57366dcdbdd3e8703b8c1b8dfd744a306dc5"
+    },
+    {
+      "git_blob": "d955a52884a74164f6b85eae42c586f760e1cac3",
+      "path": "src/langmani/environments/specs.py",
+      "sha256": "sha256:909c8f58193811d36a76b4eb06515f9affba4c82ea1ef766283e6b3b75edb413"
+    },
+    {
+      "git_blob": "395aee2590eecc847a25c91834689c9f36f888ba",
+      "path": "src/langmani/environments/task_logic.py",
+      "sha256": "sha256:363d8c4801a02d7000966325385058fdc5b1d948b4e346a16c15f1f53afc84a4"
+    },
+    {
+      "git_blob": "ed3919cdd854e1cd84b8714fe3ce1099b561c1a1",
+      "path": "src/langmani/datasets/policy_state.py",
+      "sha256": "sha256:50b4e37438966650c1b9df8f9eb6e3c8b14f5922034e9a2822cc9839078efe1b"
+    },
+    {
+      "git_blob": "483cbeac933e7125217f5dc44c97a07d495cd0b6",
+      "path": "src/langmani/datasets/observation_reconstruction.py",
+      "sha256": "sha256:16aa79d900ef2a82f6fdf440bd2a12eb4bfcaa42b2f3fbfaa76fcbeb604da4fc"
+    },
+    {
+      "git_blob": "7ee943ac4f5ca117681181dad4b37eccb2d525f2",
+      "path": "src/langmani/policies/act_types.py",
+      "sha256": "sha256:577b315af75ba246e4d3f4a2def23078dbfdece663670d533d71e988f70ee253"
+    },
+    {
+      "git_blob": "fe792c8e4407566a16f0a29dcbc07593462187c9",
+      "path": "src/langmani/policies/act_action_bounds.py",
+      "sha256": "sha256:1b479c7598a7fc0850bb2a7e3e67af6f6a98194a1a48b4af0a67212e9c94a9c1"
+    },
+    {
+      "git_blob": "b4e3d2f6171300e94d9724fa173b5225488ec4e6",
+      "path": "src/langmani/policies/act_rollout.py",
+      "sha256": "sha256:ffe521a927d9f9eabc0daff9396c4ad915b305c5b4ebffbc731a080b7fbd9069"
+    },
+    {
+      "git_blob": "a571d228bf6560fa4647bf915223de381574cd28",
+      "path": "src/langmani/policies/act_checkpoint.py",
+      "sha256": "sha256:d3055d95a3cbc16a1f0877fce54636d9500757639630b05e93b30faa51eae4b1"
+    },
+    {
+      "git_blob": "3c159d1815a9f520f920ab723e83048b05ca730f",
+      "path": "src/langmani/collection/replay.py",
+      "sha256": "sha256:9fd1ddaa0057aa92ce9fee4bc5eedbb3fc67150c6b72e64d5e9dcb05521ca030"
+    },
+    {
+      "git_blob": "8e3f799abedf5d1345d82a77064ee692e92566a9",
+      "path": "src/langmani/language/dispatcher.py",
+      "sha256": "sha256:6658735abfe718d23c87259b68e4ca39d2ded06b7e21b6f254329a06097e1809"
+    },
+    {
+      "git_blob": "892e71f62c4db8c594bda299c3501f9e79f836aa",
+      "path": "src/langmani/environments/pick_place_by_instruction.py",
+      "sha256": "sha256:26fe00ef8d3be706b2afbeea4715620fbf20a014ea1a5aeff0548744b2b722a1"
+    },
+    {
+      "git_blob": "725bbb6b923af6e66d0938ef352ae71cc2365225",
+      "path": "src/langmani/datasets/archive.py",
+      "sha256": "sha256:7b0de0fa74f8d0308924df0f2550800027105d0bbff5e00a192933515e705416"
+    },
+    {
+      "git_blob": "4fd9048d3664720e154eb19c31d9e0b614320f88",
+      "path": "src/langmani/language/router_types.py",
+      "sha256": "sha256:f2abfd51898bbb6271f9577470a38b51e366085ec19971e96d335162dc68cbd0"
+    },
+    {
+      "git_blob": "66f95e4bbcebb575772a3486e5425ab603ab3cad",
+      "path": "tests/unit/test_m3a_replay.py",
+      "sha256": "sha256:24a52e5fd38cee4a29d8518308e2a30e52797ff06774ba24f253aa3c7a02b1cb"
+    },
+    {
+      "git_blob": "2a1b998b2303b417246a2e5fe922f0b338b5496a",
+      "path": "tests/integration/test_act_rollout.py",
+      "sha256": "sha256:c46a066f390e7e708159855e681d66afe5f9e2dce16c82e09c57dea617d581f7"
+    },
+    {
+      "git_blob": "553a7741047e3f85a97d9935a527a9746ec0bc08",
+      "path": "tests/unit/test_act_action_bounds.py",
+      "sha256": "sha256:3c622f769c01c9518d803b60fa52dcc394db3aa782d27244a55b01bd16646251"
+    }
+  ],
+  "strict": true,
+  "synthetic_adapter": {
+    "blindness_validated": true,
+    "first_status": "success",
+    "passed": true,
+    "projected_proposal_digest": "sha256:f9154f18ad036f5b1c43a111c8c9464fd9d9f50036b8eb75bc09b485c995ce9e",
+    "raw_proposal_digest": "sha256:d4f7bf9256c21234c3ecb918df8a19be415d73ee864f8c1a87e2cb21555df619",
+    "warning": "Synthetic LangMani adapter validation does not establish compatibility with the real LangMani simulator or policy.",
+    "zero_work_resume": true
+  },
+  "training_executed": false
+}

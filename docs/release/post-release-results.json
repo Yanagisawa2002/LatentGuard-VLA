@@ -1,0 +1,43 @@
+{
+  "schema_version": "1.0",
+  "content_digest": "sha256:86861b0fb5bf5984fc389956007fc6bdf8923a43b6c3f90124c1aff20240b966",
+  "base_release_id": "m5-pickcube-evidence-release-v1",
+  "results": [
+    {
+      "result_id": "m6a-static-audit-passed",
+      "milestone_id": "M6A",
+      "category": "infrastructure",
+      "metric": "strict static audit passed",
+      "value": true,
+      "claim_status": "documented",
+      "source": "reports/m6a/20260719T150000Z_m6a-contract-c06eed9/contract-audit.json#/passed"
+    },
+    {
+      "result_id": "m6a-overall-readiness",
+      "milestone_id": "M6A",
+      "category": "infrastructure",
+      "metric": "M6B readiness",
+      "value": "blocked",
+      "claim_status": "documented",
+      "source": "reports/m6a/20260719T150000Z_m6a-contract-c06eed9/contract-audit.json#/overall_readiness"
+    },
+    {
+      "result_id": "m6a-compatibility-counts",
+      "milestone_id": "M6A",
+      "category": "infrastructure",
+      "metric": "compatible/adaptable/blocked/unknown rows",
+      "value": [11, 7, 5, 0],
+      "claim_status": "documented",
+      "source": "docs/integrations/langmani/compatibility-matrix.json#/compatibility_counts"
+    },
+    {
+      "result_id": "m6a-blocker-counts",
+      "milestone_id": "M6A",
+      "category": "infrastructure",
+      "metric": "critical/major/minor blockers",
+      "value": [2, 4, 0],
+      "claim_status": "documented",
+      "source": "docs/integrations/langmani/blockers.json#/counts"
+    }
+  ]
+}

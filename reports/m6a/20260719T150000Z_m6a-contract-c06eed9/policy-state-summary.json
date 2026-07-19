@@ -1,0 +1,19 @@
+{
+  "schema_version": "latentguard-m6a-policy-state-summary-v1",
+  "policy_family": "ACT PerTask",
+  "accepted_controller_count": 6,
+  "controller_registry_fingerprint": "sha256:01c52fbcc24b17e9989bfafb041937586dcdc5550f9cc98624e944a1b403bd88",
+  "one_task_checkpoint_frozen_for_m6b": false,
+  "observation_steps": 1,
+  "policy_chunk_size": 50,
+  "queued_actions_per_query": 10,
+  "temporal_ensemble": false,
+  "episode_boundary_reset": ["policy", "preprocessor", "postprocessor"],
+  "serialized_inference_queue": false,
+  "serialized_observation_history": false,
+  "serialized_previous_action": false,
+  "serialized_processor_history": false,
+  "proposal_reproduction_from_current_simulator_state_only": false,
+  "proposal_reproduction_from_fresh_initial_episode_boundary": "conditionally possible after task/checkpoint/candidate freeze",
+  "major_constraint": "mid-episode same-policy continuation is not reproducible without a complete policy-state snapshot"
+}

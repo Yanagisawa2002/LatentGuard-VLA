@@ -1,0 +1,25 @@
+{
+  "schema_version": "latentguard-m6a-action-projection-summary-v1",
+  "control_mode": "pd_joint_pos",
+  "control_frequency_hz": 20,
+  "policy_chunk_shape": [50, 8],
+  "execution_horizon": 10,
+  "environment_action_shape": [8],
+  "action_dtype": "float32",
+  "normalization": "saved LeRobot MEAN_STD preprocessor/postprocessor",
+  "projection_order": [
+    "model output",
+    "saved LeRobot postprocessor",
+    "raw environment-semantic action",
+    "environment-bound componentwise projection",
+    "executed action"
+  ],
+  "projection_semantic": "executed=min(max(raw,low),high)",
+  "projection_deterministic": true,
+  "malformed_action_policy": "hard_fail",
+  "nonfinite_action_policy": "hard_fail",
+  "raw_projected_executed_identities_distinct": true,
+  "initial_scoring_policy": "preserve both raw policy evidence and projected executable evidence; defer selection representation to M6B review",
+  "accepted_m5a_observation": "projection affected only the gripper component",
+  "m6a_actions_executed": 0
+}

@@ -1,0 +1,24 @@
+{
+  "schema_version": "1.0",
+  "content_digest": "sha256:f7f40956a480fa2421b5937f56caa29f03f10dbaef9dc64c69de64091c546ab8",
+  "base_release_id": "m5-pickcube-evidence-release-v1",
+  "milestones": [
+    {
+      "milestone_id": "M6A",
+      "title": "LangMani integration contract and readiness audit",
+      "branch": "codex/m6a-langmani-integration-contract",
+      "implementation_commit": "c06eed9f83325909ce44073705c7628d69a09c6a",
+      "research_status": "infrastructure_only",
+      "overall_readiness": "blocked",
+      "training_occurred": false,
+      "simulator_execution_occurred": false,
+      "new_outcomes_generated": false,
+      "primary_contract": "docs/integrations/langmani/integration-contract.json",
+      "primary_report": "reports/m6a/20260719T150000Z_m6a-contract-c06eed9/final-review.md",
+      "known_limitations": [
+        "No M6B candidate source, compact verifier input, continuation semantic, or policy-state snapshot is frozen.",
+        "Replay readiness is initial_state_only and the two repositories require a separate-process boundary."
+      ]
+    }
+  ]
+}

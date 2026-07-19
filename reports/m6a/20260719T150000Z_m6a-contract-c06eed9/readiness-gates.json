@@ -1,0 +1,22 @@
+{
+  "schema_version": "latentguard-m6a-readiness-gates-v1",
+  "overall_readiness": "blocked",
+  "counts": {"passed": 9, "blocked": 6, "failed": 0, "not_applicable": 0},
+  "gates": [
+    {"gate_id": "M6B-G01", "status": "passed", "name": "Exact LangMani Git revision identified", "remediation": "none"},
+    {"gate_id": "M6B-G02", "status": "passed", "name": "Working tree and accepted result status understood", "remediation": "none"},
+    {"gate_id": "M6B-G03", "status": "passed", "name": "Task ID and instruction contract frozen", "remediation": "none"},
+    {"gate_id": "M6B-G04", "status": "passed", "name": "Executable proposal tensor contract frozen", "remediation": "none"},
+    {"gate_id": "M6B-G05", "status": "passed", "name": "Raw/projected action boundary frozen", "remediation": "none"},
+    {"gate_id": "M6B-G06", "status": "passed", "name": "Action normalization and bounds frozen", "remediation": "none"},
+    {"gate_id": "M6B-G07", "status": "blocked", "name": "Policy checkpoint identity frozen", "remediation": "Freeze one task-specific accepted controller entry."},
+    {"gate_id": "M6B-G08", "status": "passed", "name": "Official success and termination frozen", "remediation": "none"},
+    {"gate_id": "M6B-G09", "status": "blocked", "name": "Candidate source for smoke frozen", "remediation": "Freeze one blind candidate source."},
+    {"gate_id": "M6B-G10", "status": "blocked", "name": "Outcome blindness enforceable", "remediation": "Bind the candidate manifest before outcomes."},
+    {"gate_id": "M6B-G11", "status": "blocked", "name": "Simulator restoration sufficient for planned smoke", "remediation": "Use initial reset or validate restored paired execution."},
+    {"gate_id": "M6B-G12", "status": "blocked", "name": "Policy history sufficient for planned continuation", "remediation": "Use an initial boundary or serialize policy state."},
+    {"gate_id": "M6B-G13", "status": "blocked", "name": "Cross-project dependencies compatible", "remediation": "Validate the separate-process JSON bridge."},
+    {"gate_id": "M6B-G14", "status": "passed", "name": "No training required for first smoke", "remediation": "none"},
+    {"gate_id": "M6B-G15", "status": "passed", "name": "Bounded smoke can run on one GPU", "remediation": "none"}
+  ]
+}
