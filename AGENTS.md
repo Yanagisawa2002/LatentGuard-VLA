@@ -219,6 +219,16 @@ restoration.
   selector/domain episodes. Use the fixed 2,000-resample source-trajectory
   bootstrap and do not create an equivalent duplicate full benchmark.
 
+## Conservative fallback shield rules
+
+- A reliable nominal action is accepted by default unless the complete frozen gate fires. Never describe routine nominal acceptance as an intervention.
+- Candidate outcomes from the same development or evaluation set must not tune a gate. Fault identity and injected/not-injected labels are reporting-only and must never reach a learned scorer or gate.
+- Bind clean and fault-injected nominal schedules to source trajectory, scenario, decision ordinal, fixed seed, and a versioned semantic before execution. Every comparison must retain the accepted fixed-primary fallback.
+- Report success, unsuccessful outcomes, interventions, fixed-fallback invocations, and other-alternative invocations separately. Matching fixed-fallback performance with fewer interventions may be useful even when success does not improve.
+- M4C decisions and outcomes are retrospective observed development evidence only; they are not M4D untouched evaluation and do not establish causal intervention effects.
+- M4D performs no model training, threshold fitting from final outcomes, extra seeds, or candidate-pool changes.
+- After a compatible remote server is restarted for M4D, keep it powered on and SSH-ready after completion unless the user explicitly authorizes shutdown in the current task.
+
 ## Engineering and data rules
 
 - Use Python 3.11 and a `src`-layout package.

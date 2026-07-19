@@ -13,6 +13,7 @@ from latentguard.control.models import (
     SelectorOutputV1,
     content_digest,
 )
+from latentguard.control.risk import CandidateRiskScoresV1
 from latentguard.control.runner import RuntimeBoundaryV1
 from latentguard.control.selectors import (
     build_fixed_visual_batch,
@@ -92,10 +93,10 @@ class FrozenStructuredEnsembleSelector:
     verifier_schema: PickCubeVerifierStateSchemaV1
     visual: bool = False
 
-    def select(
+    def score_candidates(
         self, pool: ClosedLoopCandidatePoolV1, boundary: RuntimeBoundaryV1
-    ) -> SelectorOutputV1:
-        """Score all eight candidates once and rank minimum failure probability."""
+    ) -> CandidateRiskScoresV1:
+        """Return calibrated mean risk and population spread for all candidates."""
 
         candidate_actions = np.ascontiguousarray(
             np.stack([item.action_chunk for item in pool.candidates]),
@@ -121,16 +122,34 @@ class FrozenStructuredEnsembleSelector:
             model.eval()
             logits = infer_prepared_seed_logits_once(model, batch, device=device)
             per_seed.append(seed.calibration.apply(logits))
-        probabilities = np.mean(np.stack(per_seed), axis=0, dtype=np.float64)
-        scores = dict(
+        stacked = np.stack(per_seed)
+        probabilities = np.mean(stacked, axis=0, dtype=np.float64)
+        uncertainties = np.std(stacked, axis=0, dtype=np.float64)
+        risks = dict(
             zip(pool.ordered_candidate_ids, probabilities.tolist(), strict=True)
         )
+        spreads = dict(
+            zip(pool.ordered_candidate_ids, uncertainties.tolist(), strict=True)
+        )
+        return CandidateRiskScoresV1(
+            risks=risks,
+            uncertainties=spreads,
+            ensemble_identity=self.bundle.identity.content_digest,
+        )
+
+    def select(
+        self, pool: ClosedLoopCandidatePoolV1, boundary: RuntimeBoundaryV1
+    ) -> SelectorOutputV1:
+        """Score all eight candidates once and rank minimum failure probability."""
+
+        scored = self.score_candidates(pool, boundary)
+        scores = dict(scored.risks)
         ranking = tuple(sorted(scores, key=lambda item: (scores[item], item)))
         return SelectorOutputV1(
             selector_id=self.selector_id,
             scores=scores,
             ranking=ranking,
-            checkpoint_ensemble_identity=self.bundle.identity.content_digest,
+            checkpoint_ensemble_identity=scored.ensemble_identity,
             probabilities=True,
         )
 
@@ -176,10 +195,10 @@ class FrozenVisualEnsembleSelector:
             context="M4CVisualEnsembleIdentityV1",
         )
 
-    def select(
+    def score_candidates(
         self, pool: ClosedLoopCandidatePoolV1, boundary: RuntimeBoundaryV1
-    ) -> SelectorOutputV1:
-        """Extract one exact batch of 128, consume slots 0..2, and score once."""
+    ) -> CandidateRiskScoresV1:
+        """Extract batch 128 and return calibrated mean risks and seed spread."""
 
         if boundary.images is None:
             raise ValueError("M4C visual selector requires three current views")
@@ -215,16 +234,34 @@ class FrozenVisualEnsembleSelector:
                 logits = model(feature_tensor, action_tensor, mask_tensor)
                 raw = np.asarray(logits.detach().cpu().numpy(), dtype=np.float64)
                 per_seed.append(calibration.apply(raw))
-        probabilities = np.mean(np.stack(per_seed), axis=0, dtype=np.float64)
-        scores = dict(
+        stacked = np.stack(per_seed)
+        probabilities = np.mean(stacked, axis=0, dtype=np.float64)
+        uncertainties = np.std(stacked, axis=0, dtype=np.float64)
+        risks = dict(
             zip(pool.ordered_candidate_ids, probabilities.tolist(), strict=True)
         )
+        spreads = dict(
+            zip(pool.ordered_candidate_ids, uncertainties.tolist(), strict=True)
+        )
+        return CandidateRiskScoresV1(
+            risks=risks,
+            uncertainties=spreads,
+            ensemble_identity=self.ensemble_identity,
+        )
+
+    def select(
+        self, pool: ClosedLoopCandidatePoolV1, boundary: RuntimeBoundaryV1
+    ) -> SelectorOutputV1:
+        """Extract one exact batch of 128, consume slots 0..2, and score once."""
+
+        scored = self.score_candidates(pool, boundary)
+        scores = dict(scored.risks)
         ranking = tuple(sorted(scores, key=lambda item: (scores[item], item)))
         return SelectorOutputV1(
             selector_id=self.selector_id,
             scores=scores,
             ranking=ranking,
-            checkpoint_ensemble_identity=self.ensemble_identity,
+            checkpoint_ensemble_identity=scored.ensemble_identity,
             probabilities=True,
         )
 
@@ -309,5 +346,6 @@ __all__ = [
     "FixedPrimarySelector",
     "FrozenStructuredEnsembleSelector",
     "FrozenVisualEnsembleSelector",
+    "CandidateRiskScoresV1",
     "load_frozen_visual_selector",
 ]

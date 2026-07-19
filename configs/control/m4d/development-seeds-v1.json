@@ -1,0 +1,13 @@
+{
+  "maximum_attempts": 48,
+  "prior_seed_ranges": [
+    "m3a",
+    "m3c",
+    "m4c_smoke_410000",
+    "m4c_full_420000"
+  ],
+  "profile": "development",
+  "requested_successes": 12,
+  "schema_version": "1.0",
+  "starting_seed": 430000
+}

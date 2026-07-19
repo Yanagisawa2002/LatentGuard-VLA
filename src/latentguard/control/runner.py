@@ -215,6 +215,20 @@ class ClosedLoopSelector(Protocol):
         ...
 
 
+@runtime_checkable
+class DecisionContextPersistor(Protocol):
+    """Optional milestone sidecar persisted after selection and before execution."""
+
+    def persist_decision_context(
+        self,
+        decision: ClosedLoopDecisionRecordV1,
+        pool: ClosedLoopCandidatePoolV1,
+        boundary_directory: Any,
+    ) -> None:
+        """Persist authenticated selection-only context without future outcomes."""
+        ...
+
+
 @dataclass(frozen=True, slots=True)
 class ClosedLoopRunResultV1:
     """One control run plus whether strict resume executed zero work."""
@@ -509,6 +523,10 @@ def run_closed_loop_episode(
                     stride=config.execution_stride,
                 )
                 store.save_decision(decision)
+                if isinstance(selector, DecisionContextPersistor):
+                    selector.persist_decision_context(
+                        decision, pool, store.boundary_dir(decision_ordinal)
+                    )
                 event += 1
                 ledger = BoundaryLedgerEntryV1(
                     decision_ordinal=decision_ordinal,
@@ -662,6 +680,7 @@ __all__ = [
     "ClosedLoopRunResultV1",
     "ClosedLoopRuntime",
     "ClosedLoopSelector",
+    "DecisionContextPersistor",
     "RuntimeBoundaryV1",
     "RuntimeStepResultV1",
     "episode_execution_id",

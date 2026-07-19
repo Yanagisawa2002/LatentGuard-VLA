@@ -1,0 +1,7 @@
+{
+  "confidence_level": 0.95,
+  "resamples": 2000,
+  "sampling_unit": "source_trajectory_v1",
+  "schema_version": "1.0",
+  "seed": 2236067
+}

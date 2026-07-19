@@ -1,0 +1,122 @@
+{
+  "development_policies": [
+    {
+      "gate_profiles": [],
+      "mode": "accept_nominal",
+      "policy_id": "accept_nominal",
+      "scorer_id": null,
+      "visual": false
+    },
+    {
+      "gate_profiles": [],
+      "mode": "always_fallback",
+      "policy_id": "always_fixed_primary_fallback",
+      "scorer_id": null,
+      "visual": false
+    },
+    {
+      "gate_profiles": [],
+      "mode": "ungated",
+      "policy_id": "ungated_action_only",
+      "scorer_id": "action_only_ensemble_v1",
+      "visual": false
+    },
+    {
+      "gate_profiles": [],
+      "mode": "ungated",
+      "policy_id": "ungated_direct_visual",
+      "scorer_id": "direct_visual_ensemble_v1",
+      "visual": true
+    },
+    {
+      "gate_profiles": ["conservative", "balanced", "responsive"],
+      "mode": "gated",
+      "policy_id": "gated_action_only",
+      "scorer_id": "action_only_ensemble_v1",
+      "visual": false
+    },
+    {
+      "gate_profiles": ["conservative", "balanced", "responsive"],
+      "mode": "gated",
+      "policy_id": "gated_direct_visual",
+      "scorer_id": "direct_visual_ensemble_v1",
+      "visual": true
+    },
+    {
+      "gate_profiles": ["conservative", "balanced", "responsive"],
+      "mode": "gated",
+      "policy_id": "gated_distilled_visual",
+      "scorer_id": "distilled_visual_ensemble_v1",
+      "visual": true
+    },
+    {
+      "gate_profiles": ["conservative", "balanced", "responsive"],
+      "mode": "gated",
+      "policy_id": "gated_privileged_structured",
+      "scorer_id": "privileged_structured_ensemble_v1",
+      "visual": false
+    }
+  ],
+  "development_visual_domains": ["canonical"],
+  "distillation_ablation_policy_id": "gated_distilled_visual",
+  "expected_final_episodes_per_source": 26,
+  "final_policies": [
+    {
+      "gate_profiles": [],
+      "mode": "accept_nominal",
+      "policy_id": "accept_nominal",
+      "scorer_id": null,
+      "visual": false
+    },
+    {
+      "gate_profiles": [],
+      "mode": "always_fallback",
+      "policy_id": "always_fixed_primary_fallback",
+      "scorer_id": null,
+      "visual": false
+    },
+    {
+      "gate_profiles": [],
+      "mode": "ungated",
+      "policy_id": "ungated_direct_visual",
+      "scorer_id": "direct_visual_ensemble_v1",
+      "visual": true
+    },
+    {
+      "gate_profiles": ["selected"],
+      "mode": "gated",
+      "policy_id": "gated_direct_visual",
+      "scorer_id": "direct_visual_ensemble_v1",
+      "visual": true
+    },
+    {
+      "gate_profiles": ["selected"],
+      "mode": "gated",
+      "policy_id": "gated_action_only",
+      "scorer_id": "action_only_ensemble_v1",
+      "visual": false
+    },
+    {
+      "gate_profiles": ["selected"],
+      "mode": "gated",
+      "policy_id": "gated_distilled_visual",
+      "scorer_id": "distilled_visual_ensemble_v1",
+      "visual": true
+    },
+    {
+      "gate_profiles": ["selected"],
+      "mode": "gated",
+      "policy_id": "gated_privileged_structured",
+      "scorer_id": "privileged_structured_ensemble_v1",
+      "visual": false
+    }
+  ],
+  "primary_policy_id": "gated_direct_visual",
+  "scenarios": ["clean", "fault_injected"],
+  "schema_version": "1.0",
+  "visual_domains": [
+    "canonical",
+    "strong_camera_shift",
+    "strong_lighting_shift"
+  ]
+}

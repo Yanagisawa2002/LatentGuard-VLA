@@ -1,0 +1,12 @@
+{
+  "candidate_pool_configuration_digest": "sha256:b6a532550ba27e3ecc6acf16ccae0138fce97dd0fd8533724bd74dce2c3a714f",
+  "fixed_primary_ordinal": 0,
+  "fixed_primary_probability": 0.7,
+  "moderate_shifted_ordinals": [1, 4, 5, 6, 7],
+  "moderate_shifted_probability": 0.15,
+  "schedule_seed": 271828,
+  "schema_version": "1.0",
+  "semantic": "sha256_source_scenario_decision_seed_nominal_fault_schedule_v1",
+  "severe_ordinals": [2, 3],
+  "severe_probability": 0.15
+}
