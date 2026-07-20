@@ -2,6 +2,11 @@
 
 All metrics below are defined in the [canonical results table](../portfolio/key-results.md) and restricted to ManiSkill PickCube.
 
+**Stable project link:** [github.com/Yanagisawa2002/LatentGuard-VLA/releases/tag/portfolio-v1](https://github.com/Yanagisawa2002/LatentGuard-VLA/releases/tag/portfolio-v1)
+
+Use the stable release above on a resume or portfolio. Do not link to a
+development branch or a mutable experiment artifact.
+
 ## Concise two-bullet version
 
 - **Built** a typed exact-state counterfactual replay and evidence pipeline for robot actions, producing 2,880 strong simulator-verified PickCube outcomes with trajectory-level leakage controls and zero-work resume.

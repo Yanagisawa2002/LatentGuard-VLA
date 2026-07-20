@@ -123,7 +123,9 @@ _FORBIDDEN_TRACKED_SUFFIXES = frozenset(
     {".ckpt", ".npy", ".npz", ".onnx", ".pt", ".pth", ".safetensors"}
 )
 _MARKDOWN_LINK = re.compile(r"\[[^\]]+\]\(([^)]+)\)")
-_PRIVATE_PATH = re.compile(r"(?:[A-Za-z]:[\\/]|/root/|/home/[^/\s]+/|\\\\[^\s]+)")
+_PRIVATE_PATH = re.compile(
+    r"(?:(?<![A-Za-z0-9])[A-Za-z]:[\\/]|/root/|/home/[^/\s]+/|\\\\[^\s]+)"
+)
 _SECRET_ASSIGNMENT = re.compile(
     r"(?i)(?:password|passwd|private[_-]?key|secret|token|credential)\s*[:=]\s*[^\s`]+"
 )

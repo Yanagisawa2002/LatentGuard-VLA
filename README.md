@@ -1,5 +1,11 @@
 # LatentGuard-VLA
 
+**[Stable release](https://github.com/Yanagisawa2002/LatentGuard-VLA/releases/tag/portfolio-v1)** · **[ManiSkill PickCube scope](#limitations)** · **[Audited claims](docs/release/claims.md)**
+
+**[Watch the 78-second demo](https://github.com/Yanagisawa2002/LatentGuard-VLA/releases/download/portfolio-v1/latentguard-vla-78s-demo.mp4)** · **[Read the case study](docs/portfolio/case-study.md)** · **[Inspect the evidence registry](docs/release/results.json)**
+
+[![LatentGuard-VLA demo: exact replay to conservative redesign](docs/portfolio/assets/latentguard-demo-poster.svg)](https://github.com/Yanagisawa2002/LatentGuard-VLA/releases/download/portfolio-v1/latentguard-vla-78s-demo.mp4)
+
 LatentGuard-VLA is an action-conditioned verification and failure-analysis framework for robot policies. It builds content-bound counterfactual evidence from exact simulator states, learns structured and visual action verifiers, and tests whether those verifiers can improve action choice. On ManiSkill PickCube, blind one-shot selection was strong and robust to fixed visual shifts; repeated intervention then exposed a deployment failure, and a conservative redesign recovered nominal behavior with only a limited injected-fault benefit. The project is technically significant because the negative result is preserved alongside the positive result under the same typed evidence, replay, and recovery contracts.
 
 **Achieved:** physically validated paired replay, 2,880 strong simulator-verified corrupted outcomes, validation-selected failure prediction, blind one-shot improvement over random, state-preserving multi-view data, and transactional large-run resume. **Not achieved:** a general safety system, repeated learned shielding that beats the fixed primary, high-recall fault interception, cross-task transfer, or real-robot validation.
@@ -90,10 +96,10 @@ The accepted research line covers one ManiSkill PickCube task, one robot/control
 
 ## Future integrations
 
-Potential extensions include learned-policy proposals, a contract-frozen LangMani adapter, multiple task adapters, broader robot embodiments, and real-robot evaluation. Each requires a new milestone, untouched evidence, and its own compatibility and claim boundary; M5 starts none of them.
+Potential extensions include learned-policy proposals, a contract-frozen LangMani adapter, multiple task adapters, broader robot embodiments, and real-robot evaluation. Each requires a new milestone, untouched evidence, and its own compatibility and claim boundary.
 
-The PickCube release remains frozen. M6A has started only the LangMani contract and readiness phase; no LangMani integration run or performance experiment has executed. See the [LangMani compatibility matrix](docs/integrations/langmani/compatibility-matrix.md) for the source-backed status and unresolved gates.
+The PickCube release remains frozen. M6A and M6A.1 completed only the LangMani contract, bridge scaffolding, compatibility inventory, and readiness checks. A real LangMani integration probe and performance experiment have **not** executed, and M6B has not started. See the [LangMani compatibility matrix](docs/integrations/langmani/compatibility-matrix.md) for the source-backed status and unresolved gates.
 
 ## Development and remote execution policy
 
-Tracked source, tests, configs, and reports are authored and validated locally, committed, and pushed. Remote execution may use only that exact clean SHA and writes large artifacts outside the tracked tree. Bugs are fixed locally and resynchronized; remote-only tracked-source edits are invalid. The accepted server artifacts are preserved, and the server remains online unless the user explicitly authorizes shutdown in the current task.
+Tracked source, tests, configs, and reports are authored and validated locally, committed, and pushed. Remote execution may use only that exact clean SHA and writes large artifacts outside the tracked tree. Bugs are fixed locally and resynchronized; remote-only tracked-source edits are invalid. Server lifecycle is controlled only by explicit authorization in the current task.

@@ -253,6 +253,11 @@ def test_release_audit_rejects_public_surface_hygiene_failures(
     _audit_issue(monkeypatch, root, expected)
 
 
+def test_private_path_hygiene_distinguishes_web_urls_from_drive_paths() -> None:
+    assert release_module._PRIVATE_PATH.search("https://example.com/release") is None
+    assert release_module._PRIVATE_PATH.search("Private D:/artifact") is not None
+
+
 def test_portfolio_smoke_is_deterministic_cpu_offline_and_idempotent(
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
