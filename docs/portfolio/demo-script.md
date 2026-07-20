@@ -1,43 +1,49 @@
-# Portfolio demo script (about 4 minutes)
+# Portfolio demo script (78 seconds)
 
-Use only committed compact reports and the CPU smoke. No new simulator output is required.
+The release demo is deterministic motion graphics generated only from committed,
+audited result values. It does not run a simulator, load a checkpoint, or present
+synthetic animation as robot footage.
 
-## 0:00–0:30 — Problem
+## Timeline
 
-Show the README architecture. Explain that a plausible robot action can fail, and that the project asks which candidate would have worked from the exact same state.
-
-## 0:30–1:05 — Exact replay visualization
-
-Show the data/evidence diagram and the accepted M2C/M3A report fields: exact archive integrity, 70-component complete-state comparison, 12/12 trusted replay attempts, and 2,880 strong outcomes. If a stored replay video is presented later, it must be referenced by the accepted remote artifact inventory rather than copied into Git.
-
-## 1:05–1:35 — Candidate scoring
-
-Run `latentguard portfolio-smoke`. Point out its explicit non-physical warning, deterministic identity, weak fixture evidence, candidate selection, registry loading, and zero-work resume. Then show the M3B test AUPRC and coverage-risk row in [key-results.md](key-results.md).
-
-## 1:35–2:10 — One-shot improvement
-
-Show M3C temporal 354/360 versus random 320/360, plus the bootstrap interval. Then show M4B visual 98.89% canonical and 98.06% under each fixed strong visual shift. State that joint MLP beat temporal and visual did not prove improvement over action-only.
-
-## 2:10–2:50 — Closed-loop failure
-
-Show M4C distilled visual 73.33% versus fixed primary 100%, with 93.48% intervention. Explain the induced-state-distribution and repeated-error diagnosis. Do not substitute one-shot success for this outcome.
-
-## 2:50–3:30 — Conservative gate
-
-Show M4D clean 100%/0% intervention and injected-fault success 80% versus accept 73.33%, ungated 90%, fallback 100%. Highlight 1.17% intervention and 4.03% override recall.
-
-## 3:30–4:00 — Takeaway
-
-Conclude: exact evidence made verifier learning and one-shot intervention work; deployment stress testing falsified a broader assumption; conservative gating removed over-intervention but did not solve recall. The release preserves all three results.
-
-## Accepted asset inventory
-
-| Asset | Local portfolio form | Accepted large-artifact reference |
+| Time | Beat | On-screen evidence |
 | --- | --- | --- |
-| Exact-state replay | Compact M2C/M3A JSON and architecture diagram | Accepted M2C/M3A runtime roots, verified by the M5 preservation audit |
-| Candidate rankings | Compact M3C candidate-selection report | Accepted M3C outcome archive and selection artifacts |
-| Visual views | M4A packet/image counts; no raw RGB in Git | Accepted M4A development/external image roots |
-| Closed-loop example | M4C aggregate and inspection metadata | Accepted M4C episode/runtime root |
-| Conservative gate | M4D compact result and gate-selection digest | Accepted M4D checkpoint/cache/runtime roots |
+| 0:00-0:09 | Question | Can a verifier stop a plausible robot action from failing? Exact PickCube scope and no general-safety claim. |
+| 0:09-0:21 | Exact replay | Content-bound state, independent baseline/candidate sessions, 60 trajectories, 360 anchors, and 2,880 strong outcomes. |
+| 0:21-0:33 | Verifier | Untouched-test failure AUPRC 0.8986; risk rises from 3.38% at 80% coverage to 17.9% at full coverage. |
+| 0:33-0:45 | One-shot | Temporal 98.33% versus random 88.89%; visual 98.89%; frozen blind candidate pools. |
+| 0:45-0:58 | Closed-loop failure | Distilled visual 73.33% versus fixed primary 100%, with 93.48% intervention. |
+| 0:58-1:12 | Conservative redesign | Clean 100%/0% intervention; fault success 80%; fault intervention 1.17%; override recall only 4.03%. |
+| 1:12-1:18 | Takeaway | Preserve the positive, negative, and partial result in one reproducible release. |
 
-The M5 final report records only sanitized availability booleans and digests, never infrastructure identifiers or private paths.
+## Build
+
+The MP4 is a GitHub Release asset, not a tracked repository file. Install the
+optional rendering tools into an isolated environment and run:
+
+```bash
+python -m pip install Pillow imageio-ffmpeg
+python scripts/build_portfolio_demo.py
+```
+
+This writes:
+
+- `artifacts/latentguard-vla-78s-demo.mp4`
+- `artifacts/latentguard-vla-demo-poster.png`
+
+Both paths are ignored by Git. The tracked
+[`assets/latentguard-demo-poster.svg`](assets/latentguard-demo-poster.svg) is the
+accessible README poster and links to the stable release asset.
+
+## Claim and asset boundary
+
+- Source values come from `docs/release/results.json` and
+  `docs/portfolio/key-results.md`.
+- The demo must not imply cross-task, cross-robot, real-robot, VLA, or general
+  safety validation.
+- Exact replay is described as physically validated only for the pinned
+  ManiSkill PickCube adapter and its authorized state-restoration contract.
+- The closed-loop regression and low fault override recall remain visible; they
+  are not replaced by the stronger one-shot result.
+- Raw replay videos, RGB datasets, simulator states, checkpoints, and caches
+  remain outside Git.
