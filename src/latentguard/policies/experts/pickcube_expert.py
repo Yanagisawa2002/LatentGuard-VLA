@@ -7,6 +7,7 @@ import hashlib
 import inspect
 import math
 import textwrap
+import warnings
 from collections.abc import Mapping, Sequence
 from dataclasses import dataclass, field
 from enum import StrEnum
@@ -33,6 +34,11 @@ class PickCubeExpertPhase(StrEnum):
 
 
 PICKCUBE_EXPERT_PHASES: tuple[PickCubeExpertPhase, ...] = tuple(PickCubeExpertPhase)
+_COMPONENT_POSE_WARNING = (
+    r"^component\.pose can be ambiguous thus deprecated\. It is equivalent to "
+    r"component\.entity_pose, which should be used instead$"
+)
+_COMPONENT_POSE_WARNING_MODULE = r"^mani_skill\.utils\.geometry\.trimesh_utils$"
 
 
 @dataclass(slots=True)
@@ -168,7 +174,14 @@ class PickCubeMotionPlanningExpert:
                 _fail(
                     "PickCubeMotionPlanningExpert.solve", "task geometry is unavailable"
                 )
-            obb = get_actor_obb(cube)
+            with warnings.catch_warnings():
+                warnings.filterwarnings(
+                    "ignore",
+                    message=_COMPONENT_POSE_WARNING,
+                    category=DeprecationWarning,
+                    module=_COMPONENT_POSE_WARNING_MODULE,
+                )
+                obb = get_actor_obb(cube)
             approaching = np.array([0.0, 0.0, -1.0])
             target_closing = tcp.pose.to_transformation_matrix()[0, :3, 1].cpu().numpy()
             grasp_info = compute_grasp_info_by_obb(

@@ -5,6 +5,7 @@ from __future__ import annotations
 import argparse
 import json
 import os
+import warnings
 from collections.abc import Mapping
 from pathlib import Path
 from typing import cast
@@ -28,6 +29,12 @@ from latentguard.integrations.maniskill_pickcube.source_generation import (
 from latentguard.policies.act import build_pickcube_act_contract
 from latentguard.vision_data.cameras import PickCubeMultiViewRigV1
 from latentguard.vision_data.configuration import load_camera_rig_configuration
+
+_SAPIEN_VULKAN_FALLBACK_WARNING = (
+    r"^Failed to find Vulkan ICD file\. This is probably due to an incorrect or "
+    r"partial installation of the NVIDIA driver\. SAPIEN will attempt to provide "
+    r"an ICD file anyway but it may not work\.$"
+)
 
 
 def _mapping(path: Path, *, context: str) -> Mapping[str, object]:
@@ -78,11 +85,18 @@ def audit_contract(
         coordinate_frame=layout.coordinate_frame,
     )
     factory = LazyManiSkillSourceEnvironmentFactory()
-    environment = factory.create_environment(
-        settings,
-        action_contract,
-        purpose="official_source_generation",
-    )
+    with warnings.catch_warnings():
+        warnings.filterwarnings(
+            "ignore",
+            message=_SAPIEN_VULKAN_FALLBACK_WARNING,
+            category=UserWarning,
+            module=r"^sapien\._vulkan_tricks$",
+        )
+        environment = factory.create_environment(
+            settings,
+            action_contract,
+            purpose="official_source_generation",
+        )
     try:
         reset = getattr(environment, "reset", None)
         if not callable(reset):
