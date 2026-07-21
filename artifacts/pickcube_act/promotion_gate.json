@@ -1,0 +1,11 @@
+{
+  "checkpoint_id": "step-00020000",
+  "checks": {
+    "action_contract_violation_zero": false,
+    "fixed_seed_reproducible": true,
+    "simulator_error_zero": true,
+    "workspace_violation_zero": true
+  },
+  "eligible_for_final_evaluation": false,
+  "schema_version": "pickcube-native-act-development-promotion-gate-v1"
+}

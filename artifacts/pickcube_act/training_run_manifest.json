@@ -1,6 +1,6 @@
 {
   "branch": "codex/wm-v0-p0-pickcube-act",
-  "dataset_root": "/root/autodl-tmp/latentguard-runs/20260721T095704Z_wm-v0-p0-demos500_c5537a2_seed700000/dataset",
+  "dataset_run_id": "20260721T095704Z_wm-v0-p0-demos500_c5537a2_seed700000",
   "experiment": {
     "deterministic": true,
     "device": "cuda",
@@ -61,17 +61,18 @@
   },
   "git_commit": "ef24b14529317ee8fc240307be77fcbe94a0cf31",
   "gpu": "NVIDIA GeForce RTX 5090",
-  "hostname": "autodl-container-c47c48a71b-504676bc",
+  "hostname": "<redacted>",
   "launch_command": [
-    "/root/autodl-tmp/LatentGuard-VLA/scripts/train_pickcube_act.py",
+    "python",
+    "scripts/train_pickcube_act.py",
     "--config",
-    "/root/autodl-tmp/LatentGuard-VLA/configs/pickcube_act/train.yaml",
+    "configs/pickcube_act/train.yaml",
     "--dataset-root",
-    "/root/autodl-tmp/latentguard-runs/20260721T095704Z_wm-v0-p0-demos500_c5537a2_seed700000/dataset",
+    "<remote-dataset-root>",
     "--contract",
-    "/root/autodl-tmp/latentguard-runs/20260721T090000Z_wm-v0-p0-contract_fc94efb_seed0/pickcube_act_contract.json",
+    "<remote-contract-path>",
     "--output-dir",
-    "/root/autodl-tmp/latentguard-runs/20260721T104200Z_wm-v0-p0-act-full_ef24b14_seed0"
+    "<remote-output-dir>"
   ],
   "platform": "Linux-5.15.0-119-generic-x86_64-with-glibc2.35",
   "python": "3.12.3",
@@ -80,7 +81,7 @@
     "lerobot": "0.6.0",
     "torch": "2.11.0+cu130"
   },
-  "schema_version": "pickcube-native-act-run-manifest-v1",
+  "schema_version": "pickcube-native-act-run-manifest-sanitized-v1",
   "training_identity": {
     "contract_digest": "sha256:dd29f16cf295de24c9da990399dea1d036f6f2bee47a08f80a46f7d4c9ecd83f",
     "dataset_digest": "sha256:234b82709359f1f2fde513ab26c015f4ebfb262a16b1f16206c54eddbde44800",

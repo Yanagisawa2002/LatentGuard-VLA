@@ -1,0 +1,76 @@
+{
+  "best_validation_checkpoint": {
+    "action_contract_violation_count": 30,
+    "checkpoint_digest": "sha256:b5df38aef975aad127fd5d5e65cf047b14c5eacbb019a16acdb42cf87d75e54c",
+    "checkpoint_id": "step-00020000",
+    "episode_count": 30,
+    "fixed_seed_reproducible": true,
+    "peak_gpu_memory_allocated_bytes": 232948224,
+    "policy_query_count": 0,
+    "policy_query_latency_p95_seconds": null,
+    "simulator_error_count": 0,
+    "success_count": 0,
+    "success_rate": 0.0,
+    "success_rate_95_percent_wilson": [
+      0.0,
+      0.11351339317396876
+    ],
+    "termination_taxonomy": {
+      "action_contract_violation": 30
+    },
+    "workspace_violation_count": 0
+  },
+  "classification": "REJECTED",
+  "contract_digest": "sha256:dd29f16cf295de24c9da990399dea1d036f6f2bee47a08f80a46f7d4c9ecd83f",
+  "development_evaluation": {
+    "action_contract_violation_count": 480,
+    "checkpoint_count": 16,
+    "episode_count": 480,
+    "seed_end_exclusive": 800030,
+    "seed_start": 800000,
+    "simulator_error_count": 0,
+    "success_count": 0,
+    "success_rate": 0.0,
+    "termination_taxonomy": {
+      "action_contract_violation": 480
+    },
+    "workspace_violation_count": 0
+  },
+  "diversity": {
+    "anchor_count": 20,
+    "at_least_two_contract_valid_roles": false,
+    "contract_valid_roles": [],
+    "maximum_action_bound_exceedance_by_role": {
+      "best_validation": 0.07406508922576904,
+      "early": 0.5375752449035645,
+      "final": 0.07406508922576904,
+      "mid": 0.11407661437988281
+    },
+    "role_count": 4
+  },
+  "evaluator_source_commit": "c490be5f77de1cbafae7bd8c686e186b02e3febf",
+  "evidence": {
+    "checkpoint_diversity_report_sha256": "sha256:c335ff3f3574d9d55c07db266a00dd70db67a9512a76c6d9f48e4bfe978d1abe",
+    "development_summary_sha256": "sha256:b5ead7a7fdb282ee24b44f54f74e21219bf5652993f2ca68852dc52011579d51",
+    "fixed_seed_reproduction_sha256": "sha256:c9212270b79a533606a412afaecab45a47b6915f40d29cbb48c221875de1f44b",
+    "promotion_gate_sha256": "sha256:8a1fc3edf6229a6463ae69190cf2e616cc960454a7c260b90790ec21bd0e8408",
+    "zero_work_resume_sha256": "sha256:7e9e0e1f9aed469b8d5c9b60d00b077a94ca96d6694839effcf197e7f9d90a41"
+  },
+  "final_evaluation": {
+    "episode_count": 0,
+    "seed_end_exclusive": 900000,
+    "seed_start": 900000,
+    "seeds_untouched": true,
+    "status": "NOT_RUN_PROMOTION_GATE_FAILED"
+  },
+  "next_fix": "Declare and train an end-to-end bounded action parameterization under a new content-bound contract; do not clip, repair, or relax the current native action bounds.",
+  "policy_id": "pickcube-native-act-best-validation-v1",
+  "policy_package": {
+    "accepted_compatible_policy_count": 0,
+    "package_built": false,
+    "status": "NOT_BUILT_REJECTED_CHECKPOINT"
+  },
+  "result": "RESULT_B",
+  "schema_version": "pickcube-native-act-milestone-evaluation-v1",
+  "training_source_commit": "ef24b14529317ee8fc240307be77fcbe94a0cf31"
+}

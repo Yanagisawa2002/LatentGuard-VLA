@@ -1,0 +1,199 @@
+{
+  "checkpoint_count": 16,
+  "development_episode_count": 480,
+  "schema_version": "pickcube-native-act-development-summary-v1",
+  "summaries": [
+    {
+      "checkpoint_digest": "sha256:0f5f826cd8c914a3e739eeae76086964a06ea0376887f9c4518b311ac8696440",
+      "checkpoint_id": "step-00001000",
+      "episode_count": 30,
+      "simulator_error_count": 0,
+      "success_count": 0,
+      "success_rate": 0.0,
+      "termination_taxonomy": {
+        "action_contract_violation": 30
+      },
+      "workspace_violation_count": 0
+    },
+    {
+      "checkpoint_digest": "sha256:bee5eecea3745fc002e0fd16eeda8a140a0dd60a4a6b59f43de74e9b9eb63914",
+      "checkpoint_id": "step-00002000",
+      "episode_count": 30,
+      "simulator_error_count": 0,
+      "success_count": 0,
+      "success_rate": 0.0,
+      "termination_taxonomy": {
+        "action_contract_violation": 30
+      },
+      "workspace_violation_count": 0
+    },
+    {
+      "checkpoint_digest": "sha256:74db893baf05d0e01e33d059b16d824b086c2cf843b731a8d035d7a9e153be19",
+      "checkpoint_id": "step-00003000",
+      "episode_count": 30,
+      "simulator_error_count": 0,
+      "success_count": 0,
+      "success_rate": 0.0,
+      "termination_taxonomy": {
+        "action_contract_violation": 30
+      },
+      "workspace_violation_count": 0
+    },
+    {
+      "checkpoint_digest": "sha256:5d7d1da74d878e33b92b527bf9caf0c2c96b828a240587b3d072bf762427b42a",
+      "checkpoint_id": "step-00004000",
+      "episode_count": 30,
+      "simulator_error_count": 0,
+      "success_count": 0,
+      "success_rate": 0.0,
+      "termination_taxonomy": {
+        "action_contract_violation": 30
+      },
+      "workspace_violation_count": 0
+    },
+    {
+      "checkpoint_digest": "sha256:719a9656f392c1e3b067014f1760018795d4d3595618c81a0ea8ea1097a4aea5",
+      "checkpoint_id": "step-00005000",
+      "episode_count": 30,
+      "simulator_error_count": 0,
+      "success_count": 0,
+      "success_rate": 0.0,
+      "termination_taxonomy": {
+        "action_contract_violation": 30
+      },
+      "workspace_violation_count": 0
+    },
+    {
+      "checkpoint_digest": "sha256:a9c7c55c690612151a238a095a283dba5e6222d6da4d2bdb3ec87d75de9d9c2e",
+      "checkpoint_id": "step-00006000",
+      "episode_count": 30,
+      "simulator_error_count": 0,
+      "success_count": 0,
+      "success_rate": 0.0,
+      "termination_taxonomy": {
+        "action_contract_violation": 30
+      },
+      "workspace_violation_count": 0
+    },
+    {
+      "checkpoint_digest": "sha256:f07ce7035967af2bdc47678d88eba34ed1abc7495fe3628d5fe90b2adb8da257",
+      "checkpoint_id": "step-00007000",
+      "episode_count": 30,
+      "simulator_error_count": 0,
+      "success_count": 0,
+      "success_rate": 0.0,
+      "termination_taxonomy": {
+        "action_contract_violation": 30
+      },
+      "workspace_violation_count": 0
+    },
+    {
+      "checkpoint_digest": "sha256:66d32e58572973b65058937724d5419224c07f0f3fffe6a4ffcf4a2ff7b02b6b",
+      "checkpoint_id": "step-00008000",
+      "episode_count": 30,
+      "simulator_error_count": 0,
+      "success_count": 0,
+      "success_rate": 0.0,
+      "termination_taxonomy": {
+        "action_contract_violation": 30
+      },
+      "workspace_violation_count": 0
+    },
+    {
+      "checkpoint_digest": "sha256:9febc8f6517bb77264847417ff770bded37bb547e808ea33a48f488d133ae608",
+      "checkpoint_id": "step-00010000",
+      "episode_count": 30,
+      "simulator_error_count": 0,
+      "success_count": 0,
+      "success_rate": 0.0,
+      "termination_taxonomy": {
+        "action_contract_violation": 30
+      },
+      "workspace_violation_count": 0
+    },
+    {
+      "checkpoint_digest": "sha256:fec982ad35d82f909f93e147993cb91a617dcc6539496845c8dace144a93bc16",
+      "checkpoint_id": "step-00012000",
+      "episode_count": 30,
+      "simulator_error_count": 0,
+      "success_count": 0,
+      "success_rate": 0.0,
+      "termination_taxonomy": {
+        "action_contract_violation": 30
+      },
+      "workspace_violation_count": 0
+    },
+    {
+      "checkpoint_digest": "sha256:608f49d281e096d1a5c5a0d100b68ac1e4cf9199370977a58073e3c2f7e21654",
+      "checkpoint_id": "step-00014000",
+      "episode_count": 30,
+      "simulator_error_count": 0,
+      "success_count": 0,
+      "success_rate": 0.0,
+      "termination_taxonomy": {
+        "action_contract_violation": 30
+      },
+      "workspace_violation_count": 0
+    },
+    {
+      "checkpoint_digest": "sha256:a81769e8de2a6f2e9a51b1bfbc2c2920d3caaa462653612e7bb20aa7b3dea99b",
+      "checkpoint_id": "step-00015000",
+      "episode_count": 30,
+      "simulator_error_count": 0,
+      "success_count": 0,
+      "success_rate": 0.0,
+      "termination_taxonomy": {
+        "action_contract_violation": 30
+      },
+      "workspace_violation_count": 0
+    },
+    {
+      "checkpoint_digest": "sha256:02ae40779565fa30f3a63b838ec86740c0cadf662b1b7f28d7f92ad7ef0ea8db",
+      "checkpoint_id": "step-00016000",
+      "episode_count": 30,
+      "simulator_error_count": 0,
+      "success_count": 0,
+      "success_rate": 0.0,
+      "termination_taxonomy": {
+        "action_contract_violation": 30
+      },
+      "workspace_violation_count": 0
+    },
+    {
+      "checkpoint_digest": "sha256:4203fb9d469fe415e65678acaf3daaa53af318c06cec6fd19f7e29d2f7df4314",
+      "checkpoint_id": "step-00017000",
+      "episode_count": 30,
+      "simulator_error_count": 0,
+      "success_count": 0,
+      "success_rate": 0.0,
+      "termination_taxonomy": {
+        "action_contract_violation": 30
+      },
+      "workspace_violation_count": 0
+    },
+    {
+      "checkpoint_digest": "sha256:c161bfffb2b24062619b6464c9030b654baac09ff442d3fb424f8b6d84df3e16",
+      "checkpoint_id": "step-00018000",
+      "episode_count": 30,
+      "simulator_error_count": 0,
+      "success_count": 0,
+      "success_rate": 0.0,
+      "termination_taxonomy": {
+        "action_contract_violation": 30
+      },
+      "workspace_violation_count": 0
+    },
+    {
+      "checkpoint_digest": "sha256:b5df38aef975aad127fd5d5e65cf047b14c5eacbb019a16acdb42cf87d75e54c",
+      "checkpoint_id": "step-00020000",
+      "episode_count": 30,
+      "simulator_error_count": 0,
+      "success_count": 0,
+      "success_rate": 0.0,
+      "termination_taxonomy": {
+        "action_contract_violation": 30
+      },
+      "workspace_violation_count": 0
+    }
+  ]
+}

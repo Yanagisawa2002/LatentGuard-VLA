@@ -83,3 +83,19 @@ existing D2 fail-closed `PolicyPackage` and `PolicyRegistry` contracts.
 If the expert gate fails, demonstration collection and training remain blocked.
 If no checkpoint reaches the predeclared acceptance criteria, the milestone is
 reported as Result B without relabeling a weak policy as accepted.
+
+## Completion status
+
+P0 completed as **Result B**. The 100-seed expert gate passed at 95/100, the
+accepted dataset contains 500 successful episodes with the fixed 400/50/50
+split, and formal ACT training completed 20,000 steps with 16 preserved
+checkpoints. All 16 checkpoints were then evaluated on 30 independent
+development seeds each.
+
+The learned raw chunks were finite and reproducible, but every one of the 480
+development episodes failed the exact native action contract before execution.
+The best-validation checkpoint exceeded at least one bound on all 30 seeds and
+was not promoted. The 100 reserved final seeds remain untouched, no package was
+built, and the D2 registry contains one rejected Result B audit entry with zero
+accepted compatible policies. See `docs/pickcube_act_evaluation_report.md` for
+the bound evidence and repair recommendation.

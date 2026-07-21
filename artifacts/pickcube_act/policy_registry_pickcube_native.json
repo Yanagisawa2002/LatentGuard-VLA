@@ -1,0 +1,183 @@
+{
+  "entries": [
+    {
+      "audit_record": {
+        "action_contract_digest": "sha256:028d8c2cbb10e867d709f1c5d4c31e07ef1e084f1a8ad8370f96185ba892f0eb",
+        "checkpoint_digest": "sha256:b5df38aef975aad127fd5d5e65cf047b14c5eacbb019a16acdb42cf87d75e54c",
+        "checkpoint_id": "step-00020000",
+        "contract_digest": "sha256:dd29f16cf295de24c9da990399dea1d036f6f2bee47a08f80a46f7d4c9ecd83f",
+        "dataset_digest": "sha256:234b82709359f1f2fde513ab26c015f4ebfb262a16b1f16206c54eddbde44800",
+        "development_episode_count": 30,
+        "evaluator_source_commit": "c490be5f77de1cbafae7bd8c686e186b02e3febf",
+        "final_evaluation_status": "NOT_RUN_PROMOTION_GATE_FAILED",
+        "normalization_digest": "sha256:8093f5bba3916dff218e73789739b18e05e9eb96cfc200fa18747f010959532a",
+        "training_source_commit": "ef24b14529317ee8fc240307be77fcbe94a0cf31",
+        "zero_work_resume_passed": true
+      },
+      "compatibility_reasons": [
+        "the best-validation checkpoint produced out-of-contract native actions on all 30 development seeds",
+        "all 16 evaluated checkpoints failed the zero-tolerance action-contract promotion gate",
+        "no checkpoint was eligible for the untouched 100-episode final evaluation"
+      ],
+      "compatibility_status": "REJECTED",
+      "known_evaluation_result": {
+        "action_contract_violation_count": 30,
+        "classification": "REJECTED",
+        "development_episode_count": 30,
+        "fixed_seed_reproducible": true,
+        "simulator_error_count": 0,
+        "success_count": 0,
+        "success_rate": 0.0,
+        "termination_taxonomy": {
+          "action_contract_violation": 30
+        },
+        "workspace_violation_count": 0
+      },
+      "missing_assets": [
+        "accepted_closed_loop_evaluation",
+        "accepted_policy_package"
+      ],
+      "package": null,
+      "policy_family": "ACT",
+      "policy_id": "pickcube-native-act-best-validation-v1",
+      "policy_name": "PickCube native ACT best-validation checkpoint",
+      "source_repository": "LatentGuard-VLA"
+    }
+  ],
+  "required_action_spec": {
+    "action_contract_digest": "sha256:028d8c2cbb10e867d709f1c5d4c31e07ef1e084f1a8ad8370f96185ba892f0eb",
+    "bounds": {
+      "lower": [
+        -2.8973000049591064,
+        -1.7627999782562256,
+        -2.8973000049591064,
+        -3.0717999935150146,
+        -2.8973000049591064,
+        -0.017500000074505806,
+        -2.8973000049591064,
+        -1.0
+      ],
+      "upper": [
+        2.8973000049591064,
+        1.7627999782562256,
+        2.8973000049591064,
+        -0.0697999969124794,
+        2.8973000049591064,
+        3.752500057220459,
+        2.8973000049591064,
+        1.0
+      ]
+    },
+    "clipping": "prohibited_fail_closed",
+    "controller_configuration_identity": "sha256:aed1daebe14982021776aaec5dead168fd999d841b6398be01612999383a9072",
+    "dimension": 8,
+    "dtype": "float32",
+    "gripper_convention": {
+      "closed_command": -1.0,
+      "controller_physical_target_m": [
+        -0.01,
+        0.04
+      ],
+      "open_command": 1.0,
+      "semantic": "normalized_mimic_joint_position_target_v1"
+    },
+    "order": [
+      "panda_joint1_target_rad",
+      "panda_joint2_target_rad",
+      "panda_joint3_target_rad",
+      "panda_joint4_target_rad",
+      "panda_joint5_target_rad",
+      "panda_joint6_target_rad",
+      "panda_joint7_target_rad",
+      "panda_gripper_normalized_target"
+    ],
+    "units": [
+      "radian",
+      "radian",
+      "radian",
+      "radian",
+      "radian",
+      "radian",
+      "radian",
+      "normalized_unitless"
+    ]
+  },
+  "required_environment_spec": {
+    "compatibility_identity": "sha256:05a560fd89e0989b6d94017c6456efc535de4a0bf87ededaf468f5e2d9ef71f7",
+    "control_frequency_hz": 20.0,
+    "control_mode": "pd_joint_pos",
+    "environment_id": "PickCube-v1",
+    "episode_horizon_control_steps": 50,
+    "failure_definition": "terminal success false, timeout, unsafe state, or execution error",
+    "mani_skill_version": "3.0.1",
+    "mplib_version": "0.1.1",
+    "num_envs": 1,
+    "observation_mode": "none",
+    "reset_seed_semantic": "gymnasium_uint32_deterministic_scene_reset_v1",
+    "robot_uid": "panda",
+    "sapien_version": "3.0.3",
+    "simulation_frequency_hz": 100.0,
+    "success_definition": "is_obj_placed and is_robot_static",
+    "task_implementation_identity": "sha256:6f881f11151bd124a4ec6d1189e86e20b17d366aa1cbcc6e2f751f1f5bb03ed1",
+    "termination_definition": "task success is evaluated explicitly; Gymnasium truncates at 50 control steps"
+  },
+  "required_observation_spec": {
+    "camera_rig_digest": "sha256:f6345d8c01554a8def7a84f2cd01707523192338d1082578cc27652d7ee42f1f",
+    "cameras": [
+      {
+        "camera_configuration_digest": "sha256:b5a3ace3336575eb30dc72d026aeafa81e6ebd67704e3c779f4e498f113c116e",
+        "camera_id": "front_oblique",
+        "dtype": "uint8",
+        "raw_shape_hwc": [
+          224,
+          224,
+          3
+        ],
+        "tensor_shape_chw": [
+          3,
+          224,
+          224
+        ]
+      }
+    ],
+    "model_input_allowlist": [
+      "observation.images.front_oblique",
+      "observation.state"
+    ],
+    "privileged_input_denylist": [
+      "cube_pose",
+      "goal_pose",
+      "contact_graph",
+      "expert_phase",
+      "success",
+      "outcome"
+    ],
+    "proprioception": {
+      "dimension": 18,
+      "dtype": "float32",
+      "fields": [
+        "qpos.panda_joint1",
+        "qpos.panda_joint2",
+        "qpos.panda_joint3",
+        "qpos.panda_joint4",
+        "qpos.panda_joint5",
+        "qpos.panda_joint6",
+        "qpos.panda_joint7",
+        "qpos.panda_finger_joint1",
+        "qpos.panda_finger_joint2",
+        "qvel.panda_joint1",
+        "qvel.panda_joint2",
+        "qvel.panda_joint3",
+        "qvel.panda_joint4",
+        "qvel.panda_joint5",
+        "qvel.panda_joint6",
+        "qvel.panda_joint7",
+        "qvel.panda_finger_joint1",
+        "qvel.panda_finger_joint2"
+      ],
+      "semantic": "panda_active_joint_qpos_then_qvel_named_v1"
+    }
+  },
+  "result": "RESULT_B",
+  "schema_version": "wm-v0-d2-policy-registry-v1"
+}
