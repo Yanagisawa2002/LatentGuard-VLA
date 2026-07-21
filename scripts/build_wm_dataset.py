@@ -7,7 +7,7 @@ import json
 from pathlib import Path
 
 from latentguard.visual_training.backbone import prepare_backbone
-from latentguard.visual_training.config import BackboneConfigV1
+from latentguard.visual_training.config import load_backbone_config
 from latentguard.world_model.encoder import FrozenResNet18ObservationEncoder
 from latentguard.world_model.features import write_feature_cache
 from latentguard.world_model.manifest import build_dataset_manifest
@@ -21,6 +21,7 @@ def main() -> int:
     parser.add_argument("--config", type=Path, required=True)
     parser.add_argument("--samples", type=Path, required=True)
     parser.add_argument("--output", type=Path, required=True)
+    parser.add_argument("--backbone-config", type=Path, required=True)
     parser.add_argument("--backbone-manifest", type=Path, required=True)
     parser.add_argument("--device", default="cpu")
     parser.add_argument("--limit-samples", type=int)
@@ -39,7 +40,11 @@ def main() -> int:
     )
     manifest.write(args.output / "dataset-manifest.json")
     encoder = FrozenResNet18ObservationEncoder(
-        prepare_backbone(BackboneConfigV1(), args.backbone_manifest, device=args.device)
+        prepare_backbone(
+            load_backbone_config(args.backbone_config),
+            args.backbone_manifest,
+            device=args.device,
+        )
     )
     index = write_feature_cache(args.output / "features", samples, encoder)
     print(

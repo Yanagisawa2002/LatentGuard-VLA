@@ -43,6 +43,10 @@ manifest, and evaluation summaries may be committed.
    primary action remains the default; any intervention additionally requires
    a risk threshold, score margin, and low uncertainty.
 
+The frozen-feature build CLI requires both the complete reviewed M4B backbone
+configuration and its authenticated runtime manifest. It never constructs an
+implicit or partially specified backbone contract.
+
 ## Formal data gate
 
 Formal training is authorized only when a strictly reloaded manifest proves all
