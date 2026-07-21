@@ -1,0 +1,6 @@
+{
+  "best_validation": "checkpoints/step-00020000",
+  "early": "checkpoints/step-00001000",
+  "final": "checkpoints/step-00020000",
+  "mid": "checkpoints/step-00010000"
+}

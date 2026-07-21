@@ -156,6 +156,11 @@ def test_inference_runtime_preserves_valid_chunk_and_rejects_clipping() -> None:
             np.zeros((224, 224, 3), dtype=np.uint8),
             np.zeros(18, dtype=np.float32),
         )
+    audited = runtime.predict_action_chunk_for_audit(
+        np.zeros((224, 224, 3), dtype=np.uint8),
+        np.zeros(18, dtype=np.float32),
+    )
+    assert audited[0, 0] == pytest.approx(1.01)
 
 
 def test_checkpoint_is_atomically_completed_with_hash_inventory(tmp_path: Path) -> None:

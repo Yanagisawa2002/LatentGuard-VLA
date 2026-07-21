@@ -1,0 +1,29 @@
+{
+  "attempt_count": 517,
+  "contract_digest": "sha256:dd29f16cf295de24c9da990399dea1d036f6f2bee47a08f80a46f7d4c9ecd83f",
+  "dataset_digest": "sha256:234b82709359f1f2fde513ab26c015f4ebfb262a16b1f16206c54eddbde44800",
+  "episode_count": 500,
+  "expert_gate": {
+    "authorized_for_demonstration_collection": true,
+    "episode_count": 100,
+    "expert_gate_digest": "sha256:e4fdcfc5cc76c8c5ab760eb0bd57b07a2e146caf0679f0a24a253b662d2e53ef",
+    "failure_taxonomy": {
+      "expert_phase_incomplete": 1,
+      "timeout": 4
+    },
+    "success_count": 95,
+    "success_rate": 0.95
+  },
+  "failure_taxonomy": {
+    "latentguard.policies.act.collection.PickCubeDemoCollectionError": 16,
+    "latentguard.policies.experts.pickcube_expert.PickCubeExpertError": 1
+  },
+  "frame_count": 21053,
+  "schema_version": "pickcube-act-demo-collection-summary-v1",
+  "seed_start": 700000,
+  "split_counts": {
+    "test": 50,
+    "train": 400,
+    "validation": 50
+  }
+}

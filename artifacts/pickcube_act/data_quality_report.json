@@ -1,0 +1,87 @@
+{
+  "action_distribution": {
+    "maximum": [
+      0.17032107710838318,
+      0.9477294087409973,
+      0.0879274383187294,
+      -1.368557929992676,
+      0.06466589868068695,
+      2.8188230991363525,
+      1.0010501146316528,
+      1.0
+    ],
+    "mean": [
+      0.002189106748729907,
+      0.5542483456899592,
+      -0.00029007367647941183,
+      -1.9526124155443951,
+      0.0004221222359162875,
+      2.5041737502428956,
+      0.7872321108274363,
+      -0.01980715337481594
+    ],
+    "minimum": [
+      -0.16590234637260437,
+      -0.10443290323019028,
+      -0.08362856977579168,
+      -2.359666149945825,
+      -0.07998388260602951,
+      1.8842216730117798,
+      0.5668732523918152,
+      -1.0
+    ],
+    "standard_deviation": [
+      0.07098367830945486,
+      0.16688655478816242,
+      0.01871308710189425,
+      0.20223285216627232,
+      0.01772845249019502,
+      0.15165445816534773,
+      0.09050463028203695,
+      0.999803819094091
+    ]
+  },
+  "action_dtypes": [
+    "<f8"
+  ],
+  "average_episode_length": 42.106,
+  "duplicate_episode_count": 0,
+  "episode_count": 500,
+  "expert_success_rate": 0.95,
+  "frame_count": 21053,
+  "gripper_distribution": {
+    "maximum": [
+      1.0
+    ],
+    "mean": [
+      -0.01980715337481594
+    ],
+    "minimum": [
+      -1.0
+    ],
+    "standard_deviation": [
+      0.9998038190941194
+    ]
+  },
+  "missing_observation_count": 0,
+  "nonfinite_value_count": 0,
+  "phase_frame_counts": {
+    "CLOSE_GRIPPER": 3000,
+    "DESCEND_TO_GRASP": 3923,
+    "REACH_PREGRASP": 6395,
+    "TRANSPORT_TO_GOAL": 7735
+  },
+  "scene_seed_count": 500,
+  "schema_version": "pickcube-act-data-quality-v1",
+  "split_episode_counts": {
+    "test": 50,
+    "train": 400,
+    "validation": 50
+  },
+  "split_frame_counts": {
+    "test": 2119,
+    "train": 16833,
+    "validation": 2101
+  },
+  "split_leakage_count": 0
+}

@@ -1,0 +1,1639 @@
+{
+  "authorized_for_demonstration_collection": true,
+  "compatibility_identity": "sha256:05a560fd89e0989b6d94017c6456efc535de4a0bf87ededaf468f5e2d9ef71f7",
+  "environment_id": "PickCube-v1",
+  "episode_count": 100,
+  "episodes": [
+    {
+      "action_count": 44,
+      "action_out_of_bounds_count": 0,
+      "failure_category": null,
+      "nonfinite_action_count": 0,
+      "phase_action_counts": {
+        "CLOSE_GRIPPER": 6,
+        "DESCEND_TO_GRASP": 7,
+        "REACH_PREGRASP": 13,
+        "TRANSPORT_TO_GOAL": 18
+      },
+      "seed": 600000,
+      "simulator_error": false,
+      "success": true,
+      "workspace_violation_count": 0
+    },
+    {
+      "action_count": 42,
+      "action_out_of_bounds_count": 0,
+      "failure_category": null,
+      "nonfinite_action_count": 0,
+      "phase_action_counts": {
+        "CLOSE_GRIPPER": 6,
+        "DESCEND_TO_GRASP": 8,
+        "REACH_PREGRASP": 12,
+        "TRANSPORT_TO_GOAL": 16
+      },
+      "seed": 600001,
+      "simulator_error": false,
+      "success": true,
+      "workspace_violation_count": 0
+    },
+    {
+      "action_count": 39,
+      "action_out_of_bounds_count": 0,
+      "failure_category": null,
+      "nonfinite_action_count": 0,
+      "phase_action_counts": {
+        "CLOSE_GRIPPER": 6,
+        "DESCEND_TO_GRASP": 8,
+        "REACH_PREGRASP": 15,
+        "TRANSPORT_TO_GOAL": 10
+      },
+      "seed": 600002,
+      "simulator_error": false,
+      "success": true,
+      "workspace_violation_count": 0
+    },
+    {
+      "action_count": 43,
+      "action_out_of_bounds_count": 0,
+      "failure_category": null,
+      "nonfinite_action_count": 0,
+      "phase_action_counts": {
+        "CLOSE_GRIPPER": 6,
+        "DESCEND_TO_GRASP": 8,
+        "REACH_PREGRASP": 12,
+        "TRANSPORT_TO_GOAL": 17
+      },
+      "seed": 600003,
+      "simulator_error": false,
+      "success": true,
+      "workspace_violation_count": 0
+    },
+    {
+      "action_count": 45,
+      "action_out_of_bounds_count": 0,
+      "failure_category": null,
+      "nonfinite_action_count": 0,
+      "phase_action_counts": {
+        "CLOSE_GRIPPER": 6,
+        "DESCEND_TO_GRASP": 8,
+        "REACH_PREGRASP": 16,
+        "TRANSPORT_TO_GOAL": 15
+      },
+      "seed": 600004,
+      "simulator_error": false,
+      "success": true,
+      "workspace_violation_count": 0
+    },
+    {
+      "action_count": 50,
+      "action_out_of_bounds_count": 0,
+      "failure_category": null,
+      "nonfinite_action_count": 0,
+      "phase_action_counts": {
+        "CLOSE_GRIPPER": 6,
+        "DESCEND_TO_GRASP": 8,
+        "REACH_PREGRASP": 14,
+        "TRANSPORT_TO_GOAL": 22
+      },
+      "seed": 600005,
+      "simulator_error": false,
+      "success": true,
+      "workspace_violation_count": 0
+    },
+    {
+      "action_count": 42,
+      "action_out_of_bounds_count": 0,
+      "failure_category": null,
+      "nonfinite_action_count": 0,
+      "phase_action_counts": {
+        "CLOSE_GRIPPER": 6,
+        "DESCEND_TO_GRASP": 8,
+        "REACH_PREGRASP": 12,
+        "TRANSPORT_TO_GOAL": 16
+      },
+      "seed": 600006,
+      "simulator_error": false,
+      "success": true,
+      "workspace_violation_count": 0
+    },
+    {
+      "action_count": 39,
+      "action_out_of_bounds_count": 0,
+      "failure_category": null,
+      "nonfinite_action_count": 0,
+      "phase_action_counts": {
+        "CLOSE_GRIPPER": 6,
+        "DESCEND_TO_GRASP": 8,
+        "REACH_PREGRASP": 10,
+        "TRANSPORT_TO_GOAL": 15
+      },
+      "seed": 600007,
+      "simulator_error": false,
+      "success": true,
+      "workspace_violation_count": 0
+    },
+    {
+      "action_count": 38,
+      "action_out_of_bounds_count": 0,
+      "failure_category": null,
+      "nonfinite_action_count": 0,
+      "phase_action_counts": {
+        "CLOSE_GRIPPER": 6,
+        "DESCEND_TO_GRASP": 7,
+        "REACH_PREGRASP": 14,
+        "TRANSPORT_TO_GOAL": 11
+      },
+      "seed": 600008,
+      "simulator_error": false,
+      "success": true,
+      "workspace_violation_count": 0
+    },
+    {
+      "action_count": 32,
+      "action_out_of_bounds_count": 0,
+      "failure_category": null,
+      "nonfinite_action_count": 0,
+      "phase_action_counts": {
+        "CLOSE_GRIPPER": 6,
+        "DESCEND_TO_GRASP": 8,
+        "REACH_PREGRASP": 10,
+        "TRANSPORT_TO_GOAL": 8
+      },
+      "seed": 600009,
+      "simulator_error": false,
+      "success": true,
+      "workspace_violation_count": 0
+    },
+    {
+      "action_count": 34,
+      "action_out_of_bounds_count": 0,
+      "failure_category": null,
+      "nonfinite_action_count": 0,
+      "phase_action_counts": {
+        "CLOSE_GRIPPER": 6,
+        "DESCEND_TO_GRASP": 8,
+        "REACH_PREGRASP": 12,
+        "TRANSPORT_TO_GOAL": 8
+      },
+      "seed": 600010,
+      "simulator_error": false,
+      "success": true,
+      "workspace_violation_count": 0
+    },
+    {
+      "action_count": 48,
+      "action_out_of_bounds_count": 0,
+      "failure_category": null,
+      "nonfinite_action_count": 0,
+      "phase_action_counts": {
+        "CLOSE_GRIPPER": 6,
+        "DESCEND_TO_GRASP": 8,
+        "REACH_PREGRASP": 14,
+        "TRANSPORT_TO_GOAL": 20
+      },
+      "seed": 600011,
+      "simulator_error": false,
+      "success": true,
+      "workspace_violation_count": 0
+    },
+    {
+      "action_count": 39,
+      "action_out_of_bounds_count": 0,
+      "failure_category": null,
+      "nonfinite_action_count": 0,
+      "phase_action_counts": {
+        "CLOSE_GRIPPER": 6,
+        "DESCEND_TO_GRASP": 8,
+        "REACH_PREGRASP": 10,
+        "TRANSPORT_TO_GOAL": 15
+      },
+      "seed": 600012,
+      "simulator_error": false,
+      "success": true,
+      "workspace_violation_count": 0
+    },
+    {
+      "action_count": 43,
+      "action_out_of_bounds_count": 0,
+      "failure_category": null,
+      "nonfinite_action_count": 0,
+      "phase_action_counts": {
+        "CLOSE_GRIPPER": 6,
+        "DESCEND_TO_GRASP": 8,
+        "REACH_PREGRASP": 11,
+        "TRANSPORT_TO_GOAL": 18
+      },
+      "seed": 600013,
+      "simulator_error": false,
+      "success": true,
+      "workspace_violation_count": 0
+    },
+    {
+      "action_count": 43,
+      "action_out_of_bounds_count": 0,
+      "failure_category": null,
+      "nonfinite_action_count": 0,
+      "phase_action_counts": {
+        "CLOSE_GRIPPER": 6,
+        "DESCEND_TO_GRASP": 8,
+        "REACH_PREGRASP": 15,
+        "TRANSPORT_TO_GOAL": 14
+      },
+      "seed": 600014,
+      "simulator_error": false,
+      "success": true,
+      "workspace_violation_count": 0
+    },
+    {
+      "action_count": 38,
+      "action_out_of_bounds_count": 0,
+      "failure_category": null,
+      "nonfinite_action_count": 0,
+      "phase_action_counts": {
+        "CLOSE_GRIPPER": 6,
+        "DESCEND_TO_GRASP": 8,
+        "REACH_PREGRASP": 10,
+        "TRANSPORT_TO_GOAL": 14
+      },
+      "seed": 600015,
+      "simulator_error": false,
+      "success": true,
+      "workspace_violation_count": 0
+    },
+    {
+      "action_count": 38,
+      "action_out_of_bounds_count": 0,
+      "failure_category": null,
+      "nonfinite_action_count": 0,
+      "phase_action_counts": {
+        "CLOSE_GRIPPER": 6,
+        "DESCEND_TO_GRASP": 8,
+        "REACH_PREGRASP": 12,
+        "TRANSPORT_TO_GOAL": 12
+      },
+      "seed": 600016,
+      "simulator_error": false,
+      "success": true,
+      "workspace_violation_count": 0
+    },
+    {
+      "action_count": 49,
+      "action_out_of_bounds_count": 0,
+      "failure_category": null,
+      "nonfinite_action_count": 0,
+      "phase_action_counts": {
+        "CLOSE_GRIPPER": 6,
+        "DESCEND_TO_GRASP": 8,
+        "REACH_PREGRASP": 14,
+        "TRANSPORT_TO_GOAL": 21
+      },
+      "seed": 600017,
+      "simulator_error": false,
+      "success": true,
+      "workspace_violation_count": 0
+    },
+    {
+      "action_count": 48,
+      "action_out_of_bounds_count": 0,
+      "failure_category": null,
+      "nonfinite_action_count": 0,
+      "phase_action_counts": {
+        "CLOSE_GRIPPER": 6,
+        "DESCEND_TO_GRASP": 8,
+        "REACH_PREGRASP": 16,
+        "TRANSPORT_TO_GOAL": 18
+      },
+      "seed": 600018,
+      "simulator_error": false,
+      "success": true,
+      "workspace_violation_count": 0
+    },
+    {
+      "action_count": 42,
+      "action_out_of_bounds_count": 0,
+      "failure_category": null,
+      "nonfinite_action_count": 0,
+      "phase_action_counts": {
+        "CLOSE_GRIPPER": 6,
+        "DESCEND_TO_GRASP": 8,
+        "REACH_PREGRASP": 14,
+        "TRANSPORT_TO_GOAL": 14
+      },
+      "seed": 600019,
+      "simulator_error": false,
+      "success": true,
+      "workspace_violation_count": 0
+    },
+    {
+      "action_count": 42,
+      "action_out_of_bounds_count": 0,
+      "failure_category": null,
+      "nonfinite_action_count": 0,
+      "phase_action_counts": {
+        "CLOSE_GRIPPER": 6,
+        "DESCEND_TO_GRASP": 8,
+        "REACH_PREGRASP": 12,
+        "TRANSPORT_TO_GOAL": 16
+      },
+      "seed": 600020,
+      "simulator_error": false,
+      "success": true,
+      "workspace_violation_count": 0
+    },
+    {
+      "action_count": 42,
+      "action_out_of_bounds_count": 0,
+      "failure_category": null,
+      "nonfinite_action_count": 0,
+      "phase_action_counts": {
+        "CLOSE_GRIPPER": 6,
+        "DESCEND_TO_GRASP": 7,
+        "REACH_PREGRASP": 12,
+        "TRANSPORT_TO_GOAL": 17
+      },
+      "seed": 600021,
+      "simulator_error": false,
+      "success": true,
+      "workspace_violation_count": 0
+    },
+    {
+      "action_count": 39,
+      "action_out_of_bounds_count": 0,
+      "failure_category": null,
+      "nonfinite_action_count": 0,
+      "phase_action_counts": {
+        "CLOSE_GRIPPER": 6,
+        "DESCEND_TO_GRASP": 8,
+        "REACH_PREGRASP": 13,
+        "TRANSPORT_TO_GOAL": 12
+      },
+      "seed": 600022,
+      "simulator_error": false,
+      "success": true,
+      "workspace_violation_count": 0
+    },
+    {
+      "action_count": 42,
+      "action_out_of_bounds_count": 0,
+      "failure_category": null,
+      "nonfinite_action_count": 0,
+      "phase_action_counts": {
+        "CLOSE_GRIPPER": 6,
+        "DESCEND_TO_GRASP": 8,
+        "REACH_PREGRASP": 13,
+        "TRANSPORT_TO_GOAL": 15
+      },
+      "seed": 600023,
+      "simulator_error": false,
+      "success": true,
+      "workspace_violation_count": 0
+    },
+    {
+      "action_count": 39,
+      "action_out_of_bounds_count": 0,
+      "failure_category": null,
+      "nonfinite_action_count": 0,
+      "phase_action_counts": {
+        "CLOSE_GRIPPER": 6,
+        "DESCEND_TO_GRASP": 8,
+        "REACH_PREGRASP": 13,
+        "TRANSPORT_TO_GOAL": 12
+      },
+      "seed": 600024,
+      "simulator_error": false,
+      "success": true,
+      "workspace_violation_count": 0
+    },
+    {
+      "action_count": 44,
+      "action_out_of_bounds_count": 0,
+      "failure_category": null,
+      "nonfinite_action_count": 0,
+      "phase_action_counts": {
+        "CLOSE_GRIPPER": 6,
+        "DESCEND_TO_GRASP": 8,
+        "REACH_PREGRASP": 14,
+        "TRANSPORT_TO_GOAL": 16
+      },
+      "seed": 600025,
+      "simulator_error": false,
+      "success": true,
+      "workspace_violation_count": 0
+    },
+    {
+      "action_count": 47,
+      "action_out_of_bounds_count": 0,
+      "failure_category": null,
+      "nonfinite_action_count": 0,
+      "phase_action_counts": {
+        "CLOSE_GRIPPER": 6,
+        "DESCEND_TO_GRASP": 8,
+        "REACH_PREGRASP": 14,
+        "TRANSPORT_TO_GOAL": 19
+      },
+      "seed": 600026,
+      "simulator_error": false,
+      "success": true,
+      "workspace_violation_count": 0
+    },
+    {
+      "action_count": 42,
+      "action_out_of_bounds_count": 0,
+      "failure_category": null,
+      "nonfinite_action_count": 0,
+      "phase_action_counts": {
+        "CLOSE_GRIPPER": 6,
+        "DESCEND_TO_GRASP": 8,
+        "REACH_PREGRASP": 13,
+        "TRANSPORT_TO_GOAL": 15
+      },
+      "seed": 600027,
+      "simulator_error": false,
+      "success": true,
+      "workspace_violation_count": 0
+    },
+    {
+      "action_count": 39,
+      "action_out_of_bounds_count": 0,
+      "failure_category": null,
+      "nonfinite_action_count": 0,
+      "phase_action_counts": {
+        "CLOSE_GRIPPER": 6,
+        "DESCEND_TO_GRASP": 8,
+        "REACH_PREGRASP": 11,
+        "TRANSPORT_TO_GOAL": 14
+      },
+      "seed": 600028,
+      "simulator_error": false,
+      "success": true,
+      "workspace_violation_count": 0
+    },
+    {
+      "action_count": 46,
+      "action_out_of_bounds_count": 0,
+      "failure_category": null,
+      "nonfinite_action_count": 0,
+      "phase_action_counts": {
+        "CLOSE_GRIPPER": 6,
+        "DESCEND_TO_GRASP": 8,
+        "REACH_PREGRASP": 12,
+        "TRANSPORT_TO_GOAL": 20
+      },
+      "seed": 600029,
+      "simulator_error": false,
+      "success": true,
+      "workspace_violation_count": 0
+    },
+    {
+      "action_count": 1,
+      "action_out_of_bounds_count": 0,
+      "failure_category": "expert_phase_incomplete",
+      "nonfinite_action_count": 0,
+      "phase_action_counts": {
+        "CLOSE_GRIPPER": 0,
+        "DESCEND_TO_GRASP": 0,
+        "REACH_PREGRASP": 1,
+        "TRANSPORT_TO_GOAL": 0
+      },
+      "seed": 600030,
+      "simulator_error": false,
+      "success": false,
+      "workspace_violation_count": 0
+    },
+    {
+      "action_count": 47,
+      "action_out_of_bounds_count": 0,
+      "failure_category": null,
+      "nonfinite_action_count": 0,
+      "phase_action_counts": {
+        "CLOSE_GRIPPER": 6,
+        "DESCEND_TO_GRASP": 8,
+        "REACH_PREGRASP": 13,
+        "TRANSPORT_TO_GOAL": 20
+      },
+      "seed": 600031,
+      "simulator_error": false,
+      "success": true,
+      "workspace_violation_count": 0
+    },
+    {
+      "action_count": 40,
+      "action_out_of_bounds_count": 0,
+      "failure_category": null,
+      "nonfinite_action_count": 0,
+      "phase_action_counts": {
+        "CLOSE_GRIPPER": 6,
+        "DESCEND_TO_GRASP": 8,
+        "REACH_PREGRASP": 13,
+        "TRANSPORT_TO_GOAL": 13
+      },
+      "seed": 600032,
+      "simulator_error": false,
+      "success": true,
+      "workspace_violation_count": 0
+    },
+    {
+      "action_count": 48,
+      "action_out_of_bounds_count": 0,
+      "failure_category": null,
+      "nonfinite_action_count": 0,
+      "phase_action_counts": {
+        "CLOSE_GRIPPER": 6,
+        "DESCEND_TO_GRASP": 7,
+        "REACH_PREGRASP": 16,
+        "TRANSPORT_TO_GOAL": 19
+      },
+      "seed": 600033,
+      "simulator_error": false,
+      "success": true,
+      "workspace_violation_count": 0
+    },
+    {
+      "action_count": 40,
+      "action_out_of_bounds_count": 0,
+      "failure_category": null,
+      "nonfinite_action_count": 0,
+      "phase_action_counts": {
+        "CLOSE_GRIPPER": 6,
+        "DESCEND_TO_GRASP": 8,
+        "REACH_PREGRASP": 10,
+        "TRANSPORT_TO_GOAL": 16
+      },
+      "seed": 600034,
+      "simulator_error": false,
+      "success": true,
+      "workspace_violation_count": 0
+    },
+    {
+      "action_count": 40,
+      "action_out_of_bounds_count": 0,
+      "failure_category": null,
+      "nonfinite_action_count": 0,
+      "phase_action_counts": {
+        "CLOSE_GRIPPER": 6,
+        "DESCEND_TO_GRASP": 8,
+        "REACH_PREGRASP": 13,
+        "TRANSPORT_TO_GOAL": 13
+      },
+      "seed": 600035,
+      "simulator_error": false,
+      "success": true,
+      "workspace_violation_count": 0
+    },
+    {
+      "action_count": 40,
+      "action_out_of_bounds_count": 0,
+      "failure_category": null,
+      "nonfinite_action_count": 0,
+      "phase_action_counts": {
+        "CLOSE_GRIPPER": 6,
+        "DESCEND_TO_GRASP": 8,
+        "REACH_PREGRASP": 13,
+        "TRANSPORT_TO_GOAL": 13
+      },
+      "seed": 600036,
+      "simulator_error": false,
+      "success": true,
+      "workspace_violation_count": 0
+    },
+    {
+      "action_count": 43,
+      "action_out_of_bounds_count": 0,
+      "failure_category": null,
+      "nonfinite_action_count": 0,
+      "phase_action_counts": {
+        "CLOSE_GRIPPER": 6,
+        "DESCEND_TO_GRASP": 8,
+        "REACH_PREGRASP": 13,
+        "TRANSPORT_TO_GOAL": 16
+      },
+      "seed": 600037,
+      "simulator_error": false,
+      "success": true,
+      "workspace_violation_count": 0
+    },
+    {
+      "action_count": 42,
+      "action_out_of_bounds_count": 0,
+      "failure_category": null,
+      "nonfinite_action_count": 0,
+      "phase_action_counts": {
+        "CLOSE_GRIPPER": 6,
+        "DESCEND_TO_GRASP": 7,
+        "REACH_PREGRASP": 14,
+        "TRANSPORT_TO_GOAL": 15
+      },
+      "seed": 600038,
+      "simulator_error": false,
+      "success": true,
+      "workspace_violation_count": 0
+    },
+    {
+      "action_count": 47,
+      "action_out_of_bounds_count": 0,
+      "failure_category": null,
+      "nonfinite_action_count": 0,
+      "phase_action_counts": {
+        "CLOSE_GRIPPER": 6,
+        "DESCEND_TO_GRASP": 8,
+        "REACH_PREGRASP": 13,
+        "TRANSPORT_TO_GOAL": 20
+      },
+      "seed": 600039,
+      "simulator_error": false,
+      "success": true,
+      "workspace_violation_count": 0
+    },
+    {
+      "action_count": 40,
+      "action_out_of_bounds_count": 0,
+      "failure_category": null,
+      "nonfinite_action_count": 0,
+      "phase_action_counts": {
+        "CLOSE_GRIPPER": 6,
+        "DESCEND_TO_GRASP": 8,
+        "REACH_PREGRASP": 12,
+        "TRANSPORT_TO_GOAL": 14
+      },
+      "seed": 600040,
+      "simulator_error": false,
+      "success": true,
+      "workspace_violation_count": 0
+    },
+    {
+      "action_count": 42,
+      "action_out_of_bounds_count": 0,
+      "failure_category": null,
+      "nonfinite_action_count": 0,
+      "phase_action_counts": {
+        "CLOSE_GRIPPER": 6,
+        "DESCEND_TO_GRASP": 8,
+        "REACH_PREGRASP": 13,
+        "TRANSPORT_TO_GOAL": 15
+      },
+      "seed": 600041,
+      "simulator_error": false,
+      "success": true,
+      "workspace_violation_count": 0
+    },
+    {
+      "action_count": 49,
+      "action_out_of_bounds_count": 0,
+      "failure_category": null,
+      "nonfinite_action_count": 0,
+      "phase_action_counts": {
+        "CLOSE_GRIPPER": 6,
+        "DESCEND_TO_GRASP": 8,
+        "REACH_PREGRASP": 13,
+        "TRANSPORT_TO_GOAL": 22
+      },
+      "seed": 600042,
+      "simulator_error": false,
+      "success": true,
+      "workspace_violation_count": 0
+    },
+    {
+      "action_count": 40,
+      "action_out_of_bounds_count": 0,
+      "failure_category": null,
+      "nonfinite_action_count": 0,
+      "phase_action_counts": {
+        "CLOSE_GRIPPER": 6,
+        "DESCEND_TO_GRASP": 7,
+        "REACH_PREGRASP": 15,
+        "TRANSPORT_TO_GOAL": 12
+      },
+      "seed": 600043,
+      "simulator_error": false,
+      "success": true,
+      "workspace_violation_count": 0
+    },
+    {
+      "action_count": 35,
+      "action_out_of_bounds_count": 0,
+      "failure_category": null,
+      "nonfinite_action_count": 0,
+      "phase_action_counts": {
+        "CLOSE_GRIPPER": 6,
+        "DESCEND_TO_GRASP": 8,
+        "REACH_PREGRASP": 10,
+        "TRANSPORT_TO_GOAL": 11
+      },
+      "seed": 600044,
+      "simulator_error": false,
+      "success": true,
+      "workspace_violation_count": 0
+    },
+    {
+      "action_count": 34,
+      "action_out_of_bounds_count": 0,
+      "failure_category": null,
+      "nonfinite_action_count": 0,
+      "phase_action_counts": {
+        "CLOSE_GRIPPER": 6,
+        "DESCEND_TO_GRASP": 8,
+        "REACH_PREGRASP": 11,
+        "TRANSPORT_TO_GOAL": 9
+      },
+      "seed": 600045,
+      "simulator_error": false,
+      "success": true,
+      "workspace_violation_count": 0
+    },
+    {
+      "action_count": 40,
+      "action_out_of_bounds_count": 0,
+      "failure_category": null,
+      "nonfinite_action_count": 0,
+      "phase_action_counts": {
+        "CLOSE_GRIPPER": 6,
+        "DESCEND_TO_GRASP": 8,
+        "REACH_PREGRASP": 13,
+        "TRANSPORT_TO_GOAL": 13
+      },
+      "seed": 600046,
+      "simulator_error": false,
+      "success": true,
+      "workspace_violation_count": 0
+    },
+    {
+      "action_count": 50,
+      "action_out_of_bounds_count": 0,
+      "failure_category": "timeout",
+      "nonfinite_action_count": 0,
+      "phase_action_counts": {
+        "CLOSE_GRIPPER": 6,
+        "DESCEND_TO_GRASP": 7,
+        "REACH_PREGRASP": 17,
+        "TRANSPORT_TO_GOAL": 20
+      },
+      "seed": 600047,
+      "simulator_error": false,
+      "success": false,
+      "workspace_violation_count": 0
+    },
+    {
+      "action_count": 37,
+      "action_out_of_bounds_count": 0,
+      "failure_category": null,
+      "nonfinite_action_count": 0,
+      "phase_action_counts": {
+        "CLOSE_GRIPPER": 6,
+        "DESCEND_TO_GRASP": 8,
+        "REACH_PREGRASP": 11,
+        "TRANSPORT_TO_GOAL": 12
+      },
+      "seed": 600048,
+      "simulator_error": false,
+      "success": true,
+      "workspace_violation_count": 0
+    },
+    {
+      "action_count": 45,
+      "action_out_of_bounds_count": 0,
+      "failure_category": null,
+      "nonfinite_action_count": 0,
+      "phase_action_counts": {
+        "CLOSE_GRIPPER": 6,
+        "DESCEND_TO_GRASP": 8,
+        "REACH_PREGRASP": 14,
+        "TRANSPORT_TO_GOAL": 17
+      },
+      "seed": 600049,
+      "simulator_error": false,
+      "success": true,
+      "workspace_violation_count": 0
+    },
+    {
+      "action_count": 46,
+      "action_out_of_bounds_count": 0,
+      "failure_category": null,
+      "nonfinite_action_count": 0,
+      "phase_action_counts": {
+        "CLOSE_GRIPPER": 6,
+        "DESCEND_TO_GRASP": 8,
+        "REACH_PREGRASP": 13,
+        "TRANSPORT_TO_GOAL": 19
+      },
+      "seed": 600050,
+      "simulator_error": false,
+      "success": true,
+      "workspace_violation_count": 0
+    },
+    {
+      "action_count": 41,
+      "action_out_of_bounds_count": 0,
+      "failure_category": null,
+      "nonfinite_action_count": 0,
+      "phase_action_counts": {
+        "CLOSE_GRIPPER": 6,
+        "DESCEND_TO_GRASP": 8,
+        "REACH_PREGRASP": 11,
+        "TRANSPORT_TO_GOAL": 16
+      },
+      "seed": 600051,
+      "simulator_error": false,
+      "success": true,
+      "workspace_violation_count": 0
+    },
+    {
+      "action_count": 48,
+      "action_out_of_bounds_count": 0,
+      "failure_category": null,
+      "nonfinite_action_count": 0,
+      "phase_action_counts": {
+        "CLOSE_GRIPPER": 6,
+        "DESCEND_TO_GRASP": 8,
+        "REACH_PREGRASP": 12,
+        "TRANSPORT_TO_GOAL": 22
+      },
+      "seed": 600052,
+      "simulator_error": false,
+      "success": true,
+      "workspace_violation_count": 0
+    },
+    {
+      "action_count": 44,
+      "action_out_of_bounds_count": 0,
+      "failure_category": null,
+      "nonfinite_action_count": 0,
+      "phase_action_counts": {
+        "CLOSE_GRIPPER": 6,
+        "DESCEND_TO_GRASP": 8,
+        "REACH_PREGRASP": 11,
+        "TRANSPORT_TO_GOAL": 19
+      },
+      "seed": 600053,
+      "simulator_error": false,
+      "success": true,
+      "workspace_violation_count": 0
+    },
+    {
+      "action_count": 35,
+      "action_out_of_bounds_count": 0,
+      "failure_category": null,
+      "nonfinite_action_count": 0,
+      "phase_action_counts": {
+        "CLOSE_GRIPPER": 6,
+        "DESCEND_TO_GRASP": 8,
+        "REACH_PREGRASP": 12,
+        "TRANSPORT_TO_GOAL": 9
+      },
+      "seed": 600054,
+      "simulator_error": false,
+      "success": true,
+      "workspace_violation_count": 0
+    },
+    {
+      "action_count": 40,
+      "action_out_of_bounds_count": 0,
+      "failure_category": null,
+      "nonfinite_action_count": 0,
+      "phase_action_counts": {
+        "CLOSE_GRIPPER": 6,
+        "DESCEND_TO_GRASP": 8,
+        "REACH_PREGRASP": 12,
+        "TRANSPORT_TO_GOAL": 14
+      },
+      "seed": 600055,
+      "simulator_error": false,
+      "success": true,
+      "workspace_violation_count": 0
+    },
+    {
+      "action_count": 42,
+      "action_out_of_bounds_count": 0,
+      "failure_category": null,
+      "nonfinite_action_count": 0,
+      "phase_action_counts": {
+        "CLOSE_GRIPPER": 6,
+        "DESCEND_TO_GRASP": 8,
+        "REACH_PREGRASP": 14,
+        "TRANSPORT_TO_GOAL": 14
+      },
+      "seed": 600056,
+      "simulator_error": false,
+      "success": true,
+      "workspace_violation_count": 0
+    },
+    {
+      "action_count": 44,
+      "action_out_of_bounds_count": 0,
+      "failure_category": null,
+      "nonfinite_action_count": 0,
+      "phase_action_counts": {
+        "CLOSE_GRIPPER": 6,
+        "DESCEND_TO_GRASP": 8,
+        "REACH_PREGRASP": 12,
+        "TRANSPORT_TO_GOAL": 18
+      },
+      "seed": 600057,
+      "simulator_error": false,
+      "success": true,
+      "workspace_violation_count": 0
+    },
+    {
+      "action_count": 39,
+      "action_out_of_bounds_count": 0,
+      "failure_category": null,
+      "nonfinite_action_count": 0,
+      "phase_action_counts": {
+        "CLOSE_GRIPPER": 6,
+        "DESCEND_TO_GRASP": 7,
+        "REACH_PREGRASP": 14,
+        "TRANSPORT_TO_GOAL": 12
+      },
+      "seed": 600058,
+      "simulator_error": false,
+      "success": true,
+      "workspace_violation_count": 0
+    },
+    {
+      "action_count": 45,
+      "action_out_of_bounds_count": 0,
+      "failure_category": null,
+      "nonfinite_action_count": 0,
+      "phase_action_counts": {
+        "CLOSE_GRIPPER": 6,
+        "DESCEND_TO_GRASP": 8,
+        "REACH_PREGRASP": 13,
+        "TRANSPORT_TO_GOAL": 18
+      },
+      "seed": 600059,
+      "simulator_error": false,
+      "success": true,
+      "workspace_violation_count": 0
+    },
+    {
+      "action_count": 44,
+      "action_out_of_bounds_count": 0,
+      "failure_category": null,
+      "nonfinite_action_count": 0,
+      "phase_action_counts": {
+        "CLOSE_GRIPPER": 6,
+        "DESCEND_TO_GRASP": 8,
+        "REACH_PREGRASP": 11,
+        "TRANSPORT_TO_GOAL": 19
+      },
+      "seed": 600060,
+      "simulator_error": false,
+      "success": true,
+      "workspace_violation_count": 0
+    },
+    {
+      "action_count": 48,
+      "action_out_of_bounds_count": 0,
+      "failure_category": null,
+      "nonfinite_action_count": 0,
+      "phase_action_counts": {
+        "CLOSE_GRIPPER": 6,
+        "DESCEND_TO_GRASP": 8,
+        "REACH_PREGRASP": 14,
+        "TRANSPORT_TO_GOAL": 20
+      },
+      "seed": 600061,
+      "simulator_error": false,
+      "success": true,
+      "workspace_violation_count": 0
+    },
+    {
+      "action_count": 39,
+      "action_out_of_bounds_count": 0,
+      "failure_category": null,
+      "nonfinite_action_count": 0,
+      "phase_action_counts": {
+        "CLOSE_GRIPPER": 6,
+        "DESCEND_TO_GRASP": 8,
+        "REACH_PREGRASP": 14,
+        "TRANSPORT_TO_GOAL": 11
+      },
+      "seed": 600062,
+      "simulator_error": false,
+      "success": true,
+      "workspace_violation_count": 0
+    },
+    {
+      "action_count": 50,
+      "action_out_of_bounds_count": 0,
+      "failure_category": null,
+      "nonfinite_action_count": 0,
+      "phase_action_counts": {
+        "CLOSE_GRIPPER": 6,
+        "DESCEND_TO_GRASP": 8,
+        "REACH_PREGRASP": 16,
+        "TRANSPORT_TO_GOAL": 20
+      },
+      "seed": 600063,
+      "simulator_error": false,
+      "success": true,
+      "workspace_violation_count": 0
+    },
+    {
+      "action_count": 44,
+      "action_out_of_bounds_count": 0,
+      "failure_category": null,
+      "nonfinite_action_count": 0,
+      "phase_action_counts": {
+        "CLOSE_GRIPPER": 6,
+        "DESCEND_TO_GRASP": 8,
+        "REACH_PREGRASP": 13,
+        "TRANSPORT_TO_GOAL": 17
+      },
+      "seed": 600064,
+      "simulator_error": false,
+      "success": true,
+      "workspace_violation_count": 0
+    },
+    {
+      "action_count": 41,
+      "action_out_of_bounds_count": 0,
+      "failure_category": null,
+      "nonfinite_action_count": 0,
+      "phase_action_counts": {
+        "CLOSE_GRIPPER": 6,
+        "DESCEND_TO_GRASP": 8,
+        "REACH_PREGRASP": 12,
+        "TRANSPORT_TO_GOAL": 15
+      },
+      "seed": 600065,
+      "simulator_error": false,
+      "success": true,
+      "workspace_violation_count": 0
+    },
+    {
+      "action_count": 42,
+      "action_out_of_bounds_count": 0,
+      "failure_category": null,
+      "nonfinite_action_count": 0,
+      "phase_action_counts": {
+        "CLOSE_GRIPPER": 6,
+        "DESCEND_TO_GRASP": 8,
+        "REACH_PREGRASP": 13,
+        "TRANSPORT_TO_GOAL": 15
+      },
+      "seed": 600066,
+      "simulator_error": false,
+      "success": true,
+      "workspace_violation_count": 0
+    },
+    {
+      "action_count": 46,
+      "action_out_of_bounds_count": 0,
+      "failure_category": null,
+      "nonfinite_action_count": 0,
+      "phase_action_counts": {
+        "CLOSE_GRIPPER": 6,
+        "DESCEND_TO_GRASP": 8,
+        "REACH_PREGRASP": 12,
+        "TRANSPORT_TO_GOAL": 20
+      },
+      "seed": 600067,
+      "simulator_error": false,
+      "success": true,
+      "workspace_violation_count": 0
+    },
+    {
+      "action_count": 43,
+      "action_out_of_bounds_count": 0,
+      "failure_category": null,
+      "nonfinite_action_count": 0,
+      "phase_action_counts": {
+        "CLOSE_GRIPPER": 6,
+        "DESCEND_TO_GRASP": 8,
+        "REACH_PREGRASP": 13,
+        "TRANSPORT_TO_GOAL": 16
+      },
+      "seed": 600068,
+      "simulator_error": false,
+      "success": true,
+      "workspace_violation_count": 0
+    },
+    {
+      "action_count": 38,
+      "action_out_of_bounds_count": 0,
+      "failure_category": null,
+      "nonfinite_action_count": 0,
+      "phase_action_counts": {
+        "CLOSE_GRIPPER": 6,
+        "DESCEND_TO_GRASP": 8,
+        "REACH_PREGRASP": 11,
+        "TRANSPORT_TO_GOAL": 13
+      },
+      "seed": 600069,
+      "simulator_error": false,
+      "success": true,
+      "workspace_violation_count": 0
+    },
+    {
+      "action_count": 48,
+      "action_out_of_bounds_count": 0,
+      "failure_category": null,
+      "nonfinite_action_count": 0,
+      "phase_action_counts": {
+        "CLOSE_GRIPPER": 6,
+        "DESCEND_TO_GRASP": 8,
+        "REACH_PREGRASP": 15,
+        "TRANSPORT_TO_GOAL": 19
+      },
+      "seed": 600070,
+      "simulator_error": false,
+      "success": true,
+      "workspace_violation_count": 0
+    },
+    {
+      "action_count": 41,
+      "action_out_of_bounds_count": 0,
+      "failure_category": null,
+      "nonfinite_action_count": 0,
+      "phase_action_counts": {
+        "CLOSE_GRIPPER": 6,
+        "DESCEND_TO_GRASP": 8,
+        "REACH_PREGRASP": 13,
+        "TRANSPORT_TO_GOAL": 14
+      },
+      "seed": 600071,
+      "simulator_error": false,
+      "success": true,
+      "workspace_violation_count": 0
+    },
+    {
+      "action_count": 41,
+      "action_out_of_bounds_count": 0,
+      "failure_category": null,
+      "nonfinite_action_count": 0,
+      "phase_action_counts": {
+        "CLOSE_GRIPPER": 6,
+        "DESCEND_TO_GRASP": 8,
+        "REACH_PREGRASP": 13,
+        "TRANSPORT_TO_GOAL": 14
+      },
+      "seed": 600072,
+      "simulator_error": false,
+      "success": true,
+      "workspace_violation_count": 0
+    },
+    {
+      "action_count": 42,
+      "action_out_of_bounds_count": 0,
+      "failure_category": null,
+      "nonfinite_action_count": 0,
+      "phase_action_counts": {
+        "CLOSE_GRIPPER": 6,
+        "DESCEND_TO_GRASP": 8,
+        "REACH_PREGRASP": 11,
+        "TRANSPORT_TO_GOAL": 17
+      },
+      "seed": 600073,
+      "simulator_error": false,
+      "success": true,
+      "workspace_violation_count": 0
+    },
+    {
+      "action_count": 46,
+      "action_out_of_bounds_count": 0,
+      "failure_category": null,
+      "nonfinite_action_count": 0,
+      "phase_action_counts": {
+        "CLOSE_GRIPPER": 6,
+        "DESCEND_TO_GRASP": 8,
+        "REACH_PREGRASP": 13,
+        "TRANSPORT_TO_GOAL": 19
+      },
+      "seed": 600074,
+      "simulator_error": false,
+      "success": true,
+      "workspace_violation_count": 0
+    },
+    {
+      "action_count": 41,
+      "action_out_of_bounds_count": 0,
+      "failure_category": null,
+      "nonfinite_action_count": 0,
+      "phase_action_counts": {
+        "CLOSE_GRIPPER": 6,
+        "DESCEND_TO_GRASP": 8,
+        "REACH_PREGRASP": 12,
+        "TRANSPORT_TO_GOAL": 15
+      },
+      "seed": 600075,
+      "simulator_error": false,
+      "success": true,
+      "workspace_violation_count": 0
+    },
+    {
+      "action_count": 50,
+      "action_out_of_bounds_count": 0,
+      "failure_category": "timeout",
+      "nonfinite_action_count": 0,
+      "phase_action_counts": {
+        "CLOSE_GRIPPER": 6,
+        "DESCEND_TO_GRASP": 7,
+        "REACH_PREGRASP": 18,
+        "TRANSPORT_TO_GOAL": 19
+      },
+      "seed": 600076,
+      "simulator_error": false,
+      "success": false,
+      "workspace_violation_count": 0
+    },
+    {
+      "action_count": 44,
+      "action_out_of_bounds_count": 0,
+      "failure_category": null,
+      "nonfinite_action_count": 0,
+      "phase_action_counts": {
+        "CLOSE_GRIPPER": 6,
+        "DESCEND_TO_GRASP": 8,
+        "REACH_PREGRASP": 15,
+        "TRANSPORT_TO_GOAL": 15
+      },
+      "seed": 600077,
+      "simulator_error": false,
+      "success": true,
+      "workspace_violation_count": 0
+    },
+    {
+      "action_count": 40,
+      "action_out_of_bounds_count": 0,
+      "failure_category": null,
+      "nonfinite_action_count": 0,
+      "phase_action_counts": {
+        "CLOSE_GRIPPER": 6,
+        "DESCEND_TO_GRASP": 7,
+        "REACH_PREGRASP": 14,
+        "TRANSPORT_TO_GOAL": 13
+      },
+      "seed": 600078,
+      "simulator_error": false,
+      "success": true,
+      "workspace_violation_count": 0
+    },
+    {
+      "action_count": 41,
+      "action_out_of_bounds_count": 0,
+      "failure_category": null,
+      "nonfinite_action_count": 0,
+      "phase_action_counts": {
+        "CLOSE_GRIPPER": 6,
+        "DESCEND_TO_GRASP": 8,
+        "REACH_PREGRASP": 10,
+        "TRANSPORT_TO_GOAL": 17
+      },
+      "seed": 600079,
+      "simulator_error": false,
+      "success": true,
+      "workspace_violation_count": 0
+    },
+    {
+      "action_count": 50,
+      "action_out_of_bounds_count": 0,
+      "failure_category": "timeout",
+      "nonfinite_action_count": 0,
+      "phase_action_counts": {
+        "CLOSE_GRIPPER": 6,
+        "DESCEND_TO_GRASP": 8,
+        "REACH_PREGRASP": 15,
+        "TRANSPORT_TO_GOAL": 21
+      },
+      "seed": 600080,
+      "simulator_error": false,
+      "success": false,
+      "workspace_violation_count": 0
+    },
+    {
+      "action_count": 40,
+      "action_out_of_bounds_count": 0,
+      "failure_category": null,
+      "nonfinite_action_count": 0,
+      "phase_action_counts": {
+        "CLOSE_GRIPPER": 6,
+        "DESCEND_TO_GRASP": 8,
+        "REACH_PREGRASP": 11,
+        "TRANSPORT_TO_GOAL": 15
+      },
+      "seed": 600081,
+      "simulator_error": false,
+      "success": true,
+      "workspace_violation_count": 0
+    },
+    {
+      "action_count": 46,
+      "action_out_of_bounds_count": 0,
+      "failure_category": null,
+      "nonfinite_action_count": 0,
+      "phase_action_counts": {
+        "CLOSE_GRIPPER": 6,
+        "DESCEND_TO_GRASP": 8,
+        "REACH_PREGRASP": 13,
+        "TRANSPORT_TO_GOAL": 19
+      },
+      "seed": 600082,
+      "simulator_error": false,
+      "success": true,
+      "workspace_violation_count": 0
+    },
+    {
+      "action_count": 44,
+      "action_out_of_bounds_count": 0,
+      "failure_category": null,
+      "nonfinite_action_count": 0,
+      "phase_action_counts": {
+        "CLOSE_GRIPPER": 6,
+        "DESCEND_TO_GRASP": 8,
+        "REACH_PREGRASP": 14,
+        "TRANSPORT_TO_GOAL": 16
+      },
+      "seed": 600083,
+      "simulator_error": false,
+      "success": true,
+      "workspace_violation_count": 0
+    },
+    {
+      "action_count": 43,
+      "action_out_of_bounds_count": 0,
+      "failure_category": null,
+      "nonfinite_action_count": 0,
+      "phase_action_counts": {
+        "CLOSE_GRIPPER": 6,
+        "DESCEND_TO_GRASP": 8,
+        "REACH_PREGRASP": 10,
+        "TRANSPORT_TO_GOAL": 19
+      },
+      "seed": 600084,
+      "simulator_error": false,
+      "success": true,
+      "workspace_violation_count": 0
+    },
+    {
+      "action_count": 44,
+      "action_out_of_bounds_count": 0,
+      "failure_category": null,
+      "nonfinite_action_count": 0,
+      "phase_action_counts": {
+        "CLOSE_GRIPPER": 6,
+        "DESCEND_TO_GRASP": 7,
+        "REACH_PREGRASP": 18,
+        "TRANSPORT_TO_GOAL": 13
+      },
+      "seed": 600085,
+      "simulator_error": false,
+      "success": true,
+      "workspace_violation_count": 0
+    },
+    {
+      "action_count": 35,
+      "action_out_of_bounds_count": 0,
+      "failure_category": null,
+      "nonfinite_action_count": 0,
+      "phase_action_counts": {
+        "CLOSE_GRIPPER": 6,
+        "DESCEND_TO_GRASP": 8,
+        "REACH_PREGRASP": 12,
+        "TRANSPORT_TO_GOAL": 9
+      },
+      "seed": 600086,
+      "simulator_error": false,
+      "success": true,
+      "workspace_violation_count": 0
+    },
+    {
+      "action_count": 39,
+      "action_out_of_bounds_count": 0,
+      "failure_category": null,
+      "nonfinite_action_count": 0,
+      "phase_action_counts": {
+        "CLOSE_GRIPPER": 6,
+        "DESCEND_TO_GRASP": 8,
+        "REACH_PREGRASP": 12,
+        "TRANSPORT_TO_GOAL": 13
+      },
+      "seed": 600087,
+      "simulator_error": false,
+      "success": true,
+      "workspace_violation_count": 0
+    },
+    {
+      "action_count": 40,
+      "action_out_of_bounds_count": 0,
+      "failure_category": null,
+      "nonfinite_action_count": 0,
+      "phase_action_counts": {
+        "CLOSE_GRIPPER": 6,
+        "DESCEND_TO_GRASP": 8,
+        "REACH_PREGRASP": 12,
+        "TRANSPORT_TO_GOAL": 14
+      },
+      "seed": 600088,
+      "simulator_error": false,
+      "success": true,
+      "workspace_violation_count": 0
+    },
+    {
+      "action_count": 41,
+      "action_out_of_bounds_count": 0,
+      "failure_category": null,
+      "nonfinite_action_count": 0,
+      "phase_action_counts": {
+        "CLOSE_GRIPPER": 6,
+        "DESCEND_TO_GRASP": 8,
+        "REACH_PREGRASP": 15,
+        "TRANSPORT_TO_GOAL": 12
+      },
+      "seed": 600089,
+      "simulator_error": false,
+      "success": true,
+      "workspace_violation_count": 0
+    },
+    {
+      "action_count": 42,
+      "action_out_of_bounds_count": 0,
+      "failure_category": null,
+      "nonfinite_action_count": 0,
+      "phase_action_counts": {
+        "CLOSE_GRIPPER": 6,
+        "DESCEND_TO_GRASP": 8,
+        "REACH_PREGRASP": 13,
+        "TRANSPORT_TO_GOAL": 15
+      },
+      "seed": 600090,
+      "simulator_error": false,
+      "success": true,
+      "workspace_violation_count": 0
+    },
+    {
+      "action_count": 40,
+      "action_out_of_bounds_count": 0,
+      "failure_category": null,
+      "nonfinite_action_count": 0,
+      "phase_action_counts": {
+        "CLOSE_GRIPPER": 6,
+        "DESCEND_TO_GRASP": 8,
+        "REACH_PREGRASP": 11,
+        "TRANSPORT_TO_GOAL": 15
+      },
+      "seed": 600091,
+      "simulator_error": false,
+      "success": true,
+      "workspace_violation_count": 0
+    },
+    {
+      "action_count": 36,
+      "action_out_of_bounds_count": 0,
+      "failure_category": null,
+      "nonfinite_action_count": 0,
+      "phase_action_counts": {
+        "CLOSE_GRIPPER": 6,
+        "DESCEND_TO_GRASP": 8,
+        "REACH_PREGRASP": 14,
+        "TRANSPORT_TO_GOAL": 8
+      },
+      "seed": 600092,
+      "simulator_error": false,
+      "success": true,
+      "workspace_violation_count": 0
+    },
+    {
+      "action_count": 44,
+      "action_out_of_bounds_count": 0,
+      "failure_category": null,
+      "nonfinite_action_count": 0,
+      "phase_action_counts": {
+        "CLOSE_GRIPPER": 6,
+        "DESCEND_TO_GRASP": 8,
+        "REACH_PREGRASP": 12,
+        "TRANSPORT_TO_GOAL": 18
+      },
+      "seed": 600093,
+      "simulator_error": false,
+      "success": true,
+      "workspace_violation_count": 0
+    },
+    {
+      "action_count": 44,
+      "action_out_of_bounds_count": 0,
+      "failure_category": null,
+      "nonfinite_action_count": 0,
+      "phase_action_counts": {
+        "CLOSE_GRIPPER": 6,
+        "DESCEND_TO_GRASP": 8,
+        "REACH_PREGRASP": 13,
+        "TRANSPORT_TO_GOAL": 17
+      },
+      "seed": 600094,
+      "simulator_error": false,
+      "success": true,
+      "workspace_violation_count": 0
+    },
+    {
+      "action_count": 46,
+      "action_out_of_bounds_count": 0,
+      "failure_category": null,
+      "nonfinite_action_count": 0,
+      "phase_action_counts": {
+        "CLOSE_GRIPPER": 6,
+        "DESCEND_TO_GRASP": 8,
+        "REACH_PREGRASP": 15,
+        "TRANSPORT_TO_GOAL": 17
+      },
+      "seed": 600095,
+      "simulator_error": false,
+      "success": true,
+      "workspace_violation_count": 0
+    },
+    {
+      "action_count": 50,
+      "action_out_of_bounds_count": 0,
+      "failure_category": "timeout",
+      "nonfinite_action_count": 0,
+      "phase_action_counts": {
+        "CLOSE_GRIPPER": 6,
+        "DESCEND_TO_GRASP": 8,
+        "REACH_PREGRASP": 14,
+        "TRANSPORT_TO_GOAL": 22
+      },
+      "seed": 600096,
+      "simulator_error": false,
+      "success": false,
+      "workspace_violation_count": 0
+    },
+    {
+      "action_count": 38,
+      "action_out_of_bounds_count": 0,
+      "failure_category": null,
+      "nonfinite_action_count": 0,
+      "phase_action_counts": {
+        "CLOSE_GRIPPER": 6,
+        "DESCEND_TO_GRASP": 8,
+        "REACH_PREGRASP": 13,
+        "TRANSPORT_TO_GOAL": 11
+      },
+      "seed": 600097,
+      "simulator_error": false,
+      "success": true,
+      "workspace_violation_count": 0
+    },
+    {
+      "action_count": 40,
+      "action_out_of_bounds_count": 0,
+      "failure_category": null,
+      "nonfinite_action_count": 0,
+      "phase_action_counts": {
+        "CLOSE_GRIPPER": 6,
+        "DESCEND_TO_GRASP": 8,
+        "REACH_PREGRASP": 13,
+        "TRANSPORT_TO_GOAL": 13
+      },
+      "seed": 600098,
+      "simulator_error": false,
+      "success": true,
+      "workspace_violation_count": 0
+    },
+    {
+      "action_count": 45,
+      "action_out_of_bounds_count": 0,
+      "failure_category": null,
+      "nonfinite_action_count": 0,
+      "phase_action_counts": {
+        "CLOSE_GRIPPER": 6,
+        "DESCEND_TO_GRASP": 8,
+        "REACH_PREGRASP": 12,
+        "TRANSPORT_TO_GOAL": 19
+      },
+      "seed": 600099,
+      "simulator_error": false,
+      "success": true,
+      "workspace_violation_count": 0
+    }
+  ],
+  "failed_checks": [],
+  "failure_count": 5,
+  "failure_taxonomy": {
+    "expert_phase_incomplete": 1,
+    "timeout": 4
+  },
+  "gate_checks": {
+    "episode_count_at_least_100": true,
+    "every_declared_phase_executed": true,
+    "nonfinite_action_zero": true,
+    "simulator_error_zero": true,
+    "success_rate_at_least_95_percent": true,
+    "workspace_violation_zero": true
+  },
+  "joint_acceleration_scale": 3.0,
+  "joint_velocity_scale": 3.0,
+  "minimum_episode_count": 100,
+  "minimum_success_rate": 0.95,
+  "phase_action_counts": {
+    "CLOSE_GRIPPER": 594,
+    "DESCEND_TO_GRASP": 781,
+    "REACH_PREGRASP": 1280,
+    "TRANSPORT_TO_GOAL": 1543
+  },
+  "schema_version": "pickcube-act-expert-evaluation-v1",
+  "seed_end_exclusive": 600100,
+  "seed_start": 600000,
+  "source_audit_digest": "sha256:0d3cebe095a5b3dc26ce80f065c08ed2d8dea70182a40f676f211f79d6babf7d",
+  "success_count": 95,
+  "success_rate": 0.95,
+  "transport_refine_steps": 50
+}

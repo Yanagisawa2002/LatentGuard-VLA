@@ -1,0 +1,97 @@
+{
+  "best_validation_loss": 0.10424631055105817,
+  "best_validation_step": 20000,
+  "checkpoint_count": 16,
+  "checkpoint_roles": {
+    "best_validation": "checkpoints/step-00020000",
+    "early": "checkpoints/step-00001000",
+    "final": "checkpoints/step-00020000",
+    "mid": "checkpoints/step-00010000"
+  },
+  "early_stopped": false,
+  "examples_processed": 638853,
+  "final_step": 20000,
+  "interrupted": false,
+  "peak_gpu_memory_allocated_bytes": 1813110272,
+  "peak_gpu_memory_reserved_bytes": 2113929216,
+  "resume_zero_work": false,
+  "runtime_versions": {
+    "cuda": "13.0",
+    "lerobot": "0.6.0",
+    "torch": "2.11.0+cu130"
+  },
+  "schema_version": "pickcube-native-act-training-summary-v1",
+  "seed_settings": {
+    "cuda_matmul_allow_tf32": false,
+    "cudnn_benchmark": false,
+    "cudnn_deterministic": true,
+    "python_hash_seed": "0",
+    "seed": 0,
+    "torch_deterministic_algorithms": true
+  },
+  "training_identity": {
+    "contract_digest": "sha256:dd29f16cf295de24c9da990399dea1d036f6f2bee47a08f80a46f7d4c9ecd83f",
+    "dataset_digest": "sha256:234b82709359f1f2fde513ab26c015f4ebfb262a16b1f16206c54eddbde44800",
+    "experiment": {
+      "deterministic": true,
+      "device": "cuda",
+      "expected_episode_count": 500,
+      "expected_split_counts": [
+        400,
+        50,
+        50
+      ],
+      "lerobot_version": "0.6.0",
+      "model": {
+        "action_dimension": 8,
+        "action_feature_key": "action",
+        "chunk_size": 16,
+        "dim_feedforward": 3200,
+        "dim_model": 512,
+        "dropout": 0.1,
+        "image_feature_key": "observation.images.front_oblique",
+        "image_shape_chw": [
+          3,
+          224,
+          224
+        ],
+        "kl_weight": 10.0,
+        "latent_dim": 32,
+        "n_action_steps": 4,
+        "n_decoder_layers": 1,
+        "n_encoder_layers": 4,
+        "n_heads": 8,
+        "n_obs_steps": 1,
+        "n_vae_encoder_layers": 4,
+        "normalization_mode": "MEAN_STD",
+        "pretrained_backbone_weights": null,
+        "schema_version": "pickcube-native-act-model-v1",
+        "state_dimension": 18,
+        "state_feature_key": "observation.state",
+        "use_vae": true,
+        "vision_backbone": "resnet18"
+      },
+      "optimization": {
+        "backbone_learning_rate": 1e-05,
+        "batch_size": 32,
+        "checkpoint_interval": 2000,
+        "dataloader_workers": 4,
+        "early_stopping_min_delta": 0.0001,
+        "early_stopping_patience_evaluations": 5,
+        "gradient_clip_norm": 10.0,
+        "learning_rate": 1e-05,
+        "mixed_precision": "bfloat16",
+        "optimizer": "adamw",
+        "schema_version": "pickcube-native-act-optimization-v1",
+        "training_steps": 20000,
+        "validation_interval": 1000,
+        "weight_decay": 0.0001
+      },
+      "schema_version": "pickcube-native-act-experiment-v1",
+      "seed": 0
+    },
+    "normalization_digest": "sha256:8093f5bba3916dff218e73789739b18e05e9eb96cfc200fa18747f010959532a",
+    "source_commit": "ef24b14529317ee8fc240307be77fcbe94a0cf31",
+    "training_identity_digest": "sha256:5fd85125380706041c7476448e918aa3f2e5d003d7c7ae20084e2fa3c8b5c076"
+  }
+}

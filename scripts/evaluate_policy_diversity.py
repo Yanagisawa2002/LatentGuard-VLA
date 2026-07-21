@@ -8,6 +8,7 @@ from collections.abc import Mapping, Sequence
 from pathlib import Path, PurePosixPath
 from typing import NoReturn, cast
 
+import numpy as np
 import torch
 
 from latentguard.control.serialization import write_atomic_json
@@ -155,6 +156,10 @@ def evaluate_diversity(
 
     chunks_by_role = {}
     checkpoint_paths: dict[str, str] = {}
+    contract_violations: dict[str, int] = {}
+    maximum_bound_exceedance: dict[str, float] = {}
+    lower_array = np.asarray(lower, dtype=np.float64)
+    upper_array = np.asarray(upper, dtype=np.float64)
     for role in sorted(roles):
         relative = PurePosixPath(roles[role])
         checkpoint = run_root.joinpath(*relative.parts).absolute()
@@ -174,8 +179,21 @@ def evaluate_diversity(
         role_chunks = []
         for _, rgb, state in anchors:
             runtime.reset()
-            role_chunks.append(runtime.predict_action_chunk(rgb, state))
+            role_chunks.append(runtime.predict_action_chunk_for_audit(rgb, state))
         chunks_by_role[role] = role_chunks
+        contract_violations[role] = sum(
+            bool(np.any(chunk < lower_array) or np.any(chunk > upper_array))
+            for chunk in role_chunks
+        )
+        maximum_bound_exceedance[role] = max(
+            float(
+                max(
+                    np.max(np.maximum(lower_array - chunk, 0.0)),
+                    np.max(np.maximum(chunk - upper_array, 0.0)),
+                )
+            )
+            for chunk in role_chunks
+        )
         checkpoint_paths[role] = checkpoint.relative_to(run_root).as_posix()
         del runtime
         torch.cuda.empty_cache()
@@ -195,12 +213,25 @@ def evaluate_diversity(
     )
     summary.update(
         {
+            "action_contract_violation_anchor_count_by_role": contract_violations,
             "anchor_frame_semantic": config["anchor_frame_semantic"],
             "anchor_split": config["anchor_split"],
             "checkpoint_paths": checkpoint_paths,
+            "contract_valid_roles": sorted(
+                role for role, count in contract_violations.items() if count == 0
+            ),
             "contract_digest": contract.get("contract_digest"),
+            "maximum_action_bound_exceedance_by_role": maximum_bound_exceedance,
             "training_identity": dict(identity),
         }
+    )
+    valid_roles = set(cast(Sequence[str], summary["contract_valid_roles"]))
+    summary["at_least_two_contract_valid_roles"] = len(valid_roles) >= 2
+    summary["meaningfully_distinct_contract_valid_pair_exists"] = any(
+        pair["left_role"] in valid_roles
+        and pair["right_role"] in valid_roles
+        and pair["passes_minimum_distinct_ratio"] is True
+        for pair in cast(Sequence[Mapping[str, object]], summary["pair_comparisons"])
     )
     write_atomic_json(output, summary)
     return summary

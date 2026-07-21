@@ -75,13 +75,30 @@ class PickCubeActInferenceRuntime:
             _fail("ACT inference", "policy lacks reset")
         reset()
 
-    @torch.no_grad()
     def predict_action_chunk(
         self,
         rgb: NDArray[Any],
         state: NDArray[Any],
     ) -> NDArray[np.float64]:
         """Predict and validate one complete unmodified action chunk."""
+        return self._predict_action_chunk(rgb, state, require_bounds=True)
+
+    def predict_action_chunk_for_audit(
+        self,
+        rgb: NDArray[Any],
+        state: NDArray[Any],
+    ) -> NDArray[np.float64]:
+        """Return a finite raw chunk for audit without declaring it executable."""
+        return self._predict_action_chunk(rgb, state, require_bounds=False)
+
+    @torch.no_grad()
+    def _predict_action_chunk(
+        self,
+        rgb: NDArray[Any],
+        state: NDArray[Any],
+        *,
+        require_bounds: bool,
+    ) -> NDArray[np.float64]:
         image = np.asarray(rgb)
         proprioception = np.asarray(state)
         if image.dtype != np.dtype(np.uint8) or image.shape != (224, 224, 3):
@@ -134,7 +151,9 @@ class PickCubeActInferenceRuntime:
         ):
             _fail("ACT inference", "postprocessed action chunk is invalid")
         detached = np.array(chunk[0], dtype=np.float64, copy=True, order="C")
-        if np.any(detached < self.action_lower) or np.any(detached > self.action_upper):
+        if require_bounds and (
+            np.any(detached < self.action_lower) or np.any(detached > self.action_upper)
+        ):
             _fail("ACT inference", "action chunk exceeds bound; clipping is prohibited")
         return detached
 
