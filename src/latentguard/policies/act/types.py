@@ -1,0 +1,279 @@
+"""Dependency-free configuration and run identities for native PickCube ACT."""
+
+from __future__ import annotations
+
+import hashlib
+import math
+from collections.abc import Mapping
+from dataclasses import asdict, dataclass
+from typing import Any, Self, cast
+
+from latentguard.replay.identity import canonical_json_bytes
+
+PICKCUBE_ACT_IMAGE_FEATURE = "observation.images.front_oblique"
+PICKCUBE_ACT_STATE_FEATURE = "observation.state"
+PICKCUBE_ACT_ACTION_FEATURE = "action"
+PICKCUBE_ACT_LEROBOT_VERSION = "0.6.0"
+
+
+class PickCubeActConfigurationError(ValueError):
+    """Raised when a training or model setting differs from the P0 contract."""
+
+
+def _positive(value: int, name: str, *, allow_zero: bool = False) -> None:
+    if type(value) is not int or value < (0 if allow_zero else 1):
+        raise PickCubeActConfigurationError(f"{name} must be a valid integer")
+
+
+def _finite(value: float, name: str, *, positive: bool = False) -> None:
+    if type(value) not in (int, float) or not math.isfinite(float(value)):
+        raise PickCubeActConfigurationError(f"{name} must be finite")
+    if positive and float(value) <= 0.0:
+        raise PickCubeActConfigurationError(f"{name} must be positive")
+
+
+@dataclass(frozen=True, slots=True)
+class PickCubeActModelConfig:
+    """Standard single-view ACT architecture and action-chunk semantics."""
+
+    image_feature_key: str = PICKCUBE_ACT_IMAGE_FEATURE
+    state_feature_key: str = PICKCUBE_ACT_STATE_FEATURE
+    action_feature_key: str = PICKCUBE_ACT_ACTION_FEATURE
+    image_shape_chw: tuple[int, int, int] = (3, 224, 224)
+    state_dimension: int = 18
+    action_dimension: int = 8
+    chunk_size: int = 16
+    n_action_steps: int = 4
+    n_obs_steps: int = 1
+    vision_backbone: str = "resnet18"
+    pretrained_backbone_weights: str | None = None
+    dim_model: int = 512
+    n_heads: int = 8
+    dim_feedforward: int = 3200
+    n_encoder_layers: int = 4
+    n_decoder_layers: int = 1
+    use_vae: bool = True
+    latent_dim: int = 32
+    n_vae_encoder_layers: int = 4
+    dropout: float = 0.1
+    kl_weight: float = 10.0
+    normalization_mode: str = "MEAN_STD"
+    schema_version: str = "pickcube-native-act-model-v1"
+
+    def __post_init__(self) -> None:
+        expected_features = (
+            PICKCUBE_ACT_IMAGE_FEATURE,
+            PICKCUBE_ACT_STATE_FEATURE,
+            PICKCUBE_ACT_ACTION_FEATURE,
+        )
+        if (
+            self.image_feature_key,
+            self.state_feature_key,
+            self.action_feature_key,
+        ) != expected_features:
+            raise PickCubeActConfigurationError("ACT feature allowlist changed")
+        if self.image_shape_chw != (3, 224, 224):
+            raise PickCubeActConfigurationError("ACT image shape must be 3x224x224")
+        if self.state_dimension != 18 or self.action_dimension != 8:
+            raise PickCubeActConfigurationError("ACT state/action dimensions changed")
+        for name in (
+            "chunk_size",
+            "n_action_steps",
+            "n_obs_steps",
+            "dim_model",
+            "n_heads",
+            "dim_feedforward",
+            "n_encoder_layers",
+            "n_decoder_layers",
+            "latent_dim",
+            "n_vae_encoder_layers",
+        ):
+            _positive(cast(int, getattr(self, name)), name)
+        if self.n_action_steps > self.chunk_size or self.n_obs_steps != 1:
+            raise PickCubeActConfigurationError("ACT temporal contract is invalid")
+        if self.vision_backbone != "resnet18":
+            raise PickCubeActConfigurationError("ACT backbone must be resnet18")
+        if self.pretrained_backbone_weights is not None:
+            raise PickCubeActConfigurationError("network downloads are prohibited")
+        if self.normalization_mode != "MEAN_STD":
+            raise PickCubeActConfigurationError("ACT normalization must be MEAN_STD")
+        _finite(self.dropout, "dropout")
+        _finite(self.kl_weight, "kl_weight", positive=True)
+        if not 0.0 <= self.dropout < 1.0:
+            raise PickCubeActConfigurationError("dropout must lie in [0,1)")
+        if self.schema_version != "pickcube-native-act-model-v1":
+            raise PickCubeActConfigurationError("model schema changed")
+
+    def to_mapping(self) -> dict[str, object]:
+        """Return a JSON-native complete architecture description."""
+        value = asdict(self)
+        value["image_shape_chw"] = list(self.image_shape_chw)
+        return value
+
+    @classmethod
+    def from_mapping(cls, value: Mapping[str, object]) -> Self:
+        """Decode one strict model configuration."""
+        payload = dict(value)
+        shape = payload.get("image_shape_chw")
+        if isinstance(shape, list):
+            payload["image_shape_chw"] = tuple(shape)
+        return cls(**cast(Any, payload))
+
+
+@dataclass(frozen=True, slots=True)
+class PickCubeActOptimizationConfig:
+    """Fixed optimizer, validation, checkpoint, and early-stop settings."""
+
+    optimizer: str = "adamw"
+    learning_rate: float = 1e-5
+    backbone_learning_rate: float = 1e-5
+    weight_decay: float = 1e-4
+    gradient_clip_norm: float = 10.0
+    mixed_precision: str = "bfloat16"
+    batch_size: int = 32
+    dataloader_workers: int = 4
+    training_steps: int = 20000
+    checkpoint_interval: int = 2000
+    validation_interval: int = 1000
+    early_stopping_patience_evaluations: int = 5
+    early_stopping_min_delta: float = 1e-4
+    schema_version: str = "pickcube-native-act-optimization-v1"
+
+    def __post_init__(self) -> None:
+        if self.optimizer != "adamw" or self.mixed_precision != "bfloat16":
+            raise PickCubeActConfigurationError("optimizer/precision contract changed")
+        for name in (
+            "learning_rate",
+            "backbone_learning_rate",
+            "weight_decay",
+            "gradient_clip_norm",
+            "early_stopping_min_delta",
+        ):
+            _finite(cast(float, getattr(self, name)), name)
+        for name in (
+            "batch_size",
+            "dataloader_workers",
+            "training_steps",
+            "checkpoint_interval",
+            "validation_interval",
+            "early_stopping_patience_evaluations",
+        ):
+            _positive(
+                cast(int, getattr(self, name)),
+                name,
+                allow_zero=name == "dataloader_workers",
+            )
+        if self.checkpoint_interval % self.validation_interval != 0:
+            raise PickCubeActConfigurationError(
+                "every checkpoint must have validation evidence"
+            )
+        if self.schema_version != "pickcube-native-act-optimization-v1":
+            raise PickCubeActConfigurationError("optimization schema changed")
+
+    def to_mapping(self) -> dict[str, object]:
+        """Return all effective optimization settings."""
+        return asdict(self)
+
+    @classmethod
+    def from_mapping(cls, value: Mapping[str, object]) -> Self:
+        """Decode one strict optimization configuration."""
+        return cls(**cast(Any, dict(value)))
+
+
+@dataclass(frozen=True, slots=True)
+class PickCubeActExperimentConfig:
+    """Complete native ACT experiment declaration without runtime paths."""
+
+    model: PickCubeActModelConfig
+    optimization: PickCubeActOptimizationConfig
+    seed: int = 0
+    device: str = "cuda"
+    deterministic: bool = True
+    expected_episode_count: int = 500
+    expected_split_counts: tuple[int, int, int] = (400, 50, 50)
+    lerobot_version: str = PICKCUBE_ACT_LEROBOT_VERSION
+    schema_version: str = "pickcube-native-act-experiment-v1"
+
+    def __post_init__(self) -> None:
+        _positive(self.seed, "seed", allow_zero=True)
+        if self.device != "cuda" or self.deterministic is not True:
+            raise PickCubeActConfigurationError("P0 requires deterministic CUDA")
+        if self.expected_episode_count != 500 or self.expected_split_counts != (
+            400,
+            50,
+            50,
+        ):
+            raise PickCubeActConfigurationError("dataset size/split contract changed")
+        if self.lerobot_version != PICKCUBE_ACT_LEROBOT_VERSION:
+            raise PickCubeActConfigurationError("LeRobot must be exactly 0.6.0")
+        if self.schema_version != "pickcube-native-act-experiment-v1":
+            raise PickCubeActConfigurationError("experiment schema changed")
+
+    def to_mapping(self) -> dict[str, object]:
+        """Return a JSON-native resolved experiment."""
+        return {
+            "deterministic": self.deterministic,
+            "device": self.device,
+            "expected_episode_count": self.expected_episode_count,
+            "expected_split_counts": list(self.expected_split_counts),
+            "lerobot_version": self.lerobot_version,
+            "model": self.model.to_mapping(),
+            "optimization": self.optimization.to_mapping(),
+            "schema_version": self.schema_version,
+            "seed": self.seed,
+        }
+
+    @classmethod
+    def from_mapping(cls, value: Mapping[str, object]) -> Self:
+        """Decode one strict resolved experiment."""
+        payload = dict(value)
+        model = payload.pop("model", None)
+        optimization = payload.pop("optimization", None)
+        counts = payload.get("expected_split_counts")
+        if not isinstance(model, Mapping) or not isinstance(optimization, Mapping):
+            raise PickCubeActConfigurationError("experiment nested configs are missing")
+        if isinstance(counts, list):
+            payload["expected_split_counts"] = tuple(counts)
+        return cls(
+            model=PickCubeActModelConfig.from_mapping(model),
+            optimization=PickCubeActOptimizationConfig.from_mapping(optimization),
+            **cast(Any, payload),
+        )
+
+
+def build_training_identity(
+    *,
+    experiment: PickCubeActExperimentConfig,
+    dataset_digest: str,
+    normalization_digest: str,
+    contract_digest: str,
+    source_commit: str,
+) -> Mapping[str, object]:
+    """Build the exact resume identity for one native ACT run."""
+    body: dict[str, object] = {
+        "contract_digest": contract_digest,
+        "dataset_digest": dataset_digest,
+        "experiment": experiment.to_mapping(),
+        "normalization_digest": normalization_digest,
+        "source_commit": source_commit,
+    }
+    body["training_identity_digest"] = (
+        "sha256:"
+        + hashlib.sha256(
+            canonical_json_bytes(body, context="PickCubeActTrainingIdentity")
+        ).hexdigest()
+    )
+    return body
+
+
+__all__ = [
+    "PICKCUBE_ACT_ACTION_FEATURE",
+    "PICKCUBE_ACT_IMAGE_FEATURE",
+    "PICKCUBE_ACT_LEROBOT_VERSION",
+    "PICKCUBE_ACT_STATE_FEATURE",
+    "PickCubeActConfigurationError",
+    "PickCubeActExperimentConfig",
+    "PickCubeActModelConfig",
+    "PickCubeActOptimizationConfig",
+    "build_training_identity",
+]

@@ -54,6 +54,10 @@ existing D2 fail-closed `PolicyPackage` and `PolicyRegistry` contracts.
   to 50 refinement calls, but the recording wrapper stops at the native task
   termination or 50-step Gymnasium truncation. This provides real controller
   settling time without extending the task horizon or mutating state.
+- If and only if the official screw planner reports failure before executing a
+  transport action, the expert invokes the official RRTConnect transport
+  planner under the same target, state, controller, action checks, refinement
+  policy, and native horizon. It does not choose a fallback from task outcome.
 
 ## Exclusions
 

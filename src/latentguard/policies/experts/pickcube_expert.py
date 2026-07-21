@@ -221,10 +221,16 @@ class PickCubeMotionPlanningExpert:
 
             phase_tracker.transition(PickCubeExpertPhase.TRANSPORT_TO_GOAL)
             goal_pose = sapien.Pose(goal_site.pose.sp.p, grasp_pose.q)
-            return planner.move_to_pose_with_screw(
+            result = planner.move_to_pose_with_screw(
                 goal_pose,
                 refine_steps=self.transport_refine_steps,
             )
+            if result == -1:
+                return planner.move_to_pose_with_RRTConnect(
+                    goal_pose,
+                    refine_steps=self.transport_refine_steps,
+                )
+            return result
         finally:
             planner.close()
 
