@@ -42,6 +42,7 @@ from latentguard.policies.act.data import (
     PickCubeDemoSplit,
     build_demo_dataset_reports,
     collect_episode_references,
+    read_demo_episode,
     save_demo_episode,
     split_for_scene_seed,
 )
@@ -215,6 +216,7 @@ def collect_dataset(
     expert_gate_path: Path,
     contract_path: Path,
     output_root: Path,
+    smoke_seed: int | None = None,
 ) -> Mapping[str, object]:
     """Resume the fixed 500-success collection and write strict reports."""
     config = _mapping(config_path, context="collection config")
@@ -280,6 +282,44 @@ def collect_dataset(
 
     root = Path(output_root).absolute()
     root.mkdir(parents=True, exist_ok=True)
+    if smoke_seed is not None:
+        if type(smoke_seed) is not int or not 0 <= smoke_seed < 2**32:
+            _fail("smoke", "seed must be uint32")
+        if split_for_scene_seed(smoke_seed) is not PickCubeDemoSplit.TRAIN:
+            _fail("smoke", "seed must belong to the training split")
+        if (root / "episodes").exists():
+            _fail("smoke", "output root must not contain existing episodes")
+        episode = collect_native_demo_episode(
+            seed=smoke_seed,
+            settings=settings,
+            action_contract=action_contract,
+            key_contract=key_contract,
+            render_plan=render_plan,
+            compatibility_identity=report.compatibility_identity,
+            contract_digest=contract_digest,
+            expert=expert,
+        )
+        reference = save_demo_episode(root, episode)
+        reloaded = read_demo_episode(root, reference)
+        manifest, quality, normalization = build_demo_dataset_reports(
+            root,
+            contract_digest=contract_digest,
+            expert_success_rate=float(cast(float, expert_summary["success_rate"])),
+        )
+        write_atomic_json(root / "dataset_manifest.json", manifest)
+        write_atomic_json(root / "data_quality_report.json", quality)
+        write_atomic_json(root / "normalization_stats.json", normalization)
+        summary = {
+            "contract_digest": contract_digest,
+            "dataset_digest": manifest["dataset_digest"],
+            "episode_id": reloaded.episode_id,
+            "frame_count": reloaded.frame_count,
+            "scene_seed": smoke_seed,
+            "schema_version": "pickcube-act-demo-smoke-v1",
+            "state_preserving_capture": True,
+        }
+        write_atomic_json(root / "smoke_summary.json", summary)
+        return summary
     references = (
         collect_episode_references(root) if (root / "episodes").exists() else ()
     )
@@ -383,7 +423,7 @@ def collect_dataset(
         "frame_count": manifest["frame_count"],
         "schema_version": "pickcube-act-demo-collection-summary-v1",
         "seed_start": seed_start,
-        "split_counts": manifest["split_counts"],
+        "split_counts": manifest["split_episode_counts"],
     }
     write_atomic_json(root / "collection_summary.json", summary)
     return summary
@@ -397,6 +437,7 @@ def main() -> int:
     parser.add_argument("--expert-gate", type=Path, required=True)
     parser.add_argument("--contract", type=Path, required=True)
     parser.add_argument("--output-root", type=Path, required=True)
+    parser.add_argument("--smoke-seed", type=int)
     args = parser.parse_args()
     compatibility = args.compatibility_report
     if compatibility is None:
@@ -410,6 +451,7 @@ def main() -> int:
         expert_gate_path=args.expert_gate,
         contract_path=args.contract,
         output_root=args.output_root,
+        smoke_seed=args.smoke_seed,
     )
     print(json.dumps(result, indent=2, sort_keys=True))
     return 0
