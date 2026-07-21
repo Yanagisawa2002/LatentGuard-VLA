@@ -27,3 +27,11 @@ split-group isolation, both terminal classes, and observed nonterminal targets.
   candidate comparison, checkpoint, and resume coverage.
 - `ruff check .`, `ruff format --check .`, and `mypy src`: passed.
 - Collection CLI dry-run: one declared anchor inspected, zero simulator work.
+
+## Remote execution
+
+The exact pushed candidate revision was prepared for remote synchronization,
+but the configured execution server refused the SSH connection on 2026-07-21.
+No remote checkout was changed, no simulator or GPU process was started, and no
+real-future sample was collected. Real collection and bounded training smoke
+remain blocked until that server is explicitly powered on and SSH-ready.
