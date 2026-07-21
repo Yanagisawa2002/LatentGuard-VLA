@@ -1,0 +1,11 @@
+{
+  "schema_version": "wm-v0-d1-validation-config-v1",
+  "collection_root": "outputs/wm_v0_d1/pilot",
+  "manifest_output": "outputs/wm_v0_d1/pilot/dataset-manifest.json",
+  "quality_output": "outputs/wm_v0_d1/pilot/data-quality-report.json",
+  "minimum_sample_count": 100,
+  "minimum_anchor_count": 25,
+  "minimum_policy_generated_ratio": 0.7,
+  "minimum_future_frame_completeness": 0.99,
+  "require_both_terminal_classes": true
+}

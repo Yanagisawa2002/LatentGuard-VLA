@@ -21,6 +21,7 @@ class CandidateSource(StrEnum):
 
     POLICY_GENERATED = "policy_generated"
     SYNTHETIC_CORRUPTION = "synthetic_corruption"
+    REPLAY_REFERENCE = "replay_reference"
 
 
 class DatasetSplit(StrEnum):
@@ -221,12 +222,16 @@ class WorldModelSample:
                 raise WorldModelSchemaError(
                     "policy-generated candidates cannot declare corruption_type"
                 )
-        else:
+        elif self.policy_source is CandidateSource.SYNTHETIC_CORRUPTION:
             if self.corruption_type is None:
                 raise WorldModelSchemaError(
                     "synthetic corruptions require corruption_type"
                 )
             _identifier(self.corruption_type, "corruption_type")
+        elif self.corruption_type is not None:
+            raise WorldModelSchemaError(
+                "replay-reference candidates cannot declare corruption_type"
+            )
 
     @property
     def prediction_horizon(self) -> int:

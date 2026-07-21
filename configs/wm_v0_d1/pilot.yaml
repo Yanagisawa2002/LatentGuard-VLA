@@ -1,0 +1,18 @@
+{
+  "schema_version": "wm-v0-d1-collection-v1",
+  "seed": 271828,
+  "prediction_horizon": 4,
+  "observation_stride": 4,
+  "action_horizon": 16,
+  "action_dimension": 8,
+  "adapter_factory": "latentguard.integrations.maniskill_pickcube.world_model:build_pickcube_world_model_adapter",
+  "jobs": "outputs/wm_v0_d1/pilot-jobs.json",
+  "output_directory": "outputs/wm_v0_d1/pilot",
+  "target_anchor_count_minimum": 25,
+  "target_anchor_count_maximum": 50,
+  "target_sample_count": 120,
+  "minimum_candidates_per_anchor": 3,
+  "minimum_policy_generated_ratio": 0.7,
+  "runtime_configuration_required": true,
+  "formal_training_authorized": false
+}

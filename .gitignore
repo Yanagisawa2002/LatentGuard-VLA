@@ -35,6 +35,11 @@ artifacts/*
 artifacts/wm_v0/*
 !artifacts/wm_v0/dataset_manifest.json
 !artifacts/wm_v0/evaluation_summary.json
+!artifacts/wm_v0_d1/
+artifacts/wm_v0_d1/*
+!artifacts/wm_v0_d1/collection_state.json
+!artifacts/wm_v0_d1/dataset_manifest.json
+!artifacts/wm_v0_d1/data_quality_report.json
 datasets/
 wandb/
 *.ckpt

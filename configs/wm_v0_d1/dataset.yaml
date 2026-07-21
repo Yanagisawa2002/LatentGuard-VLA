@@ -1,0 +1,10 @@
+{
+  "schema_version": "wm-v0-d1-dataset-config-v1",
+  "collection_root": "outputs/wm_v0_d1/formal",
+  "manifest_output": "artifacts/wm_v0_d1/dataset_manifest.json",
+  "split_semantic": "source_episode_group_v1",
+  "train_fraction": 0.7,
+  "validation_fraction": 0.15,
+  "test_fraction": 0.15,
+  "formal_training_gate_required": true
+}

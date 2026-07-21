@@ -1,0 +1,102 @@
+{
+  "anchor_count": 0,
+  "base_wm_v0_manifest": {
+    "anchor_count": 0,
+    "candidate_count": 0,
+    "content_digest": "sha256:e24ede72a3b598ae00c6cc674310751e1cf73e413c4bfa1cad4751006d2a0a12",
+    "corruption_counts": {},
+    "event_observed_counts": {},
+    "formal_training_gate": {
+      "authorized": false,
+      "checks": {
+        "minimum_sample_count": false,
+        "nonterminal_progress_or_event_present": false,
+        "real_future_observation_for_every_sample": false,
+        "required_splits_present": false,
+        "source_group_isolation": true,
+        "terminal_success_and_failure_present": false
+      },
+      "reasons": [
+        "minimum_sample_count",
+        "real_future_observation_for_every_sample",
+        "required_splits_present",
+        "terminal_success_and_failure_present",
+        "nonterminal_progress_or_event_present"
+      ]
+    },
+    "group_assignments": {},
+    "missing_ratios": {
+      "events": 1.0,
+      "progress": 1.0
+    },
+    "observation_strides": {},
+    "policy_source_counts": {},
+    "prediction_horizons": {},
+    "sample_count": 0,
+    "schema_version": "1.0",
+    "source_episode_count": 0,
+    "split_counts": {},
+    "terminal_success_counts": {}
+  },
+  "candidate_metadata_inventory_digest": "sha256:1cdacf60b6a3fc50d2cc990d9b8c94ab37ee0fb47d7c36e95146aa695553e887",
+  "content_digest": "sha256:5a0ea393483f4c37345abfcc192e8c90cda089950446fd39deae53cd7cec9dff",
+  "formal_training_gate": {
+    "authorized": false,
+    "checks": {
+      "anchor_count_at_least_250": false,
+      "candidates_per_anchor_at_least_3": false,
+      "data_quality_checks_passed": false,
+      "failure_count_at_least_100": false,
+      "future_frame_completeness_at_least_99_percent": false,
+      "nonterminal_progress_or_event_present": false,
+      "policy_generated_ratio_at_least_70_percent": false,
+      "required_splits_present": false,
+      "sample_count_at_least_1000": false,
+      "source_episode_count_at_least_100": false,
+      "source_group_leakage_zero": true,
+      "success_count_at_least_100": false
+    },
+    "failed_checks": [
+      "anchor_count_at_least_250",
+      "candidates_per_anchor_at_least_3",
+      "data_quality_checks_passed",
+      "failure_count_at_least_100",
+      "future_frame_completeness_at_least_99_percent",
+      "nonterminal_progress_or_event_present",
+      "policy_generated_ratio_at_least_70_percent",
+      "required_splits_present",
+      "sample_count_at_least_1000",
+      "source_episode_count_at_least_100",
+      "success_count_at_least_100"
+    ]
+  },
+  "future_frame_completeness": 0.0,
+  "pilot_gate": {
+    "authorized": false,
+    "checks": {
+      "anchor_count_at_least_25": false,
+      "both_terminal_classes_present": false,
+      "candidate_metadata_complete": false,
+      "candidates_per_anchor_at_least_3": false,
+      "duplicate_identity_zero": true,
+      "future_frame_completeness_at_least_99_percent": false,
+      "policy_generated_ratio_at_least_70_percent": false,
+      "restoration_mismatch_zero": true,
+      "sample_count_at_least_100": false,
+      "source_group_leakage_zero": true
+    },
+    "failed_checks": [
+      "anchor_count_at_least_25",
+      "both_terminal_classes_present",
+      "candidate_metadata_complete",
+      "candidates_per_anchor_at_least_3",
+      "future_frame_completeness_at_least_99_percent",
+      "policy_generated_ratio_at_least_70_percent",
+      "sample_count_at_least_100"
+    ]
+  },
+  "policy_generated_ratio": 0.0,
+  "sample_count": 0,
+  "schema_version": "wm-v0-d1-dataset-manifest-v1",
+  "source_episode_count": 0
+}

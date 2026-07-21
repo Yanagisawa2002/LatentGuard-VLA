@@ -1,0 +1,99 @@
+{
+  "action_duplicate_rejection_rate": 0.0,
+  "anchor_count": 0,
+  "candidate_count_per_anchor": {
+    "maximum": 0,
+    "mean": 0.0,
+    "minimum": 0
+  },
+  "checkpoint_counts": {},
+  "collection_throughput": {
+    "mean_anchor_seconds": 0.0,
+    "mean_sample_seconds": 0.0,
+    "samples_per_second": 0.0,
+    "total_anchor_runtime_seconds": 0
+  },
+  "episode_phase_counts": {},
+  "event_observed_counts": {},
+  "event_positive_counts": {},
+  "failure_rates": {
+    "policy_inference": 0.0,
+    "simulator": 0.0
+  },
+  "formal_training_gate": {
+    "authorized": false,
+    "checks": {
+      "anchor_count_at_least_250": false,
+      "candidates_per_anchor_at_least_3": false,
+      "data_quality_checks_passed": false,
+      "failure_count_at_least_100": false,
+      "future_frame_completeness_at_least_99_percent": false,
+      "nonterminal_progress_or_event_present": false,
+      "policy_generated_ratio_at_least_70_percent": false,
+      "required_splits_present": false,
+      "sample_count_at_least_1000": false,
+      "source_episode_count_at_least_100": false,
+      "source_group_leakage_zero": true,
+      "success_count_at_least_100": false
+    },
+    "failed_checks": [
+      "anchor_count_at_least_250",
+      "candidates_per_anchor_at_least_3",
+      "data_quality_checks_passed",
+      "failure_count_at_least_100",
+      "future_frame_completeness_at_least_99_percent",
+      "nonterminal_progress_or_event_present",
+      "policy_generated_ratio_at_least_70_percent",
+      "required_splits_present",
+      "sample_count_at_least_1000",
+      "source_episode_count_at_least_100",
+      "success_count_at_least_100"
+    ]
+  },
+  "future_frame_completeness": 0.0,
+  "missing_ratios": {
+    "candidate_metadata": 1.0,
+    "events": 1.0,
+    "progress": 1.0
+  },
+  "pilot_gate": {
+    "authorized": false,
+    "checks": {
+      "anchor_count_at_least_25": false,
+      "both_terminal_classes_present": false,
+      "candidate_metadata_complete": false,
+      "candidates_per_anchor_at_least_3": false,
+      "duplicate_identity_zero": true,
+      "future_frame_completeness_at_least_99_percent": false,
+      "policy_generated_ratio_at_least_70_percent": false,
+      "restoration_mismatch_zero": true,
+      "sample_count_at_least_100": false,
+      "source_group_leakage_zero": true
+    },
+    "failed_checks": [
+      "anchor_count_at_least_25",
+      "both_terminal_classes_present",
+      "candidate_metadata_complete",
+      "candidates_per_anchor_at_least_3",
+      "future_frame_completeness_at_least_99_percent",
+      "policy_generated_ratio_at_least_70_percent",
+      "sample_count_at_least_100"
+    ]
+  },
+  "policy_family_counts": {},
+  "policy_generated_ratio": 0.0,
+  "policy_source_counts": {},
+  "progress_distribution": {
+    "maximum": 0.0,
+    "mean": 0.0,
+    "minimum": 0.0
+  },
+  "rejected_sample_count": 0,
+  "rejection_reason_counts": {},
+  "scene_group_counts": {},
+  "schema_version": "wm-v0-d1-data-quality-v1",
+  "source_episode_count": 0,
+  "split_counts": {},
+  "terminal_success_counts": {},
+  "valid_sample_count": 0
+}
