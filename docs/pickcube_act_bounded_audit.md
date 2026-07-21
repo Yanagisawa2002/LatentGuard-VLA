@@ -151,4 +151,3 @@ transform version, temporal mode, dataset digest, source commit, chunk horizon,
 and execution horizon. The bounded loader rejects an old P0 checkpoint rather
 than silently assigning it new semantics. Old P0 checkpoints remain immutable
 and available only through their historical unbounded experiment identity.
-
