@@ -46,6 +46,32 @@ def _metrics(path: Path) -> tuple[Mapping[str, object], ...]:
     return tuple(records)
 
 
+def _strict_interior_bounds(record: Mapping[str, object]) -> bool:
+    bounded = record.get("bounded_action")
+    if not isinstance(bounded, Mapping):
+        return False
+    minimum = bounded.get("minimum")
+    maximum = bounded.get("maximum")
+    if (
+        not isinstance(minimum, Sequence)
+        or isinstance(minimum, (str, bytes))
+        or not isinstance(maximum, Sequence)
+        or isinstance(maximum, (str, bytes))
+        or len(minimum) != 8
+        or len(maximum) != 8
+    ):
+        return False
+    try:
+        lower_values = tuple(float(cast(int | float, value)) for value in minimum)
+        upper_values = tuple(float(cast(int | float, value)) for value in maximum)
+    except (TypeError, ValueError):
+        return False
+    return all(
+        math.isfinite(lower) and math.isfinite(upper) and -1.0 < lower <= upper < 1.0
+        for lower, upper in zip(lower_values, upper_values, strict=True)
+    )
+
+
 def verify(*, run_root: Path, stage: str, output: Path) -> Mapping[str, object]:
     """Recompute one training gate from immutable metrics and checkpoints."""
     root = Path(run_root).absolute()
@@ -65,13 +91,18 @@ def verify(*, run_root: Path, stage: str, output: Path) -> Mapping[str, object]:
         _fail(stage, "identity or exact step count differs")
     if any(
         record.get("post_transform_boundary_violation_count") != 0
+        or not _strict_interior_bounds(record)
         or not all(
             math.isfinite(float(cast(int | float, record[field])))
             for field in ("total_loss", "action_loss", "kl_loss", "gradient_norm")
         )
         for record in records
     ):
-        _fail(stage, "nonfinite metric or post-transform violation")
+        _fail(
+            stage,
+            "nonfinite metric, non-interior bounded action, "
+            "or post-transform violation",
+        )
     checkpoints = tuple(sorted((root / "checkpoints").glob("step-*")))
     for checkpoint in checkpoints:
         manifest = _mapping(checkpoint / "checkpoint_manifest.json", "checkpoint")

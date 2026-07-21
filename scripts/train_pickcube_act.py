@@ -184,6 +184,10 @@ def _bounded_diagnostics(
     raw_valid = raw[valid].to(torch.float32)
     bounded_valid = bounded[valid].to(torch.float32)
     target_valid = target[valid].to(torch.float32)
+    if torch.any(bounded_valid <= -1.0) or torch.any(bounded_valid >= 1.0):
+        raise PickCubeActRuntimeError(
+            "intrinsic action parameterization left the strict canonical interval"
+        )
     native_valid = action_transform.to_environment(bounded_valid)
     lower = action_transform.lower.to(native_valid)
     upper = action_transform.upper.to(native_valid)
