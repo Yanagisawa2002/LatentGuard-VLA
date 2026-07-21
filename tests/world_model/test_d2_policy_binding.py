@@ -94,6 +94,27 @@ def test_policy_package_rejects_checkpoint_hash_mismatch(tmp_path: Path) -> None
         package.verify_artifacts(tmp_path)
 
 
+def test_policy_package_verifies_additional_runtime_assets(tmp_path: Path) -> None:
+    package = _package(tmp_path)
+    processor_state = b"processor-state"
+    (tmp_path / "processor.safetensors").write_bytes(processor_state)
+    package = replace(
+        package,
+        acceptance_evidence={
+            "additional_artifacts": {
+                "preprocessor_state": {
+                    "path": "processor.safetensors",
+                    "sha256": _digest(processor_state),
+                }
+            }
+        },
+    )
+    assert package.verify_artifacts(tmp_path).verified_artifact_count == 6
+    (tmp_path / "processor.safetensors").write_bytes(b"tampered")
+    with pytest.raises(PolicyPackageError, match="content digest mismatch"):
+        package.verify_artifacts(tmp_path)
+
+
 @pytest.mark.parametrize("component", ["preprocessor", "postprocessor"])
 def test_policy_package_rejects_missing_processor(
     tmp_path: Path, component: str

@@ -335,6 +335,56 @@ class PolicyPackage:
                     f"content digest mismatch: expected {expected}, observed {digest}",
                 )
             observed[name] = digest
+        additional = self.acceptance_evidence.get("additional_artifacts")
+        if additional is not None:
+            if not isinstance(additional, Mapping) or not additional:
+                _fail(
+                    "PolicyPackage.additional_artifacts",
+                    "expected non-empty artifact mapping",
+                )
+            occupied_paths = {
+                relative for _, relative, _ in artifact_pairs if relative is not None
+            }
+            for name, raw in sorted(additional.items()):
+                artifact_name = _required_text(
+                    name, "PolicyPackage.additional_artifacts.name"
+                )
+                record = _mapping(
+                    raw,
+                    f"PolicyPackage.additional_artifacts.{artifact_name}",
+                )
+                if set(record) != {"path", "sha256"}:
+                    _fail(
+                        f"PolicyPackage.additional_artifacts.{artifact_name}",
+                        "expected path and sha256 only",
+                    )
+                relative = _relative_path(
+                    record["path"],
+                    f"PolicyPackage.additional_artifacts.{artifact_name}.path",
+                )
+                expected = _digest(
+                    record["sha256"],
+                    f"PolicyPackage.additional_artifacts.{artifact_name}.sha256",
+                )
+                if relative in occupied_paths or artifact_name in observed:
+                    _fail(
+                        "PolicyPackage.additional_artifacts",
+                        "artifact name or path is duplicate",
+                    )
+                path = root.joinpath(*PurePosixPath(relative).parts)
+                if not path.is_file() or path.is_symlink():
+                    _fail(
+                        f"PolicyPackage.additional_artifacts.{artifact_name}",
+                        "expected regular unlinked file",
+                    )
+                digest = f"sha256:{hashlib.sha256(path.read_bytes()).hexdigest()}"
+                if digest != expected:
+                    _fail(
+                        f"PolicyPackage.additional_artifacts.{artifact_name}",
+                        "content digest mismatch",
+                    )
+                occupied_paths.add(relative)
+                observed[artifact_name] = digest
         return PolicyArtifactVerification(
             policy_id=self.policy_id,
             verified_artifact_count=len(observed),
