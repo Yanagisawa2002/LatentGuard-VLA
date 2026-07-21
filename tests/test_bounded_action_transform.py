@@ -42,6 +42,21 @@ def test_affine_tanh_is_intrinsically_bounded_for_extreme_logits() -> None:
     assert torch.isfinite(raw.grad).all()
 
 
+@pytest.mark.parametrize("dtype", [torch.bfloat16, torch.float16, torch.float32])
+def test_autocast_dtypes_cannot_round_margin_back_to_endpoint(
+    dtype: torch.dtype,
+) -> None:
+    transform = _transform()
+    raw = torch.full((2, 3), 100.0, dtype=dtype, requires_grad=True)
+    bounded = transform.squash(raw)
+    assert bounded.dtype == torch.float32
+    assert torch.all(bounded < 1.0)
+    assert torch.all(bounded > -1.0)
+    native = transform.to_environment(bounded)
+    assert torch.all(native < transform.upper)
+    assert torch.all(native > transform.lower)
+
+
 def test_target_transform_preserves_asymmetric_box_endpoints() -> None:
     transform = _transform()
     native = torch.stack((transform.lower, transform.upper, transform.center))

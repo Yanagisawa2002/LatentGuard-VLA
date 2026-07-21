@@ -136,7 +136,11 @@ class BoundedActionTransform(nn.Module):
     def squash(self, raw_action: torch.Tensor) -> torch.Tensor:
         """Map unconstrained finite model output to the canonical open interval."""
         value = self._input(raw_action, context="squash")
-        return torch.tanh(value) * (1.0 - self.eps)
+        # BF16/FP16 cannot represent a 1e-6 margin next to one. Compute and
+        # retain the bounded policy output in at least FP32 so autocast cannot
+        # silently round the declared open interval back to an endpoint.
+        work_dtype = torch.float64 if value.dtype == torch.float64 else torch.float32
+        return torch.tanh(value.to(work_dtype)) * (1.0 - self.eps)
 
     def to_environment(self, bounded_normalized_action: torch.Tensor) -> torch.Tensor:
         """Map an already bounded canonical action to exact native coordinates."""
