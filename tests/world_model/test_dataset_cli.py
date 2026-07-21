@@ -1,5 +1,6 @@
 """Regression coverage for the WM-v0 frozen-feature dataset CLI."""
 
+import os
 import subprocess
 import sys
 from pathlib import Path
@@ -27,6 +28,7 @@ def test_d1_collection_cli_exposes_required_resume_and_filter_controls() -> None
         [sys.executable, "scripts/collect_wm_v0.py", "--help"],
         check=True,
         capture_output=True,
+        env={**os.environ, "PYTHONPATH": str(Path("src").absolute())},
         text=True,
     )
 
