@@ -33,6 +33,7 @@ from latentguard.policies.act.types import (
     PICKCUBE_ACT_STATE_FEATURE,
     PickCubeActExperimentConfig,
 )
+from latentguard.policies.policy_package import PolicyPackage
 
 
 class PickCubeActRuntimeError(RuntimeError):
@@ -643,10 +644,11 @@ def save_checkpoint(
     return final
 
 
-def _validate_checkpoint(
+def validate_checkpoint_artifacts(
     checkpoint: Path,
     expected_identity: Mapping[str, object],
 ) -> Mapping[str, object]:
+    """Verify one complete checkpoint inventory without loading LeRobot."""
     root = Path(checkpoint).absolute()
     manifest = _read_mapping(root / "checkpoint_manifest.json", context="checkpoint")
     complete = _read_mapping(root / "complete.json", context="checkpoint completion")
@@ -692,7 +694,7 @@ def load_checkpoint(
     experiment: PickCubeActExperimentConfig,
 ) -> tuple[Any, Any, Any, Any, Mapping[str, object]]:
     """Integrity-check and locally reload a complete ACT training checkpoint."""
-    _validate_checkpoint(checkpoint, expected_identity)
+    validate_checkpoint_artifacts(checkpoint, expected_identity)
     pretrained = Path(checkpoint).absolute() / "pretrained_model"
     try:
         from lerobot.policies import (  # type: ignore[import-not-found]
@@ -741,17 +743,13 @@ def load_checkpoint(
     return policy, preprocessor, postprocessor, optimizer, training_state
 
 
-def load_inference_runtime(
+def _load_pretrained_inference_runtime(
     *,
-    checkpoint: Path,
-    expected_identity: Mapping[str, object],
+    pretrained: Path,
     experiment: PickCubeActExperimentConfig,
     action_lower: Sequence[float],
     action_upper: Sequence[float],
 ) -> PickCubeActInferenceRuntime:
-    """Integrity-check and load only the frozen policy inference assets."""
-    _validate_checkpoint(checkpoint, expected_identity)
-    pretrained = Path(checkpoint).absolute() / "pretrained_model"
     try:
         from lerobot.policies import (
             make_pre_post_processors,
@@ -815,6 +813,63 @@ def load_inference_runtime(
     )
 
 
+def load_inference_runtime(
+    *,
+    checkpoint: Path,
+    expected_identity: Mapping[str, object],
+    experiment: PickCubeActExperimentConfig,
+    action_lower: Sequence[float],
+    action_upper: Sequence[float],
+) -> PickCubeActInferenceRuntime:
+    """Integrity-check and load only the frozen checkpoint inference assets."""
+    validate_checkpoint_artifacts(checkpoint, expected_identity)
+    return _load_pretrained_inference_runtime(
+        pretrained=Path(checkpoint).absolute() / "pretrained_model",
+        experiment=experiment,
+        action_lower=action_lower,
+        action_upper=action_upper,
+    )
+
+
+def load_packaged_inference_runtime(
+    *,
+    package: PolicyPackage,
+    package_root: Path,
+    experiment: PickCubeActExperimentConfig,
+    action_lower: Sequence[float],
+    action_upper: Sequence[float],
+    observation_spec: Mapping[str, object],
+    action_spec: Mapping[str, object],
+    environment_spec: Mapping[str, object],
+) -> PickCubeActInferenceRuntime:
+    """Strictly verify and load a standalone D2 PolicyPackage for inference."""
+    package.assert_compatible(
+        observation_spec=observation_spec,
+        action_spec=action_spec,
+        environment_spec=environment_spec,
+    )
+    package.verify_artifacts(package_root)
+    fixed_parent = PurePosixPath("pretrained_model")
+    runtime_paths = (
+        package.checkpoint_path,
+        package.model_config_path,
+        package.preprocessor_path,
+        package.postprocessor_path,
+        package.normalization_path,
+    )
+    if any(
+        path is None or PurePosixPath(path).parent != fixed_parent
+        for path in runtime_paths
+    ):
+        _fail("PolicyPackage inference", "runtime assets do not share fixed root")
+    return _load_pretrained_inference_runtime(
+        pretrained=Path(package_root).absolute() / "pretrained_model",
+        experiment=experiment,
+        action_lower=action_lower,
+        action_upper=action_upper,
+    )
+
+
 __all__ = [
     "DeterministicResumeBatchSampler",
     "PickCubeActDataset",
@@ -825,10 +880,12 @@ __all__ = [
     "installed_runtime_versions",
     "load_checkpoint",
     "load_inference_runtime",
+    "load_packaged_inference_runtime",
     "prepare_training_batch",
     "processor_statistics",
     "save_checkpoint",
     "seed_act_runtime",
     "split_references",
+    "validate_checkpoint_artifacts",
     "validate_dataset_for_training",
 ]

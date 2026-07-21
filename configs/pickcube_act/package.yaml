@@ -1,0 +1,19 @@
+{
+  "schema_version": "pickcube-native-act-package-config-v1",
+  "policy_id": "pickcube-native-act-best-validation-v1",
+  "source_repository": "Yanagisawa2002/LatentGuard-VLA",
+  "package_role_semantic": "classification_bound_primary_or_secondary_v1",
+  "required_runtime_assets": [
+    "model.safetensors",
+    "config.json",
+    "policy_preprocessor.json",
+    "policy_preprocessor_step_3_normalizer_processor.safetensors",
+    "policy_postprocessor.json",
+    "policy_postprocessor_step_0_unnormalizer_processor.safetensors"
+  ],
+  "accepted_classifications": [
+    "PRIMARY_ACCEPTED",
+    "SECONDARY_COMPATIBLE"
+  ],
+  "controlled_smoke_required_for_registry_acceptance": true
+}
