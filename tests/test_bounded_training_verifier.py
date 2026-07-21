@@ -1,5 +1,9 @@
 from __future__ import annotations
 
+import numpy as np
+from scripts.screen_pickcube_act_bounded_checkpoints import (
+    _canonical_boundary_violation_count,
+)
 from scripts.train_pickcube_act import (
     _resume_artifact_source_commit,
     _run_manifest_matches,
@@ -68,3 +72,10 @@ def test_terminal_resume_manifest_allows_only_top_level_git_drift() -> None:
         {**verifier, "training_identity": {"source": "changed"}},
         allow_source_commit_drift=True,
     )
+
+
+def test_checkpoint_screen_counts_closed_canonical_endpoints() -> None:
+    interior = np.asarray([[-0.999999, 0.0, 0.999999]], dtype=np.float32)
+    endpoints = np.asarray([[-1.0, 0.0, 1.0]], dtype=np.float32)
+    assert _canonical_boundary_violation_count(interior) == 0
+    assert _canonical_boundary_violation_count(endpoints) == 2

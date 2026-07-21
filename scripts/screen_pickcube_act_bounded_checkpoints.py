@@ -31,6 +31,11 @@ class BoundedCheckpointScreenError(RuntimeError):
     """Raised when screening inputs or intrinsic action safety differ."""
 
 
+def _canonical_boundary_violation_count(values: np.ndarray[Any, Any]) -> int:
+    """Count outputs outside the strict canonical open interval."""
+    return int(np.logical_or(values <= -1.0, values >= 1.0).sum())
+
+
 def _fail(context: str, reason: str) -> NoReturn:
     raise BoundedCheckpointScreenError(f"{context}: {reason}")
 
@@ -215,6 +220,7 @@ def screen(
         violations = np.logical_or(
             native_values < lower_array, native_values > upper_array
         )
+        canonical_violations = _canonical_boundary_violation_count(canonical_values)
         nonfinite = int(np.size(native_values) - np.isfinite(native_values).sum())
         digest = (
             "sha256:"
@@ -225,6 +231,7 @@ def screen(
         std = np.std(native_values, axis=0, dtype=np.float64)
         result = {
             "anchor_count": minimum,
+            "canonical_boundary_violation_count": canonical_violations,
             "canonical_maximum": np.max(canonical_values, axis=0).tolist(),
             "canonical_minimum": np.min(canonical_values, axis=0).tolist(),
             "checkpoint": checkpoint.name,
@@ -248,6 +255,7 @@ def screen(
             ),
             "valid_for_development": bool(
                 not violations.any()
+                and canonical_violations == 0
                 and nonfinite == 0
                 and not np.all(std <= float(config["constant_output_tolerance"]))
                 and std[7] > float(config["gripper_collapse_tolerance"])
@@ -257,7 +265,14 @@ def screen(
         print(json.dumps(result, sort_keys=True), flush=True)
         del runtime
         torch.cuda.empty_cache()
+    action_contract_passed = all(
+        item["canonical_boundary_violation_count"] == 0
+        and item["native_boundary_violation_count"] == 0
+        and item["nonfinite_action_count"] == 0
+        for item in checkpoint_results
+    )
     report = {
+        "action_contract_passed": action_contract_passed,
         "anchor_count": minimum,
         "anchor_phase_counts": dict(sorted(phase_counts.items())),
         "checkpoint_count": len(checkpoint_results),
@@ -267,7 +282,7 @@ def screen(
         "all_checkpoints_valid": all(
             item["valid_for_development"] is True for item in checkpoint_results
         ),
-        "passed": True,
+        "passed": action_contract_passed,
         "schema_version": "pickcube-act-bounded-checkpoint-screen-report-v1",
         "source": dict(_git_identity()),
         "training_identity_digest": identity.get("training_identity_digest"),
