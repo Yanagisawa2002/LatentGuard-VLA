@@ -1,38 +1,63 @@
 {
-  "anchor_count": 0,
-  "candidate_count": 0,
-  "content_digest": "sha256:e24ede72a3b598ae00c6cc674310751e1cf73e413c4bfa1cad4751006d2a0a12",
-  "corruption_counts": {},
-  "event_observed_counts": {},
+  "anchor_count": 3,
+  "candidate_count": 6,
+  "content_digest": "sha256:7260c2e2af9ad8d24e352ab3f70db9e142d5abd08b881e95a964a27a413272b0",
+  "corruption_counts": {
+    "additive_gaussian_noise": 3,
+    "constant_bias": 3
+  },
+  "event_observed_counts": {
+    "collision": 0,
+    "dropped": 24,
+    "grasped": 24,
+    "object_displacement": 24,
+    "task_success": 24,
+    "timeout": 0,
+    "workspace_violation": 0,
+    "wrong_object_contact": 0
+  },
   "formal_training_gate": {
     "authorized": false,
     "checks": {
       "minimum_sample_count": false,
-      "nonterminal_progress_or_event_present": false,
-      "real_future_observation_for_every_sample": false,
-      "required_splits_present": false,
+      "nonterminal_progress_or_event_present": true,
+      "real_future_observation_for_every_sample": true,
+      "required_splits_present": true,
       "source_group_isolation": true,
       "terminal_success_and_failure_present": false
     },
     "reasons": [
       "minimum_sample_count",
-      "real_future_observation_for_every_sample",
-      "required_splits_present",
-      "terminal_success_and_failure_present",
-      "nonterminal_progress_or_event_present"
+      "terminal_success_and_failure_present"
     ]
   },
-  "group_assignments": {},
-  "missing_ratios": {
-    "events": 1.0,
-    "progress": 1.0
+  "group_assignments": {
+    "mspc-split-0787881ffc9bb4fcda20a515e879fccc9635ce200b3a317896cb8c51a4bb1636": "train",
+    "mspc-split-54fc9514b937f1dcc29c120bc440c3ad88a2668c46e71753fc113ac97bb158f8": "validation",
+    "mspc-split-e2afde2ea4e2e834968cea9be9503df27b142601d0059fec6ddaeafd17e627b4": "test"
   },
-  "observation_strides": {},
-  "policy_source_counts": {},
-  "prediction_horizons": {},
-  "sample_count": 0,
+  "missing_ratios": {
+    "events": 0.5,
+    "progress": 0.0
+  },
+  "observation_strides": {
+    "4": 6
+  },
+  "policy_source_counts": {
+    "synthetic_corruption": 6
+  },
+  "prediction_horizons": {
+    "4": 6
+  },
+  "sample_count": 6,
   "schema_version": "1.0",
-  "source_episode_count": 0,
-  "split_counts": {},
-  "terminal_success_counts": {}
+  "source_episode_count": 3,
+  "split_counts": {
+    "test": 2,
+    "train": 2,
+    "validation": 2
+  },
+  "terminal_success_counts": {
+    "true": 6
+  }
 }

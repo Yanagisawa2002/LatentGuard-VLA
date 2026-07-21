@@ -1,15 +1,102 @@
 {
-  "baselines": {
-    "direct_action_verifier": "not_run_without_real_future_dataset",
-    "matched_outcome_only": "not_run_without_real_future_dataset",
-    "wm_v0": "not_run_without_real_future_dataset"
+  "central_question": {
+    "answer": "unanswered",
+    "question": "does future-latent prediction improve action selection?",
+    "reason": "The six-sample non-formal smoke has only successful terminal outcomes, one test candidate group, and zero informative ranking pairs."
   },
-  "claim_status": "not_evaluated",
-  "closed_loop_probe": "not_authorized",
+  "checkpoint_resume": {
+    "from_step": 1,
+    "model": "wm_v0",
+    "to_step": 2,
+    "verified": true
+  },
+  "claim_status": "non_formal_smoke",
+  "closed_loop_probe": {
+    "executed": false,
+    "reason": "The offline formal data gate failed, so conservative closed-loop execution remained disabled."
+  },
   "data_gate_authorized": false,
-  "does_future_latent_improve_selection": "unanswered",
-  "metrics": {},
-  "reason": "No committed candidate-specific simulator future trajectories were available at audit time.",
-  "sample_count": 0,
-  "schema_version": "1.0"
+  "dataset_content_digest": "sha256:7260c2e2af9ad8d24e352ab3f70db9e142d5abd08b881e95a964a27a413272b0",
+  "execution_commit": "bafe920b777778519b2df2b2c0e10139e059b4e1",
+  "models": {
+    "direct_verifier": {
+      "best_validation_loss": 0.5750236511230469,
+      "completed_steps": 1,
+      "peak_gpu_memory_bytes": 23371264,
+      "terminal_outcome": {
+        "auprc": 1.0,
+        "auroc": null,
+        "brier": 0.17448412103100885,
+        "ece": 0.41771289706230164,
+        "support": 2
+      }
+    },
+    "outcome_only": {
+      "best_validation_loss": 0.6868868470191956,
+      "completed_steps": 1,
+      "peak_gpu_memory_bytes": 43598848,
+      "terminal_outcome": {
+        "auprc": 1.0,
+        "auroc": null,
+        "brier": 0.06408616809503265,
+        "ece": 0.253152459859848,
+        "support": 2
+      }
+    },
+    "wm_v0": {
+      "best_validation_loss": 1.2836744785308838,
+      "completed_steps": 2,
+      "future_latent": {
+        "cosine_by_horizon": [
+          0.14325226883719538,
+          0.13030416622062405,
+          0.13158801909008794,
+          0.12949455035519764
+        ],
+        "cosine_mean": 0.13365975112577624,
+        "mse_by_horizon": [
+          1.6278155847848625,
+          1.7048143461370717,
+          1.677813053263867,
+          1.6680074189292071
+        ],
+        "mse_mean": 1.6696126007787522
+      },
+      "peak_gpu_memory_bytes": 48436736,
+      "progress": {
+        "mae": 0.5948996841907501,
+        "rank_correlation": -0.7380952380952381,
+        "support": 8
+      },
+      "task_success_event": {
+        "auprc": 0.8166666666666667,
+        "auroc": 0.75,
+        "f1": 0.6666666666666666,
+        "positive_support": 4,
+        "support": 8
+      },
+      "terminal_outcome": {
+        "auprc": 1.0,
+        "auroc": null,
+        "brier": 0.011579646583493641,
+        "ece": 0.10760876536369324,
+        "support": 2
+      }
+    }
+  },
+  "ranking": {
+    "group_count": 1,
+    "pairwise_accuracy": null,
+    "pairwise_support": 0,
+    "policy_generated": "not_present",
+    "synthetic_corruption_top1_success_rate": 1.0
+  },
+  "remote_environment": {
+    "gpu_model": "NVIDIA GeForce RTX 5090",
+    "python": "3.11.15"
+  },
+  "run_id": "20260721T053204Z_wm-v0-smoke_990d8ce_seed271828",
+  "sample_count": 6,
+  "schema_version": "1.0",
+  "test_sample_count": 2
 }
