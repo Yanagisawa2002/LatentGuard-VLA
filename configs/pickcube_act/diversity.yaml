@@ -1,0 +1,9 @@
+{
+  "schema_version": "pickcube-native-act-diversity-config-v1",
+  "anchor_split": "validation",
+  "anchor_count": 20,
+  "anchor_frame_semantic": "episode_midpoint_v1",
+  "chunk_l2_distinct_threshold": 0.001,
+  "first_action_l2_distinct_threshold": 0.0001,
+  "minimum_meaningfully_distinct_anchor_ratio": 0.7
+}
