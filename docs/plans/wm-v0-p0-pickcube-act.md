@@ -44,6 +44,12 @@ existing D2 fail-closed `PolicyPackage` and `PolicyRegistry` contracts.
   simulator observations remain `none`.
 - The expert may read cube and goal poses for demonstration generation only.
   Those fields and expert phase are reporting metadata, never model inputs.
+- The official planner's public joint velocity and acceleration limit scales
+  are fixed to 3.0 for the next candidate gate. The 2.0 candidate completed
+  only 54/100 seeds within the unchanged native 50-step horizon; raising these
+  planner limits changes waypoint density only and does not change the task,
+  controller, action contract, control frequency, horizon, or executed-action
+  validation.
 
 ## Exclusions
 

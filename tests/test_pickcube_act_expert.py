@@ -4,7 +4,9 @@ from __future__ import annotations
 
 from types import MappingProxyType
 
+import numpy as np
 import pytest
+from scripts.evaluate_pickcube_expert import _runtime_bool
 
 from latentguard.policies.experts import (
     PICKCUBE_EXPERT_PHASES,
@@ -92,3 +94,23 @@ def test_expert_gate_fails_closed_for_simulator_error() -> None:
     assert summary.success_rate == 0.99
     assert not summary.authorized_for_demonstration_collection
     assert not summary.gate_checks["simulator_error_zero"]
+
+
+class _RuntimeBoolean:
+    def __init__(self, value: bool) -> None:
+        self.value = value
+
+    def detach(self) -> _RuntimeBoolean:
+        return self
+
+    def cpu(self) -> _RuntimeBoolean:
+        return self
+
+    def numpy(self) -> np.ndarray:
+        return np.asarray([self.value], dtype=np.bool_)
+
+
+def test_expert_result_boolean_supports_runtime_tensors() -> None:
+    assert _runtime_bool(_RuntimeBoolean(True), context="terminated") is True
+    with pytest.raises(ValueError, match="one runtime boolean"):
+        _runtime_bool(np.asarray([True, False]), context="terminated")

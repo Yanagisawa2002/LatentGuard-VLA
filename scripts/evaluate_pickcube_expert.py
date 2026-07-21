@@ -98,11 +98,26 @@ def _compatibility_path(argument: Path | None) -> Path:
 
 def _failure_from_result(result: object) -> str:
     if isinstance(result, tuple) and len(result) == 5:
-        if bool(np.asarray(result[3]).reshape(()).item()):
+        if _runtime_bool(result[3], context="truncated"):
             return "timeout"
-        if bool(np.asarray(result[2]).reshape(()).item()):
+        if _runtime_bool(result[2], context="terminated"):
             return "terminal_failure"
     return "task_not_completed"
+
+
+def _runtime_bool(value: object, *, context: str) -> bool:
+    candidate = value
+    for method_name in ("detach", "cpu"):
+        method = getattr(candidate, method_name, None)
+        if callable(method):
+            candidate = method()
+    to_numpy = getattr(candidate, "numpy", None)
+    if callable(to_numpy):
+        candidate = to_numpy()
+    array = np.asarray(candidate)
+    if array.size != 1 or not np.issubdtype(array.dtype, np.bool_):
+        raise ValueError(f"{context}: expected one runtime boolean")
+    return bool(array.reshape(()).item())
 
 
 def _failed_episode(
@@ -147,7 +162,16 @@ def _terminal_episode(
         and evidence.unsafe is False
     )
     if success:
-        tracker.require_complete()
+        try:
+            tracker.require_complete()
+        except PickCubeExpertError:
+            return _failed_episode(
+                seed=seed,
+                tracker=tracker,
+                action_count=ended.action_count,
+                category="expert_phase_incomplete",
+                simulator_error=False,
+            )
         return ExpertEpisodeAudit(
             seed=seed,
             success=True,
