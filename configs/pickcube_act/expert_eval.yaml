@@ -4,6 +4,8 @@
   "seed_start": 600000,
   "episode_count": 100,
   "minimum_success_rate": 0.95,
+  "joint_velocity_scale": 2.0,
+  "joint_acceleration_scale": 2.0,
   "trajectory_action_limit": 200,
   "output": "artifacts/pickcube_act/expert_evaluation.json"
 }

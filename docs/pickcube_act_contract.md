@@ -74,3 +74,9 @@ privileged geometry only for demonstration generation and may act only through
 seeded `reset` and validated environment `step` calls. Static and runtime gates
 prohibit teleportation, direct state mutation, fabricated success, non-finite
 actions, out-of-bounds actions, or missing phase execution.
+
+The P0 expert pins the planner's public joint velocity and acceleration scales
+to 2.0. This changes planner waypoint density, not the environment controller,
+control period, action bounds, task, or TimeLimit. Any episode reaching native
+termination or 50-step truncation is rejected immediately even if later steps
+could have reached success.

@@ -112,14 +112,17 @@ class PickCubeMotionPlanningExpert:
     """
 
     finger_length_m: float = 0.025
+    joint_velocity_scale: float = 2.0
+    joint_acceleration_scale: float = 2.0
 
     def __post_init__(self) -> None:
-        if (
-            type(self.finger_length_m) is not float
-            or not math.isfinite(self.finger_length_m)
-            or self.finger_length_m <= 0.0
+        for name, value in (
+            ("finger length", self.finger_length_m),
+            ("joint velocity scale", self.joint_velocity_scale),
+            ("joint acceleration scale", self.joint_acceleration_scale),
         ):
-            _fail("PickCubeMotionPlanningExpert", "finger length must be positive")
+            if type(value) is not float or not math.isfinite(value) or value <= 0.0:
+                _fail("PickCubeMotionPlanningExpert", f"{name} must be positive")
 
     def solve(
         self,
@@ -165,6 +168,8 @@ class PickCubeMotionPlanningExpert:
             base_pose=robot_pose,
             visualize_target_grasp_pose=False,
             print_env_info=False,
+            joint_vel_limits=self.joint_velocity_scale,
+            joint_acc_limits=self.joint_acceleration_scale,
         )
         try:
             cube = getattr(base, "cube", None)

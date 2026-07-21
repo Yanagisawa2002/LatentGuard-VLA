@@ -27,6 +27,7 @@ from latentguard.integrations.maniskill_pickcube.serialization import (
 )
 from latentguard.integrations.maniskill_pickcube.source_generation import (
     LazyManiSkillSourceEnvironmentFactory,
+    PickCubeEpisodeEndedError,
     PickCubeSourceGenerationError,
     PickCubeTrajectoryActionLimitError,
     RecordingEnvironmentProxy,
@@ -138,6 +139,8 @@ def run_expert_gate(
     seed_start = _integer(config, "seed_start", minimum=0)
     action_limit = _integer(config, "trajectory_action_limit", minimum=1)
     minimum_success_rate = _number(config, "minimum_success_rate")
+    joint_velocity_scale = _number(config, "joint_velocity_scale")
+    joint_acceleration_scale = _number(config, "joint_acceleration_scale")
     if minimum_success_rate != 0.95:
         raise ValueError("expert evaluation minimum success rate must equal 0.95")
     if seed_start + episode_count > 2**32:
@@ -161,7 +164,10 @@ def run_expert_gate(
     key_contract = PickCubeTaskKeyContract.from_compatibility_report(report)
     source_audit_digest = assert_pickcube_expert_has_no_teleport_calls()
     factory = LazyManiSkillSourceEnvironmentFactory()
-    expert = PickCubeMotionPlanningExpert()
+    expert = PickCubeMotionPlanningExpert(
+        joint_velocity_scale=joint_velocity_scale,
+        joint_acceleration_scale=joint_acceleration_scale,
+    )
     episodes: list[ExpertEpisodeAudit] = []
 
     for seed in range(seed_start, seed_start + episode_count):
@@ -186,6 +192,7 @@ def run_expert_gate(
                 action_contract,
                 trajectory_action_limit=action_limit,
                 boundary_capture=tracker.capture_boundary,
+                stop_on_episode_end=True,
             )
             solver_result = expert.solve(
                 recorder,
@@ -237,6 +244,16 @@ def run_expert_gate(
                         simulator_error=False,
                     )
                 )
+        except PickCubeEpisodeEndedError as exc:
+            episodes.append(
+                _failed_episode(
+                    seed=seed,
+                    tracker=tracker,
+                    action_count=exc.action_count,
+                    category="timeout" if exc.truncated else "terminal_failure",
+                    simulator_error=False,
+                )
+            )
         except PickCubeTrajectoryActionLimitError:
             episodes.append(
                 _failed_episode(
@@ -290,6 +307,8 @@ def run_expert_gate(
         {
             "compatibility_identity": report.compatibility_identity,
             "environment_id": report.environment_id,
+            "joint_acceleration_scale": joint_acceleration_scale,
+            "joint_velocity_scale": joint_velocity_scale,
             "seed_end_exclusive": seed_start + episode_count,
             "seed_start": seed_start,
         }

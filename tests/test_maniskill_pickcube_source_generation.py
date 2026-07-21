@@ -14,6 +14,7 @@ from latentguard.integrations.maniskill_pickcube.session import (
 from latentguard.integrations.maniskill_pickcube.source_generation import (
     OFFICIAL_SOLVER_EXPORT,
     OFFICIAL_SOLVER_MODULE,
+    PickCubeEpisodeEndedError,
     PickCubeSourceCollectionIncompleteError,
     PickCubeSourceGenerationError,
     PickCubeTrajectoryActionLimitError,
@@ -406,6 +407,84 @@ def test_recording_preserves_solver_dtype_distinct_from_environment_space() -> N
 def test_recording_rejects_environment_action_mutation() -> None:
     with pytest.raises(PickCubeSourceGenerationError, match="mutated"):
         _record(_Factory(mutate_action=True))
+
+
+def test_pre_action_capture_is_aligned_and_state_preserving() -> None:
+    environment = _Environment()
+    captured: list[tuple[int, np.ndarray[Any, Any], np.ndarray[Any, Any]]] = []
+
+    def capture(
+        runtime: object,
+        step_index: int,
+        action: np.ndarray[Any, Any],
+    ) -> None:
+        assert isinstance(runtime, _Environment)
+        captured.append(
+            (
+                step_index,
+                np.array(runtime.state["robot"], copy=True),
+                np.array(action, copy=True),
+            )
+        )
+
+    wrapper = RecordingEnvironmentProxy(
+        environment,
+        _contract(),
+        pre_action_capture=capture,
+    )
+    _solver(wrapper, seed=7, debug=False, vis=False)
+    wrapper.verify_interception_complete()
+
+    assert [item[0] for item in captured] == [0, 1]
+    np.testing.assert_array_equal(captured[0][1], np.array([1, -1], dtype=np.float32))
+    np.testing.assert_array_equal(
+        captured[0][2], np.array([0.1, 0.0], dtype=np.float32)
+    )
+    np.testing.assert_array_equal(
+        captured[1][1], np.array([1.1, -1.0], dtype=np.float32)
+    )
+    np.testing.assert_array_equal(
+        captured[1][2], np.array([0.0, 0.1], dtype=np.float32)
+    )
+
+
+def test_pre_action_capture_rejects_runtime_state_mutation() -> None:
+    environment = _Environment()
+
+    def mutate(runtime: object, step_index: int, action: np.ndarray[Any, Any]) -> None:
+        del step_index, action
+        assert isinstance(runtime, _Environment)
+        runtime.state["robot"][0] += 1.0
+
+    wrapper = RecordingEnvironmentProxy(
+        environment,
+        _contract(),
+        pre_action_capture=mutate,
+    )
+    with pytest.raises(PickCubeSourceGenerationError, match="capture changed"):
+        _solver(wrapper, seed=7, debug=False, vis=False)
+
+
+def test_recording_can_fail_closed_at_native_truncation() -> None:
+    class TruncatingEnvironment(_Environment):
+        def step(
+            self, action: np.ndarray[Any, Any]
+        ) -> tuple[None, float, bool, bool, dict[str, np.ndarray[Any, Any]]]:
+            result = super().step(action)
+            return result[0], result[1], result[2], self.elapsed >= 1, result[4]
+
+    environment = TruncatingEnvironment()
+    wrapper = RecordingEnvironmentProxy(
+        environment,
+        _contract(),
+        stop_on_episode_end=True,
+    )
+    wrapper.reset(seed=7)
+    with pytest.raises(PickCubeEpisodeEndedError, match="truncated") as captured:
+        wrapper.step(np.array([0.1, 0.0], dtype=np.float32))
+    assert captured.value.truncated
+    assert captured.value.action_count == 1
+    assert len(wrapper.actions) == 1
 
 
 def test_recording_rejects_incomplete_interception_count() -> None:

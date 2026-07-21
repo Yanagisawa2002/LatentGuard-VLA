@@ -55,6 +55,16 @@ class PickCubeTrajectoryActionLimitError(PickCubeSourceGenerationError):
     """Raised before an official solver can execute beyond its action limit."""
 
 
+class PickCubeEpisodeEndedError(PickCubeSourceGenerationError):
+    """Raised after an intercepted action reaches termination or truncation."""
+
+    def __init__(self, *, truncated: bool, action_count: int) -> None:
+        self.truncated = truncated
+        self.action_count = action_count
+        reason = "truncated" if truncated else "terminated"
+        super().__init__(f"PickCube episode {reason} at action {action_count}")
+
+
 class PickCubeSourceCollectionIncompleteError(PickCubeSourceGenerationError):
     """Raised when bounded attempts cannot produce all requested references."""
 
@@ -115,6 +125,21 @@ def _scalar_int(value: object, *, context: str) -> int:
     return result
 
 
+def _strict_runtime_bool(value: object, *, context: str) -> bool:
+    candidate = value
+    for method_name in ("detach", "cpu"):
+        method = getattr(candidate, method_name, None)
+        if callable(method):
+            candidate = method()
+    to_numpy = getattr(candidate, "numpy", None)
+    if callable(to_numpy):
+        candidate = to_numpy()
+    array = np.asarray(candidate)
+    if array.size != 1 or not np.issubdtype(array.dtype, np.bool_):
+        raise PickCubeSourceGenerationError(f"{context} must contain one boolean")
+    return bool(array.reshape(()).item())
+
+
 def _trajectory_action_limit(value: int | None) -> int | None:
     if value is not None and (type(value) is not int or value <= 0):
         raise PickCubeSourceGenerationError(
@@ -133,6 +158,8 @@ class RecordingEnvironmentProxy:
         *,
         trajectory_action_limit: int | None = None,
         boundary_capture: Callable[[object, int], None] | None = None,
+        pre_action_capture: Callable[[object, int, NDArray[Any]], None] | None = None,
+        stop_on_episode_end: bool = False,
     ) -> None:
         """Wrap one environment without altering solver-visible attributes."""
         self._environment = environment
@@ -145,6 +172,14 @@ class RecordingEnvironmentProxy:
                 "boundary capture must be callable or null"
             )
         self._boundary_capture = boundary_capture
+        if pre_action_capture is not None and not callable(pre_action_capture):
+            raise PickCubeSourceGenerationError(
+                "pre-action capture must be callable or null"
+            )
+        self._pre_action_capture = pre_action_capture
+        if type(stop_on_episode_end) is not bool:
+            raise PickCubeSourceGenerationError("stop_on_episode_end must be boolean")
+        self._stop_on_episode_end = stop_on_episode_end
         self._action_limit_exceeded = False
         self._initial_state: object | None = None
         self._actions: list[NDArray[Any]] = []
@@ -245,6 +280,33 @@ class RecordingEnvironmentProxy:
         source_snapshot = source.tobytes(order="C")
         forwarded = np.array(source, copy=True, order="C")
         forwarded_snapshot = forwarded.tobytes(order="C")
+        if self._pre_action_capture is not None:
+            get_state = _required_method(self._environment, "get_state_dict")
+            state_before_capture = clone_state_tree(get_state())
+            self._pre_action_capture(
+                self._environment,
+                len(self._actions),
+                source,
+            )
+            state_after_capture = get_state()
+            capture_comparison = compare_state_trees(
+                state_before_capture,
+                state_after_capture,
+                atol=0.0,
+            )
+            if (
+                not capture_comparison.structure_matches
+                or not capture_comparison.exact_digest_match
+                or not capture_comparison.within_tolerance
+                or capture_comparison.maximum_absolute_error != 0.0
+            ):
+                raise PickCubeSourceGenerationError(
+                    "pre-action capture changed the complete runtime state"
+                )
+            if source.tobytes(order="C") != source_snapshot:
+                raise PickCubeSourceGenerationError(
+                    "pre-action capture changed the official solver action"
+                )
         step = getattr(self._environment, "step", None)
         if not callable(step):
             raise PickCubeSourceGenerationError(
@@ -263,6 +325,18 @@ class RecordingEnvironmentProxy:
         self._last_step_result = result
         if self._boundary_capture is not None:
             self._boundary_capture(self._environment, len(self._actions))
+        if self._stop_on_episode_end:
+            if not isinstance(result, Sequence) or len(result) != 5:
+                raise PickCubeSourceGenerationError(
+                    "environment step result must be a Gymnasium 5-tuple"
+                )
+            terminated = _strict_runtime_bool(result[2], context="terminated")
+            truncated = _strict_runtime_bool(result[3], context="truncated")
+            if terminated or truncated:
+                raise PickCubeEpisodeEndedError(
+                    truncated=truncated,
+                    action_count=len(self._actions),
+                )
         return result
 
     def verify_interception_complete(self) -> None:
@@ -1016,6 +1090,7 @@ __all__ = [
     "OFFICIAL_SOURCE_POLICY_ID",
     "ROBOT_STATE_SEMANTIC",
     "LazyManiSkillSourceEnvironmentFactory",
+    "PickCubeEpisodeEndedError",
     "PickCubeSourceCollectionIncompleteError",
     "PickCubeSourceGenerationError",
     "PickCubeTrajectoryActionLimitError",
