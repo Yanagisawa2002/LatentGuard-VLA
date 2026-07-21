@@ -1,0 +1,9 @@
+{
+  "schema_version": "pickcube-act-environment-config-v1",
+  "expected_contract": "configs/integrations/maniskill_pickcube/expected-contract-v1.json",
+  "action_layout": "configs/integrations/maniskill_pickcube/action-layout-v1.json",
+  "camera_rig": "configs/vision/m4a/camera-rig-v1.json",
+  "policy_camera_ids": ["front_oblique"],
+  "proprioception_semantic": "panda_active_joint_qpos_then_qvel_named_v1",
+  "output": "artifacts/pickcube_act/pickcube_act_contract.json"
+}

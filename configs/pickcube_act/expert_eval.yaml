@@ -1,0 +1,9 @@
+{
+  "schema_version": "pickcube-act-expert-eval-config-v1",
+  "environment_config": "configs/pickcube_act/environment.yaml",
+  "seed_start": 600000,
+  "episode_count": 100,
+  "minimum_success_rate": 0.95,
+  "trajectory_action_limit": 200,
+  "output": "artifacts/pickcube_act/expert_evaluation.json"
+}
