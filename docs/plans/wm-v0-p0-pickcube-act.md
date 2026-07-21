@@ -40,6 +40,15 @@ existing D2 fail-closed `PolicyPackage` and `PolicyRegistry` contracts.
 - The accepted M2C runtime identity remains ManiSkill 3.0.1, SAPIEN 3.0.3,
   mplib 0.1.1, PickCube-v1, Panda, `pd_joint_pos`, `obs_mode=none`, and GPU
   simulation.
+- Repository source, CPU validation, and public interfaces remain Python 3.11.
+  Upstream LeRobot 0.6.0 declares Python >=3.12 and uses PEP 695 syntax, so the
+  isolated remote ACT training/inference process uses Python 3.12.3. A direct
+  Python 3.11 import probe failed at LeRobot's
+  `deserialize_json_into_object[T: JsonLike]` syntax before any training. This
+  narrowly documented tool exception does not change the simulator, task,
+  action, observation, data, or policy contract; the combined Python 3.12
+  runtime must independently pass the pinned ManiSkill/SAPIEN/MPLib versions,
+  full dataset reload, GPU, checkpoint/resume, and closed-loop gates.
 - Policy RGB comes from the already accepted, state-preserving M4A camera rig;
   simulator observations remain `none`.
 - The expert may read cube and goal poses for demonstration generation only.

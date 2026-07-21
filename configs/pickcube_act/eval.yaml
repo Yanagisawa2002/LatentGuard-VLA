@@ -6,6 +6,10 @@
   "render_seed": 0,
   "native_episode_horizon": 50,
   "execution_horizon": 4,
+  "smoke": {
+    "episode_count": 1,
+    "seed_start": 790000
+  },
   "development": {
     "episode_count_per_checkpoint": 30,
     "seed_start": 800000

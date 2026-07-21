@@ -387,17 +387,22 @@ def evaluate(
         _fail("evaluation config", "execution horizon changed")
     phase = config.get(evaluation_kind)
     if not isinstance(phase, Mapping) or evaluation_kind not in {
+        "smoke",
         "development",
         "final",
     }:
         _fail("evaluation config", "evaluation kind is unsupported")
-    count_field = (
-        "episode_count_per_checkpoint"
-        if evaluation_kind == "development"
-        else "episode_count_per_promoted_checkpoint"
-    )
+    count_field = {
+        "smoke": "episode_count",
+        "development": "episode_count_per_checkpoint",
+        "final": "episode_count_per_promoted_checkpoint",
+    }[evaluation_kind]
     episode_count = _integer(phase, count_field, minimum=1)
-    if (evaluation_kind, episode_count) not in {("development", 30), ("final", 100)}:
+    if (evaluation_kind, episode_count) not in {
+        ("smoke", 1),
+        ("development", 30),
+        ("final", 100),
+    }:
         _fail("evaluation config", "episode count changed")
     seed_start = _integer(phase, "seed_start")
 
@@ -583,7 +588,9 @@ def main() -> int:
     parser.add_argument("--checkpoint", type=Path, required=True)
     parser.add_argument("--output-dir", type=Path, required=True)
     parser.add_argument(
-        "--evaluation-kind", choices=("development", "final"), required=True
+        "--evaluation-kind",
+        choices=("smoke", "development", "final"),
+        required=True,
     )
     args = parser.parse_args()
     summary = evaluate(
