@@ -6,6 +6,7 @@ import argparse
 import hashlib
 import json
 import math
+import subprocess
 import time
 import warnings
 from collections.abc import Mapping, Sequence
@@ -116,6 +117,34 @@ def _number(value: Mapping[str, object], field: str) -> float:
     ):
         _fail("config", f"{field} must be finite")
     return float(cast(int | float, raw))
+
+
+def _evaluator_source_identity() -> Mapping[str, str]:
+    """Bind evaluation evidence to the exact clean tracked source revision."""
+    repository = Path(__file__).resolve().parents[1]
+
+    def git(*arguments: str) -> str:
+        try:
+            completed = subprocess.run(
+                ["git", *arguments],
+                cwd=repository,
+                check=True,
+                capture_output=True,
+                text=True,
+            )
+        except (OSError, subprocess.CalledProcessError) as exc:
+            raise PickCubeActEvaluationCliError(
+                "evaluator source: unable to inspect Git identity"
+            ) from exc
+        return completed.stdout.strip()
+
+    if git("status", "--short", "--untracked-files=no"):
+        _fail("evaluator source", "tracked worktree is not clean")
+    commit = git("rev-parse", "HEAD")
+    branch = git("branch", "--show-current")
+    if len(commit) != 40 or not branch:
+        _fail("evaluator source", "Git branch or full commit is unavailable")
+    return {"branch": branch, "commit": commit}
 
 
 def _checkpoint_digest(checkpoint: Path) -> str:
@@ -378,6 +407,7 @@ def evaluate(
 ) -> Mapping[str, object]:
     """Resume and summarize one exact checkpoint/seed closed-loop evaluation."""
     config = _mapping(config_path, context="evaluation config")
+    evaluator_source = _evaluator_source_identity()
     if config.get("schema_version") != "pickcube-native-act-evaluation-config-v1":
         _fail("evaluation config", "schema mismatch")
     if _integer(config, "native_episode_horizon", minimum=1) != 50:
@@ -557,6 +587,7 @@ def evaluate(
             "compatibility_identity": report.compatibility_identity,
             "contract_digest": contract.get("contract_digest"),
             "evaluation_kind": evaluation_kind,
+            "evaluator_source": dict(evaluator_source),
             "fixed_seed_reproduction": reproduction,
             "source_commit": run_manifest.get("git_commit"),
             "training_identity": dict(training_identity),
