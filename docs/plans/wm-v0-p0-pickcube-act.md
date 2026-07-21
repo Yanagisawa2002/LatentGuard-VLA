@@ -118,3 +118,22 @@ predeclared roles plus the best ten-episode performer. Final seeds
 development success with zero boundary rejections, simulator errors, and
 workspace violations. Only a primary or secondary final classification may be
 packaged.
+
+### P0.1 completion status
+
+P0.1 completed as **Result B** on execution commit
+`48069c2c3bdb460220a71480d8c75b9393fc9eab`. The exact 20,000-step run retained
+15 checkpoints and selected step 11,000 by validation loss. All 15 were finite
+and action-contract legal on 2,000 real anchors, but 11 failed the unchanged
+static screen because the gripper collapsed near the closed endpoint. The four
+valid early checkpoints each scored 0/10 in the initial development screen.
+Step 1,000 then scored 0/30 with 30 timeouts, zero grasps, zero action
+rejections, zero simulator errors, and zero workspace violations.
+
+The bounded parameterization therefore removed P0's pre-execution legality
+failure but did not produce closed-loop competence. The 75% promotion gate
+failed, final seeds remain untouched, no package was built, and the D2 registry
+contains one rejected audit entry with zero accepted compatible policies. See
+`docs/pickcube_act_bounded_training_report.md`,
+`docs/pickcube_act_bounded_evaluation_report.md`, and
+`docs/pickcube_act_p0_vs_p01.md`.

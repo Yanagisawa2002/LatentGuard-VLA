@@ -1,0 +1,106 @@
+{
+  "artifact_roots": {
+    "development_run_id": "20260721T214500Z_wm-v0-p01-development_48069c2_seed800000",
+    "formal_training_run_id": "20260721T205500Z_wm-v0-p01-act-formal_48069c2_seed0",
+    "post_training_run_id": "20260721T212500Z_wm-v0-p01-post-training_48069c2_seed0",
+    "preflight_run_id": "20260721T202000Z_wm-v0-p01-preflight_e7d00fb_seed0"
+  },
+  "branch": "codex/wm-v0-p0-pickcube-act",
+  "commands": [
+    "python scripts/audit_pickcube_action_pipeline.py --config configs/pickcube_act_bounded/audit.yaml",
+    "python scripts/validate_bounded_action_transform.py --config configs/pickcube_act_bounded/action_transform.yaml",
+    "python scripts/train_pickcube_act.py --config configs/pickcube_act_bounded/train_tiny.yaml",
+    "python scripts/train_pickcube_act.py --config configs/pickcube_act_bounded/train_smoke.yaml",
+    "python scripts/screen_pickcube_act_bounded_checkpoints.py --config configs/pickcube_act_bounded/screen_e2e.yaml",
+    "python scripts/train_pickcube_act.py --config configs/pickcube_act_bounded/train.yaml",
+    "python scripts/verify_pickcube_act_bounded_training.py --stage formal",
+    "python scripts/train_pickcube_act.py --config configs/pickcube_act_bounded/train.yaml --resume <step-00020000>",
+    "python scripts/screen_pickcube_act_bounded_checkpoints.py --config configs/pickcube_act_bounded/screen.yaml",
+    "python scripts/evaluate_policy_diversity.py --config configs/pickcube_act/diversity.yaml",
+    "python scripts/run_pickcube_act_bounded_development.py --config configs/pickcube_act_bounded/eval_development.yaml"
+  ],
+  "evidence_sha256": {
+    "action_target_distribution.json": "fc712603356f3c40dbafac28e10328f89616f2307fafca4d4ab103682a3224c8",
+    "checkpoint_diversity_report.json": "5991a04b8524f0811afbf5a6d10b257bc3d91c7a5475445f5658c7abc29faf38",
+    "checkpoint_screening.json": "40f2ce2c3b2f1bbfaee11c4b3e175143b6d5c6e2c805adf13e7ec6939918dc9c",
+    "development_evaluation.json": "169736e6f5738bed1cef9f01587d22e84d3e7373ec303a879eec666954ee8fd3",
+    "final_evaluation.json": "3e7c403e6c1e7453afa3217a18bda69f73285a6175bdf2fa67abf65708e18ddb",
+    "formal_verification.json": "bb856d1410febef4ca353dd67fe2a795125c263565e6ad113ea2e9599a07874c",
+    "training_summary.json": "e632a1d82eb7cd2c4bcc5d7b5da6fac1d28f682f3db065e46fe070fea34bd521"
+  },
+  "execution_commit": "48069c2c3bdb460220a71480d8c75b9393fc9eab",
+  "final_access": {
+    "final_episode_count": 0,
+    "final_seed_schedule_accessed": false,
+    "status": "NOT_RUN_PROMOTION_GATE_FAILED"
+  },
+  "formal_training": {
+    "best_validation_loss": 0.1025937595263575,
+    "best_validation_step": 11000,
+    "checkpoint_count": 15,
+    "completed": true,
+    "elapsed_seconds_approximate": 2081,
+    "final_step": 20000,
+    "interrupted": false,
+    "post_transform_boundary_violation_count": 0,
+    "zero_work_resume_passed": true
+  },
+  "implementation_commits": [
+    "04210d7",
+    "e7d00fb",
+    "218d3a6",
+    "76398dc",
+    "989f09a",
+    "73182f5",
+    "48069c2"
+  ],
+  "invalid_infrastructure_attempts": [
+    {
+      "preserved_run_id": "20260721T203000Z_wm-v0-p01-tiny_e7d00fb_seed0",
+      "reason": "BF16 tanh rounding reached the canonical -1 endpoint before the float32 strict-interior transform fix",
+      "status": "INVALID_INFRASTRUCTURE_ATTEMPT"
+    },
+    {
+      "preserved_run_id": "20260721T204700Z_wm-v0-p01-act-formal_73182f5_seed0",
+      "reason": "pre-formal configuration could early-stop before 20000 steps and interrupted-before-first-validation finalization attempted float(None)",
+      "status": "INVALID_INFRASTRUCTURE_ATTEMPT"
+    }
+  ],
+  "prohibited_actions": {
+    "action_clipping_used": false,
+    "expert_fallback_used": false,
+    "final_seeds_accessed": false,
+    "policy_package_built": false,
+    "remote_tracked_source_edited": false,
+    "thresholds_relaxed": false
+  },
+  "result": "RESULT_B",
+  "runtime": {
+    "cuda": "13.0",
+    "gpu": "NVIDIA GeForce RTX 5090",
+    "lerobot": "0.6.0",
+    "mani_skill": "3.0.1",
+    "mplib": "0.1.1",
+    "platform": "Linux 5.15.0-119-generic x86_64",
+    "python": "3.12.3",
+    "sapien": "3.0.3",
+    "torch": "2.11.0+cu130"
+  },
+  "schema_version": "pickcube-act-bounded-remote-execution-audit-v1",
+  "server_state_after_execution": {
+    "gpu_workload_state": "idle",
+    "repository_clean": true,
+    "server_power_state": "running",
+    "ssh_reachable": true
+  },
+  "stage_results": {
+    "action_target_audit_passed": true,
+    "cuda_property_validation_passed": true,
+    "development_gate_passed": false,
+    "end_to_end_10000_query_screen_passed": true,
+    "formal_training_verification_passed": true,
+    "gpu_smoke_passed": true,
+    "static_action_contract_passed": true,
+    "tiny_overfit_passed": true
+  }
+}

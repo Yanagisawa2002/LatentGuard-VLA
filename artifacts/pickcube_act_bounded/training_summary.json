@@ -1,0 +1,253 @@
+{
+  "action_parameterization": {
+    "continuous_dimensions": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "dimension_names": [
+      "panda_joint1_target_rad",
+      "panda_joint2_target_rad",
+      "panda_joint3_target_rad",
+      "panda_joint4_target_rad",
+      "panda_joint5_target_rad",
+      "panda_joint6_target_rad",
+      "panda_joint7_target_rad",
+      "panda_gripper_normalized_target"
+    ],
+    "discrete_dimensions": [],
+    "eps": 1e-06,
+    "gripper_mapping": {
+      "continuous_box_dimension": 7,
+      "expert_targets_observed": [
+        -1.0,
+        1.0
+      ],
+      "semantic": "normalized_mimic_joint_position_target_v1"
+    },
+    "lower_bounds": [
+      -2.8973000049591064,
+      -1.7627999782562256,
+      -2.8973000049591064,
+      -3.0717999935150146,
+      -2.8973000049591064,
+      -0.017500000074505806,
+      -2.8973000049591064,
+      -1.0
+    ],
+    "parameterization_type": "affine_tanh_v1",
+    "schema_version": "bounded-action-transform-v1",
+    "temporal_aggregation_mode": "disabled_receding_horizon_v1",
+    "transform_digest": "sha256:e74d814de59b6aeb505e2eebc3fc6263df77aa89aa5267817aed3224a72e941d",
+    "transform_version": "affine_tanh_v1",
+    "units": [
+      "radian",
+      "radian",
+      "radian",
+      "radian",
+      "radian",
+      "radian",
+      "radian",
+      "normalized_unitless"
+    ],
+    "upper_bounds": [
+      2.8973000049591064,
+      1.7627999782562256,
+      2.8973000049591064,
+      -0.0697999969124794,
+      2.8973000049591064,
+      3.752500057220459,
+      2.8973000049591064,
+      1.0
+    ]
+  },
+  "best_validation_loss": 0.1025937595263575,
+  "best_validation_step": 11000,
+  "checkpoint_count": 15,
+  "checkpoint_roles": {
+    "best_validation": "checkpoints/step-00011000",
+    "early": "checkpoints/step-00001000",
+    "final": "checkpoints/step-00020000",
+    "mid": "checkpoints/step-00010000"
+  },
+  "early_stopped": false,
+  "examples_processed": 638853,
+  "final_step": 20000,
+  "interrupted": false,
+  "peak_gpu_memory_allocated_bytes": 1813391872,
+  "peak_gpu_memory_reserved_bytes": 2116026368,
+  "resume_zero_work": false,
+  "runtime_versions": {
+    "cuda": "13.0",
+    "lerobot": "0.6.0",
+    "torch": "2.11.0+cu130"
+  },
+  "schema_version": "pickcube-native-act-bounded-training-summary-v1",
+  "seed_settings": {
+    "cuda_matmul_allow_tf32": false,
+    "cudnn_benchmark": false,
+    "cudnn_deterministic": true,
+    "python_hash_seed": "0",
+    "seed": 0,
+    "torch_deterministic_algorithms": true
+  },
+  "training_identity": {
+    "action_transform": {
+      "continuous_dimensions": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "dimension_names": [
+        "panda_joint1_target_rad",
+        "panda_joint2_target_rad",
+        "panda_joint3_target_rad",
+        "panda_joint4_target_rad",
+        "panda_joint5_target_rad",
+        "panda_joint6_target_rad",
+        "panda_joint7_target_rad",
+        "panda_gripper_normalized_target"
+      ],
+      "discrete_dimensions": [],
+      "eps": 1e-06,
+      "gripper_mapping": {
+        "continuous_box_dimension": 7,
+        "expert_targets_observed": [
+          -1.0,
+          1.0
+        ],
+        "semantic": "normalized_mimic_joint_position_target_v1"
+      },
+      "lower_bounds": [
+        -2.8973000049591064,
+        -1.7627999782562256,
+        -2.8973000049591064,
+        -3.0717999935150146,
+        -2.8973000049591064,
+        -0.017500000074505806,
+        -2.8973000049591064,
+        -1.0
+      ],
+      "parameterization_type": "affine_tanh_v1",
+      "schema_version": "bounded-action-transform-v1",
+      "temporal_aggregation_mode": "disabled_receding_horizon_v1",
+      "transform_digest": "sha256:e74d814de59b6aeb505e2eebc3fc6263df77aa89aa5267817aed3224a72e941d",
+      "transform_version": "affine_tanh_v1",
+      "units": [
+        "radian",
+        "radian",
+        "radian",
+        "radian",
+        "radian",
+        "radian",
+        "radian",
+        "normalized_unitless"
+      ],
+      "upper_bounds": [
+        2.8973000049591064,
+        1.7627999782562256,
+        2.8973000049591064,
+        -0.0697999969124794,
+        2.8973000049591064,
+        3.752500057220459,
+        2.8973000049591064,
+        1.0
+      ]
+    },
+    "contract_digest": "sha256:dd29f16cf295de24c9da990399dea1d036f6f2bee47a08f80a46f7d4c9ecd83f",
+    "dataset_digest": "sha256:234b82709359f1f2fde513ab26c015f4ebfb262a16b1f16206c54eddbde44800",
+    "experiment": {
+      "action_parameterization": {
+        "action_normalization_mode": "IDENTITY",
+        "canonical_training_space": "box_minus_one_plus_one_v1",
+        "checkpoint_schema_version": "pickcube_act_bounded_v1",
+        "continuous_dimensions": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7
+        ],
+        "discrete_dimensions": [],
+        "eps": 1e-06,
+        "gripper_convention": "continuous_normalized_mimic_target_v1",
+        "parameterization_type": "affine_tanh_v1",
+        "schema_version": "pickcube-act-action-parameterization-v1",
+        "temporal_aggregation_mode": "disabled_receding_horizon_v1",
+        "transform_version": "affine_tanh_v1"
+      },
+      "deterministic": true,
+      "device": "cuda",
+      "expected_episode_count": 500,
+      "expected_split_counts": [
+        400,
+        50,
+        50
+      ],
+      "lerobot_version": "0.6.0",
+      "model": {
+        "action_dimension": 8,
+        "action_feature_key": "action",
+        "chunk_size": 16,
+        "dim_feedforward": 3200,
+        "dim_model": 512,
+        "dropout": 0.1,
+        "image_feature_key": "observation.images.front_oblique",
+        "image_shape_chw": [
+          3,
+          224,
+          224
+        ],
+        "kl_weight": 10.0,
+        "latent_dim": 32,
+        "n_action_steps": 4,
+        "n_decoder_layers": 1,
+        "n_encoder_layers": 4,
+        "n_heads": 8,
+        "n_obs_steps": 1,
+        "n_vae_encoder_layers": 4,
+        "normalization_mode": "MEAN_STD",
+        "pretrained_backbone_weights": null,
+        "schema_version": "pickcube-native-act-model-v1",
+        "state_dimension": 18,
+        "state_feature_key": "observation.state",
+        "use_vae": true,
+        "vision_backbone": "resnet18"
+      },
+      "optimization": {
+        "backbone_learning_rate": 1e-05,
+        "batch_size": 32,
+        "checkpoint_interval": 2000,
+        "dataloader_workers": 4,
+        "early_stopping_min_delta": 0.0001,
+        "early_stopping_patience_evaluations": 21,
+        "gradient_clip_norm": 10.0,
+        "learning_rate": 1e-05,
+        "mixed_precision": "bfloat16",
+        "optimizer": "adamw",
+        "schema_version": "pickcube-native-act-optimization-v1",
+        "training_steps": 20000,
+        "validation_interval": 1000,
+        "weight_decay": 0.0001
+      },
+      "schema_version": "pickcube-native-act-bounded-experiment-v1",
+      "seed": 0
+    },
+    "normalization_digest": "sha256:8093f5bba3916dff218e73789739b18e05e9eb96cfc200fa18747f010959532a",
+    "source_commit": "48069c2c3bdb460220a71480d8c75b9393fc9eab",
+    "training_identity_digest": "sha256:bf988a5a8f6926a2a6c054e13b260c50637ff19f1a97e6822973522a441e5a3c"
+  }
+}

@@ -100,12 +100,17 @@ Potential extensions include learned-policy proposals, a contract-frozen LangMan
 
 The PickCube release remains frozen. M6A and M6A.1 completed only the LangMani contract, bridge scaffolding, compatibility inventory, and readiness checks. A real LangMani integration probe and performance experiment have **not** executed, and M6B has not started. See the [LangMani compatibility matrix](docs/integrations/langmani/compatibility-matrix.md) for the source-backed status and unresolved gates.
 
-The separately authorized WM-v0 P0.1 repair is evaluating whether an
-intrinsically bounded ACT output head can turn the immutable rejected P0 native
-policy into a compatible PickCube controller. The exact root-cause analysis is
-in [the bounded-action audit](docs/pickcube_act_bounded_audit.md). Until its
-development and final gates complete, P0 remains rejected and no new portfolio
-claim is made.
+The separately authorized WM-v0 P0.1 repair is complete as **Result B**. Its
+end-to-end `affine_tanh_v1` ACT path produced zero action-boundary violations,
+but only four of 15 checkpoints passed static screening and the selected early
+checkpoint achieved 0/30 development successes with 30 timeouts and no grasp.
+The frozen 75% promotion gate therefore failed. Final seeds remain sealed, no
+`PolicyPackage` exists, the D2 registry has zero accepted policies, and the D2
+policy-generated pilot remains blocked. See the
+[bounded-action audit](docs/pickcube_act_bounded_audit.md),
+[training report](docs/pickcube_act_bounded_training_report.md),
+[evaluation report](docs/pickcube_act_bounded_evaluation_report.md), and
+[controlled P0/P0.1 comparison](docs/pickcube_act_p0_vs_p01.md).
 
 Key P0.1 structural commands are:
 

@@ -1,0 +1,5 @@
+{
+  "promoted_checkpoint_id": null,
+  "schema_version": "pickcube-act-bounded-final-status-v1",
+  "status": "NOT_RUN_PROMOTION_GATE_FAILED"
+}
