@@ -14,6 +14,8 @@ PICKCUBE_ACT_IMAGE_FEATURE = "observation.images.front_oblique"
 PICKCUBE_ACT_STATE_FEATURE = "observation.state"
 PICKCUBE_ACT_ACTION_FEATURE = "action"
 PICKCUBE_ACT_LEROBOT_VERSION = "0.6.0"
+PICKCUBE_ACT_BOUNDED_EXPERIMENT_SCHEMA = "pickcube-native-act-bounded-experiment-v1"
+PICKCUBE_ACT_BOUNDED_CHECKPOINT_SCHEMA = "pickcube_act_bounded_v1"
 
 
 class PickCubeActConfigurationError(ValueError):
@@ -181,6 +183,62 @@ class PickCubeActOptimizationConfig:
 
 
 @dataclass(frozen=True, slots=True)
+class PickCubeActActionParameterizationConfig:
+    """Exact P0.1 bounded-output semantics outside the unchanged ACT backbone."""
+
+    parameterization_type: str = "affine_tanh_v1"
+    transform_version: str = "affine_tanh_v1"
+    checkpoint_schema_version: str = PICKCUBE_ACT_BOUNDED_CHECKPOINT_SCHEMA
+    canonical_training_space: str = "box_minus_one_plus_one_v1"
+    action_normalization_mode: str = "IDENTITY"
+    eps: float = 1e-6
+    continuous_dimensions: tuple[int, ...] = tuple(range(8))
+    discrete_dimensions: tuple[int, ...] = ()
+    gripper_convention: str = "continuous_normalized_mimic_target_v1"
+    temporal_aggregation_mode: str = "disabled_receding_horizon_v1"
+    schema_version: str = "pickcube-act-action-parameterization-v1"
+
+    def __post_init__(self) -> None:
+        if (
+            self.parameterization_type != "affine_tanh_v1"
+            or self.transform_version != "affine_tanh_v1"
+            or self.checkpoint_schema_version != PICKCUBE_ACT_BOUNDED_CHECKPOINT_SCHEMA
+            or self.canonical_training_space != "box_minus_one_plus_one_v1"
+            or self.action_normalization_mode != "IDENTITY"
+            or self.continuous_dimensions != tuple(range(8))
+            or self.discrete_dimensions
+            or self.gripper_convention != "continuous_normalized_mimic_target_v1"
+            or self.temporal_aggregation_mode != "disabled_receding_horizon_v1"
+            or self.schema_version != "pickcube-act-action-parameterization-v1"
+        ):
+            raise PickCubeActConfigurationError(
+                "bounded action parameterization contract changed"
+            )
+        _finite(self.eps, "action parameterization eps", positive=True)
+        if not 0.0 < self.eps < 0.5:
+            raise PickCubeActConfigurationError(
+                "action parameterization eps must lie in (0,0.5)"
+            )
+
+    def to_mapping(self) -> dict[str, object]:
+        """Return the stable JSON-native P0.1 action declaration."""
+        value = asdict(self)
+        value["continuous_dimensions"] = list(self.continuous_dimensions)
+        value["discrete_dimensions"] = list(self.discrete_dimensions)
+        return value
+
+    @classmethod
+    def from_mapping(cls, value: Mapping[str, object]) -> Self:
+        """Decode one strict bounded action declaration."""
+        payload = dict(value)
+        for name in ("continuous_dimensions", "discrete_dimensions"):
+            raw = payload.get(name)
+            if isinstance(raw, list):
+                payload[name] = tuple(raw)
+        return cls(**cast(Any, payload))
+
+
+@dataclass(frozen=True, slots=True)
 class PickCubeActExperimentConfig:
     """Complete native ACT experiment declaration without runtime paths."""
 
@@ -192,6 +250,7 @@ class PickCubeActExperimentConfig:
     expected_episode_count: int = 500
     expected_split_counts: tuple[int, int, int] = (400, 50, 50)
     lerobot_version: str = PICKCUBE_ACT_LEROBOT_VERSION
+    action_parameterization: PickCubeActActionParameterizationConfig | None = None
     schema_version: str = "pickcube-native-act-experiment-v1"
 
     def __post_init__(self) -> None:
@@ -206,12 +265,22 @@ class PickCubeActExperimentConfig:
             raise PickCubeActConfigurationError("dataset size/split contract changed")
         if self.lerobot_version != PICKCUBE_ACT_LEROBOT_VERSION:
             raise PickCubeActConfigurationError("LeRobot must be exactly 0.6.0")
-        if self.schema_version != "pickcube-native-act-experiment-v1":
-            raise PickCubeActConfigurationError("experiment schema changed")
+        if self.action_parameterization is None:
+            if self.schema_version != "pickcube-native-act-experiment-v1":
+                raise PickCubeActConfigurationError("experiment schema changed")
+        elif self.schema_version != PICKCUBE_ACT_BOUNDED_EXPERIMENT_SCHEMA:
+            raise PickCubeActConfigurationError(
+                "bounded experiment requires its versioned schema"
+            )
+
+    @property
+    def bounded(self) -> bool:
+        """Report whether this is the P0.1 intrinsic output parameterization."""
+        return self.action_parameterization is not None
 
     def to_mapping(self) -> dict[str, object]:
         """Return a JSON-native resolved experiment."""
-        return {
+        result: dict[str, object] = {
             "deterministic": self.deterministic,
             "device": self.device,
             "expected_episode_count": self.expected_episode_count,
@@ -222,6 +291,11 @@ class PickCubeActExperimentConfig:
             "schema_version": self.schema_version,
             "seed": self.seed,
         }
+        if self.action_parameterization is not None:
+            result["action_parameterization"] = (
+                self.action_parameterization.to_mapping()
+            )
+        return result
 
     @classmethod
     def from_mapping(cls, value: Mapping[str, object]) -> Self:
@@ -229,6 +303,7 @@ class PickCubeActExperimentConfig:
         payload = dict(value)
         model = payload.pop("model", None)
         optimization = payload.pop("optimization", None)
+        action_parameterization = payload.pop("action_parameterization", None)
         counts = payload.get("expected_split_counts")
         if not isinstance(model, Mapping) or not isinstance(optimization, Mapping):
             raise PickCubeActConfigurationError("experiment nested configs are missing")
@@ -237,6 +312,13 @@ class PickCubeActExperimentConfig:
         return cls(
             model=PickCubeActModelConfig.from_mapping(model),
             optimization=PickCubeActOptimizationConfig.from_mapping(optimization),
+            action_parameterization=(
+                PickCubeActActionParameterizationConfig.from_mapping(
+                    cast(Mapping[str, object], action_parameterization)
+                )
+                if isinstance(action_parameterization, Mapping)
+                else None
+            ),
             **cast(Any, payload),
         )
 
@@ -248,6 +330,8 @@ def build_training_identity(
     normalization_digest: str,
     contract_digest: str,
     source_commit: str,
+    action_transform: Mapping[str, object] | None = None,
+    data_view: Mapping[str, object] | None = None,
 ) -> Mapping[str, object]:
     """Build the exact resume identity for one native ACT run."""
     body: dict[str, object] = {
@@ -257,6 +341,18 @@ def build_training_identity(
         "normalization_digest": normalization_digest,
         "source_commit": source_commit,
     }
+    if experiment.bounded:
+        if action_transform is None:
+            raise PickCubeActConfigurationError(
+                "bounded training identity requires action transform"
+            )
+        body["action_transform"] = dict(action_transform)
+    elif action_transform is not None:
+        raise PickCubeActConfigurationError(
+            "unbounded training identity cannot declare action transform"
+        )
+    if data_view is not None:
+        body["data_view"] = dict(data_view)
     body["training_identity_digest"] = (
         "sha256:"
         + hashlib.sha256(
@@ -266,14 +362,32 @@ def build_training_identity(
     return body
 
 
+def validate_bounded_final_authorization(
+    report: Mapping[str, object], checkpoint_id: str
+) -> None:
+    """Fail closed unless development promoted this exact bounded checkpoint."""
+    if (
+        report.get("schema_version") != "pickcube-act-bounded-development-report-v1"
+        or report.get("development_gate_passed") is not True
+        or report.get("promoted_checkpoint_id") != checkpoint_id
+    ):
+        raise PickCubeActConfigurationError(
+            "bounded final checkpoint lacks exact development authorization"
+        )
+
+
 __all__ = [
     "PICKCUBE_ACT_ACTION_FEATURE",
+    "PICKCUBE_ACT_BOUNDED_CHECKPOINT_SCHEMA",
+    "PICKCUBE_ACT_BOUNDED_EXPERIMENT_SCHEMA",
     "PICKCUBE_ACT_IMAGE_FEATURE",
     "PICKCUBE_ACT_LEROBOT_VERSION",
     "PICKCUBE_ACT_STATE_FEATURE",
     "PickCubeActConfigurationError",
+    "PickCubeActActionParameterizationConfig",
     "PickCubeActExperimentConfig",
     "PickCubeActModelConfig",
     "PickCubeActOptimizationConfig",
     "build_training_identity",
+    "validate_bounded_final_authorization",
 ]

@@ -1,0 +1,12 @@
+{
+  "schema_version": "pickcube-act-bounded-checkpoint-screen-v1",
+  "observation_split": "validation",
+  "phase_order": ["REACH_PREGRASP", "DESCEND_TO_GRASP", "CLOSE_GRIPPER", "TRANSPORT_TO_GOAL"],
+  "minimum_anchor_count": 10000,
+  "minimum_diversity_anchor_count": 20,
+  "maximum_boundary_violations": 0,
+  "maximum_nonfinite_actions": 0,
+  "maximum_contract_errors": 0,
+  "constant_output_tolerance": 0.000001,
+  "gripper_collapse_tolerance": 0.000001
+}

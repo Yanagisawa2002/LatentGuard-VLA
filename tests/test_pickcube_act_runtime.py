@@ -19,8 +19,10 @@ from latentguard.policies.act.runtime import (
     prepare_training_batch,
     processor_statistics,
     save_checkpoint,
+    validate_checkpoint_artifacts,
 )
 from latentguard.policies.act.types import PickCubeActExperimentConfig
+from latentguard.policies.actions import ActionBounds, BoundedActionTransform
 
 _DIGEST = "sha256:" + "a" * 64
 
@@ -132,6 +134,22 @@ def _experiment() -> PickCubeActExperimentConfig:
     return PickCubeActExperimentConfig.from_mapping(value)
 
 
+def _bounded_experiment() -> PickCubeActExperimentConfig:
+    value = json.loads(Path("configs/pickcube_act_bounded/train.yaml").read_text())
+    return PickCubeActExperimentConfig.from_mapping(value)
+
+
+def _bounded_transform() -> BoundedActionTransform:
+    return BoundedActionTransform(
+        ActionBounds(
+            lower=torch.tensor([-3.0, -2.0, -3.0, -4.0, -3.0, -1.0, -3.0, -1.0]),
+            upper=torch.tensor([3.0, 2.0, 3.0, 0.0, 3.0, 4.0, 3.0, 1.0]),
+            names=tuple(f"action_{index}" for index in range(8)),
+            units=("rad",) * 7 + ("normalized",),
+        )
+    )
+
+
 def test_inference_runtime_preserves_valid_chunk_and_rejects_clipping() -> None:
     policy = _FakeInferencePolicy(torch.zeros((1, 16, 8), dtype=torch.float32))
     runtime = PickCubeActInferenceRuntime(
@@ -163,6 +181,31 @@ def test_inference_runtime_preserves_valid_chunk_and_rejects_clipping() -> None:
     assert audited[0, 0] == pytest.approx(1.01)
 
 
+def test_bounded_runtime_applies_exactly_one_affine_transform() -> None:
+    transform = _bounded_transform()
+    policy = _FakeInferencePolicy(torch.zeros((1, 16, 8), dtype=torch.float32))
+    runtime = PickCubeActInferenceRuntime(
+        policy=policy,
+        preprocessor=lambda value: value,
+        postprocessor=lambda value: value,
+        experiment=_bounded_experiment(),
+        action_lower=transform.lower.numpy(),
+        action_upper=transform.upper.numpy(),
+        action_transform=transform,
+    )
+    chunk = runtime.predict_action_chunk(
+        np.zeros((224, 224, 3), dtype=np.uint8),
+        np.zeros(18, dtype=np.float32),
+    )
+    assert np.allclose(chunk[0], transform.center.numpy())
+    policy.chunk.fill_(0.5)
+    chunk = runtime.predict_action_chunk(
+        np.zeros((224, 224, 3), dtype=np.uint8),
+        np.zeros(18, dtype=np.float32),
+    )
+    assert np.allclose(chunk[0], (transform.center + 0.5 * transform.scale).numpy())
+
+
 def test_checkpoint_is_atomically_completed_with_hash_inventory(tmp_path: Path) -> None:
     parameter = torch.nn.Parameter(torch.ones(()))
     optimizer = torch.optim.AdamW([parameter])
@@ -191,3 +234,32 @@ def test_checkpoint_is_atomically_completed_with_hash_inventory(tmp_path: Path) 
         (checkpoint / "training_state" / "training_state.json").read_text()
     )
     assert state["training_control"]["best_validation_step"] == 3
+
+
+def test_bounded_checkpoint_schema_and_transform_are_required(tmp_path: Path) -> None:
+    transform = _bounded_transform()
+    parameter = torch.nn.Parameter(torch.ones(()))
+    optimizer = torch.optim.AdamW([parameter])
+    identity = {
+        "experiment": {"schema_version": "pickcube-native-act-bounded-experiment-v1"},
+        "training_identity_digest": _DIGEST,
+    }
+    checkpoint = save_checkpoint(
+        run_root=tmp_path,
+        step=1,
+        examples_processed=2,
+        training_identity=identity,
+        policy=_SavedComponent("policy"),
+        preprocessor=_SavedComponent("preprocessor"),
+        postprocessor=_SavedComponent("postprocessor"),
+        optimizer=optimizer,
+        metric={"step": 1, "total_loss": 1.0},
+        action_transform=transform,
+    )
+    manifest = json.loads((checkpoint / "checkpoint_manifest.json").read_text())
+    assert manifest["schema_version"] == "pickcube_act_bounded_v1"
+    assert (checkpoint / "pretrained_model" / "action_transform.json").is_file()
+    validate_checkpoint_artifacts(checkpoint, identity)
+    old_identity = {"training_identity_digest": _DIGEST}
+    with pytest.raises(PickCubeActRuntimeError, match="completion or resume"):
+        validate_checkpoint_artifacts(checkpoint, old_identity)

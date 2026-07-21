@@ -75,12 +75,29 @@ def main() -> int:
     args = parser.parse_args()
 
     config = _mapping(args.config, "package config")
-    if config.get("schema_version") != "pickcube-native-act-package-config-v1":
+    schema = config.get("schema_version")
+    if schema not in {
+        "pickcube-native-act-package-config-v1",
+        "pickcube-act-bounded-package-config-v1",
+    }:
         _fail("package config", "schema mismatch")
     policy_id = config.get("policy_id")
     if not isinstance(policy_id, str):
         _fail("package config", "policy_id is missing")
     run = Path(args.training_run).absolute()
+    resolved = _mapping(run / "resolved_config.json", "resolved training config")
+    if schema == "pickcube-act-bounded-package-config-v1":
+        parameterization = resolved.get("action_parameterization")
+        if (
+            resolved.get("schema_version")
+            != "pickcube-native-act-bounded-experiment-v1"
+            or not isinstance(parameterization, Mapping)
+            or parameterization.get("parameterization_type")
+            != config.get("required_action_parameterization")
+            or parameterization.get("checkpoint_schema_version")
+            != config.get("required_checkpoint_schema")
+        ):
+            _fail("package config", "bounded action identity differs")
     run_manifest = _mapping(run / "run_manifest.json", "training run manifest")
     identity = run_manifest.get("training_identity")
     source_commit = run_manifest.get("git_commit")
@@ -94,9 +111,7 @@ def main() -> int:
     registry = build_pickcube_native_policy_registry(
         checkpoint=args.checkpoint,
         expected_training_identity=identity,
-        resolved_training_config=_mapping(
-            run / "resolved_config.json", "resolved training config"
-        ),
+        resolved_training_config=resolved,
         contract=_mapping(args.contract, "PickCube ACT contract"),
         final_evaluation=_mapping(args.evaluation, "final evaluation"),
         normalization_stats_path=args.normalization_stats,

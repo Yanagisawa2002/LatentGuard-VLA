@@ -40,6 +40,11 @@ from latentguard.policies.act.types import (
     PickCubeActExperimentConfig,
     build_training_identity,
 )
+from latentguard.policies.actions import (
+    BoundedActionRegressionHead,
+    BoundedActionTransform,
+    action_bounds_from_contract,
+)
 
 
 def _read_mapping(path: Path, *, context: str) -> Mapping[str, object]:
@@ -156,6 +161,76 @@ def _validation_loss(
     return sum(losses) / len(losses)
 
 
+@torch.no_grad()
+def _bounded_diagnostics(
+    *,
+    policy: Any,
+    batch: Mapping[str, torch.Tensor],
+    experiment: PickCubeActExperimentConfig,
+    action_transform: BoundedActionTransform,
+) -> Mapping[str, object]:
+    """Measure the exact raw/squashed/native head outputs used by the loss."""
+    head = getattr(getattr(policy, "model", None), "action_head", None)
+    if not isinstance(head, BoundedActionRegressionHead):
+        raise PickCubeActRuntimeError("bounded ACT action head is missing")
+    raw, bounded = head.latest_outputs()
+    padding = batch["action_is_pad"]
+    target = batch[experiment.model.action_feature_key]
+    if raw.shape != bounded.shape or bounded.shape != target.shape:
+        raise PickCubeActRuntimeError("bounded ACT diagnostic shape differs")
+    valid = ~padding
+    if not torch.any(valid):
+        raise PickCubeActRuntimeError("bounded ACT batch has no valid targets")
+    raw_valid = raw[valid].to(torch.float32)
+    bounded_valid = bounded[valid].to(torch.float32)
+    target_valid = target[valid].to(torch.float32)
+    native_valid = action_transform.to_environment(bounded_valid)
+    lower = action_transform.lower.to(native_valid)
+    upper = action_transform.upper.to(native_valid)
+    violations = torch.logical_or(native_valid < lower, native_valid > upper)
+    if torch.any(violations):
+        raise PickCubeActRuntimeError(
+            "intrinsic action parameterization produced a boundary violation"
+        )
+    per_dimension_loss = torch.mean(torch.abs(bounded_valid - target_valid), dim=0)
+    saturated_95 = torch.abs(bounded_valid) > 0.95
+    saturated_99 = torch.abs(bounded_valid) > 0.99
+
+    def values(tensor: torch.Tensor) -> list[float]:
+        return cast(list[float], tensor.detach().cpu().tolist())
+
+    return {
+        "bounded_action": {
+            "maximum": values(torch.max(bounded_valid, dim=0).values),
+            "minimum": values(torch.min(bounded_valid, dim=0).values),
+        },
+        "environment_action": {
+            "maximum": values(torch.max(native_valid, dim=0).values),
+            "minimum": values(torch.min(native_valid, dim=0).values),
+        },
+        "per_dimension_action_loss": values(per_dimension_loss),
+        "post_transform_boundary_violation_count": int(violations.sum().cpu()),
+        "raw_decoder_output": {
+            "maximum": values(torch.max(raw_valid, dim=0).values),
+            "minimum": values(torch.min(raw_valid, dim=0).values),
+        },
+        "saturation": {
+            "absolute_tanh_over_0_95_ratio": float(
+                saturated_95.to(torch.float32).mean().cpu()
+            ),
+            "absolute_tanh_over_0_99_ratio": float(
+                saturated_99.to(torch.float32).mean().cpu()
+            ),
+            "per_dimension_over_0_95_ratio": values(
+                saturated_95.to(torch.float32).mean(dim=0)
+            ),
+            "per_dimension_over_0_99_ratio": values(
+                saturated_99.to(torch.float32).mean(dim=0)
+            ),
+        },
+    }
+
+
 def _append_jsonl(path: Path, value: Mapping[str, object]) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     with path.open("a", encoding="utf-8", newline="\n") as stream:
@@ -183,7 +258,11 @@ def _run_manifest(
         "platform": platform.platform(),
         "python": platform.python_version(),
         "runtime_versions": dict(installed_runtime_versions()),
-        "schema_version": "pickcube-native-act-run-manifest-v1",
+        "schema_version": (
+            "pickcube-native-act-bounded-run-manifest-v1"
+            if experiment.bounded
+            else "pickcube-native-act-run-manifest-v1"
+        ),
         "training_identity": dict(training_identity),
     }
 
@@ -197,6 +276,7 @@ def train(
     dry_run: bool,
     max_steps: int | None,
     limit_samples: int | None,
+    limit_episodes: int | None,
     resume: Path | None,
 ) -> Mapping[str, object]:
     """Run the deterministic native ACT optimization lifecycle."""
@@ -209,7 +289,31 @@ def train(
         dataset_root,
         experiment=experiment,
     )
+    train_references = split_references(references, PickCubeDemoSplit.TRAIN)
+    validation_references = split_references(references, PickCubeDemoSplit.VALIDATION)
+    data_view: Mapping[str, object] | None = None
+    if limit_episodes is not None:
+        if type(limit_episodes) is not int or not 1 <= limit_episodes <= 4:
+            raise PickCubeActRuntimeError("tiny episode limit must lie in [1,4]")
+        train_references = train_references[:limit_episodes]
+        validation_references = train_references
+        data_view = {
+            "episode_count": limit_episodes,
+            "episode_ids": [item.episode_id for item in train_references],
+            "mode": "first_train_episodes_tiny_overfit_v1",
+        }
     contract = _read_mapping(contract_path, context="ACT contract")
+    action_section = contract.get("action")
+    if not isinstance(action_section, Mapping):
+        raise PickCubeActRuntimeError("ACT contract action section is missing")
+    action_transform = (
+        BoundedActionTransform(
+            action_bounds_from_contract(cast(Mapping[str, object], action_section)),
+            eps=experiment.action_parameterization.eps,
+        )
+        if experiment.action_parameterization is not None
+        else None
+    )
     contract_digest = contract.get("contract_digest")
     dataset_digest = manifest.get("dataset_digest")
     normalization_digest = normalization.get("normalization_digest")
@@ -225,12 +329,31 @@ def train(
         normalization_digest=cast(str, normalization_digest),
         contract_digest=cast(str, contract_digest),
         source_commit=source_commit,
+        action_transform=(
+            action_transform.to_mapping() if action_transform is not None else None
+        ),
+        data_view=data_view,
     )
     root = Path(output_dir).absolute()
     root.mkdir(parents=True, exist_ok=True)
     resolved_path = root / "resolved_config.json"
     if not resolved_path.exists():
         write_atomic_json(resolved_path, experiment.to_mapping())
+    elif (
+        _read_mapping(resolved_path, context="resolved config")
+        != experiment.to_mapping()
+    ):
+        raise PickCubeActRuntimeError("resolved training config differs on resume")
+    if action_transform is not None and not (root / "action_transform.json").exists():
+        write_atomic_json(root / "action_transform.json", action_transform.to_mapping())
+    elif (
+        action_transform is not None
+        and _read_mapping(
+            root / "action_transform.json", context="run action transform"
+        )
+        != action_transform.to_mapping()
+    ):
+        raise PickCubeActRuntimeError("run action transform differs on resume")
     run_manifest = _run_manifest(
         experiment=experiment,
         training_identity=training_identity,
@@ -238,11 +361,20 @@ def train(
     )
     if not (root / "run_manifest.json").exists():
         write_atomic_json(root / "run_manifest.json", run_manifest)
+    elif (
+        _read_mapping(root / "run_manifest.json", context="run manifest")
+        != run_manifest
+    ):
+        raise PickCubeActRuntimeError("run manifest differs on resume")
     if dry_run:
         summary = {
             "dataset_episode_count": len(references),
             "dry_run": True,
-            "schema_version": "pickcube-native-act-training-summary-v1",
+            "schema_version": (
+                "pickcube-native-act-bounded-training-summary-v1"
+                if experiment.bounded
+                else "pickcube-native-act-training-summary-v1"
+            ),
             "training_identity": dict(training_identity),
         }
         write_atomic_json(root / "dry_run_summary.json", summary)
@@ -255,7 +387,9 @@ def train(
     examples_processed = 0
     if resume is None:
         policy, preprocessor, postprocessor = build_policy_and_processors(
-            experiment, stats
+            experiment,
+            stats,
+            action_transform,
         )
         optimizer = build_optimizer(policy, experiment)
     else:
@@ -263,6 +397,7 @@ def train(
             checkpoint=resume,
             expected_identity=training_identity,
             experiment=experiment,
+            action_transform=action_transform,
         )
         start_step = cast(int, state.get("global_step"))
         examples_processed = cast(int, state.get("examples_processed"))
@@ -279,23 +414,31 @@ def train(
     if type(target_steps) is not int or target_steps < 1:
         raise PickCubeActRuntimeError("target steps must be positive")
     if start_step >= target_steps:
-        return {
+        zero_work = {
             "final_step": start_step,
             "resume_zero_work": True,
-            "schema_version": "pickcube-native-act-training-summary-v1",
+            "schema_version": (
+                "pickcube-native-act-bounded-training-summary-v1"
+                if experiment.bounded
+                else "pickcube-native-act-training-summary-v1"
+            ),
             "training_identity": dict(training_identity),
         }
+        write_atomic_json(root / "zero_work_resume.json", zero_work)
+        return zero_work
     train_dataset = PickCubeActDataset(
         dataset_root,
-        split_references(references, PickCubeDemoSplit.TRAIN),
+        train_references,
         chunk_size=experiment.model.chunk_size,
         limit_samples=limit_samples,
+        action_transform=action_transform,
     )
     validation_dataset = PickCubeActDataset(
         dataset_root,
-        split_references(references, PickCubeDemoSplit.VALIDATION),
+        validation_references,
         chunk_size=experiment.model.chunk_size,
         limit_samples=limit_samples,
+        action_transform=action_transform,
     )
     train_batches = _loader(
         train_dataset,
@@ -364,6 +507,16 @@ def train(
                 not math.isfinite(float(value)) for value in components.values()
             ):
                 raise PickCubeActRuntimeError("training produced nonfinite loss")
+            bounded_metric = (
+                _bounded_diagnostics(
+                    policy=policy,
+                    batch=batch,
+                    experiment=experiment,
+                    action_transform=action_transform,
+                )
+                if action_transform is not None
+                else None
+            )
             loss.backward()
             gradients = [
                 parameter.grad
@@ -426,6 +579,8 @@ def train(
                 else value
                 for key, value in metric.items()
             }
+            if bounded_metric is not None:
+                metric.update(bounded_metric)
             will_early_stop = (
                 validation_loss is not None
                 and evaluations_without_improvement
@@ -458,6 +613,7 @@ def train(
                             evaluations_without_improvement
                         ),
                     },
+                    action_transform=action_transform,
                 )
                 checkpoints.append(checkpoint)
                 metric["checkpoint"] = checkpoint.relative_to(root).as_posix()
@@ -506,9 +662,16 @@ def train(
         "peak_gpu_memory_reserved_bytes": torch.cuda.max_memory_reserved(),
         "resume_zero_work": False,
         "runtime_versions": dict(versions),
-        "schema_version": "pickcube-native-act-training-summary-v1",
+        "schema_version": (
+            "pickcube-native-act-bounded-training-summary-v1"
+            if experiment.bounded
+            else "pickcube-native-act-training-summary-v1"
+        ),
         "seed_settings": dict(seed_settings),
         "training_identity": dict(training_identity),
+        "action_parameterization": (
+            action_transform.to_mapping() if action_transform is not None else None
+        ),
     }
     write_atomic_json(root / "training_summary.json", summary)
     return summary
@@ -524,6 +687,7 @@ def main() -> int:
     parser.add_argument("--dry-run", action="store_true")
     parser.add_argument("--max-steps", type=int)
     parser.add_argument("--limit-samples", type=int)
+    parser.add_argument("--limit-episodes", type=int)
     parser.add_argument("--resume", type=Path)
     args = parser.parse_args()
     result = train(
@@ -534,6 +698,7 @@ def main() -> int:
         dry_run=args.dry_run,
         max_steps=args.max_steps,
         limit_samples=args.limit_samples,
+        limit_episodes=args.limit_episodes,
         resume=args.resume,
     )
     print(json.dumps(result, indent=2, sort_keys=True))

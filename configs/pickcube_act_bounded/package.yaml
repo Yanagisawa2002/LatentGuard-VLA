@@ -1,0 +1,10 @@
+{
+  "schema_version": "pickcube-act-bounded-package-config-v1",
+  "policy_id": "pickcube-native-bounded-act-best-validation-v1",
+  "policy_family": "ACT",
+  "accepted_classifications": ["PRIMARY_ACCEPTED", "SECONDARY_COMPATIBLE"],
+  "required_action_parameterization": "affine_tanh_v1",
+  "required_checkpoint_schema": "pickcube_act_bounded_v1",
+  "required_action_transform_asset": "pretrained_model/action_transform.json",
+  "require_controlled_package_smoke": true
+}

@@ -110,7 +110,9 @@ def _build(
     return build_pickcube_native_policy_registry(
         checkpoint=inputs["checkpoint"],  # type: ignore[arg-type]
         expected_training_identity=inputs["identity"],  # type: ignore[arg-type]
-        resolved_training_config={"model": {"chunk_size": 16}},
+        resolved_training_config=inputs.get(
+            "resolved_training_config", {"model": {"chunk_size": 16}}
+        ),  # type: ignore[arg-type]
         contract=inputs["contract"],  # type: ignore[arg-type]
         final_evaluation=inputs["evaluation"],  # type: ignore[arg-type]
         normalization_stats_path=inputs["normalization"],  # type: ignore[arg-type]
@@ -167,3 +169,48 @@ def test_package_rejects_non_final_or_weak_evidence(tmp_path: Path) -> None:
     inputs["evaluation"] = evaluation
     with pytest.raises(PickCubeActPackagingError, match="not package-eligible"):
         _build(tmp_path, inputs, name="weak")
+
+
+def test_bounded_package_requires_and_hashes_action_transform(tmp_path: Path) -> None:
+    inputs = _inputs(tmp_path)
+    identity = {
+        "dataset_digest": "sha256:" + "1" * 64,
+        "experiment": {"schema_version": "pickcube-native-act-bounded-experiment-v1"},
+    }
+    checkpoint = inputs["checkpoint"]
+    assert isinstance(checkpoint, Path)
+    transform = checkpoint / "pretrained_model" / "action_transform.json"
+    _write_json(transform, {"schema_version": "bounded-action-transform-v1"})
+    manifest_path = checkpoint / "checkpoint_manifest.json"
+    manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+    manifest["schema_version"] = "pickcube_act_bounded_v1"
+    manifest["training_identity"] = identity
+    manifest["artifacts"].append(
+        {
+            "path": "pretrained_model/action_transform.json",
+            "sha256": _digest(transform),
+            "size_bytes": transform.stat().st_size,
+        }
+    )
+    _write_json(manifest_path, manifest)
+    evaluation = dict(inputs["evaluation"])  # type: ignore[arg-type]
+    evaluation["checkpoint_digest"] = _digest(manifest_path)
+    inputs.update(
+        {
+            "evaluation": evaluation,
+            "identity": identity,
+            "resolved_training_config": {
+                "model": {"chunk_size": 16},
+                "schema_version": "pickcube-native-act-bounded-experiment-v1",
+            },
+        }
+    )
+    registry = _build(tmp_path, inputs, name="bounded")
+    package = registry.entries[0].package
+    assert package is not None
+    additional = package.acceptance_evidence["additional_artifacts"]
+    assert isinstance(additional, dict)
+    assert additional["action_transform"]["path"] == (
+        "pretrained_model/action_transform.json"
+    )
+    package.verify_artifacts(tmp_path / "bounded")

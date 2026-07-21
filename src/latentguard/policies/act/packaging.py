@@ -33,6 +33,16 @@ _PRETRAINED_ASSETS = {
 }
 
 
+def _pretrained_assets(training_config: Mapping[str, object]) -> dict[str, str]:
+    assets = dict(_PRETRAINED_ASSETS)
+    if (
+        training_config.get("schema_version")
+        == "pickcube-native-act-bounded-experiment-v1"
+    ):
+        assets["action_transform"] = "pretrained_model/action_transform.json"
+    return assets
+
+
 class PickCubeActPackagingError(ValueError):
     """Raised when native ACT package inputs or evidence are incomplete."""
 
@@ -81,13 +91,16 @@ def _artifact_records(root: Path) -> dict[str, dict[str, object]]:
     return records
 
 
-def _runtime_asset_digest(records: Mapping[str, Mapping[str, object]]) -> str:
+def _runtime_asset_digest(
+    records: Mapping[str, Mapping[str, object]],
+    assets: Mapping[str, str],
+) -> str:
     inventory = {
         name: {
             "path": relative,
             "sha256": records[relative]["sha256"],
         }
-        for name, relative in sorted(_PRETRAINED_ASSETS.items())
+        for name, relative in sorted(assets.items())
     }
     encoded = canonical_json_bytes(inventory, context="PickCubeActRuntimeAssetsV1")
     return f"sha256:{hashlib.sha256(encoded).hexdigest()}"
@@ -171,12 +184,13 @@ def build_pickcube_native_policy_registry(
         _fail("final evaluation", "contract digest differs")
 
     training_config = _mapping(resolved_training_config, "resolved training config")
+    pretrained_assets = _pretrained_assets(training_config)
     model_config = _mapping(training_config.get("model"), "training model config")
     action_horizon = model_config.get("chunk_size")
     if type(action_horizon) is not int or action_horizon < 1:
         _fail("training model config", "chunk_size is invalid")
 
-    for relative in _PRETRAINED_ASSETS.values():
+    for relative in pretrained_assets.values():
         source = checkpoint_root.joinpath(*PurePosixPath(relative).parts)
         target = root.joinpath(*PurePosixPath(relative).parts)
         _copy_regular(source, target, f"checkpoint asset {relative}")
@@ -204,7 +218,7 @@ def build_pickcube_native_policy_registry(
         write_atomic_json(root / "package_smoke_audit.json", smoke_audit)
 
     records = _artifact_records(root)
-    runtime_digest = _runtime_asset_digest(records)
+    runtime_digest = _runtime_asset_digest(records, pretrained_assets)
     if smoke_audit is not None:
         smoke = _mapping(smoke_audit, "package smoke audit")
         if (
@@ -234,7 +248,7 @@ def build_pickcube_native_policy_registry(
     additional_artifacts: dict[str, object] = {}
     for relative, record in sorted(records.items()):
         matching = [
-            name for name, path in _PRETRAINED_ASSETS.items() if path == relative
+            name for name, path in pretrained_assets.items() if path == relative
         ]
         if matching and matching[0] in main_names:
             continue
@@ -252,25 +266,23 @@ def build_pickcube_native_policy_registry(
         policy_id=identifier,
         policy_family="ACT",
         source_commit=source_commit,
-        checkpoint_path=_PRETRAINED_ASSETS["checkpoint"],
-        checkpoint_sha256=cast(
-            str, records[_PRETRAINED_ASSETS["checkpoint"]]["sha256"]
-        ),
-        model_config_path=_PRETRAINED_ASSETS["model_config"],
+        checkpoint_path=pretrained_assets["checkpoint"],
+        checkpoint_sha256=cast(str, records[pretrained_assets["checkpoint"]]["sha256"]),
+        model_config_path=pretrained_assets["model_config"],
         model_config_sha256=cast(
-            str, records[_PRETRAINED_ASSETS["model_config"]]["sha256"]
+            str, records[pretrained_assets["model_config"]]["sha256"]
         ),
-        preprocessor_path=_PRETRAINED_ASSETS["preprocessor"],
+        preprocessor_path=pretrained_assets["preprocessor"],
         preprocessor_sha256=cast(
-            str, records[_PRETRAINED_ASSETS["preprocessor"]]["sha256"]
+            str, records[pretrained_assets["preprocessor"]]["sha256"]
         ),
-        postprocessor_path=_PRETRAINED_ASSETS["postprocessor"],
+        postprocessor_path=pretrained_assets["postprocessor"],
         postprocessor_sha256=cast(
-            str, records[_PRETRAINED_ASSETS["postprocessor"]]["sha256"]
+            str, records[pretrained_assets["postprocessor"]]["sha256"]
         ),
-        normalization_path=_PRETRAINED_ASSETS["normalization"],
+        normalization_path=pretrained_assets["normalization"],
         normalization_sha256=cast(
-            str, records[_PRETRAINED_ASSETS["normalization"]]["sha256"]
+            str, records[pretrained_assets["normalization"]]["sha256"]
         ),
         observation_spec=observation_spec,
         action_spec=action_spec,

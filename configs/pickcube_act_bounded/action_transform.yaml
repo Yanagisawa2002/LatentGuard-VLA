@@ -1,0 +1,9 @@
+{
+  "schema_version": "pickcube-act-bounded-transform-validation-v1",
+  "parameterization_type": "affine_tanh_v1",
+  "eps": 0.000001,
+  "random_finite_case_count": 10000,
+  "extreme_values": [-1000000.0, -100.0, -10.0, 0.0, 10.0, 100.0, 1000000.0],
+  "require_strict_interior_for_squashed_outputs": true,
+  "require_nan_inf_fail_closed": true
+}

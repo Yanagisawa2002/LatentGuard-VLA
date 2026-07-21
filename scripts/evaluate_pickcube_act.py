@@ -59,7 +59,11 @@ from latentguard.policies.act.runtime import (
     PickCubeActRuntimeError,
     load_inference_runtime,
 )
-from latentguard.policies.act.types import PickCubeActExperimentConfig
+from latentguard.policies.act.types import (
+    PickCubeActConfigurationError,
+    PickCubeActExperimentConfig,
+    validate_bounded_final_authorization,
+)
 from latentguard.replay.models import TerminalTaskEvidence, TerminalTaskStatus
 from latentguard.vision_data.cameras import PickCubeMultiViewRigV1
 from latentguard.vision_data.configuration import (
@@ -404,36 +408,64 @@ def evaluate(
     checkpoint: Path,
     output_dir: Path,
     evaluation_kind: str,
+    episode_count_override: int | None = None,
+    promotion_report_path: Path | None = None,
 ) -> Mapping[str, object]:
     """Resume and summarize one exact checkpoint/seed closed-loop evaluation."""
     config = _mapping(config_path, context="evaluation config")
     evaluator_source = _evaluator_source_identity()
-    if config.get("schema_version") != "pickcube-native-act-evaluation-config-v1":
+    schema = config.get("schema_version")
+    bounded_development = schema == "pickcube-act-bounded-development-config-v1"
+    bounded_final = schema == "pickcube-act-bounded-final-config-v1"
+    if schema != "pickcube-native-act-evaluation-config-v1" and not (
+        bounded_development or bounded_final
+    ):
         _fail("evaluation config", "schema mismatch")
     if _integer(config, "native_episode_horizon", minimum=1) != 50:
         _fail("evaluation config", "native horizon changed")
     execution_horizon = _integer(config, "execution_horizon", minimum=1)
     if execution_horizon != 4:
         _fail("evaluation config", "execution horizon changed")
-    phase = config.get(evaluation_kind)
-    if not isinstance(phase, Mapping) or evaluation_kind not in {
-        "smoke",
-        "development",
-        "final",
-    }:
-        _fail("evaluation config", "evaluation kind is unsupported")
-    count_field = {
-        "smoke": "episode_count",
-        "development": "episode_count_per_checkpoint",
-        "final": "episode_count_per_promoted_checkpoint",
-    }[evaluation_kind]
-    episode_count = _integer(phase, count_field, minimum=1)
-    if (evaluation_kind, episode_count) not in {
-        ("smoke", 1),
-        ("development", 30),
-        ("final", 100),
-    }:
-        _fail("evaluation config", "episode count changed")
+    if bounded_development:
+        if evaluation_kind != "development":
+            _fail("evaluation config", "bounded development cannot open another split")
+        phase = config
+        declared = _integer(
+            config, "initial_episode_count_per_valid_checkpoint", minimum=1
+        )
+        episode_count = episode_count_override or declared
+        if declared != 10 or episode_count not in {10, 30}:
+            _fail("evaluation config", "bounded development count changed")
+    elif bounded_final:
+        if evaluation_kind != "final" or episode_count_override is not None:
+            _fail("evaluation config", "bounded final invocation changed")
+        phase = config
+        episode_count = _integer(config, "episode_count", minimum=1)
+        if episode_count != 100:
+            _fail("evaluation config", "bounded final count changed")
+    else:
+        phase = config.get(evaluation_kind)
+        if not isinstance(phase, Mapping) or evaluation_kind not in {
+            "smoke",
+            "development",
+            "final",
+        }:
+            _fail("evaluation config", "evaluation kind is unsupported")
+        count_field = {
+            "smoke": "episode_count",
+            "development": "episode_count_per_checkpoint",
+            "final": "episode_count_per_promoted_checkpoint",
+        }[evaluation_kind]
+        episode_count = _integer(phase, count_field, minimum=1)
+        if episode_count_override is not None or (
+            evaluation_kind,
+            episode_count,
+        ) not in {
+            ("smoke", 1),
+            ("development", 30),
+            ("final", 100),
+        }:
+            _fail("evaluation config", "episode count changed")
     seed_start = _integer(phase, "seed_start")
 
     contract = _mapping(contract_path, context="ACT contract")
@@ -501,6 +533,24 @@ def evaluate(
         raise PickCubeActEvaluationCliError(
             "checkpoint is outside the bound training run"
         ) from exc
+    if bounded_final:
+        if promotion_report_path is None:
+            _fail("bounded final", "immutable development promotion report is required")
+        promotion_report = _mapping(
+            promotion_report_path,
+            context="bounded development promotion",
+        )
+        try:
+            validate_bounded_final_authorization(
+                promotion_report,
+                checkpoint_root.name,
+            )
+        except PickCubeActConfigurationError as exc:
+            raise PickCubeActEvaluationCliError(
+                "bounded final: checkpoint was not promoted by development"
+            ) from exc
+    elif promotion_report_path is not None:
+        _fail("evaluation", "promotion report is valid only for bounded final")
     runtime = load_inference_runtime(
         checkpoint=checkpoint_root,
         expected_identity=training_identity,
@@ -594,7 +644,7 @@ def evaluate(
         }
     )
     if evaluation_kind == "final":
-        promotion = config.get("promotion")
+        promotion = config if bounded_final else config.get("promotion")
         if not isinstance(promotion, Mapping):
             _fail("evaluation config", "promotion thresholds are missing")
         summary["classification"] = classify_final_checkpoint(
@@ -602,8 +652,14 @@ def evaluate(
             assets_complete=True,
             action_contract_complete=(summary["action_contract_violation_count"] == 0),
             reproducible=reproducible,
-            primary_success_rate=_number(promotion, "primary_success_rate"),
-            secondary_success_rate=_number(promotion, "secondary_success_rate"),
+            primary_success_rate=_number(
+                promotion,
+                "primary_success_rate",
+            ),
+            secondary_success_rate=_number(
+                promotion,
+                "secondary_success_rate",
+            ),
         ).value
     write_atomic_json(root / "evaluation_summary.json", summary)
     return summary
@@ -623,6 +679,8 @@ def main() -> int:
         choices=("smoke", "development", "final"),
         required=True,
     )
+    parser.add_argument("--episode-count", type=int)
+    parser.add_argument("--promotion-report", type=Path)
     args = parser.parse_args()
     summary = evaluate(
         config_path=args.config,
@@ -632,6 +690,8 @@ def main() -> int:
         checkpoint=args.checkpoint,
         output_dir=args.output_dir,
         evaluation_kind=args.evaluation_kind,
+        episode_count_override=args.episode_count,
+        promotion_report_path=args.promotion_report,
     )
     print(json.dumps(summary, indent=2, sort_keys=True))
     return 0

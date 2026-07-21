@@ -100,6 +100,25 @@ Potential extensions include learned-policy proposals, a contract-frozen LangMan
 
 The PickCube release remains frozen. M6A and M6A.1 completed only the LangMani contract, bridge scaffolding, compatibility inventory, and readiness checks. A real LangMani integration probe and performance experiment have **not** executed, and M6B has not started. See the [LangMani compatibility matrix](docs/integrations/langmani/compatibility-matrix.md) for the source-backed status and unresolved gates.
 
+The separately authorized WM-v0 P0.1 repair is evaluating whether an
+intrinsically bounded ACT output head can turn the immutable rejected P0 native
+policy into a compatible PickCube controller. The exact root-cause analysis is
+in [the bounded-action audit](docs/pickcube_act_bounded_audit.md). Until its
+development and final gates complete, P0 remains rejected and no new portfolio
+claim is made.
+
+Key P0.1 structural commands are:
+
+```bash
+python scripts/audit_pickcube_action_pipeline.py --help
+python scripts/validate_bounded_action_transform.py --help
+python scripts/train_pickcube_act.py --help
+python scripts/screen_pickcube_act_bounded_checkpoints.py --help
+python scripts/run_pickcube_act_bounded_development.py --help
+python scripts/evaluate_pickcube_act.py --help
+python scripts/package_pickcube_policy.py --help
+```
+
 ## Development and remote execution policy
 
 Tracked source, tests, configs, and reports are authored and validated locally, committed, and pushed. Remote execution may use only that exact clean SHA and writes large artifacts outside the tracked tree. Bugs are fixed locally and resynchronized; remote-only tracked-source edits are invalid. Server lifecycle is controlled only by explicit authorization in the current task.

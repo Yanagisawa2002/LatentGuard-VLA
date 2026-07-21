@@ -28,10 +28,15 @@ from latentguard.policies.act.data import (
 )
 from latentguard.policies.act.types import (
     PICKCUBE_ACT_ACTION_FEATURE,
+    PICKCUBE_ACT_BOUNDED_CHECKPOINT_SCHEMA,
     PICKCUBE_ACT_IMAGE_FEATURE,
     PICKCUBE_ACT_LEROBOT_VERSION,
     PICKCUBE_ACT_STATE_FEATURE,
     PickCubeActExperimentConfig,
+)
+from latentguard.policies.actions import (
+    BoundedActionTransform,
+    attach_bounded_action_head,
 )
 from latentguard.policies.policy_package import PolicyPackage
 
@@ -50,6 +55,7 @@ class PickCubeActInferenceRuntime:
     experiment: PickCubeActExperimentConfig
     action_lower: NDArray[Any]
     action_upper: NDArray[Any]
+    action_transform: BoundedActionTransform | None = None
 
     def __post_init__(self) -> None:
         lower = np.asarray(self.action_lower)
@@ -67,6 +73,18 @@ class PickCubeActInferenceRuntime:
             _fail("ACT inference", "action bounds are malformed")
         self.action_lower = np.array(lower, dtype=np.float64, copy=True)
         self.action_upper = np.array(upper, dtype=np.float64, copy=True)
+        if self.experiment.bounded != (self.action_transform is not None):
+            _fail("ACT inference", "bounded experiment/transform binding differs")
+        if self.action_transform is not None:
+            mapping = self.action_transform.to_mapping()
+            if not np.array_equal(
+                np.asarray(mapping["lower_bounds"], dtype=np.float64),
+                self.action_lower,
+            ) or not np.array_equal(
+                np.asarray(mapping["upper_bounds"], dtype=np.float64),
+                self.action_upper,
+            ):
+                _fail("ACT inference", "transform bounds differ from runtime contract")
 
     def reset(self) -> None:
         """Reset policy episode state before a fresh simulator reset."""
@@ -129,6 +147,10 @@ class PickCubeActInferenceRuntime:
             _fail("ACT inference", "policy lacks chunk prediction")
         predicted = predict(dict(processed))
         restored = self.postprocessor(predicted)
+        if self.action_transform is not None:
+            if not isinstance(restored, torch.Tensor):
+                _fail("ACT inference", "bounded postprocessor did not return a tensor")
+            restored = self.action_transform.to_environment(restored)
         candidate = restored
         for method_name in ("detach", "cpu"):
             method = getattr(candidate, method_name, None)
@@ -268,6 +290,7 @@ class PickCubeActDataset(torch.utils.data.Dataset[dict[str, torch.Tensor]]):
         chunk_size: int,
         limit_samples: int | None = None,
         episode_cache_size: int = 16,
+        action_transform: BoundedActionTransform | None = None,
     ) -> None:
         self.root = Path(root).absolute()
         self.references = tuple(references)
@@ -279,6 +302,7 @@ class PickCubeActDataset(torch.utils.data.Dataset[dict[str, torch.Tensor]]):
             _fail("ACT dataset", "cache size is invalid")
         self.chunk_size = chunk_size
         self.episode_cache_size = episode_cache_size
+        self.action_transform = action_transform
         samples = [
             (episode_index, frame_index)
             for episode_index, reference in enumerate(self.references)
@@ -329,15 +353,30 @@ class PickCubeActDataset(torch.utils.data.Dataset[dict[str, torch.Tensor]]):
         episode_index, frame_index = self.samples[index]
         reference = self.references[episode_index]
         arrays = self._arrays(reference)
-        chunk, padding = action_chunk_at(
-            arrays.action,
-            frame_index,
-            self.chunk_size,
-        )
+        if self.action_transform is None:
+            chunk, padding = action_chunk_at(
+                arrays.action,
+                frame_index,
+                self.chunk_size,
+            )
+            action_tensor = torch.from_numpy(chunk)
+        else:
+            end = min(arrays.action.shape[0], frame_index + self.chunk_size)
+            native = torch.from_numpy(
+                np.array(arrays.action[frame_index:end], dtype=np.float32, copy=True)
+            )
+            canonical = self.action_transform.normalize_target(native)
+            action_tensor = torch.zeros(
+                (self.chunk_size, self.action_transform.dimension),
+                dtype=canonical.dtype,
+            )
+            action_tensor[: canonical.shape[0]] = canonical
+            padding = np.ones((self.chunk_size,), dtype=np.bool_)
+            padding[: canonical.shape[0]] = False
         image = np.asarray(arrays.rgb[frame_index]).transpose(2, 0, 1).copy()
         state = np.asarray(arrays.state[frame_index]).copy()
         return {
-            PICKCUBE_ACT_ACTION_FEATURE: torch.from_numpy(chunk),
+            PICKCUBE_ACT_ACTION_FEATURE: action_tensor,
             PICKCUBE_ACT_IMAGE_FEATURE: torch.from_numpy(image),
             PICKCUBE_ACT_STATE_FEATURE: torch.from_numpy(state),
             "action_is_pad": torch.from_numpy(padding),
@@ -449,6 +488,7 @@ def processor_statistics(
 def build_policy_and_processors(
     experiment: PickCubeActExperimentConfig,
     statistics: Mapping[str, Mapping[str, torch.Tensor]],
+    action_transform: BoundedActionTransform | None = None,
 ) -> tuple[Any, Any, Any]:
     """Build standard LeRobot ACT and its public processors without downloads."""
     installed_runtime_versions()
@@ -467,6 +507,8 @@ def build_policy_and_processors(
         raise PickCubeActRuntimeError("LeRobot ACT runtime is unavailable") from exc
     model = experiment.model
     optimization = experiment.optimization
+    if experiment.bounded != (action_transform is not None):
+        _fail("ACT build", "bounded experiment requires exactly one action transform")
     config = ACTConfig(
         input_features={
             model.image_feature_key: PolicyFeature(
@@ -491,7 +533,11 @@ def build_policy_and_processors(
         normalization_mapping={
             "VISUAL": NormalizationMode(model.normalization_mode),
             "STATE": NormalizationMode(model.normalization_mode),
-            "ACTION": NormalizationMode(model.normalization_mode),
+            "ACTION": NormalizationMode(
+                experiment.action_parameterization.action_normalization_mode
+                if experiment.action_parameterization is not None
+                else model.normalization_mode
+            ),
         },
         vision_backbone=model.vision_backbone,
         pretrained_backbone_weights=model.pretrained_backbone_weights,
@@ -516,6 +562,8 @@ def build_policy_and_processors(
     if str(config.device) != experiment.device:
         _fail("ACT config", "requested CUDA device was silently changed")
     policy = ACTPolicy(config).to(torch.device(experiment.device))
+    if action_transform is not None:
+        attach_bounded_action_head(policy, action_transform)
     preprocessor, postprocessor = make_act_pre_post_processors(
         config,
         dataset_stats={
@@ -584,6 +632,7 @@ def save_checkpoint(
     optimizer: Any,
     metric: Mapping[str, object],
     training_control: Mapping[str, object] | None = None,
+    action_transform: BoundedActionTransform | None = None,
 ) -> Path:
     """Atomically save model, processors, optimizer, RNG, and byte inventory."""
     if step < 1 or examples_processed < 1:
@@ -609,6 +658,11 @@ def save_checkpoint(
             push_to_hub=False,
             config_filename="policy_postprocessor.json",
         )
+        if action_transform is not None:
+            write_atomic_json(
+                pretrained / "action_transform.json",
+                action_transform.to_mapping(),
+            )
         state_root = staging / "training_state"
         state_root.mkdir()
         torch.save(optimizer.state_dict(), state_root / "optimizer.pt")
@@ -620,6 +674,11 @@ def save_checkpoint(
                 "torch_cuda": torch.cuda.get_rng_state_all(),
             },
             state_root / "rng_state.pt",
+        )
+        checkpoint_schema = (
+            PICKCUBE_ACT_BOUNDED_CHECKPOINT_SCHEMA
+            if action_transform is not None
+            else "pickcube-native-act-checkpoint-v1"
         )
         write_atomic_json(
             state_root / "training_state.json",
@@ -650,7 +709,12 @@ def save_checkpoint(
                 "artifacts": artifacts,
                 "examples_processed": examples_processed,
                 "global_step": step,
-                "schema_version": "pickcube-native-act-checkpoint-v1",
+                "schema_version": checkpoint_schema,
+                "action_parameterization": (
+                    action_transform.to_mapping()
+                    if action_transform is not None
+                    else None
+                ),
                 "training_identity": dict(training_identity),
             },
         )
@@ -671,8 +735,19 @@ def validate_checkpoint_artifacts(
     root = Path(checkpoint).absolute()
     manifest = _read_mapping(root / "checkpoint_manifest.json", context="checkpoint")
     complete = _read_mapping(root / "complete.json", context="checkpoint completion")
+    experiment = expected_identity.get("experiment")
+    bounded = (
+        isinstance(experiment, Mapping)
+        and experiment.get("schema_version")
+        == "pickcube-native-act-bounded-experiment-v1"
+    )
+    expected_schema = (
+        PICKCUBE_ACT_BOUNDED_CHECKPOINT_SCHEMA
+        if bounded
+        else "pickcube-native-act-checkpoint-v1"
+    )
     if (
-        manifest.get("schema_version") != "pickcube-native-act-checkpoint-v1"
+        manifest.get("schema_version") != expected_schema
         or complete.get("complete") is not True
         or manifest.get("training_identity") != dict(expected_identity)
     ):
@@ -711,6 +786,7 @@ def load_checkpoint(
     checkpoint: Path,
     expected_identity: Mapping[str, object],
     experiment: PickCubeActExperimentConfig,
+    action_transform: BoundedActionTransform | None = None,
 ) -> tuple[Any, Any, Any, Any, Mapping[str, object]]:
     """Integrity-check and locally reload a complete ACT training checkpoint."""
     validate_checkpoint_artifacts(checkpoint, expected_identity)
@@ -730,6 +806,18 @@ def load_checkpoint(
             policy_cfg=policy.config,
             pretrained_path=str(pretrained),
         )
+        if experiment.bounded != (action_transform is not None):
+            _fail("checkpoint runtime", "bounded transform binding differs")
+        if action_transform is not None:
+            serialized = BoundedActionTransform.from_mapping(
+                _read_mapping(
+                    pretrained / "action_transform.json",
+                    context="checkpoint action transform",
+                )
+            )
+            if serialized.to_mapping() != action_transform.to_mapping():
+                _fail("checkpoint runtime", "action transform identity differs")
+            attach_bounded_action_head(policy, action_transform)
     except (ImportError, OSError, RuntimeError, TypeError, ValueError) as exc:
         raise PickCubeActRuntimeError("checkpoint runtime reload failed") from exc
     optimizer = build_optimizer(policy, experiment)
@@ -784,6 +872,15 @@ def _load_pretrained_inference_runtime(
             policy_cfg=policy.config,
             pretrained_path=str(pretrained),
         )
+        transform: BoundedActionTransform | None = None
+        if experiment.bounded:
+            transform = BoundedActionTransform.from_mapping(
+                _read_mapping(
+                    Path(pretrained) / "action_transform.json",
+                    context="checkpoint action transform",
+                )
+            )
+            attach_bounded_action_head(policy, transform)
     except (ImportError, OSError, RuntimeError, TypeError, ValueError) as exc:
         raise PickCubeActRuntimeError("checkpoint inference reload failed") from exc
     model = experiment.model
@@ -829,6 +926,7 @@ def _load_pretrained_inference_runtime(
         experiment=experiment,
         action_lower=np.asarray(action_lower, dtype=np.float64),
         action_upper=np.asarray(action_upper, dtype=np.float64),
+        action_transform=transform,
     )
 
 

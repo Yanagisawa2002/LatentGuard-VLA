@@ -4,6 +4,8 @@ __pycache__/
 *.egg-info/
 .venv/
 venv/
+build/
+dist/
 
 # Test, type-check, lint, and coverage state
 .pytest_cache/
@@ -71,6 +73,16 @@ artifacts/pickcube_act/*
 !artifacts/pickcube_act/training_summary.json
 !artifacts/pickcube_act/training_run_manifest.json
 !artifacts/pickcube_act/zero_work_resume.json
+!artifacts/pickcube_act_bounded/
+artifacts/pickcube_act_bounded/*
+!artifacts/pickcube_act_bounded/action_target_distribution.json
+!artifacts/pickcube_act_bounded/checkpoint_diversity_report.json
+!artifacts/pickcube_act_bounded/checkpoint_screening.json
+!artifacts/pickcube_act_bounded/development_evaluation.json
+!artifacts/pickcube_act_bounded/final_evaluation.json
+!artifacts/pickcube_act_bounded/policy_registry.json
+!artifacts/pickcube_act_bounded/remote_execution_audit.json
+!artifacts/pickcube_act_bounded/training_summary.json
 datasets/
 wandb/
 *.ckpt

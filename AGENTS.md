@@ -270,6 +270,7 @@ restoration.
 ## Release freeze and public-claim rules
 
 - The PickCube research line is frozen after M4D. Release preparation must not rewrite accepted results, start training, or launch simulator benchmarks.
+- The sole user-authorized post-release exception is WM-v0 P0/P0.1 native ACT. P0 remains an immutable rejected unbounded baseline. P0.1 may retrain the same ACT configuration only with the versioned end-to-end affine-tanh action parameterization, use development seeds `800000..800029`, and open final seeds `900000..900099` only after the frozen 75% development gate. It must not alter the released M0-M4D evidence or public claims until separately released.
 - Every public claim must map to committed evidence. Positive, partial, negative, unsupported, and untested findings must remain distinguishable.
 - Portfolio summaries must state the exact PickCube scope and corresponding limitations; future task or robot integrations require a separate milestone and evidence chain.
 - Raw datasets, images, simulator states, checkpoints, and caches remain outside Git. Compact evidence reports and release registries may be committed.

@@ -99,3 +99,22 @@ was not promoted. The 100 reserved final seeds remain untouched, no package was
 built, and the D2 registry contains one rejected Result B audit entry with zero
 accepted compatible policies. See `docs/pickcube_act_evaluation_report.md` for
 the bound evidence and repair recommendation.
+
+## P0.1 bounded repair
+
+The separately authorized P0.1 repair retains the exact P0 dataset, split,
+observations, ACT architecture, seed, optimization, 16-action prediction
+horizon, four-action execution horizon, 20,000-step budget, controller, native
+bounds, development seeds, and final-seed lock. Its only model change is the
+versioned `affine_tanh_v1` output parameterization described in
+`docs/pickcube_act_bounded_audit.md`.
+
+P0.1 proceeds through strict gates: full target audit, property tests, tiny
+overfit, CUDA smoke, save/load, exact zero-work resume, formal training, static
+screening of every checkpoint on at least 2,000 validation observations, ten
+development episodes for every valid checkpoint, and thirty episodes for the
+predeclared roles plus the best ten-episode performer. Final seeds
+`900000..900099` remain inaccessible unless a fixed checkpoint reaches 75%
+development success with zero boundary rejections, simulator errors, and
+workspace violations. Only a primary or secondary final classification may be
+packaged.
