@@ -6,6 +6,7 @@
   "minimum_success_rate": 0.95,
   "joint_velocity_scale": 3.0,
   "joint_acceleration_scale": 3.0,
+  "transport_refine_steps": 50,
   "trajectory_action_limit": 200,
   "output": "artifacts/pickcube_act/expert_evaluation.json"
 }

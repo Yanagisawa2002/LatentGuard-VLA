@@ -114,6 +114,7 @@ class PickCubeMotionPlanningExpert:
     finger_length_m: float = 0.025
     joint_velocity_scale: float = 2.0
     joint_acceleration_scale: float = 2.0
+    transport_refine_steps: int = 50
 
     def __post_init__(self) -> None:
         for name, value in (
@@ -123,6 +124,13 @@ class PickCubeMotionPlanningExpert:
         ):
             if type(value) is not float or not math.isfinite(value) or value <= 0.0:
                 _fail("PickCubeMotionPlanningExpert", f"{name} must be positive")
+        if type(self.transport_refine_steps) is not int or not (
+            1 <= self.transport_refine_steps <= 50
+        ):
+            _fail(
+                "PickCubeMotionPlanningExpert",
+                "transport refine steps must be an integer in [1, 50]",
+            )
 
     def solve(
         self,
@@ -213,7 +221,10 @@ class PickCubeMotionPlanningExpert:
 
             phase_tracker.transition(PickCubeExpertPhase.TRANSPORT_TO_GOAL)
             goal_pose = sapien.Pose(goal_site.pose.sp.p, grasp_pose.q)
-            return planner.move_to_pose_with_screw(goal_pose)
+            return planner.move_to_pose_with_screw(
+                goal_pose,
+                refine_steps=self.transport_refine_steps,
+            )
         finally:
             planner.close()
 

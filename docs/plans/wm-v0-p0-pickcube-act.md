@@ -50,6 +50,10 @@ existing D2 fail-closed `PolicyPackage` and `PolicyRegistry` contracts.
   planner limits changes waypoint density only and does not change the task,
   controller, action contract, control frequency, horizon, or executed-action
   validation.
+- The final transport command may repeat its last planned joint target for up
+  to 50 refinement calls, but the recording wrapper stops at the native task
+  termination or 50-step Gymnasium truncation. This provides real controller
+  settling time without extending the task horizon or mutating state.
 
 ## Exclusions
 

@@ -211,6 +211,13 @@ def run_expert_gate(
     minimum_success_rate = _number(config, "minimum_success_rate")
     joint_velocity_scale = _number(config, "joint_velocity_scale")
     joint_acceleration_scale = _number(config, "joint_acceleration_scale")
+    transport_refine_steps = _integer(
+        config,
+        "transport_refine_steps",
+        minimum=1,
+    )
+    if transport_refine_steps > 50:
+        raise ValueError("transport refine steps must not exceed the native horizon")
     if minimum_success_rate != 0.95:
         raise ValueError("expert evaluation minimum success rate must equal 0.95")
     if seed_start + episode_count > 2**32:
@@ -237,6 +244,7 @@ def run_expert_gate(
     expert = PickCubeMotionPlanningExpert(
         joint_velocity_scale=joint_velocity_scale,
         joint_acceleration_scale=joint_acceleration_scale,
+        transport_refine_steps=transport_refine_steps,
     )
     episodes: list[ExpertEpisodeAudit] = []
 
@@ -405,6 +413,7 @@ def run_expert_gate(
             "joint_velocity_scale": joint_velocity_scale,
             "seed_end_exclusive": seed_start + episode_count,
             "seed_start": seed_start,
+            "transport_refine_steps": transport_refine_steps,
         }
     )
     return payload
