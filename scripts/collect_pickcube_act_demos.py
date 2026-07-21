@@ -306,9 +306,9 @@ def collect_dataset(
             contract_digest=contract_digest,
             expert_success_rate=float(cast(float, expert_summary["success_rate"])),
         )
-        write_atomic_json(root / "dataset_manifest.json", manifest)
-        write_atomic_json(root / "data_quality_report.json", quality)
-        write_atomic_json(root / "normalization_stats.json", normalization)
+        write_atomic_json(root / "dataset_manifest.json", dict(manifest))
+        write_atomic_json(root / "data_quality_report.json", dict(quality))
+        write_atomic_json(root / "normalization_stats.json", dict(normalization))
         summary = {
             "contract_digest": contract_digest,
             "dataset_digest": manifest["dataset_digest"],
@@ -405,9 +405,9 @@ def collect_dataset(
     )
     if manifest.get("episode_count") != 500:
         _fail("collection", "reloaded dataset does not contain exactly 500 episodes")
-    write_atomic_json(root / "dataset_manifest.json", manifest)
-    write_atomic_json(root / "data_quality_report.json", quality)
-    write_atomic_json(root / "normalization_stats.json", normalization)
+    write_atomic_json(root / "dataset_manifest.json", dict(manifest))
+    write_atomic_json(root / "data_quality_report.json", dict(quality))
+    write_atomic_json(root / "normalization_stats.json", dict(normalization))
     failure_counts = Counter(
         cast(str, item.get("failure_category"))
         for item in attempts.values()

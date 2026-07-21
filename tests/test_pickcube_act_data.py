@@ -101,6 +101,9 @@ def test_dataset_reports_keep_episode_splits_and_train_only_stats(
     assert quality["expert_success_rate"] == 0.97
     assert normalization["source_split"] == "train"
     assert str(normalization["normalization_digest"]).startswith("sha256:")
+    json.dumps(dict(manifest))
+    json.dumps(dict(quality))
+    json.dumps(dict(normalization))
 
 
 def test_duplicate_scene_seed_is_rejected_even_when_content_differs(
