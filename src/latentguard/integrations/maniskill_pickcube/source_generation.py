@@ -58,10 +58,28 @@ class PickCubeTrajectoryActionLimitError(PickCubeSourceGenerationError):
 class PickCubeEpisodeEndedError(PickCubeSourceGenerationError):
     """Raised after an intercepted action reaches termination or truncation."""
 
-    def __init__(self, *, truncated: bool, action_count: int) -> None:
+    def __init__(
+        self,
+        *,
+        terminated: bool,
+        truncated: bool,
+        action_count: int,
+    ) -> None:
+        if type(terminated) is not bool or type(truncated) is not bool:
+            raise PickCubeSourceGenerationError(
+                "episode end flags must be strict booleans"
+            )
+        if not terminated and not truncated:
+            raise PickCubeSourceGenerationError(
+                "episode end requires termination or truncation"
+            )
+        self.terminated = terminated
         self.truncated = truncated
         self.action_count = action_count
-        reason = "truncated" if truncated else "terminated"
+        if terminated and truncated:
+            reason = "terminated and truncated"
+        else:
+            reason = "terminated" if terminated else "truncated"
         super().__init__(f"PickCube episode {reason} at action {action_count}")
 
 
@@ -334,6 +352,7 @@ class RecordingEnvironmentProxy:
             truncated = _strict_runtime_bool(result[3], context="truncated")
             if terminated or truncated:
                 raise PickCubeEpisodeEndedError(
+                    terminated=terminated,
                     truncated=truncated,
                     action_count=len(self._actions),
                 )

@@ -482,6 +482,7 @@ def test_recording_can_fail_closed_at_native_truncation() -> None:
     wrapper.reset(seed=7)
     with pytest.raises(PickCubeEpisodeEndedError, match="truncated") as captured:
         wrapper.step(np.array([0.1, 0.0], dtype=np.float32))
+    assert captured.value.terminated is False
     assert captured.value.truncated
     assert captured.value.action_count == 1
     assert len(wrapper.actions) == 1

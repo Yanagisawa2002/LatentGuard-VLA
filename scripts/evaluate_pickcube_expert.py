@@ -127,6 +127,52 @@ def _failed_episode(
     )
 
 
+def _terminal_episode(
+    *,
+    seed: int,
+    tracker: PickCubeExpertPhaseTracker,
+    recorder: RecordingEnvironmentProxy,
+    environment: object,
+    factory: LazyManiSkillSourceEnvironmentFactory,
+    key_contract: PickCubeTaskKeyContract,
+    ended: PickCubeEpisodeEndedError,
+) -> ExpertEpisodeAudit:
+    """Classify a native episode end from the explicit post-action task state."""
+    recorder.verify_interception_complete()
+    snapshot = factory.capture_task_snapshot(environment, key_contract)
+    evidence = build_pickcube_task_evidence(snapshot, key_contract)
+    success = (
+        evidence.status is TerminalTaskStatus.COMPLETE
+        and evidence.success is True
+        and evidence.unsafe is False
+    )
+    if success:
+        tracker.require_complete()
+        return ExpertEpisodeAudit(
+            seed=seed,
+            success=True,
+            action_count=ended.action_count,
+            phase_action_counts=tracker.counts_by_name(),
+        )
+    if evidence.unsafe is True:
+        category = "workspace_violation"
+    elif evidence.status is not TerminalTaskStatus.COMPLETE:
+        category = "task_evidence_indeterminate"
+    elif ended.truncated:
+        category = "timeout"
+    elif ended.terminated:
+        category = "terminal_failure"
+    else:  # guarded by PickCubeEpisodeEndedError itself
+        category = "episode_end_invalid"
+    return _failed_episode(
+        seed=seed,
+        tracker=tracker,
+        action_count=ended.action_count,
+        category=category,
+        simulator_error=False,
+    )
+
+
 def run_expert_gate(
     config_path: Path,
     compatibility_path: Path,
@@ -245,15 +291,39 @@ def run_expert_gate(
                     )
                 )
         except PickCubeEpisodeEndedError as exc:
-            episodes.append(
-                _failed_episode(
-                    seed=seed,
-                    tracker=tracker,
-                    action_count=exc.action_count,
-                    category="timeout" if exc.truncated else "terminal_failure",
-                    simulator_error=False,
+            if recorder is None or environment is None:
+                episodes.append(
+                    _failed_episode(
+                        seed=seed,
+                        tracker=tracker,
+                        action_count=exc.action_count,
+                        category="simulator_error.episode_end_without_runtime",
+                        simulator_error=True,
+                    )
                 )
-            )
+            else:
+                try:
+                    episodes.append(
+                        _terminal_episode(
+                            seed=seed,
+                            tracker=tracker,
+                            recorder=recorder,
+                            environment=environment,
+                            factory=factory,
+                            key_contract=key_contract,
+                            ended=exc,
+                        )
+                    )
+                except Exception as terminal_exc:
+                    episodes.append(
+                        _failed_episode(
+                            seed=seed,
+                            tracker=tracker,
+                            action_count=exc.action_count,
+                            category=(f"simulator_error.{type(terminal_exc).__name__}"),
+                            simulator_error=True,
+                        )
+                    )
         except PickCubeTrajectoryActionLimitError:
             episodes.append(
                 _failed_episode(
@@ -280,13 +350,13 @@ def run_expert_gate(
                     simulator_error=False,
                 )
             )
-        except Exception:
+        except Exception as exc:
             episodes.append(
                 _failed_episode(
                     seed=seed,
                     tracker=tracker,
                     action_count=0 if recorder is None else len(recorder.actions),
-                    category="simulator_error",
+                    category=f"simulator_error.{type(exc).__name__}",
                     simulator_error=True,
                 )
             )
