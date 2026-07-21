@@ -464,6 +464,7 @@ def save_checkpoint(
     postprocessor: Any,
     optimizer: Any,
     metric: Mapping[str, object],
+    training_control: Mapping[str, object] | None = None,
 ) -> Path:
     """Atomically save model, processors, optimizer, RNG, and byte inventory."""
     if step < 1 or examples_processed < 1:
@@ -507,6 +508,7 @@ def save_checkpoint(
                 "examples_processed": examples_processed,
                 "global_step": step,
                 "metric": dict(metric),
+                "training_control": dict(training_control or {}),
                 "training_identity": dict(training_identity),
             },
         )
@@ -617,6 +619,22 @@ def load_checkpoint(
         weights_only=False,
     )
     optimizer.load_state_dict(optimizer_state)
+    rng_state = torch.load(
+        Path(checkpoint) / "training_state" / "rng_state.pt",
+        map_location="cpu",
+        weights_only=False,
+    )
+    if not isinstance(rng_state, Mapping):
+        _fail("checkpoint", "RNG state is malformed")
+    try:
+        random.setstate(rng_state["python"])
+        np.random.set_state(rng_state["numpy"])
+        torch.set_rng_state(rng_state["torch_cpu"])
+        cuda_state = rng_state["torch_cuda"]
+        if cuda_state:
+            torch.cuda.set_rng_state_all(cuda_state)
+    except (KeyError, TypeError, RuntimeError, ValueError) as exc:
+        raise PickCubeActRuntimeError("checkpoint RNG restore failed") from exc
     training_state = _read_mapping(
         Path(checkpoint) / "training_state" / "training_state.json",
         context="training state",

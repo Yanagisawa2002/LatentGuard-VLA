@@ -120,9 +120,18 @@ def test_checkpoint_is_atomically_completed_with_hash_inventory(tmp_path: Path) 
         postprocessor=_SavedComponent("postprocessor"),
         optimizer=optimizer,
         metric={"step": 3, "total_loss": 1.0},
+        training_control={
+            "best_validation_loss": 1.0,
+            "best_validation_step": 3,
+            "evaluations_without_improvement": 0,
+        },
     )
     assert checkpoint.name == "step-00000003"
     assert json.loads((checkpoint / "complete.json").read_text())["complete"] is True
     manifest = json.loads((checkpoint / "checkpoint_manifest.json").read_text())
     assert manifest["global_step"] == 3
     assert len(manifest["artifacts"]) >= 6
+    state = json.loads(
+        (checkpoint / "training_state" / "training_state.json").read_text()
+    )
+    assert state["training_control"]["best_validation_step"] == 3
