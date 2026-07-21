@@ -271,6 +271,16 @@ def _run_manifest(
     }
 
 
+def _run_manifest_matches(
+    existing: Mapping[str, object], current: Mapping[str, object]
+) -> bool:
+    """Compare immutable run identity while retaining the original launch audit."""
+    ignored = {"launch_command"}
+    return {key: value for key, value in existing.items() if key not in ignored} == {
+        key: value for key, value in current.items() if key not in ignored
+    }
+
+
 def train(
     *,
     config_path: Path,
@@ -365,9 +375,9 @@ def train(
     )
     if not (root / "run_manifest.json").exists():
         write_atomic_json(root / "run_manifest.json", run_manifest)
-    elif (
-        _read_mapping(root / "run_manifest.json", context="run manifest")
-        != run_manifest
+    elif not _run_manifest_matches(
+        _read_mapping(root / "run_manifest.json", context="run manifest"),
+        run_manifest,
     ):
         raise PickCubeActRuntimeError("run manifest differs on resume")
     if dry_run:
