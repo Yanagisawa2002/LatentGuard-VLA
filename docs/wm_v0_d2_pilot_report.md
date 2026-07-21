@@ -70,9 +70,13 @@ nonzero status, preventing accidental collection or promotion.
 - `artifacts/wm_v0_d2/candidate_diversity_report.json`
 - `artifacts/wm_v0_d2/terminalization_report.json`
 - `artifacts/wm_v0_d2/data_quality_report.json`
+- `artifacts/wm_v0_d2/remote_execution_audit.json`
 - `docs/wm_v0_d2_policy_asset_audit.md`
 - `docs/wm_v0_d2_terminalization_design.md`
 
+Remote run `20260721_wm-v0-d2-asset-audit_7af117d` audited code commit
+`7af117d97f1af030f07249699d59cf6d30fea545`. Its compact JSON SHA-256 is
+`39104298cbba81619dd214e03eed2be480b84b5cce4dbb0d762fdb9cc4a01841`.
 The compact remote execution audit is limited to exact source revision,
 environment/GPU inventory, and absence of compatible policy runtime assets. It
 contains no checkpoint bytes, credentials, machine paths, raw data, or simulator

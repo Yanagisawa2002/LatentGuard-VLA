@@ -47,6 +47,7 @@ artifacts/wm_v0_d2/*
 !artifacts/wm_v0_d2/candidate_diversity_report.json
 !artifacts/wm_v0_d2/terminalization_report.json
 !artifacts/wm_v0_d2/data_quality_report.json
+!artifacts/wm_v0_d2/remote_execution_audit.json
 datasets/
 wandb/
 *.ckpt

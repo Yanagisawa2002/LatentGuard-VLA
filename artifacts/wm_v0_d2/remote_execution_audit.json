@@ -1,0 +1,36 @@
+{
+  "accepted_compatible_policy_count": 0,
+  "audited_policy_count": 6,
+  "branch": "codex/wm-v0-d2-policy-binding",
+  "d2_gate_authorized": false,
+  "d2_gate_failed_checks": [
+    "accepted_compatible_policy_package_at_least_1",
+    "policy_generated_candidate_ratio_exactly_100_percent",
+    "valid_sample_count_at_least_150",
+    "independent_anchor_count_at_least_50",
+    "terminal_success_count_at_least_25",
+    "terminal_failure_count_at_least_25",
+    "terminalized_ratio_at_least_70_percent",
+    "meaningfully_distinct_anchor_ratio_at_least_70_percent",
+    "mixed_outcome_anchor_count_at_least_15",
+    "future_completeness_at_least_99_percent",
+    "policy_metadata_completeness_exactly_100_percent"
+  ],
+  "gpu_count": 1,
+  "gpu_models": [
+    "NVIDIA GeForce RTX 5090"
+  ],
+  "policy_smoke_executed": false,
+  "python_version": "3.12.3",
+  "registry_digest": "sha256:7b37ca9d61bc7752f2abaccc4d7fd960c02c088530e1a92e04e605c71d89ac53",
+  "remote_tracked_source_clean": true,
+  "result": "RESULT_B",
+  "schema_version": "wm-v0-d2-remote-execution-audit-v1",
+  "simulator_executed": false,
+  "source_commit": "7af117d97f1af030f07249699d59cf6d30fea545",
+  "status_counts": {
+    "INCOMPATIBLE_ENVIRONMENT": 1,
+    "INCOMPLETE_ASSET": 5
+  },
+  "training_executed": false
+}

@@ -28,6 +28,10 @@ The registry therefore contains:
 The remote audit found the expected source-only LangMani environment and no
 controller checkpoint, processor, or normalization package. It did not modify
 remote tracked source or launch a simulator, VLM, LangMani, training, or GPU job.
+The sanitized audit run ID is
+`20260721_wm-v0-d2-asset-audit_7af117d`; it bound source commit
+`7af117d97f1af030f07249699d59cf6d30fea545` and reproduced registry digest
+`sha256:7b37ca9d61bc7752f2abaccc4d7fd960c02c088530e1a92e04e605c71d89ac53`.
 
 ## Complete package discovered
 
