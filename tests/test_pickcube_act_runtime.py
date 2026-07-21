@@ -7,16 +7,20 @@ from pathlib import Path
 from typing import Any
 
 import numpy as np
+import pytest
 import torch
 
 from latentguard.policies.act.data import PickCubeDemoEpisode, save_demo_episode
 from latentguard.policies.act.runtime import (
     DeterministicResumeBatchSampler,
     PickCubeActDataset,
+    PickCubeActInferenceRuntime,
+    PickCubeActRuntimeError,
     prepare_training_batch,
     processor_statistics,
     save_checkpoint,
 )
+from latentguard.policies.act.types import PickCubeActExperimentConfig
 
 _DIGEST = "sha256:" + "a" * 64
 
@@ -105,6 +109,53 @@ class _SavedComponent:
     def save_pretrained(self, root: Path, **kwargs: Any) -> None:
         filename = str(kwargs.get("config_filename", self.name + ".json"))
         (root / filename).write_text(self.name, encoding="utf-8")
+
+
+class _FakeInferencePolicy:
+    def __init__(self, chunk: torch.Tensor) -> None:
+        self.chunk = chunk
+        self.reset_count = 0
+
+    def reset(self) -> None:
+        self.reset_count += 1
+
+    def predict_action_chunk(self, batch: dict[str, torch.Tensor]) -> torch.Tensor:
+        assert set(batch) == {
+            "observation.images.front_oblique",
+            "observation.state",
+        }
+        return self.chunk
+
+
+def _experiment() -> PickCubeActExperimentConfig:
+    value = json.loads(Path("configs/pickcube_act/train.yaml").read_text())
+    return PickCubeActExperimentConfig.from_mapping(value)
+
+
+def test_inference_runtime_preserves_valid_chunk_and_rejects_clipping() -> None:
+    policy = _FakeInferencePolicy(torch.zeros((1, 16, 8), dtype=torch.float32))
+    runtime = PickCubeActInferenceRuntime(
+        policy=policy,
+        preprocessor=lambda value: value,
+        postprocessor=lambda value: value,
+        experiment=_experiment(),
+        action_lower=np.full(8, -1.0),
+        action_upper=np.full(8, 1.0),
+    )
+    runtime.reset()
+    chunk = runtime.predict_action_chunk(
+        np.zeros((224, 224, 3), dtype=np.uint8),
+        np.zeros(18, dtype=np.float32),
+    )
+    assert policy.reset_count == 1
+    assert chunk.shape == (16, 8)
+    assert chunk.dtype == np.dtype(np.float64)
+    policy.chunk[0, 0, 0] = 1.01
+    with pytest.raises(PickCubeActRuntimeError, match="clipping is prohibited"):
+        runtime.predict_action_chunk(
+            np.zeros((224, 224, 3), dtype=np.uint8),
+            np.zeros(18, dtype=np.float32),
+        )
 
 
 def test_checkpoint_is_atomically_completed_with_hash_inventory(tmp_path: Path) -> None:

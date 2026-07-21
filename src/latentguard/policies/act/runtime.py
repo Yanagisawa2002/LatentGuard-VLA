@@ -39,6 +39,105 @@ class PickCubeActRuntimeError(RuntimeError):
     """Raised when optional ACT data, model, or checkpoint runtime drifts."""
 
 
+@dataclass(slots=True)
+class PickCubeActInferenceRuntime:
+    """Run one pinned ACT checkpoint with explicit chunk/range validation."""
+
+    policy: Any
+    preprocessor: Any
+    postprocessor: Any
+    experiment: PickCubeActExperimentConfig
+    action_lower: NDArray[Any]
+    action_upper: NDArray[Any]
+
+    def __post_init__(self) -> None:
+        lower = np.asarray(self.action_lower)
+        upper = np.asarray(self.action_upper)
+        expected = (self.experiment.model.action_dimension,)
+        if (
+            lower.shape != expected
+            or upper.shape != expected
+            or not np.issubdtype(lower.dtype, np.number)
+            or not np.issubdtype(upper.dtype, np.number)
+            or not np.all(np.isfinite(lower))
+            or not np.all(np.isfinite(upper))
+            or not np.all(lower < upper)
+        ):
+            _fail("ACT inference", "action bounds are malformed")
+        self.action_lower = np.array(lower, dtype=np.float64, copy=True)
+        self.action_upper = np.array(upper, dtype=np.float64, copy=True)
+
+    def reset(self) -> None:
+        """Reset policy episode state before a fresh simulator reset."""
+        reset = getattr(self.policy, "reset", None)
+        if not callable(reset):
+            _fail("ACT inference", "policy lacks reset")
+        reset()
+
+    @torch.no_grad()
+    def predict_action_chunk(
+        self,
+        rgb: NDArray[Any],
+        state: NDArray[Any],
+    ) -> NDArray[np.float64]:
+        """Predict and validate one complete unmodified action chunk."""
+        image = np.asarray(rgb)
+        proprioception = np.asarray(state)
+        if image.dtype != np.dtype(np.uint8) or image.shape != (224, 224, 3):
+            _fail("ACT inference", "RGB must be uint8[224,224,3]")
+        if (
+            proprioception.dtype != np.dtype(np.float32)
+            or proprioception.shape != (self.experiment.model.state_dimension,)
+            or not np.all(np.isfinite(proprioception))
+        ):
+            _fail("ACT inference", "state must be finite float32[18]")
+        raw = {
+            self.experiment.model.image_feature_key: torch.from_numpy(
+                np.array(image, copy=True)
+            )
+            .permute(2, 0, 1)
+            .unsqueeze(0)
+            .to(torch.float32)
+            .div(255.0),
+            self.experiment.model.state_feature_key: torch.from_numpy(
+                np.array(proprioception, copy=True)
+            ).unsqueeze(0),
+        }
+        processed = self.preprocessor(raw)
+        if not isinstance(processed, Mapping):
+            _fail("ACT inference", "preprocessor returned a non-mapping")
+        predict = getattr(self.policy, "predict_action_chunk", None)
+        if not callable(predict):
+            _fail("ACT inference", "policy lacks chunk prediction")
+        predicted = predict(dict(processed))
+        restored = self.postprocessor(predicted)
+        candidate = restored
+        for method_name in ("detach", "cpu"):
+            method = getattr(candidate, method_name, None)
+            if callable(method):
+                candidate = method()
+        to_numpy = getattr(candidate, "numpy", None)
+        if callable(to_numpy):
+            candidate = to_numpy()
+        chunk = np.asarray(candidate)
+        expected_shape = (
+            1,
+            self.experiment.model.chunk_size,
+            self.experiment.model.action_dimension,
+        )
+        if (
+            chunk.shape != expected_shape
+            or chunk.dtype.hasobject
+            or not np.issubdtype(chunk.dtype, np.floating)
+            or not np.all(np.isfinite(chunk))
+        ):
+            _fail("ACT inference", "postprocessed action chunk is invalid")
+        detached = np.array(chunk[0], dtype=np.float64, copy=True, order="C")
+        if np.any(detached < self.action_lower) or np.any(detached > self.action_upper):
+            _fail("ACT inference", "action chunk exceeds bound; clipping is prohibited")
+        return detached
+
+
 def _fail(context: str, reason: str) -> NoReturn:
     raise PickCubeActRuntimeError(f"{context}: {reason}")
 
@@ -642,14 +741,90 @@ def load_checkpoint(
     return policy, preprocessor, postprocessor, optimizer, training_state
 
 
+def load_inference_runtime(
+    *,
+    checkpoint: Path,
+    expected_identity: Mapping[str, object],
+    experiment: PickCubeActExperimentConfig,
+    action_lower: Sequence[float],
+    action_upper: Sequence[float],
+) -> PickCubeActInferenceRuntime:
+    """Integrity-check and load only the frozen policy inference assets."""
+    _validate_checkpoint(checkpoint, expected_identity)
+    pretrained = Path(checkpoint).absolute() / "pretrained_model"
+    try:
+        from lerobot.policies import (
+            make_pre_post_processors,
+        )
+        from lerobot.policies.act import ACTPolicy
+
+        policy = ACTPolicy.from_pretrained(
+            pretrained,
+            local_files_only=True,
+            strict=True,
+        ).to(torch.device(experiment.device))
+        preprocessor, postprocessor = make_pre_post_processors(
+            policy_cfg=policy.config,
+            pretrained_path=str(pretrained),
+        )
+    except (ImportError, OSError, RuntimeError, TypeError, ValueError) as exc:
+        raise PickCubeActRuntimeError("checkpoint inference reload failed") from exc
+    model = experiment.model
+    config = policy.config
+    expected_scalars = {
+        "chunk_size": model.chunk_size,
+        "dim_feedforward": model.dim_feedforward,
+        "dim_model": model.dim_model,
+        "dropout": model.dropout,
+        "kl_weight": model.kl_weight,
+        "latent_dim": model.latent_dim,
+        "n_action_steps": model.n_action_steps,
+        "n_decoder_layers": model.n_decoder_layers,
+        "n_encoder_layers": model.n_encoder_layers,
+        "n_heads": model.n_heads,
+        "n_obs_steps": model.n_obs_steps,
+        "n_vae_encoder_layers": model.n_vae_encoder_layers,
+        "pretrained_backbone_weights": model.pretrained_backbone_weights,
+        "temporal_ensemble_coeff": None,
+        "use_vae": model.use_vae,
+        "vision_backbone": model.vision_backbone,
+    }
+    if any(
+        getattr(config, name, object()) != value
+        for name, value in expected_scalars.items()
+    ):
+        _fail("checkpoint inference", "serialized ACT scalar configuration drifted")
+    input_shapes = {
+        key: tuple(value.shape) for key, value in config.input_features.items()
+    }
+    output_shapes = {
+        key: tuple(value.shape) for key, value in config.output_features.items()
+    }
+    if input_shapes != {
+        model.image_feature_key: model.image_shape_chw,
+        model.state_feature_key: (model.state_dimension,),
+    } or output_shapes != {model.action_feature_key: (model.action_dimension,)}:
+        _fail("checkpoint inference", "serialized ACT feature contract drifted")
+    return PickCubeActInferenceRuntime(
+        policy=policy,
+        preprocessor=preprocessor,
+        postprocessor=postprocessor,
+        experiment=experiment,
+        action_lower=np.asarray(action_lower, dtype=np.float64),
+        action_upper=np.asarray(action_upper, dtype=np.float64),
+    )
+
+
 __all__ = [
     "DeterministicResumeBatchSampler",
     "PickCubeActDataset",
+    "PickCubeActInferenceRuntime",
     "PickCubeActRuntimeError",
     "build_optimizer",
     "build_policy_and_processors",
     "installed_runtime_versions",
     "load_checkpoint",
+    "load_inference_runtime",
     "prepare_training_batch",
     "processor_statistics",
     "save_checkpoint",

@@ -1,0 +1,37 @@
+{
+  "schema_version": "pickcube-native-act-evaluation-config-v1",
+  "environment_config": "configs/pickcube_act/environment.yaml",
+  "render_domain_config": "configs/vision/m4a/render-domains-v1.json",
+  "render_domain_id": "canonical",
+  "render_seed": 0,
+  "native_episode_horizon": 50,
+  "execution_horizon": 4,
+  "development": {
+    "episode_count_per_checkpoint": 30,
+    "seed_start": 800000
+  },
+  "final": {
+    "episode_count_per_promoted_checkpoint": 100,
+    "seed_start": 900000
+  },
+  "promotion": {
+    "semantic": "best_validation_checkpoint_only_v1",
+    "primary_success_rate": 0.75,
+    "secondary_success_rate": 0.5,
+    "maximum_simulator_errors": 0,
+    "maximum_workspace_violations": 0,
+    "maximum_action_contract_violations": 0
+  },
+  "failure_taxonomy": [
+    "success",
+    "grasp_failure",
+    "post_grasp_drop",
+    "release_failure",
+    "timeout",
+    "workspace_violation",
+    "terminal_failure",
+    "task_evidence_indeterminate",
+    "action_contract_violation",
+    "simulator_error"
+  ]
+}
