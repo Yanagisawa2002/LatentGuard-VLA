@@ -272,13 +272,41 @@ def _run_manifest(
 
 
 def _run_manifest_matches(
-    existing: Mapping[str, object], current: Mapping[str, object]
+    existing: Mapping[str, object],
+    current: Mapping[str, object],
+    *,
+    allow_source_commit_drift: bool,
 ) -> bool:
     """Compare immutable run identity while retaining the original launch audit."""
     ignored = {"launch_command"}
+    if allow_source_commit_drift:
+        ignored.add("git_commit")
     return {key: value for key, value in existing.items() if key not in ignored} == {
         key: value for key, value in current.items() if key not in ignored
     }
+
+
+def _resume_artifact_source_commit(
+    *, root: Path, resume: Path | None, current_source_commit: str
+) -> str:
+    """Retain the producer SHA for a same-run checkpoint verification invocation."""
+    manifest_path = root / "run_manifest.json"
+    if resume is None or not manifest_path.is_file():
+        return current_source_commit
+    manifest = _read_mapping(manifest_path, context="run manifest")
+    identity = manifest.get("training_identity")
+    if not isinstance(identity, Mapping):
+        raise PickCubeActRuntimeError(
+            "resume run manifest training identity is missing"
+        )
+    source_commit = identity.get("source_commit")
+    if (
+        not isinstance(source_commit, str)
+        or len(source_commit) != 40
+        or any(character not in "0123456789abcdef" for character in source_commit)
+    ):
+        raise PickCubeActRuntimeError("resume artifact source commit is malformed")
+    return source_commit
 
 
 def train(
@@ -331,7 +359,13 @@ def train(
     contract_digest = contract.get("contract_digest")
     dataset_digest = manifest.get("dataset_digest")
     normalization_digest = normalization.get("normalization_digest")
-    source_commit = _git(["rev-parse", "HEAD"])
+    root = Path(output_dir).absolute()
+    current_source_commit = _git(["rev-parse", "HEAD"])
+    source_commit = _resume_artifact_source_commit(
+        root=root,
+        resume=resume,
+        current_source_commit=current_source_commit,
+    )
     if not all(
         isinstance(value, str)
         for value in (contract_digest, dataset_digest, normalization_digest)
@@ -348,7 +382,6 @@ def train(
         ),
         data_view=data_view,
     )
-    root = Path(output_dir).absolute()
     root.mkdir(parents=True, exist_ok=True)
     resolved_path = root / "resolved_config.json"
     if not resolved_path.exists():
@@ -378,6 +411,7 @@ def train(
     elif not _run_manifest_matches(
         _read_mapping(root / "run_manifest.json", context="run manifest"),
         run_manifest,
+        allow_source_commit_drift=resume is not None,
     ):
         raise PickCubeActRuntimeError("run manifest differs on resume")
     if dry_run:
@@ -427,9 +461,15 @@ def train(
     )
     if type(target_steps) is not int or target_steps < 1:
         raise PickCubeActRuntimeError("target steps must be positive")
+    if start_step < target_steps and source_commit != current_source_commit:
+        raise PickCubeActRuntimeError(
+            "nonterminal resume requires the original training source commit"
+        )
     if start_step >= target_steps:
         zero_work = {
+            "artifact_source_commit": source_commit,
             "final_step": start_step,
+            "resume_invocation_source_commit": current_source_commit,
             "resume_zero_work": True,
             "schema_version": (
                 "pickcube-native-act-bounded-training-summary-v1"
