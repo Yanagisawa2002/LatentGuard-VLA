@@ -1,0 +1,11 @@
+{
+  "schema_version": "wm-v0-d2-rollout-collection-v1",
+  "execution_authorized": false,
+  "blocked_reason": "no ACCEPTED_COMPATIBLE PickCube-v1 policy package",
+  "candidate_origin_required": "policy_generated",
+  "primary_policy_id": null,
+  "minimum_episode_count": 30,
+  "maximum_initial_phase_ratio": 0.15,
+  "formal_training_authorized": false,
+  "closed_loop_authorized": false
+}

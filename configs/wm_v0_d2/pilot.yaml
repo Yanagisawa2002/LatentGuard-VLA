@@ -1,0 +1,18 @@
+{
+  "schema_version": "wm-v0-d2-pilot-v1",
+  "execution_authorized": false,
+  "blocked_reason": "asset audit Result B; no accepted compatible provider",
+  "candidate_origin_required": "policy_generated",
+  "minimum_anchor_count": 50,
+  "minimum_episode_count": 30,
+  "minimum_candidates_per_anchor": 3,
+  "minimum_sample_count": 150,
+  "minimum_terminal_success_count": 25,
+  "minimum_terminal_failure_count": 25,
+  "minimum_terminalized_ratio": 0.70,
+  "minimum_distinct_anchor_ratio": 0.70,
+  "minimum_mixed_outcome_anchor_count": 15,
+  "minimum_future_completeness": 0.99,
+  "formal_training_authorized": false,
+  "closed_loop_authorized": false
+}

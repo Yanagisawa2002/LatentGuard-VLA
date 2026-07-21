@@ -1,0 +1,15 @@
+{
+  "continuation_policy_id": null,
+  "continuation_reset_mode": "RESET_FROM_CURRENT_OBSERVATION_AND_CLEAR_ACTION_QUEUE",
+  "outcome_counts": {
+    "FAILURE": 0,
+    "SIMULATOR_ERROR": 0,
+    "SUCCESS": 0,
+    "UNRESOLVED_HORIZON": 0
+  },
+  "pilot_executed": false,
+  "reason": "terminalization requires an accepted compatible primary policy; none was found",
+  "result": "NOT_EVALUATED",
+  "schema_version": "wm-v0-d2-terminalization-report-v1",
+  "unresolved_horizon_counted_as_failure": false
+}

@@ -1,0 +1,10 @@
+{
+  "schema_version": "wm-v0-d2-validation-v1",
+  "expected_result": "RESULT_B",
+  "registry": "artifacts/wm_v0_d2/policy_registry.json",
+  "manifest": "artifacts/wm_v0_d2/dataset_manifest.json",
+  "require_candidate_origin": "policy_generated",
+  "synthetic_candidates_may_satisfy_gate": false,
+  "unresolved_horizon_is_failure": false,
+  "execution_authorized": false
+}

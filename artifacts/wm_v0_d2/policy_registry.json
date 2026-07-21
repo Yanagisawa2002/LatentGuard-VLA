@@ -1,0 +1,288 @@
+{
+  "entries": [
+    {
+      "audit_record": {
+        "acceptance_evidence": "native_phase1_three_seed_rollout",
+        "action_horizon": 50,
+        "action_spec": "8D pd_joint_pos at 20 Hz; executes 10 actions per query",
+        "checkpoint_hash": "sha256:01cbd124005e12c04acc67258a48f19b9327364ab78fa7954a359f03152853d9",
+        "checkpoint_path": "checkpoints/step-00095000-01cbd124005e/pretrained_model/model.safetensors",
+        "dataset_reference": "langmani-v2 red-left training dataset",
+        "environment_id": "LangMani-PickPlaceByInstruction-v0",
+        "environment_version": "ManiSkill 3.0.1; SAPIEN 3.0.3",
+        "normalization_statistics": "pretrained_model/policy_preprocessor_step_3_normalizer_processor.safetensors",
+        "observation_spec": "base_camera RGB 3x256x256 plus policy state 9",
+        "policy_family": "ACT",
+        "policy_name": "LangMani ACT per-task red-left accepted",
+        "postprocessor": "pretrained_model/policy_postprocessor.json and unnormalizer state",
+        "preprocessor": "pretrained_model/policy_preprocessor.json and normalizer state",
+        "robot_embodiment": "panda",
+        "source_commit": "ceb73db1a0fe88fa7f58f347b51c542aa76663a0",
+        "source_repository": "Yanagisawa2002/LangMani",
+        "training_config": "configs/langmani_v2/policies/act_per_task_red_left_v0.json"
+      },
+      "compatibility_reasons": [
+        "environment_id differs: LangMani-PickPlaceByInstruction-v0 versus PickCube-v1",
+        "task contract differs: red cube to left bin versus PickCube target pose",
+        "observation contract differs: base-camera RGB plus 9D state versus an unbound PickCube policy input",
+        "matching 8D pd_joint_pos shape does not establish action ordering semantics"
+      ],
+      "compatibility_status": "INCOMPATIBLE_ENVIRONMENT",
+      "known_evaluation_result": {
+        "environment_id": "LangMani-PickPlaceByInstruction-v0",
+        "gpu_model": "NVIDIA GeForce RTX 5090",
+        "policy_queries": 40,
+        "simulator_steps": 392,
+        "successful_episodes": 3,
+        "total_episodes": 3,
+        "validation_scope": "native LangMani task only"
+      },
+      "missing_assets": [],
+      "package": {
+        "acceptance_evidence": {
+          "checkpoint_fingerprint": "sha256:01cbd124005e12c04acc67258a48f19b9327364ab78fa7954a359f03152853d9",
+          "native_environment_only": true,
+          "native_rollout_successes": 3,
+          "native_rollout_total": 3,
+          "postprocessor_state_sha256": "sha256:c043c76eab4e1d2ee4040c8892923c1aae0a0c47b4c252a8fb1d1118778bf781"
+        },
+        "action_horizon": 50,
+        "action_spec": {
+          "chunk_size": 50,
+          "control_frequency_hz": 20.0,
+          "control_mode": "pd_joint_pos",
+          "dimension": 8,
+          "dtype": "float32",
+          "execution_horizon": 10,
+          "normalization": "MEAN_STD"
+        },
+        "checkpoint_path": "pretrained_model/model.safetensors",
+        "checkpoint_sha256": "sha256:56a30fda4c0157946fcdad990bad5157f7c2a317c7005aeba9fa36b805608301",
+        "deterministic": true,
+        "environment_spec": {
+          "environment_id": "LangMani-PickPlaceByInstruction-v0",
+          "mani_skill_version": "3.0.1",
+          "robot_embodiment": "panda",
+          "sapien_version": "3.0.3",
+          "task_id": "langmani-pick-place-task-v0:red_cube:left_bin:canonical_v0"
+        },
+        "model_config_path": "pretrained_model/config.json",
+        "model_config_sha256": "sha256:7f09ff69ef42326a6ab5c79f0785ebd40cd9b976fa69e2596e82f5742c004621",
+        "normalization_path": "pretrained_model/policy_preprocessor_step_3_normalizer_processor.safetensors",
+        "normalization_sha256": "sha256:5cbdf752bf5ac112b1e8188a3bb53964852fa2c6795e644476e96cd70e68758c",
+        "observation_spec": {
+          "image": {
+            "dtype": "float32",
+            "key": "observation.images.base_camera",
+            "shape": [
+              3,
+              256,
+              256
+            ]
+          },
+          "state": {
+            "dtype": "float32",
+            "key": "observation.state",
+            "shape": [
+              9
+            ]
+          }
+        },
+        "policy_family": "ACT",
+        "policy_id": "act-per-task-red-left-v1-accepted",
+        "postprocessor_path": "pretrained_model/policy_postprocessor.json",
+        "postprocessor_sha256": "sha256:ad2d49a0f67981d2e0a1bee69d85a816654b3159365829093227baa46a74d8bb",
+        "preprocessor_path": "pretrained_model/policy_preprocessor.json",
+        "preprocessor_sha256": "sha256:eaff91dc5004c22473578eecd7cbe14566a0ab1d5c63f9edc41d3cc4d0bc270b",
+        "schema_version": "policy-package-v1",
+        "source_commit": "ceb73db1a0fe88fa7f58f347b51c542aa76663a0"
+      },
+      "policy_family": "ACT",
+      "policy_id": "act-per-task-red-left-v1-accepted",
+      "policy_name": "LangMani ACT per-task red-left accepted",
+      "source_repository": "Yanagisawa2002/LangMani"
+    },
+    {
+      "audit_record": {
+        "checkpoint_hash": "sha256:96971f84efbeb84dcc878502ecaaec6acd5aa100b786fc7c7cb0cbe2653df7a8",
+        "checkpoint_path": "unavailable",
+        "environment_id": "LangMani-PickPlaceByInstruction-v0",
+        "policy_family": "ACT",
+        "policy_name": "LangMani ACT per-task red-right registry declaration",
+        "source_commit": "9da1a3fbc3135989604a80f605873a26b7cbfcbb",
+        "source_repository": "Yanagisawa2002/LangMani"
+      },
+      "compatibility_reasons": [
+        "registry declaration is not an executable package",
+        "LangMani task contract is not PickCube-v1"
+      ],
+      "compatibility_status": "INCOMPLETE_ASSET",
+      "known_evaluation_result": {
+        "availability": "not accessible in audited roots"
+      },
+      "missing_assets": [
+        "checkpoint",
+        "model_config",
+        "preprocessor",
+        "postprocessor",
+        "normalization_statistics",
+        "runtime_evidence"
+      ],
+      "package": null,
+      "policy_family": "ACT",
+      "policy_id": "act-per-task-red-right-v1",
+      "policy_name": "LangMani ACT per-task red-right registry declaration",
+      "source_repository": "Yanagisawa2002/LangMani"
+    },
+    {
+      "audit_record": {
+        "checkpoint_hash": "sha256:b33fb3ccfb4f0e81743acd2c7cd5be09d390ab11bc1f5c117d5e4931ec90bc33",
+        "checkpoint_path": "unavailable",
+        "environment_id": "LangMani-PickPlaceByInstruction-v0",
+        "policy_family": "ACT",
+        "policy_name": "LangMani ACT per-task green-left registry declaration",
+        "source_commit": "9da1a3fbc3135989604a80f605873a26b7cbfcbb",
+        "source_repository": "Yanagisawa2002/LangMani"
+      },
+      "compatibility_reasons": [
+        "registry declaration is not an executable package",
+        "LangMani task contract is not PickCube-v1"
+      ],
+      "compatibility_status": "INCOMPLETE_ASSET",
+      "known_evaluation_result": {
+        "availability": "not accessible in audited roots"
+      },
+      "missing_assets": [
+        "checkpoint",
+        "model_config",
+        "preprocessor",
+        "postprocessor",
+        "normalization_statistics",
+        "runtime_evidence"
+      ],
+      "package": null,
+      "policy_family": "ACT",
+      "policy_id": "act-per-task-green-left-v1",
+      "policy_name": "LangMani ACT per-task green-left registry declaration",
+      "source_repository": "Yanagisawa2002/LangMani"
+    },
+    {
+      "audit_record": {
+        "checkpoint_hash": "sha256:f30ddd1e4e92422da4892d7159569126a9b95dfd41d5b39ea221db372208914d",
+        "checkpoint_path": "unavailable",
+        "environment_id": "LangMani-PickPlaceByInstruction-v0",
+        "policy_family": "ACT",
+        "policy_name": "LangMani ACT per-task green-right registry declaration",
+        "source_commit": "9da1a3fbc3135989604a80f605873a26b7cbfcbb",
+        "source_repository": "Yanagisawa2002/LangMani"
+      },
+      "compatibility_reasons": [
+        "registry declaration is not an executable package",
+        "LangMani task contract is not PickCube-v1"
+      ],
+      "compatibility_status": "INCOMPLETE_ASSET",
+      "known_evaluation_result": {
+        "availability": "not accessible in audited roots"
+      },
+      "missing_assets": [
+        "checkpoint",
+        "model_config",
+        "preprocessor",
+        "postprocessor",
+        "normalization_statistics",
+        "runtime_evidence"
+      ],
+      "package": null,
+      "policy_family": "ACT",
+      "policy_id": "act-per-task-green-right-v1",
+      "policy_name": "LangMani ACT per-task green-right registry declaration",
+      "source_repository": "Yanagisawa2002/LangMani"
+    },
+    {
+      "audit_record": {
+        "checkpoint_hash": "sha256:0aa8add04abb8041627c24a1b06a74dce05b6993b5a321532231206af7fff4ed",
+        "checkpoint_path": "unavailable",
+        "environment_id": "LangMani-PickPlaceByInstruction-v0",
+        "policy_family": "ACT",
+        "policy_name": "LangMani ACT per-task blue-left registry declaration",
+        "source_commit": "9da1a3fbc3135989604a80f605873a26b7cbfcbb",
+        "source_repository": "Yanagisawa2002/LangMani"
+      },
+      "compatibility_reasons": [
+        "registry declaration is not an executable package",
+        "LangMani task contract is not PickCube-v1"
+      ],
+      "compatibility_status": "INCOMPLETE_ASSET",
+      "known_evaluation_result": {
+        "availability": "not accessible in audited roots"
+      },
+      "missing_assets": [
+        "checkpoint",
+        "model_config",
+        "preprocessor",
+        "postprocessor",
+        "normalization_statistics",
+        "runtime_evidence"
+      ],
+      "package": null,
+      "policy_family": "ACT",
+      "policy_id": "act-per-task-blue-left-v1",
+      "policy_name": "LangMani ACT per-task blue-left registry declaration",
+      "source_repository": "Yanagisawa2002/LangMani"
+    },
+    {
+      "audit_record": {
+        "checkpoint_hash": "sha256:6a2fb8d0986b347a82c1fd54a385f75e40ffb6e109e2a5dd71a011cfd94c4fb4",
+        "checkpoint_path": "unavailable",
+        "environment_id": "LangMani-PickPlaceByInstruction-v0",
+        "policy_family": "ACT",
+        "policy_name": "LangMani ACT per-task blue-right registry declaration",
+        "source_commit": "9da1a3fbc3135989604a80f605873a26b7cbfcbb",
+        "source_repository": "Yanagisawa2002/LangMani"
+      },
+      "compatibility_reasons": [
+        "registry declaration is not an executable package",
+        "LangMani task contract is not PickCube-v1"
+      ],
+      "compatibility_status": "INCOMPLETE_ASSET",
+      "known_evaluation_result": {
+        "availability": "not accessible in audited roots"
+      },
+      "missing_assets": [
+        "checkpoint",
+        "model_config",
+        "preprocessor",
+        "postprocessor",
+        "normalization_statistics",
+        "runtime_evidence"
+      ],
+      "package": null,
+      "policy_family": "ACT",
+      "policy_id": "act-per-task-blue-right-v1",
+      "policy_name": "LangMani ACT per-task blue-right registry declaration",
+      "source_repository": "Yanagisawa2002/LangMani"
+    }
+  ],
+  "required_action_spec": {
+    "action_contract_digest": "sha256:028d8c2cbb10e867d709f1c5d4c31e07ef1e084f1a8ad8370f96185ba892f0eb",
+    "control_frequency_hz": 20.0,
+    "control_mode": "pd_joint_pos",
+    "dimension": 8,
+    "dtype": "float32",
+    "ordering_semantic": "unbound"
+  },
+  "required_environment_spec": {
+    "compatibility_identity": "sha256:05a560fd89e0989b6d94017c6456efc535de4a0bf87ededaf468f5e2d9ef71f7",
+    "environment_id": "PickCube-v1",
+    "mani_skill_version": "3.0.1",
+    "robot_embodiment": "panda",
+    "sapien_version": "3.0.3",
+    "task_sha256": "sha256:6f881f11151bd124a4ec6d1189e86e20b17d366aa1cbcc6e2f751f1f5bb03ed1"
+  },
+  "required_observation_spec": {
+    "environment_observation_mode": "none",
+    "policy_input_contract": "pickcube_v1_policy_observation_unbound"
+  },
+  "result": "RESULT_B",
+  "schema_version": "wm-v0-d2-policy-registry-v1"
+}

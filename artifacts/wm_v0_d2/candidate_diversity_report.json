@@ -1,0 +1,18 @@
+{
+  "anchor_count": 0,
+  "candidate_count": 0,
+  "classification_counts": {
+    "exact_duplicate": 0,
+    "meaningfully_distinct": 0,
+    "near_duplicate": 0
+  },
+  "diversity_evaluated": false,
+  "external_action_perturbation_used": false,
+  "reason": "no accepted compatible policy provider; candidate generation was not authorized",
+  "result": "NOT_EVALUATED",
+  "schema_version": "wm-v0-d2-candidate-diversity-v1",
+  "threshold_binding": {
+    "status": "UNAVAILABLE",
+    "reason": "a compatible policy action normalization and range contract was not available; no arbitrary dimensionless threshold was selected"
+  }
+}

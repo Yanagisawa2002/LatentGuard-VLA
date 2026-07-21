@@ -1,0 +1,23 @@
+{
+  "checks": {
+    "accepted_compatible_policy_available": false,
+    "candidate_diversity_evaluated": false,
+    "d1_history_unchanged": true,
+    "pilot_execution_authorized": false,
+    "policy_candidates_generated": false,
+    "synthetic_candidates_used_for_d2_gate": false,
+    "terminalization_evaluated": false
+  },
+  "failed_checks": [
+    "accepted_compatible_policy_available",
+    "candidate_diversity_evaluated",
+    "pilot_execution_authorized",
+    "policy_candidates_generated",
+    "terminalization_evaluated"
+  ],
+  "pilot_data_valid": false,
+  "reason": "Result B at accepted-policy asset audit gate",
+  "rejected_candidate_count": 0,
+  "result": "RESULT_B",
+  "schema_version": "wm-v0-d2-data-quality-v1"
+}
