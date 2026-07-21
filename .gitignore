@@ -30,7 +30,11 @@ Thumbs.db
 outputs/
 runs/
 checkpoints/
-artifacts/
+artifacts/*
+!artifacts/wm_v0/
+artifacts/wm_v0/*
+!artifacts/wm_v0/dataset_manifest.json
+!artifacts/wm_v0/evaluation_summary.json
 datasets/
 wandb/
 *.ckpt

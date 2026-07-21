@@ -1,0 +1,29 @@
+{
+  "schema_version": "1.0",
+  "seed": 0,
+  "model": "wm_v0",
+  "visual_encoder": "torchvision_resnet18_imagenet1k_v1_frozen",
+  "latent_dimension": 512,
+  "proprio_dimension": 38,
+  "action_dimension": 8,
+  "action_horizon": 16,
+  "prediction_horizon": 4,
+  "view_count": 3,
+  "model_dimension": 192,
+  "attention_heads": 4,
+  "transformer_layers": 2,
+  "dropout": 0.1,
+  "batch_size": 32,
+  "learning_rate": 0.0003,
+  "maximum_steps": 20000,
+  "evaluation_interval": 250,
+  "checkpoint_interval": 250,
+  "loss_weights": {
+    "future_latent": 1.0,
+    "progress": 0.5,
+    "events": 0.5,
+    "success": 0.5,
+    "uncertainty": 0.05
+  },
+  "output_directory": "outputs/wm_v0/training"
+}

@@ -1,0 +1,11 @@
+[
+  {
+    "anchor_id": "dry-run-anchor",
+    "candidates": [],
+    "episode_id": "dry-run-episode",
+    "source_episode_id": "dry-run-source",
+    "split_group_id": "dry-run-source",
+    "split": "train",
+    "task_id": "maniskill/PickCube-v1"
+  }
+]

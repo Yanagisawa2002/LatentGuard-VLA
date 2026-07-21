@@ -1,0 +1,17 @@
+{
+  "schema_version": "1.0",
+  "seed": 271828,
+  "settings": ["in_distribution", "held_out_scene", "held_out_policy_source"],
+  "candidate_source_breakdowns": ["policy_generated", "synthetic_corruption"],
+  "calibration_bins": 10,
+  "bootstrap_resamples": 2000,
+  "closed_loop_probe": {
+    "enabled": false,
+    "risk_threshold": 0.75,
+    "minimum_score_margin": 0.10,
+    "maximum_uncertainty": 0.20,
+    "maximum_interventions": 3,
+    "cooldown_decisions": 2
+  },
+  "output_directory": "outputs/wm_v0/evaluation"
+}

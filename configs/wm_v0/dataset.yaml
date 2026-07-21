@@ -1,0 +1,11 @@
+{
+  "schema_version": "1.0",
+  "seed": 271828,
+  "minimum_valid_samples": 1000,
+  "required_splits": ["train", "validation", "test"],
+  "group_key": "source_episode_id",
+  "require_real_future_observation": true,
+  "require_both_terminal_classes": true,
+  "require_nonterminal_target": true,
+  "output_directory": "outputs/wm_v0/dataset"
+}

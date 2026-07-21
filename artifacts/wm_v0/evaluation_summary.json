@@ -1,0 +1,15 @@
+{
+  "baselines": {
+    "direct_action_verifier": "not_run_without_real_future_dataset",
+    "matched_outcome_only": "not_run_without_real_future_dataset",
+    "wm_v0": "not_run_without_real_future_dataset"
+  },
+  "claim_status": "not_evaluated",
+  "closed_loop_probe": "not_authorized",
+  "data_gate_authorized": false,
+  "does_future_latent_improve_selection": "unanswered",
+  "metrics": {},
+  "reason": "No committed candidate-specific simulator future trajectories were available at audit time.",
+  "sample_count": 0,
+  "schema_version": "1.0"
+}

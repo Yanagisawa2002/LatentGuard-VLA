@@ -277,6 +277,11 @@ class PickCubeClosedLoopRuntime:
         self._environment: object | None = None
         self._source: BoundSourcePlanV1 | None = None
         self._state_index = 0
+        self._current_visual_domain = "not_applicable"
+        self._last_task_snapshot: dict[str, object] | None = None
+        self._last_boundary: RuntimeBoundaryV1 | None = None
+        self._last_restore_component_count = 0
+        self._last_restore_maximum_error = 0.0
 
     def _create_and_restore(
         self,
@@ -310,8 +315,13 @@ class PickCubeClosedLoopRuntime:
                 or comparison.expected_digest != expected_state_digest
             ):
                 raise RuntimeError("M4C complete-state restoration verification failed")
+            self._last_restore_component_count = comparison.compared_component_count
+            self._last_restore_maximum_error = float(
+                comparison.maximum_absolute_error or 0.0
+            )
             self._environment = environment
             self._source = source
+            self._current_visual_domain = visual_domain
             if visual_domain != "not_applicable":
                 if self._visual_observer is None:
                     raise RuntimeError("visual selector has no verified renderer")
@@ -369,6 +379,7 @@ class PickCubeClosedLoopRuntime:
             environment_factory=self._environment_factory,
             key_contract=self._key_contract,
         )
+        self._last_task_snapshot = dict(boundary.task_snapshot)
         reference, digest = self._state_store.save(boundary.state_tree)
         images: NDArray[Any] | None = None
         visual_identity: str | None = None
@@ -383,12 +394,34 @@ class PickCubeClosedLoopRuntime:
         values = np.asarray(
             boundary.verifier_state.values, dtype=np.dtype("<f4"), order="C"
         )
-        return RuntimeBoundaryV1(
+        result = RuntimeBoundaryV1(
             state_reference=reference,
             state_digest=digest,
             verifier_state=values,
             visual_packet_identity=visual_identity,
             images=images,
+        )
+        self._last_boundary = result
+        return result
+
+    def current_world_model_observation(
+        self,
+    ) -> tuple[RuntimeBoundaryV1, dict[str, object]]:
+        """Return the latest verified visual boundary and public task facts."""
+
+        if self._last_task_snapshot is None or self._last_boundary is None:
+            raise RuntimeError("M4C runtime has no captured task snapshot")
+        return self._last_boundary, dict(self._last_task_snapshot)
+
+    @property
+    def last_restore_verification(self) -> tuple[int, float]:
+        """Return compared component count and observed maximum error."""
+
+        if self._last_restore_component_count < 1:
+            raise RuntimeError("M4C runtime has no verified restoration")
+        return (
+            self._last_restore_component_count,
+            self._last_restore_maximum_error,
         )
 
     def execute(
@@ -462,6 +495,9 @@ class PickCubeClosedLoopRuntime:
                 self._runtime.close_environment(environment)
             finally:
                 self._source = None
+                self._last_task_snapshot = None
+                self._last_boundary = None
+                self._current_visual_domain = "not_applicable"
 
 
 __all__ = [

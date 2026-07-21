@@ -1,0 +1,38 @@
+{
+  "anchor_count": 0,
+  "candidate_count": 0,
+  "content_digest": "sha256:e24ede72a3b598ae00c6cc674310751e1cf73e413c4bfa1cad4751006d2a0a12",
+  "corruption_counts": {},
+  "event_observed_counts": {},
+  "formal_training_gate": {
+    "authorized": false,
+    "checks": {
+      "minimum_sample_count": false,
+      "nonterminal_progress_or_event_present": false,
+      "real_future_observation_for_every_sample": false,
+      "required_splits_present": false,
+      "source_group_isolation": true,
+      "terminal_success_and_failure_present": false
+    },
+    "reasons": [
+      "minimum_sample_count",
+      "real_future_observation_for_every_sample",
+      "required_splits_present",
+      "terminal_success_and_failure_present",
+      "nonterminal_progress_or_event_present"
+    ]
+  },
+  "group_assignments": {},
+  "missing_ratios": {
+    "events": 1.0,
+    "progress": 1.0
+  },
+  "observation_strides": {},
+  "policy_source_counts": {},
+  "prediction_horizons": {},
+  "sample_count": 0,
+  "schema_version": "1.0",
+  "source_episode_count": 0,
+  "split_counts": {},
+  "terminal_success_counts": {}
+}

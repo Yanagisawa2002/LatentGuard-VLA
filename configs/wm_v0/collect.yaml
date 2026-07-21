@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "seed": 271828,
+  "prediction_horizon": 4,
+  "observation_stride": 4,
+  "action_horizon": 16,
+  "camera_ids": ["front_oblique", "overhead", "side_oblique"],
+  "event_names": [
+    "grasped", "dropped", "wrong_object_contact", "collision",
+    "object_displacement", "workspace_violation", "timeout", "task_success"
+  ],
+  "output_directory": "outputs/wm_v0/raw"
+}
