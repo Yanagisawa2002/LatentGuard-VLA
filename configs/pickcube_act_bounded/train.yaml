@@ -57,7 +57,7 @@
     "training_steps": 20000,
     "checkpoint_interval": 2000,
     "validation_interval": 1000,
-    "early_stopping_patience_evaluations": 5,
+    "early_stopping_patience_evaluations": 21,
     "early_stopping_min_delta": 0.0001
   }
 }

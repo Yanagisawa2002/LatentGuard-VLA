@@ -7,6 +7,7 @@ from scripts.screen_pickcube_act_bounded_checkpoints import (
 from scripts.train_pickcube_act import (
     _resume_artifact_source_commit,
     _run_manifest_matches,
+    _validated_best_state,
 )
 from scripts.verify_pickcube_act_bounded_training import _strict_interior_bounds
 
@@ -79,3 +80,12 @@ def test_checkpoint_screen_counts_closed_canonical_endpoints() -> None:
     endpoints = np.asarray([[-1.0, 0.0, 1.0]], dtype=np.float32)
     assert _canonical_boundary_violation_count(interior) == 0
     assert _canonical_boundary_violation_count(endpoints) == 2
+
+
+def test_interrupted_prevalidation_run_uses_measured_terminal_loss() -> None:
+    assert _validated_best_state(
+        best_step=None,
+        best_loss=float("inf"),
+        final_step=17,
+        terminal_validation_loss=0.25,
+    ) == (17, 0.25)

@@ -89,6 +89,22 @@ def verify(*, run_root: Path, stage: str, output: Path) -> Mapping[str, object]:
         or records[-1].get("step") != expected_steps[stage]
     ):
         _fail(stage, "identity or exact step count differs")
+    optimization = config.get("optimization")
+    if stage == "formal":
+        if not isinstance(optimization, Mapping):
+            _fail("formal", "optimization contract is missing")
+        training_steps = optimization.get("training_steps")
+        validation_interval = optimization.get("validation_interval")
+        patience = optimization.get("early_stopping_patience_evaluations")
+        if (
+            type(training_steps) is not int
+            or type(validation_interval) is not int
+            or type(patience) is not int
+            or patience <= training_steps // validation_interval
+            or summary.get("early_stopped") is not False
+            or summary.get("interrupted") is not False
+        ):
+            _fail("formal", "fixed 20k non-early-stopping contract differs")
     if any(
         record.get("post_transform_boundary_violation_count") != 0
         or not _strict_interior_bounds(record)

@@ -286,6 +286,21 @@ def _run_manifest_matches(
     }
 
 
+def _validated_best_state(
+    *,
+    best_step: int | None,
+    best_loss: float,
+    final_step: int,
+    terminal_validation_loss: float,
+) -> tuple[int, float]:
+    """Return a finite best state even when interruption preceded validation."""
+    if best_step is not None:
+        return best_step, best_loss
+    if not math.isfinite(terminal_validation_loss):
+        raise PickCubeActRuntimeError("terminal validation loss is nonfinite")
+    return final_step, terminal_validation_loss
+
+
 def _resume_artifact_source_commit(
     *, root: Path, resume: Path | None, current_source_commit: str
 ) -> str:
@@ -687,8 +702,20 @@ def train(
     if not all_checkpoints:
         raise PickCubeActRuntimeError("training produced no checkpoint")
     if best_step is None:
-        best_step = final_step
-        best_loss = float(cast(float, metric["validation_loss"]))
+        terminal_validation_loss = metric["validation_loss"]
+        if not isinstance(terminal_validation_loss, (int, float)):
+            terminal_validation_loss = _validation_loss(
+                policy=policy,
+                preprocessor=preprocessor,
+                batches=validation_batches,
+                experiment=experiment,
+            )
+        best_step, best_loss = _validated_best_state(
+            best_step=best_step,
+            best_loss=best_loss,
+            final_step=final_step,
+            terminal_validation_loss=float(terminal_validation_loss),
+        )
     best = root / "checkpoints" / f"step-{best_step:08d}"
     if not best.is_dir():
         raise PickCubeActRuntimeError("best-validation checkpoint was not saved")
