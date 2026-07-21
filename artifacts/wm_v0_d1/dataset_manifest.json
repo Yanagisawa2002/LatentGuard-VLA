@@ -1,56 +1,110 @@
 {
-  "anchor_count": 0,
+  "anchor_count": 30,
   "base_wm_v0_manifest": {
-    "anchor_count": 0,
-    "candidate_count": 0,
-    "content_digest": "sha256:e24ede72a3b598ae00c6cc674310751e1cf73e413c4bfa1cad4751006d2a0a12",
-    "corruption_counts": {},
-    "event_observed_counts": {},
+    "anchor_count": 30,
+    "candidate_count": 120,
+    "content_digest": "sha256:64546487d530ef7e7b0f32ed7eda4b86b81e6b9d942f3064641d5224847e17c7",
+    "corruption_counts": {
+      "additive_gaussian_noise": 60,
+      "constant_bias": 30,
+      "segment_hold": 30
+    },
+    "event_observed_counts": {
+      "collision": 0,
+      "dropped": 480,
+      "grasped": 480,
+      "object_displacement": 480,
+      "task_success": 480,
+      "timeout": 0,
+      "workspace_violation": 0,
+      "wrong_object_contact": 0
+    },
     "formal_training_gate": {
       "authorized": false,
       "checks": {
         "minimum_sample_count": false,
-        "nonterminal_progress_or_event_present": false,
-        "real_future_observation_for_every_sample": false,
-        "required_splits_present": false,
+        "nonterminal_progress_or_event_present": true,
+        "real_future_observation_for_every_sample": true,
+        "required_splits_present": true,
         "source_group_isolation": true,
         "terminal_success_and_failure_present": false
       },
       "reasons": [
         "minimum_sample_count",
-        "real_future_observation_for_every_sample",
-        "required_splits_present",
-        "terminal_success_and_failure_present",
-        "nonterminal_progress_or_event_present"
+        "terminal_success_and_failure_present"
       ]
     },
-    "group_assignments": {},
-    "missing_ratios": {
-      "events": 1.0,
-      "progress": 1.0
+    "group_assignments": {
+      "mspc-split-07baf44fc06f577d927afc2332bab87f5981d88222dac1f53ffc9430d9612203": "train",
+      "mspc-split-086e55099c67aa4292d91cdbb7bcda513dfe96dd867b8ba09f276f2310d574a5": "train",
+      "mspc-split-13aa4c2bb90f8222bd9b89db80021346d5a6602888daa8be02f5e69bc5fb113f": "validation",
+      "mspc-split-23867b7432d8d8b3131a068bd329e1a8bfa62caf16a2972833988124ccf9f967": "train",
+      "mspc-split-2bfcf047ae9b38464c1c2dbf913ce0fe87d7071f379f70a4e4a17368bf7c07b6": "train",
+      "mspc-split-2eb0cac12b79d09d70c57037082ec5884ea39c3081680c1ac9b67ae822da8d21": "train",
+      "mspc-split-62885be90b753f8f4d4c5e4f855455eae227a167aa1f402d5dfcc2122b1791e9": "train",
+      "mspc-split-6924921763dee81fcc94cbd1a32057093deba21f2ac2b573f1a9a7a2914160f6": "train",
+      "mspc-split-6e9ce1c05d184fa45ea9f56ea7747f08458e7498854aa95d7b5219d18d646a4d": "train",
+      "mspc-split-7ce9a3fb1b4e1b4e22b019db4de4a38cb75ec38ca75337f4f019951028c6a5b1": "train",
+      "mspc-split-7ec6545bf7303b0ce8bc1e88dc2fbbb2592851c9d534a581152b053b9ae09c3b": "validation",
+      "mspc-split-82e9fb4591ec27b341aceb0626f2a43bd236c4efd8bb5415fc068f24d0e4736f": "test",
+      "mspc-split-875ecda4c30f9c125bc34fd15ffb8c147d75b7837663fc2dafc4427e32a9bc69": "train",
+      "mspc-split-97b2d0011b1258324346f64e81e4a7276709617c29ee5cbdbd185dc0657ea5d3": "train",
+      "mspc-split-9d4de983961b390f6486769b26591c7a7ae86e6b46093ba0c39915be420789f4": "validation",
+      "mspc-split-a76d653e2609b3c4fae6ec021522994a6572599e27cafc6f8387343353947537": "train",
+      "mspc-split-b15a2898b98485a9e2a6ed042c9a67ee9421ada8e1921c572945cef818c24ba8": "test",
+      "mspc-split-b5483514459bbef50bd406fb2a437ade37a503825d23135618fa09a794286ed5": "train",
+      "mspc-split-b74c44c4d06e18b899bb8e49e99694e56c69ceefd0aa0e2d7e2ee7fc97633032": "train",
+      "mspc-split-b9e1073eb637ca279da0864021a1336b306a77bc9868eab81361cd79ec65efbf": "train",
+      "mspc-split-bafe8a93d6d1acf000cc9377ac98fdacaae5005452bace667cbffb7bbef2c6ed": "train",
+      "mspc-split-bea8334064e37d6958dc74480f138254aa9c98d204492e8850ed7f48c396f33d": "train",
+      "mspc-split-c8b6223839682d0e4f7885d51dde42de711c282e657cbfd3c099743c6ea6380c": "train",
+      "mspc-split-d6641b34cb811d4c6b1e8a7e2d9cb5f69a6fdff4c0faed98db8adc0bbd9c4776": "train",
+      "mspc-split-dbf4736ba4b826264c3e1b4be6bd0cc845af7749ff552a0874303eabb66ccc21": "train",
+      "mspc-split-dfdea1452d5c6453235b253bd97a7fedbbd1db4ee9b255f6403d7413834964b1": "test",
+      "mspc-split-e2afde2ea4e2e834968cea9be9503df27b142601d0059fec6ddaeafd17e627b4": "train",
+      "mspc-split-e541bc20699d9cc0af583c9d430c390b7237228fb274727c5f5b45307b4e7945": "train",
+      "mspc-split-ecf838182a1ad7d46bfae1d7e674ab38a86f76d16b92d96edf07e628570fa1ad": "train",
+      "mspc-split-f41088dd9709b7c2caf6c2bd979149edb7b75e987ffbcbfa6c55245d16aca1cd": "train"
     },
-    "observation_strides": {},
-    "policy_source_counts": {},
-    "prediction_horizons": {},
-    "sample_count": 0,
+    "missing_ratios": {
+      "events": 0.5,
+      "progress": 0.0
+    },
+    "observation_strides": {
+      "4": 120
+    },
+    "policy_source_counts": {
+      "synthetic_corruption": 120
+    },
+    "prediction_horizons": {
+      "4": 120
+    },
+    "sample_count": 120,
     "schema_version": "1.0",
-    "source_episode_count": 0,
-    "split_counts": {},
-    "terminal_success_counts": {}
+    "source_episode_count": 30,
+    "split_counts": {
+      "test": 12,
+      "train": 96,
+      "validation": 12
+    },
+    "terminal_success_counts": {
+      "none": 109,
+      "true": 11
+    }
   },
-  "candidate_metadata_inventory_digest": "sha256:1cdacf60b6a3fc50d2cc990d9b8c94ab37ee0fb47d7c36e95146aa695553e887",
-  "content_digest": "sha256:5a0ea393483f4c37345abfcc192e8c90cda089950446fd39deae53cd7cec9dff",
+  "candidate_metadata_inventory_digest": "sha256:09e9eff320a4c0dd5eeec49b12edce765a20c0775bdd1ea58cb8b8457ce41bcf",
+  "content_digest": "sha256:a41c65523ef21d5f774d6def199aec9c6d31c325a52525da6903f933f2ab647e",
   "formal_training_gate": {
     "authorized": false,
     "checks": {
       "anchor_count_at_least_250": false,
-      "candidates_per_anchor_at_least_3": false,
-      "data_quality_checks_passed": false,
+      "candidates_per_anchor_at_least_3": true,
+      "data_quality_checks_passed": true,
       "failure_count_at_least_100": false,
-      "future_frame_completeness_at_least_99_percent": false,
-      "nonterminal_progress_or_event_present": false,
+      "future_frame_completeness_at_least_99_percent": true,
+      "nonterminal_progress_or_event_present": true,
       "policy_generated_ratio_at_least_70_percent": false,
-      "required_splits_present": false,
+      "required_splits_present": true,
       "sample_count_at_least_1000": false,
       "source_episode_count_at_least_100": false,
       "source_group_leakage_zero": true,
@@ -58,45 +112,35 @@
     },
     "failed_checks": [
       "anchor_count_at_least_250",
-      "candidates_per_anchor_at_least_3",
-      "data_quality_checks_passed",
       "failure_count_at_least_100",
-      "future_frame_completeness_at_least_99_percent",
-      "nonterminal_progress_or_event_present",
       "policy_generated_ratio_at_least_70_percent",
-      "required_splits_present",
       "sample_count_at_least_1000",
       "source_episode_count_at_least_100",
       "success_count_at_least_100"
     ]
   },
-  "future_frame_completeness": 0.0,
+  "future_frame_completeness": 1.0,
   "pilot_gate": {
     "authorized": false,
     "checks": {
-      "anchor_count_at_least_25": false,
+      "anchor_count_at_least_25": true,
       "both_terminal_classes_present": false,
-      "candidate_metadata_complete": false,
-      "candidates_per_anchor_at_least_3": false,
+      "candidate_metadata_complete": true,
+      "candidates_per_anchor_at_least_3": true,
       "duplicate_identity_zero": true,
-      "future_frame_completeness_at_least_99_percent": false,
+      "future_frame_completeness_at_least_99_percent": true,
       "policy_generated_ratio_at_least_70_percent": false,
       "restoration_mismatch_zero": true,
-      "sample_count_at_least_100": false,
+      "sample_count_at_least_100": true,
       "source_group_leakage_zero": true
     },
     "failed_checks": [
-      "anchor_count_at_least_25",
       "both_terminal_classes_present",
-      "candidate_metadata_complete",
-      "candidates_per_anchor_at_least_3",
-      "future_frame_completeness_at_least_99_percent",
-      "policy_generated_ratio_at_least_70_percent",
-      "sample_count_at_least_100"
+      "policy_generated_ratio_at_least_70_percent"
     ]
   },
   "policy_generated_ratio": 0.0,
-  "sample_count": 0,
+  "sample_count": 120,
   "schema_version": "wm-v0-d1-dataset-manifest-v1",
-  "source_episode_count": 0
+  "source_episode_count": 30
 }

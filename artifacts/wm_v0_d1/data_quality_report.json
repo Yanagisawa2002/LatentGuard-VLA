@@ -1,21 +1,48 @@
 {
   "action_duplicate_rejection_rate": 0.0,
-  "anchor_count": 0,
+  "anchor_count": 30,
   "candidate_count_per_anchor": {
-    "maximum": 0,
-    "mean": 0.0,
-    "minimum": 0
+    "maximum": 4,
+    "mean": 4.0,
+    "minimum": 4
   },
-  "checkpoint_counts": {},
+  "checkpoint_counts": {
+    "not_applicable": 120
+  },
   "collection_throughput": {
-    "mean_anchor_seconds": 0.0,
-    "mean_sample_seconds": 0.0,
-    "samples_per_second": 0.0,
-    "total_anchor_runtime_seconds": 0
+    "mean_anchor_seconds": 7.357564238334695,
+    "mean_sample_seconds": 1.8393910595836738,
+    "samples_per_second": 0.543658182304278,
+    "total_anchor_runtime_seconds": 220.72692715004086
   },
-  "episode_phase_counts": {},
-  "event_observed_counts": {},
-  "event_positive_counts": {},
+  "episode_phase_counts": {
+    "approach": 4,
+    "grasp_attempt": 6,
+    "initial": 6,
+    "pre_grasp": 6,
+    "pre_place": 4,
+    "transport": 4
+  },
+  "event_observed_counts": {
+    "collision": 0,
+    "dropped": 480,
+    "grasped": 480,
+    "object_displacement": 480,
+    "task_success": 480,
+    "timeout": 0,
+    "workspace_violation": 0,
+    "wrong_object_contact": 0
+  },
+  "event_positive_counts": {
+    "collision": 0,
+    "dropped": 0,
+    "grasped": 314,
+    "object_displacement": 383,
+    "task_success": 20,
+    "timeout": 0,
+    "workspace_violation": 0,
+    "wrong_object_contact": 0
+  },
   "failure_rates": {
     "policy_inference": 0.0,
     "simulator": 0.0
@@ -24,13 +51,13 @@
     "authorized": false,
     "checks": {
       "anchor_count_at_least_250": false,
-      "candidates_per_anchor_at_least_3": false,
-      "data_quality_checks_passed": false,
+      "candidates_per_anchor_at_least_3": true,
+      "data_quality_checks_passed": true,
       "failure_count_at_least_100": false,
-      "future_frame_completeness_at_least_99_percent": false,
-      "nonterminal_progress_or_event_present": false,
+      "future_frame_completeness_at_least_99_percent": true,
+      "nonterminal_progress_or_event_present": true,
       "policy_generated_ratio_at_least_70_percent": false,
-      "required_splits_present": false,
+      "required_splits_present": true,
       "sample_count_at_least_1000": false,
       "source_episode_count_at_least_100": false,
       "source_group_leakage_zero": true,
@@ -38,62 +65,94 @@
     },
     "failed_checks": [
       "anchor_count_at_least_250",
-      "candidates_per_anchor_at_least_3",
-      "data_quality_checks_passed",
       "failure_count_at_least_100",
-      "future_frame_completeness_at_least_99_percent",
-      "nonterminal_progress_or_event_present",
       "policy_generated_ratio_at_least_70_percent",
-      "required_splits_present",
       "sample_count_at_least_1000",
       "source_episode_count_at_least_100",
       "success_count_at_least_100"
     ]
   },
-  "future_frame_completeness": 0.0,
+  "future_frame_completeness": 1.0,
   "missing_ratios": {
-    "candidate_metadata": 1.0,
-    "events": 1.0,
-    "progress": 1.0
+    "candidate_metadata": 0.0,
+    "events": 0.5,
+    "progress": 0.0
   },
   "pilot_gate": {
     "authorized": false,
     "checks": {
-      "anchor_count_at_least_25": false,
+      "anchor_count_at_least_25": true,
       "both_terminal_classes_present": false,
-      "candidate_metadata_complete": false,
-      "candidates_per_anchor_at_least_3": false,
+      "candidate_metadata_complete": true,
+      "candidates_per_anchor_at_least_3": true,
       "duplicate_identity_zero": true,
-      "future_frame_completeness_at_least_99_percent": false,
+      "future_frame_completeness_at_least_99_percent": true,
       "policy_generated_ratio_at_least_70_percent": false,
       "restoration_mismatch_zero": true,
-      "sample_count_at_least_100": false,
+      "sample_count_at_least_100": true,
       "source_group_leakage_zero": true
     },
     "failed_checks": [
-      "anchor_count_at_least_25",
       "both_terminal_classes_present",
-      "candidate_metadata_complete",
-      "candidates_per_anchor_at_least_3",
-      "future_frame_completeness_at_least_99_percent",
-      "policy_generated_ratio_at_least_70_percent",
-      "sample_count_at_least_100"
+      "policy_generated_ratio_at_least_70_percent"
     ]
   },
-  "policy_family_counts": {},
+  "policy_family_counts": {
+    "m3c_frozen_corruption": 120
+  },
   "policy_generated_ratio": 0.0,
-  "policy_source_counts": {},
+  "policy_source_counts": {
+    "synthetic_corruption": 120
+  },
   "progress_distribution": {
-    "maximum": 0.0,
-    "mean": 0.0,
-    "minimum": 0.0
+    "maximum": 1.0,
+    "mean": 0.5352896362232665,
+    "minimum": 0.14368924498558044
   },
   "rejected_sample_count": 0,
   "rejection_reason_counts": {},
-  "scene_group_counts": {},
+  "scene_group_counts": {
+    "pickcube-seed-20002": 1,
+    "pickcube-seed-20004": 1,
+    "pickcube-seed-20006": 1,
+    "pickcube-seed-20010": 1,
+    "pickcube-seed-20011": 1,
+    "pickcube-seed-20014": 1,
+    "pickcube-seed-20017": 1,
+    "pickcube-seed-20018": 1,
+    "pickcube-seed-20019": 1,
+    "pickcube-seed-20020": 1,
+    "pickcube-seed-20021": 1,
+    "pickcube-seed-20022": 1,
+    "pickcube-seed-20025": 1,
+    "pickcube-seed-20026": 1,
+    "pickcube-seed-20028": 1,
+    "pickcube-seed-20031": 1,
+    "pickcube-seed-20032": 1,
+    "pickcube-seed-20037": 1,
+    "pickcube-seed-20038": 1,
+    "pickcube-seed-20039": 1,
+    "pickcube-seed-20041": 1,
+    "pickcube-seed-20042": 1,
+    "pickcube-seed-20043": 1,
+    "pickcube-seed-20044": 1,
+    "pickcube-seed-20047": 1,
+    "pickcube-seed-20048": 1,
+    "pickcube-seed-20051": 1,
+    "pickcube-seed-20052": 1,
+    "pickcube-seed-20056": 1,
+    "pickcube-seed-20058": 1
+  },
   "schema_version": "wm-v0-d1-data-quality-v1",
-  "source_episode_count": 0,
-  "split_counts": {},
-  "terminal_success_counts": {},
-  "valid_sample_count": 0
+  "source_episode_count": 30,
+  "split_counts": {
+    "test": 12,
+    "train": 96,
+    "validation": 12
+  },
+  "terminal_success_counts": {
+    "none": 109,
+    "true": 11
+  },
+  "valid_sample_count": 120
 }

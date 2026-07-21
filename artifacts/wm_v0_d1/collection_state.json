@@ -1,12 +1,15 @@
 {
-  "completed_anchors": 0,
-  "current_class_distribution": {},
+  "completed_anchors": 30,
+  "current_class_distribution": {
+    "none": 109,
+    "true": 11
+  },
   "duplicate_candidates": 0,
-  "planned_anchors": 0,
+  "planned_anchors": 30,
   "policy_generated_ratio": 0.0,
   "policy_inference_failures": 0,
   "rejected_samples": 0,
   "schema_version": "wm-v0-d1-collection-state-v1",
   "simulator_failures": 0,
-  "valid_samples": 0
+  "valid_samples": 120
 }
