@@ -1,0 +1,17 @@
+{
+  "schema_version": "pickcube-act-p02-policy-registry-v1",
+  "accepted_compatible_policy_count": 0,
+  "accepted_policies": [],
+  "rejected_candidates": [
+    {
+      "candidate_id": "candidate_b_phase_gripper_aware_supervision",
+      "checkpoint_id": "step-00018000",
+      "checkpoint_sha256": "sha256:f64d4a036e2dd2afc02cb6423737ec91bf030699e3e109407e283564efa14a14",
+      "result": "result_c_act_still_fails_to_acquire_grasp",
+      "policy_package_built": false
+    }
+  ],
+  "d2_policy_generated_pilot_authorized": false,
+  "d2_policy_generated_pilot_started": false,
+  "final_sealed_seed_accessed": false
+}

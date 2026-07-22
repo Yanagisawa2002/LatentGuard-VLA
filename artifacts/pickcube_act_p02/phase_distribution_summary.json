@@ -1,0 +1,61 @@
+{
+  "chunk_count": 21053,
+  "chunk_length": 16,
+  "chunks_crossing_transition": 13273,
+  "chunks_crossing_transition_rate": 0.6304564670118273,
+  "diagnostic_only_not_policy_input": true,
+  "episode_count": 500,
+  "episode_count_by_phase": {
+    "APPROACH": 500,
+    "GRIPPER_CLOSING": 500,
+    "PREGRASP": 500,
+    "TRANSPORT_OR_COMPLETION": 500
+  },
+  "first_contact_frame_available": false,
+  "first_lift_frame_available": false,
+  "frame_count_by_phase": {
+    "APPROACH": 6395,
+    "GRIPPER_CLOSING": 3000,
+    "PREGRASP": 3923,
+    "TRANSPORT_OR_COMPLETION": 7735
+  },
+  "imbalance_ratio": 2.578333333333333,
+  "labels_absent_without_fabrication": [
+    "RESET_OR_IDLE",
+    "CONTACT_OR_GRASP",
+    "LIFT"
+  ],
+  "phase_proxy_source": "recorded_official_expert_phase_tracker",
+  "schema_version": "pickcube-act-p02-phase-distribution-summary-v1",
+  "split_frame_counts_by_phase": {
+    "test": {
+      "APPROACH": 649,
+      "GRIPPER_CLOSING": 300,
+      "PREGRASP": 392,
+      "TRANSPORT_OR_COMPLETION": 778
+    },
+    "train": {
+      "APPROACH": 5107,
+      "GRIPPER_CLOSING": 2400,
+      "PREGRASP": 3138,
+      "TRANSPORT_OR_COMPLETION": 6188
+    },
+    "validation": {
+      "APPROACH": 639,
+      "GRIPPER_CLOSING": 300,
+      "PREGRASP": 393,
+      "TRANSPORT_OR_COMPLETION": 769
+    }
+  },
+  "train_only_phase_weights": {
+    "APPROACH": 0.9232279605126841,
+    "GRIPPER_CLOSING": 1.346747744744538,
+    "PREGRASP": 1.1777833436457685,
+    "TRANSPORT_OR_COMPLETION": 0.8387194708976097
+  },
+  "transition_counts": {
+    "APPROACH->PREGRASP": 500,
+    "GRIPPER_CLOSING->TRANSPORT_OR_COMPLETION": 500,
+    "PREGRASP->GRIPPER_CLOSING": 500
+  }
+}

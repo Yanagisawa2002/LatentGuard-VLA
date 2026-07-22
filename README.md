@@ -100,19 +100,26 @@ Potential extensions include learned-policy proposals, a contract-frozen LangMan
 
 The PickCube release remains frozen. M6A and M6A.1 completed only the LangMani contract, bridge scaffolding, compatibility inventory, and readiness checks. A real LangMani integration probe and performance experiment have **not** executed, and M6B has not started. See the [LangMani compatibility matrix](docs/integrations/langmani/compatibility-matrix.md) for the source-backed status and unresolved gates.
 
-The separately authorized WM-v0 P0.1 repair is complete as **Result B**. Its
-end-to-end `affine_tanh_v1` ACT path produced zero action-boundary violations,
-but only four of 15 checkpoints passed static screening and the selected early
-checkpoint achieved 0/30 development successes with 30 timeouts and no grasp.
-The frozen 75% promotion gate therefore failed. Final seeds remain sealed, no
-`PolicyPackage` exists, the D2 registry has zero accepted policies, and the D2
-policy-generated pilot remains blocked. See the
+The separately authorized WM-v0 P0.1 repair remains frozen as its historical
+**Result B**. The follow-up P0.2 temporal/gripper/phase investigation is now
+complete as **Result C**. P0.2 preserved the same native `affine_tanh_v1` ACT
+action contract, found no timestamp defect, removed the global gripper endpoint
+collapse, and improved the selected full checkpoint to 28/30 pre-grasp entries
+and 20/30 valid near-object closes. It nevertheless produced only one verified
+grasp, which dropped before lift, and 0/30 task successes. The unchanged 75%
+promotion gate therefore failed. Final seeds remain sealed, no `PolicyPackage`
+exists, the D2 registry has zero accepted policies, and the D2 policy-generated
+pilot remains blocked. See the
 [bounded-action audit](docs/pickcube_act_bounded_audit.md),
 [training report](docs/pickcube_act_bounded_training_report.md),
 [evaluation report](docs/pickcube_act_bounded_evaluation_report.md), and
-[controlled P0/P0.1 comparison](docs/pickcube_act_p0_vs_p01.md).
+[controlled P0/P0.1 comparison](docs/pickcube_act_p0_vs_p01.md), plus the P0.2
+[alignment audit](docs/pickcube_act_temporal_alignment_audit.md),
+[training report](docs/pickcube_act_p02_training_report.md),
+[evaluation report](docs/pickcube_act_p02_evaluation_report.md), and
+[P0.1/P0.2 comparison](docs/pickcube_act_p01_vs_p02.md).
 
-Key P0.1 structural commands are:
+Key P0.1/P0.2 structural commands are:
 
 ```bash
 python scripts/audit_pickcube_action_pipeline.py --help

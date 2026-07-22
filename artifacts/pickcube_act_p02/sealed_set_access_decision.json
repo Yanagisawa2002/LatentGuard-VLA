@@ -1,0 +1,12 @@
+{
+  "schema_version": "pickcube-act-p02-sealed-set-access-decision-v1",
+  "required_result": "result_a_accepted_compatible_act_policy",
+  "observed_result": "result_c_act_still_fails_to_acquire_grasp",
+  "authorized": false,
+  "accessed": false,
+  "episode_count_accessed": 0,
+  "sealed_seed_count": 100,
+  "sealed_seed_start": 900000,
+  "sealed_config_sha256": "sha256:6516b4b83981db29f1d4fb26cf123a544339665c7efca96438aaab608892b0ff",
+  "reason": "The fixed 30-seed development success rate was 0%, below the unchanged 75% promotion threshold, and grasp competence was 1/30 below the 18/30 staged gate."
+}

@@ -64,3 +64,19 @@ non-finite, the bounded screen produces zero pre-grasp entries, or the allowed
 candidates end in Result B/C. Diffusion Policy, VLA, RL, expert fallback, task
 simplification, final-seed tuning, and a rejected-policy package are outside
 P0.2.
+
+## Completed outcome
+
+The bounded protocol completed with Candidate B as the only substantive
+candidate. Its 20,000-step full run produced 14 complete checkpoints. The
+frozen offline shortlist was steps 6,000, 7,000, and 18,000; the identical
+10-seed H=2 behavioral screen selected step 18,000 because it was the only
+shortlisted checkpoint with a verified grasp. On the fixed 30 development
+seeds it achieved 28 pre-grasp entries, 20 valid near-object closes, one grasp,
+zero lifts, and zero successes, with zero action, simulator, or workspace
+integrity failures. The grasp dropped before lift.
+
+P0.2 is therefore frozen as `Result C`: the approach gate passed, but the
+gripper, grasp, lift, and unchanged 75% promotion gates failed. Final seeds
+900000--900099 were not accessed, no `PolicyPackage` was built, and D2 remains
+blocked with zero accepted compatible policies.

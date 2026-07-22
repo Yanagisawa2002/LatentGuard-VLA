@@ -1,0 +1,58 @@
+{
+  "action_integrity_passed": true,
+  "checkpoint_digest": "sha256:78f870230669f4f964b533124b2be3d40a8638303212128b9761614cb8ed9cdc",
+  "checkpoint_id": "step-00004000",
+  "candidate": "candidate_b_phase_gripper_aware_supervision",
+  "episode_count_per_horizon": 10,
+  "horizons": {
+    "1": {
+      "action_smoothness_mean_l2": 0.5344044677661565,
+      "entered_pregrasp_count": 7,
+      "grasp_count": 0,
+      "lift_count": 0,
+      "policy_query_count": 500,
+      "source_report_sha256": "sha256:d591bd20d336590fac1fe579e0e5cfd8a6e8288698978c025391d7e908072fc8",
+      "success_count": 0,
+      "timeout_count": 10,
+      "valid_close_count": 4
+    },
+    "2": {
+      "action_smoothness_mean_l2": 0.26705567156922,
+      "entered_pregrasp_count": 8,
+      "grasp_count": 1,
+      "lift_count": 0,
+      "policy_query_count": 250,
+      "post_grasp_drop_count": 1,
+      "source_report_sha256": "sha256:29377c7fa8ef1f6c91045998043d50197600e210f698917b5f1a0416e244a690",
+      "success_count": 0,
+      "timeout_count": 10,
+      "valid_close_count": 7
+    },
+    "4": {
+      "action_smoothness_mean_l2": 0.095730191308517,
+      "entered_pregrasp_count": 7,
+      "grasp_count": 0,
+      "lift_count": 0,
+      "policy_query_count": 130,
+      "source_report_sha256": "sha256:8f0ed761d0acdfdf567e44e5fde84028ac8b922e453b413a5b474ffe452d0776",
+      "success_count": 0,
+      "timeout_count": 10,
+      "valid_close_count": 6
+    }
+  },
+  "maximum_action_contract_violations": 0,
+  "maximum_simulator_errors": 0,
+  "maximum_workspace_violations": 0,
+  "schema_version": "pickcube-act-p02-execution-horizon-comparison-v1",
+  "seed_start": 800000,
+  "seed_stop_exclusive": 800010,
+  "selected_execution_horizon": 2,
+  "selection_basis": [
+    "action_integrity",
+    "grasp_count_descending",
+    "valid_close_count_descending",
+    "entered_pregrasp_count_descending",
+    "lift_count_descending",
+    "success_count_descending"
+  ]
+}

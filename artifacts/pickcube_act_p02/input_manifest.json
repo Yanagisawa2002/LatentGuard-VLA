@@ -1,0 +1,114 @@
+{
+  "action_schema": {
+    "dimension": 8,
+    "gripper_dimension": 7,
+    "gripper_semantic": "continuous_normalized_mimic_target_v1",
+    "lower": [
+      -2.8973000049591064,
+      -1.7627999782562256,
+      -2.8973000049591064,
+      -3.0717999935150146,
+      -2.8973000049591064,
+      -0.017500000074505806,
+      -2.8973000049591064,
+      -1.0
+    ],
+    "semantic": "absolute_pd_joint_pos_v1",
+    "upper": [
+      2.8973000049591064,
+      1.7627999782562256,
+      2.8973000049591064,
+      -0.0697999969124794,
+      2.8973000049591064,
+      3.752500057220459,
+      2.8973000049591064,
+      1.0
+    ]
+  },
+  "action_transform": {
+    "digest": "sha256:e74d814de59b6aeb505e2eebc3fc6263df77aa89aa5267817aed3224a72e941d",
+    "no_clipping": true,
+    "parameterization": "affine_tanh_v1"
+  },
+  "checkpoint_identities": {
+    "complete_marker_sha256_by_step": {
+      "step-00001000": "b366645f2faf02af402286b326da63949531c0fe7185208f637ff280479566a9",
+      "step-00002000": "df8746d8257a9947e25951a2105e61d7d9efe5c4c52b932e48972ecd89c0ee20",
+      "step-00003000": "cfe414d2765003aedcbe354d93d0f3f29565a7b594d987febf3f4147fda09a14",
+      "step-00004000": "6225b3f367344899267968851cbb3a825df983ea7b0ce740a26b77ec8b362dbc",
+      "step-00005000": "d012f85686ddfe5075ba89568d49ea4aeadf4c0745aa82f27f0954b088ca80bc",
+      "step-00006000": "1b7c8d0a6959e35c2e83b89f0fac9cc776d5a3a98d5f5bf552385e4a59671509",
+      "step-00008000": "50f64a196f4816f53be3bac5b371356afa7f8228cbc124ac23bf0da9d2da9c08",
+      "step-00009000": "cbd7fcbcb51ff36bb38bfe61ad001305b5c29349bcaa85c1da823b26441cb26d",
+      "step-00010000": "183387653a0ac63eb9d8126e6bdcb606a4a380bc99f6f8790803348859bd2309",
+      "step-00011000": "5e6de2267be5e659f01b7d7f01e0117fc4cf31d5a836c990dbfb8d811f72327c",
+      "step-00012000": "8adfb6fb048a077ad0c05d5584b1c106c722cf3480f37dc5e11708787023d64d",
+      "step-00014000": "46d1e55fda83855b9a50c43e591d8f8a0c639af626b263e710147585263cf2cc",
+      "step-00016000": "18a38b29adb842098bb8df22cf8af8a675868936bb4e785a16e582c723c5b3b0",
+      "step-00018000": "29b32a1d9c3244e43a5d8c84b28cd9568e0a8b8ec9db105c5749039df41acc23",
+      "step-00020000": "639eafeea5ef8bab7006b228a9d16e637139c4fd09e1d679894b97a45d894f28"
+    },
+    "count": 15,
+    "training_identity_digest": "sha256:bf988a5a8f6926a2a6c054e13b260c50637ff19f1a97e6822973522a441e5a3c"
+  },
+  "chunk_contract": {
+    "chunk_length": 16,
+    "execution_horizon": 4,
+    "temporal_aggregation": "disabled_receding_horizon_v1"
+  },
+  "dataset": {
+    "digest": "sha256:234b82709359f1f2fde513ab26c015f4ebfb262a16b1f16206c54eddbde44800",
+    "episode_count": 500,
+    "frame_count": 21053
+  },
+  "development_seed_identity": {
+    "count": 30,
+    "ordered_seed_list_digest": "sha256:378227cd24148f187045e83e74057d8c7a09b64781b764c586061bd84b9d25bb",
+    "seed_start": 800000,
+    "seed_stop_exclusive": 800030
+  },
+  "final_seed_identity": {
+    "accessed": false,
+    "config_path": "configs/pickcube_act_bounded/eval_final.yaml",
+    "config_sha256": "6516b4b83981db29f1d4fb26cf123a544339665c7efca96438aaab608892b0ff",
+    "count": 100,
+    "seed_start": 900000,
+    "status": "sealed_not_accessed"
+  },
+  "normalization": {
+    "action_mode": "IDENTITY",
+    "digest": "sha256:8093f5bba3916dff218e73789739b18e05e9eb96cfc200fa18747f010959532a",
+    "image_and_state_mode": "MEAN_STD"
+  },
+  "observation_schema": {
+    "image": {
+      "feature": "observation.images.front_oblique",
+      "shape_chw": [3, 224, 224]
+    },
+    "state": {
+      "dimension": 18,
+      "feature": "observation.state",
+      "semantic": "panda_active_joint_qpos_then_qvel_named_v1"
+    }
+  },
+  "p01_source_commit": "48069c2c3bdb460220a71480d8c75b9393fc9eab",
+  "p02_starting_commit": "f2224d9bf3570a5bb1e51221019a98cb7997ef1a",
+  "schema_version": "pickcube-act-p02-input-manifest-v1",
+  "simulator": {
+    "control_frequency_hz": 20.0,
+    "environment_config_path": "configs/pickcube_act/environment.yaml",
+    "environment_config_sha256": "afb929d88834883014bcf050ed6a69b69083d756362b387645fb637814958f98",
+    "environment_id": "PickCube-v1",
+    "native_episode_horizon": 50,
+    "num_envs": 1,
+    "render_domain_id": "canonical"
+  },
+  "split_identity": {
+    "counts": {
+      "test": 50,
+      "train": 400,
+      "validation": 50
+    },
+    "test_accessed_in_p02_development": false
+  }
+}

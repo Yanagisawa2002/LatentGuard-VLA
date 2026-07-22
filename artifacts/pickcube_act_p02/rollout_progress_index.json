@@ -1,0 +1,15 @@
+{
+  "schema_version": "pickcube-act-p02-rollout-progress-index-v1",
+  "run_id": "20260722T190000Z_wm-v0-p02-candidate-b-fixed30-recovery_dd694fb_seed800000",
+  "relative_progress_directory": "evaluation/progress",
+  "relative_episode_directory": "evaluation/episodes",
+  "seed_start": 800000,
+  "seed_stop_exclusive": 800030,
+  "progress_file_count": 30,
+  "progress_total_bytes": 5159956,
+  "ordered_progress_sha256_manifest_digest": "sha256:d6534e3f9fc9c72ee10a97c5532541aa827ab84ae2c8a948ab31350ec350ecbc",
+  "ordered_episode_sha256_manifest_digest": "sha256:b22c37cc346910cc215c8ac9021cee0a1b6dc2ebf7a861294ae075064e483e0c",
+  "per_step_fields_retained_remotely": true,
+  "compact_summary": "development_rollout_summary.json",
+  "source_evaluator_commit": "dd694fb328372a68c321a3d2a2fac865de6367c7"
+}

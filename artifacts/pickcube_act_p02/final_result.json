@@ -1,0 +1,24 @@
+{
+  "schema_version": "pickcube-act-p02-final-result-v1",
+  "result": "result_c_act_still_fails_to_acquire_grasp",
+  "action_integrity_passed": true,
+  "bounded_repairs_completed": true,
+  "real_grasp_events_observed": 1,
+  "grasp_competence_gate_passed": false,
+  "development_success_rate": 0.0,
+  "promotion_gate_passed": false,
+  "dominant_failure_taxonomy": {
+    "close_command_too_early": 8,
+    "contact_without_grasp": 12,
+    "grasp_without_lift": 1,
+    "never_enters_pregrasp": 2,
+    "timeout_after_progress": 7
+  },
+  "conclusion": "Phase- and gripper-aware supervision removed the P0.1 global gripper collapse and improved approach/close behavior, but the current ACT/data formulation did not acquire repeatable stable contact, grasp, or lift.",
+  "final_sealed_seed_count_accessed": 0,
+  "policy_package_built": false,
+  "accepted_compatible_policy_count": 0,
+  "d2_authorized": false,
+  "next_policy_family_experiment": "separate_future_phase_only",
+  "result_is_policy_acceptance": false
+}

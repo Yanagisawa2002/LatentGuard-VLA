@@ -1,0 +1,56 @@
+{
+  "schema_version": "pickcube-act-p02-full-checkpoint-selection-result-v1",
+  "selection_config_sha256": "sha256:782cb3cc00e0187074b5efc4fb09ae2c01e19c6f75c466a8876ccda6c4dbb5db",
+  "offline_ranking_report_sha256": "sha256:9e3fcc6c28eed0b88dae766957c2dd8de6f0d7c393df5d0008e45ca49f95efd2",
+  "training_identity_digest": "sha256:d9ba1aec545ca306371da03fe333fbd2225fd9d3e8d2ba7eb8ad4840a9ca405c",
+  "execution_horizon": 2,
+  "screen_seed_start": 800000,
+  "screen_seed_stop_exclusive": 800010,
+  "outcomes_opened": "fixed_development_screen_only",
+  "candidates": [
+    {
+      "checkpoint_id": "step-00006000",
+      "offline_rank": 1,
+      "evaluation_sha256": "sha256:7e0898ccac73a19a9b25db7ccae525af0690a13ffc005bc2cbac232a5fdd4977",
+      "action_contract_violation_count": 0,
+      "simulator_error_count": 0,
+      "workspace_violation_count": 0,
+      "success_count": 0,
+      "lift_count": 0,
+      "grasp_count": 0,
+      "valid_close_count": 6,
+      "entered_pregrasp_count": 8
+    },
+    {
+      "checkpoint_id": "step-00007000",
+      "offline_rank": 2,
+      "evaluation_sha256": "sha256:3db1465abba7ce75387569167f5fe217ecefe93a03fb889d608d657d530c876f",
+      "action_contract_violation_count": 0,
+      "simulator_error_count": 0,
+      "workspace_violation_count": 0,
+      "success_count": 0,
+      "lift_count": 0,
+      "grasp_count": 0,
+      "valid_close_count": 6,
+      "entered_pregrasp_count": 10
+    },
+    {
+      "checkpoint_id": "step-00018000",
+      "offline_rank": 3,
+      "evaluation_sha256": "sha256:450ee41a587e34dba038450fa735f07e13b380eaf35935f5976ea82d02ae2f3a",
+      "action_contract_violation_count": 0,
+      "simulator_error_count": 0,
+      "workspace_violation_count": 0,
+      "success_count": 0,
+      "lift_count": 0,
+      "grasp_count": 1,
+      "valid_close_count": 7,
+      "entered_pregrasp_count": 10
+    }
+  ],
+  "selected_checkpoint_id": "step-00018000",
+  "selected_checkpoint_sha256": "sha256:f64d4a036e2dd2afc02cb6423737ec91bf030699e3e109407e283564efa14a14",
+  "selected_offline_rank": 3,
+  "selection_reason": "Frozen behavioral lexicographic rule: the only shortlisted checkpoint with a verified grasp wins after all integrity, success, and lift fields tie.",
+  "final_seed_accessed": false
+}

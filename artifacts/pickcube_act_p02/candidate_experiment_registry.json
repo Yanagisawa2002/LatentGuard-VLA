@@ -1,0 +1,37 @@
+{
+  "schema_version": "pickcube-act-p02-candidate-experiment-registry-v1",
+  "maximum_substantive_candidates": 3,
+  "substantive_candidates_run": 1,
+  "candidates": [
+    {
+      "candidate_id": "candidate_a_temporal_alignment",
+      "status": "skipped_not_justified",
+      "reason": "The recorder contract and five-offset audit select observation[t] to action[t] with zero phase mismatch; no alignment defect exists to repair."
+    },
+    {
+      "candidate_id": "candidate_b_phase_gripper_aware_supervision",
+      "status": "completed_rejected_result_c",
+      "screen_training_steps": 5000,
+      "screen_selected_checkpoint": "step-00004000",
+      "screen_selected_checkpoint_sha256": "sha256:78f870230669f4f964b533124b2be3d40a8638303212128b9761614cb8ed9cdc",
+      "screen_real_grasp_count": 1,
+      "full_training_steps": 20000,
+      "full_checkpoint_count": 14,
+      "full_selected_checkpoint": "step-00018000",
+      "full_selected_checkpoint_sha256": "sha256:f64d4a036e2dd2afc02cb6423737ec91bf030699e3e109407e283564efa14a14",
+      "development_episode_count": 30,
+      "development_success_count": 0,
+      "development_grasp_count": 1,
+      "result": "result_c_act_still_fails_to_acquire_grasp"
+    },
+    {
+      "candidate_id": "candidate_c_pregrasp_auxiliary_supervision",
+      "status": "skipped_not_justified",
+      "reason": "Candidate B already produced pre-grasp and close behavior, while the offline archive lacks independent contact and lift labels; an auxiliary head would be speculative rather than diagnosis-backed."
+    }
+  ],
+  "other_policy_family_accessed": false,
+  "expert_fallback_used": false,
+  "action_clipping_or_projection_used": false,
+  "final_seed_accessed": false
+}

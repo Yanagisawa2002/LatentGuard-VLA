@@ -1,0 +1,8 @@
+{
+  "dataset_digest": "sha256:234b82709359f1f2fde513ab26c015f4ebfb262a16b1f16206c54eddbde44800",
+  "episode_count": 500,
+  "normalization_digest": "sha256:8093f5bba3916dff218e73789739b18e05e9eb96cfc200fa18747f010959532a",
+  "passed": true,
+  "schema_version": "pickcube-act-p02-dataset-audit-v1",
+  "temporal_alignment_defect_found": false
+}

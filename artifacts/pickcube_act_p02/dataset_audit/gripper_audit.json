@@ -1,0 +1,50 @@
+{
+  "action_dimension": 7,
+  "action_is_commanded_not_measured": true,
+  "always_closed_collapse_in_late_p01_checkpoints": true,
+  "always_open_collapse_in_late_p01_checkpoints": false,
+  "close_sign": "negative",
+  "close_target": -1.0,
+  "close_transition_count": 500,
+  "close_transition_frame": {
+    "maximum": 25,
+    "mean": 20.636,
+    "minimum": 17,
+    "standard_deviation": 1.5998449924914602
+  },
+  "closed_endpoint_fraction": 0.5099035766874079,
+  "failure_classification": [
+    "close_transition_underweighted",
+    "always_closed_collapse"
+  ],
+  "gripper_supervision_fraction_of_standard_l1": 0.125,
+  "mimic_joint_command": true,
+  "normalization_preserves_endpoints": true,
+  "open_sign": "positive",
+  "open_target": 1.0,
+  "opened_endpoint_fraction": 0.490096423312592,
+  "policy_state_contains_measured_finger_qpos": true,
+  "policy_state_measured_finger_qpos": {
+    "maximum": [
+      0.03999999910593033,
+      0.03999999910593033
+    ],
+    "mean": [
+      0.0313486494146939,
+      0.031365643826645584
+    ],
+    "minimum": [
+      0.01823613792657852,
+      0.018264293670654297
+    ],
+    "standard_deviation": [
+      0.009059162909184532,
+      0.009042427940069894
+    ]
+  },
+  "schema_version": "pickcube-act-p02-gripper-audit-v1",
+  "stored_target_values": [
+    -1.0,
+    1.0
+  ]
+}

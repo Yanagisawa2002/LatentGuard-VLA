@@ -1,0 +1,49 @@
+{
+  "action_recording_order": "same_action_before_env_step_then_executed_once",
+  "control_frequency_hz": 20.0,
+  "current_target_offset": 0,
+  "dataset_semantic": "pre_action_observation_t_paired_with_executed_action_t",
+  "episode_boundary_isolation": true,
+  "frame_skipping": false,
+  "observation_recording_order": "render_and_state_before_env_step",
+  "offsets": {
+    "-1": {
+      "controller_tracking_proxy_mae_to_next_measured_qpos": 0.0042582387615358866,
+      "pair_count": 20053,
+      "phase_mismatch_count": 1500,
+      "phase_mismatch_rate": 0.07480177529546701
+    },
+    "-2": {
+      "controller_tracking_proxy_mae_to_next_measured_qpos": 0.005534661760442774,
+      "pair_count": 19553,
+      "phase_mismatch_count": 3000,
+      "phase_mismatch_rate": 0.15342914130823915
+    },
+    "0": {
+      "controller_tracking_proxy_mae_to_next_measured_qpos": 0.010894027708165561,
+      "pair_count": 20553,
+      "phase_mismatch_count": 0,
+      "phase_mismatch_rate": 0.0
+    },
+    "1": {
+      "controller_tracking_proxy_mae_to_next_measured_qpos": 0.01802688425250521,
+      "pair_count": 20553,
+      "phase_mismatch_count": 1500,
+      "phase_mismatch_rate": 0.07298204641658151
+    },
+    "2": {
+      "controller_tracking_proxy_mae_to_next_measured_qpos": 0.025537408458128276,
+      "pair_count": 20053,
+      "phase_mismatch_count": 3000,
+      "phase_mismatch_rate": 0.14960355059093403
+    }
+  },
+  "padding_semantic": "zero_storage_with_true_action_is_pad_mask",
+  "reset_frame_semantic": "first_post_reset_pre_action_observation",
+  "schema_version": "pickcube-act-p02-temporal-alignment-audit-v1",
+  "selected_offset": 0,
+  "selected_offset_basis": "recording_interception_contract_not_controller_response_latency",
+  "temporal_alignment_defect_found": false,
+  "terminal_frame_semantic": "T_pre_action_observations_T_actions_no_T_plus_1",
+  "timestamp_fields_present": false
+}

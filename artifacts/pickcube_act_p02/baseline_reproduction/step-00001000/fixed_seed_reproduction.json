@@ -1,0 +1,7 @@
+{
+  "action_digest_matches": true,
+  "episode_outcome_matches": true,
+  "reproducible": true,
+  "schema_version": "pickcube-native-act-fixed-seed-reproduction-v1",
+  "seed": 800000
+}
