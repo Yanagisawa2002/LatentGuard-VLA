@@ -53,6 +53,29 @@ def test_checked_in_bounded_act_config_is_exact_and_round_trips() -> None:
     )
 
 
+def test_checked_in_p02_full_candidate_freezes_screen_repair() -> None:
+    screen_value = json.loads(
+        (_ROOT / "configs" / "pickcube_act_p02" / "candidate_b_screen.yaml").read_text(
+            encoding="utf-8"
+        )
+    )
+    full_value = json.loads(
+        (_ROOT / "configs" / "pickcube_act_p02" / "candidate_b_full.yaml").read_text(
+            encoding="utf-8"
+        )
+    )
+    screen = PickCubeActExperimentConfig.from_mapping(screen_value)
+    full = PickCubeActExperimentConfig.from_mapping(full_value)
+    assert full.model == screen.model
+    assert full.action_parameterization == screen.action_parameterization
+    assert full.grasp_supervision == screen.grasp_supervision
+    assert full.optimization.training_steps == 20_000
+    assert full.optimization.checkpoint_interval == 2_000
+    assert full.optimization.validation_interval == 1_000
+    assert full.optimization.early_stopping_patience_evaluations == 21
+    assert PickCubeActExperimentConfig.from_mapping(full.to_mapping()) == full
+
+
 def test_bounded_training_identity_requires_transform_identity() -> None:
     experiment = PickCubeActExperimentConfig.from_mapping(
         json.loads(
