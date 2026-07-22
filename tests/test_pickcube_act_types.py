@@ -76,6 +76,30 @@ def test_checked_in_p02_full_candidate_freezes_screen_repair() -> None:
     assert PickCubeActExperimentConfig.from_mapping(full.to_mapping()) == full
 
 
+def test_p02_checkpoint_selection_is_bounded_and_development_only() -> None:
+    selection = json.loads(
+        (
+            _ROOT / "configs" / "pickcube_act_p02" / "full_checkpoint_selection.yaml"
+        ).read_text(encoding="utf-8")
+    )
+    assert selection["offline_shortlist_count"] == 3
+    assert selection["execution_horizon"] == 2
+    assert selection["screen_seed_stop_exclusive"] == 800_010
+    assert selection["selected_checkpoint_seed_stop_exclusive"] == 800_030
+    assert selection["final_seed_access_requires_result_a"] is True
+    assert selection["staged_gates"] == {
+        "maximum_action_contract_violations": 0,
+        "maximum_simulator_errors": 0,
+        "maximum_workspace_violations": 0,
+        "minimum_entered_pregrasp_count": 24,
+        "minimum_grasp_count": 18,
+        "minimum_lift_count": 15,
+        "minimum_success_count": 23,
+        "minimum_valid_close_count": 21,
+        "promotion_success_rate": 0.75,
+    }
+
+
 def test_bounded_training_identity_requires_transform_identity() -> None:
     experiment = PickCubeActExperimentConfig.from_mapping(
         json.loads(

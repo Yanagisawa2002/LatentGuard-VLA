@@ -1,0 +1,36 @@
+{
+  "schema_version": "pickcube-act-p02-checkpoint-selection-v1",
+  "offline_ranking_report_schema": "pickcube-act-p02-checkpoint-phase-metrics-v1",
+  "offline_shortlist_count": 3,
+  "screen_episode_count": 10,
+  "screen_seed_start": 800000,
+  "screen_seed_stop_exclusive": 800010,
+  "execution_horizon": 2,
+  "behavioral_selection_rule": [
+    "action_contract_violation_count_ascending",
+    "simulator_error_count_ascending",
+    "workspace_violation_count_ascending",
+    "success_count_descending",
+    "lift_count_descending",
+    "grasp_count_descending",
+    "valid_close_count_descending",
+    "entered_pregrasp_count_descending",
+    "offline_rank_ascending",
+    "checkpoint_step_ascending"
+  ],
+  "selected_checkpoint_development_episode_count": 30,
+  "selected_checkpoint_seed_start": 800000,
+  "selected_checkpoint_seed_stop_exclusive": 800030,
+  "staged_gates": {
+    "maximum_action_contract_violations": 0,
+    "maximum_simulator_errors": 0,
+    "maximum_workspace_violations": 0,
+    "minimum_entered_pregrasp_count": 24,
+    "minimum_grasp_count": 18,
+    "minimum_lift_count": 15,
+    "minimum_success_count": 23,
+    "minimum_valid_close_count": 21,
+    "promotion_success_rate": 0.75
+  },
+  "final_seed_access_requires_result_a": true
+}
