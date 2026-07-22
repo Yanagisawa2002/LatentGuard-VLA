@@ -21,10 +21,12 @@ import torch
 
 from latentguard.control.serialization import write_atomic_json
 from latentguard.policies.act.data import PickCubeDemoSplit
+from latentguard.policies.act.grasp_supervision import forward_phase_aware_act
 from latentguard.policies.act.runtime import (
     DeterministicResumeBatchSampler,
     PickCubeActDataset,
     PickCubeActRuntimeError,
+    build_grasp_supervision_view,
     build_optimizer,
     build_policy_and_processors,
     installed_runtime_versions,
@@ -111,21 +113,59 @@ def _autocast(experiment: PickCubeActExperimentConfig) -> Any:
     return nullcontext()
 
 
+def _training_summary_schema(experiment: PickCubeActExperimentConfig) -> str:
+    if experiment.grasp_supervision is not None:
+        return "pickcube-native-act-grasp-training-summary-v1"
+    if experiment.bounded:
+        return "pickcube-native-act-bounded-training-summary-v1"
+    return "pickcube-native-act-training-summary-v1"
+
+
 def _processed(
     raw: Mapping[str, object],
     preprocessor: Any,
     experiment: PickCubeActExperimentConfig,
 ) -> dict[str, torch.Tensor]:
-    value = preprocessor(prepare_training_batch(raw))
+    base_keys = {
+        experiment.model.image_feature_key,
+        experiment.model.state_feature_key,
+        experiment.model.action_feature_key,
+        "action_is_pad",
+    }
+    metadata_keys = (
+        {"p02_phase_weight", "p02_gripper_event"}
+        if experiment.grasp_supervision is not None
+        else set()
+    )
+    if set(raw) != base_keys | metadata_keys:
+        raise PickCubeActRuntimeError("ACT raw batch feature inventory changed")
+    value = preprocessor(prepare_training_batch({key: raw[key] for key in base_keys}))
     if not isinstance(value, Mapping):
         raise PickCubeActRuntimeError("ACT preprocessor returned a non-mapping")
     result = cast(dict[str, torch.Tensor], dict(value))
+    if experiment.grasp_supervision is not None:
+        device = result[experiment.model.state_feature_key].device
+        phase_weight = raw["p02_phase_weight"]
+        gripper_event = raw["p02_gripper_event"]
+        if not isinstance(phase_weight, torch.Tensor) or not isinstance(
+            gripper_event, torch.Tensor
+        ):
+            raise PickCubeActRuntimeError("P0.2 batch metadata must be tensors")
+        result["p02_phase_weight"] = phase_weight.to(device=device, dtype=torch.float32)
+        result["p02_gripper_event"] = gripper_event.to(device=device, dtype=torch.int64)
     expected = {
         experiment.model.image_feature_key: (3, 224, 224),
         experiment.model.state_feature_key: (18,),
         experiment.model.action_feature_key: (experiment.model.chunk_size, 8),
         "action_is_pad": (experiment.model.chunk_size,),
     }
+    if experiment.grasp_supervision is not None:
+        expected.update(
+            {
+                "p02_gripper_event": (experiment.model.chunk_size,),
+                "p02_phase_weight": (experiment.model.chunk_size,),
+            }
+        )
     for key, tail in expected.items():
         tensor = result.get(key)
         if not isinstance(tensor, torch.Tensor) or tensor.shape[1:] != tail:
@@ -150,7 +190,14 @@ def _validation_loss(
     for raw in batches:
         batch = _processed(raw, preprocessor, experiment)
         with _autocast(experiment):
-            loss, components = policy.forward(batch)
+            if experiment.grasp_supervision is None:
+                loss, components = policy.forward(batch)
+            else:
+                loss, components = forward_phase_aware_act(
+                    policy=policy,
+                    batch=batch,
+                    config=experiment.grasp_supervision,
+                )
         if not torch.isfinite(loss) or any(
             not math.isfinite(float(value)) for value in components.values()
         ):
@@ -359,6 +406,17 @@ def train(
             "episode_ids": [item.episode_id for item in train_references],
             "mode": "first_train_episodes_tiny_overfit_v1",
         }
+    supervision_weights: Mapping[str, float] | None = None
+    if experiment.grasp_supervision is not None:
+        supervision_weights, supervision_view = build_grasp_supervision_view(
+            dataset_root,
+            train_references,
+            experiment.grasp_supervision,
+        )
+        data_view = {
+            **({} if data_view is None else dict(data_view)),
+            "grasp_supervision": dict(supervision_view),
+        }
     contract = _read_mapping(contract_path, context="ACT contract")
     action_section = contract.get("action")
     if not isinstance(action_section, Mapping):
@@ -433,11 +491,7 @@ def train(
         summary = {
             "dataset_episode_count": len(references),
             "dry_run": True,
-            "schema_version": (
-                "pickcube-native-act-bounded-training-summary-v1"
-                if experiment.bounded
-                else "pickcube-native-act-training-summary-v1"
-            ),
+            "schema_version": _training_summary_schema(experiment),
             "training_identity": dict(training_identity),
         }
         write_atomic_json(root / "dry_run_summary.json", summary)
@@ -486,11 +540,7 @@ def train(
             "final_step": start_step,
             "resume_invocation_source_commit": current_source_commit,
             "resume_zero_work": True,
-            "schema_version": (
-                "pickcube-native-act-bounded-training-summary-v1"
-                if experiment.bounded
-                else "pickcube-native-act-training-summary-v1"
-            ),
+            "schema_version": _training_summary_schema(experiment),
             "training_identity": dict(training_identity),
         }
         write_atomic_json(root / "zero_work_resume.json", zero_work)
@@ -501,6 +551,8 @@ def train(
         chunk_size=experiment.model.chunk_size,
         limit_samples=limit_samples,
         action_transform=action_transform,
+        grasp_supervision=experiment.grasp_supervision,
+        phase_weights=supervision_weights,
     )
     validation_dataset = PickCubeActDataset(
         dataset_root,
@@ -508,6 +560,8 @@ def train(
         chunk_size=experiment.model.chunk_size,
         limit_samples=limit_samples,
         action_transform=action_transform,
+        grasp_supervision=experiment.grasp_supervision,
+        phase_weights=supervision_weights,
     )
     train_batches = _loader(
         train_dataset,
@@ -571,7 +625,14 @@ def train(
             batch = _processed(raw, preprocessor, experiment)
             optimizer.zero_grad(set_to_none=True)
             with _autocast(experiment):
-                loss, components = policy.forward(batch)
+                if experiment.grasp_supervision is None:
+                    loss, components = policy.forward(batch)
+                else:
+                    loss, components = forward_phase_aware_act(
+                        policy=policy,
+                        batch=batch,
+                        config=experiment.grasp_supervision,
+                    )
             if not torch.isfinite(loss) or any(
                 not math.isfinite(float(value)) for value in components.values()
             ):
@@ -631,10 +692,13 @@ def train(
                 policy.train()
             metric: dict[str, object] = {
                 "action_loss": components.get("l1_loss"),
+                "arm_action_loss": components.get("arm_action_loss"),
                 "examples_processed": examples_processed,
                 "gpu_memory_allocated_bytes": torch.cuda.memory_allocated(),
                 "gpu_memory_reserved_bytes": torch.cuda.memory_reserved(),
                 "gradient_norm": float(gradient_norm.detach().cpu()),
+                "gripper_action_loss": components.get("gripper_action_loss"),
+                "gripper_transition_loss": components.get("gripper_transition_loss"),
                 "kl_loss": components.get("kld_loss"),
                 "learning_rate": optimizer.param_groups[0]["lr"],
                 "step": step,
@@ -743,11 +807,7 @@ def train(
         "peak_gpu_memory_reserved_bytes": torch.cuda.max_memory_reserved(),
         "resume_zero_work": False,
         "runtime_versions": dict(versions),
-        "schema_version": (
-            "pickcube-native-act-bounded-training-summary-v1"
-            if experiment.bounded
-            else "pickcube-native-act-training-summary-v1"
-        ),
+        "schema_version": _training_summary_schema(experiment),
         "seed_settings": dict(seed_settings),
         "training_identity": dict(training_identity),
         "action_parameterization": (

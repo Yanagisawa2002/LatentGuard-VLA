@@ -21,7 +21,10 @@ from latentguard.policies.act.runtime import (
     save_checkpoint,
     validate_checkpoint_artifacts,
 )
-from latentguard.policies.act.types import PickCubeActExperimentConfig
+from latentguard.policies.act.types import (
+    PickCubeActExperimentConfig,
+    PickCubeActGraspSupervisionConfig,
+)
 from latentguard.policies.actions import ActionBounds, BoundedActionTransform
 
 _DIGEST = "sha256:" + "a" * 64
@@ -59,6 +62,49 @@ def test_runtime_dataset_emits_only_allowlisted_chunk_tensors(tmp_path: Path) ->
     prepared = prepare_training_batch(batch)
     assert prepared["observation.images.front_oblique"].dtype == torch.float32
     assert prepared["observation.images.front_oblique"].max() == 0
+
+
+def test_p02_dataset_adds_only_training_metadata_without_privileged_input(
+    tmp_path: Path,
+) -> None:
+    episode = _episode(2)
+    actions = np.zeros_like(episode.actions, dtype=np.float64)
+    actions[:, 7] = [1.0, 1.0, -1.0]
+    episode = PickCubeDemoEpisode(
+        scene_seed=episode.scene_seed,
+        rgb=episode.rgb,
+        proprioception=episode.proprioception,
+        actions=actions,
+        phases=episode.phases,
+        compatibility_identity=_DIGEST,
+        contract_digest=_DIGEST,
+        camera_configuration_digest=_DIGEST,
+    )
+    reference = save_demo_episode(tmp_path, episode)
+    dataset = PickCubeActDataset(
+        tmp_path,
+        (reference,),
+        chunk_size=4,
+        action_transform=_bounded_transform(),
+        grasp_supervision=PickCubeActGraspSupervisionConfig(),
+        phase_weights={
+            "APPROACH": 1.0,
+            "GRIPPER_CLOSING": 1.0,
+            "PREGRASP": 1.0,
+        },
+    )
+    sample = dataset[1]
+    assert set(sample) == {
+        "action",
+        "action_is_pad",
+        "observation.images.front_oblique",
+        "observation.state",
+        "p02_gripper_event",
+        "p02_phase_weight",
+    }
+    assert sample["p02_gripper_event"].tolist() == [0, 1, 0, 0]
+    assert sample["action_is_pad"].tolist() == [False, False, True, True]
+    assert not any("cube" in key or "phase" == key for key in sample)
 
 
 def test_resume_sampler_starts_at_the_same_global_batch() -> None:

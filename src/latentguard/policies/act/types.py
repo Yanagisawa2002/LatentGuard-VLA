@@ -16,6 +16,7 @@ PICKCUBE_ACT_ACTION_FEATURE = "action"
 PICKCUBE_ACT_LEROBOT_VERSION = "0.6.0"
 PICKCUBE_ACT_BOUNDED_EXPERIMENT_SCHEMA = "pickcube-native-act-bounded-experiment-v1"
 PICKCUBE_ACT_BOUNDED_CHECKPOINT_SCHEMA = "pickcube_act_bounded_v1"
+PICKCUBE_ACT_GRASP_EXPERIMENT_SCHEMA = "pickcube-native-act-grasp-experiment-v1"
 
 
 class PickCubeActConfigurationError(ValueError):
@@ -239,6 +240,73 @@ class PickCubeActActionParameterizationConfig:
 
 
 @dataclass(frozen=True, slots=True)
+class PickCubeActGraspSupervisionConfig:
+    """Bounded P0.2 phase/gripper supervision without policy-input leakage."""
+
+    temporal_target_offset: int = 0
+    phase_weight_exponent: float = 0.5
+    maximum_phase_weight: float = 3.0
+    arm_loss_weight: float = 0.875
+    gripper_loss_weight: float = 0.5
+    transition_loss_weight: float = 0.125
+    transition_weight_boost: float = 3.0
+    close_threshold: float = -0.5
+    open_threshold: float = 0.5
+    schema_version: str = "pickcube-act-grasp-supervision-v1"
+
+    def __post_init__(self) -> None:
+        if (
+            type(self.temporal_target_offset) is not int
+            or not -2 <= (self.temporal_target_offset) <= 2
+        ):
+            raise PickCubeActConfigurationError(
+                "temporal target offset must lie in [-2,2]"
+            )
+        for name in (
+            "phase_weight_exponent",
+            "maximum_phase_weight",
+            "arm_loss_weight",
+            "gripper_loss_weight",
+            "transition_loss_weight",
+            "transition_weight_boost",
+            "close_threshold",
+            "open_threshold",
+        ):
+            _finite(cast(float, getattr(self, name)), name)
+        if not 0.0 <= self.phase_weight_exponent <= 1.0:
+            raise PickCubeActConfigurationError(
+                "phase weight exponent must lie in [0,1]"
+            )
+        if not 1.0 <= self.maximum_phase_weight <= 3.0:
+            raise PickCubeActConfigurationError(
+                "maximum phase weight must lie in [1,3]"
+            )
+        if not 0.0 < self.arm_loss_weight <= 1.0:
+            raise PickCubeActConfigurationError("arm loss weight is invalid")
+        if not 0.0 < self.gripper_loss_weight <= 1.0:
+            raise PickCubeActConfigurationError("gripper loss weight is invalid")
+        if not 0.0 <= self.transition_loss_weight <= 0.5:
+            raise PickCubeActConfigurationError("transition loss weight is invalid")
+        if not 1.0 <= self.transition_weight_boost <= 4.0:
+            raise PickCubeActConfigurationError("transition boost is invalid")
+        if not -1.0 < self.close_threshold < 0.0:
+            raise PickCubeActConfigurationError("close threshold is invalid")
+        if not 0.0 < self.open_threshold < 1.0:
+            raise PickCubeActConfigurationError("open threshold is invalid")
+        if self.schema_version != "pickcube-act-grasp-supervision-v1":
+            raise PickCubeActConfigurationError("grasp supervision schema changed")
+
+    def to_mapping(self) -> dict[str, object]:
+        """Return the exact bounded loss and alignment declaration."""
+        return asdict(self)
+
+    @classmethod
+    def from_mapping(cls, value: Mapping[str, object]) -> Self:
+        """Decode one strict P0.2 supervision declaration."""
+        return cls(**cast(Any, dict(value)))
+
+
+@dataclass(frozen=True, slots=True)
 class PickCubeActExperimentConfig:
     """Complete native ACT experiment declaration without runtime paths."""
 
@@ -251,6 +319,7 @@ class PickCubeActExperimentConfig:
     expected_split_counts: tuple[int, int, int] = (400, 50, 50)
     lerobot_version: str = PICKCUBE_ACT_LEROBOT_VERSION
     action_parameterization: PickCubeActActionParameterizationConfig | None = None
+    grasp_supervision: PickCubeActGraspSupervisionConfig | None = None
     schema_version: str = "pickcube-native-act-experiment-v1"
 
     def __post_init__(self) -> None:
@@ -265,7 +334,16 @@ class PickCubeActExperimentConfig:
             raise PickCubeActConfigurationError("dataset size/split contract changed")
         if self.lerobot_version != PICKCUBE_ACT_LEROBOT_VERSION:
             raise PickCubeActConfigurationError("LeRobot must be exactly 0.6.0")
-        if self.action_parameterization is None:
+        if self.grasp_supervision is not None:
+            if self.action_parameterization is None:
+                raise PickCubeActConfigurationError(
+                    "grasp supervision requires bounded action parameterization"
+                )
+            if self.schema_version != PICKCUBE_ACT_GRASP_EXPERIMENT_SCHEMA:
+                raise PickCubeActConfigurationError(
+                    "grasp supervision requires its versioned experiment schema"
+                )
+        elif self.action_parameterization is None:
             if self.schema_version != "pickcube-native-act-experiment-v1":
                 raise PickCubeActConfigurationError("experiment schema changed")
         elif self.schema_version != PICKCUBE_ACT_BOUNDED_EXPERIMENT_SCHEMA:
@@ -295,6 +373,8 @@ class PickCubeActExperimentConfig:
             result["action_parameterization"] = (
                 self.action_parameterization.to_mapping()
             )
+        if self.grasp_supervision is not None:
+            result["grasp_supervision"] = self.grasp_supervision.to_mapping()
         return result
 
     @classmethod
@@ -304,6 +384,7 @@ class PickCubeActExperimentConfig:
         model = payload.pop("model", None)
         optimization = payload.pop("optimization", None)
         action_parameterization = payload.pop("action_parameterization", None)
+        grasp_supervision = payload.pop("grasp_supervision", None)
         counts = payload.get("expected_split_counts")
         if not isinstance(model, Mapping) or not isinstance(optimization, Mapping):
             raise PickCubeActConfigurationError("experiment nested configs are missing")
@@ -317,6 +398,13 @@ class PickCubeActExperimentConfig:
                     cast(Mapping[str, object], action_parameterization)
                 )
                 if isinstance(action_parameterization, Mapping)
+                else None
+            ),
+            grasp_supervision=(
+                PickCubeActGraspSupervisionConfig.from_mapping(
+                    cast(Mapping[str, object], grasp_supervision)
+                )
+                if isinstance(grasp_supervision, Mapping)
                 else None
             ),
             **cast(Any, payload),
@@ -380,12 +468,14 @@ __all__ = [
     "PICKCUBE_ACT_ACTION_FEATURE",
     "PICKCUBE_ACT_BOUNDED_CHECKPOINT_SCHEMA",
     "PICKCUBE_ACT_BOUNDED_EXPERIMENT_SCHEMA",
+    "PICKCUBE_ACT_GRASP_EXPERIMENT_SCHEMA",
     "PICKCUBE_ACT_IMAGE_FEATURE",
     "PICKCUBE_ACT_LEROBOT_VERSION",
     "PICKCUBE_ACT_STATE_FEATURE",
     "PickCubeActConfigurationError",
     "PickCubeActActionParameterizationConfig",
     "PickCubeActExperimentConfig",
+    "PickCubeActGraspSupervisionConfig",
     "PickCubeActModelConfig",
     "PickCubeActOptimizationConfig",
     "build_training_identity",

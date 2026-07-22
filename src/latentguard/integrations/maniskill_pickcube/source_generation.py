@@ -83,6 +83,39 @@ class PickCubeEpisodeEndedError(PickCubeSourceGenerationError):
         super().__init__(f"PickCube episode {reason} at action {action_count}")
 
 
+@dataclass(frozen=True, slots=True)
+class PickCubeProgressState:
+    """Privileged rollout diagnostics that are never policy observations."""
+
+    joint_positions: tuple[float, ...]
+    gripper_position: float
+    tcp_position: tuple[float, float, float]
+    cube_position: tuple[float, float, float]
+    tcp_to_cube_distance: float
+    left_contact_force: float
+    right_contact_force: float
+    grasped: bool
+
+    def __post_init__(self) -> None:
+        if len(self.joint_positions) != 9:
+            raise PickCubeSourceGenerationError(
+                "progress state requires nine Panda active-joint positions"
+            )
+        numeric = (
+            *self.joint_positions,
+            self.gripper_position,
+            *self.tcp_position,
+            *self.cube_position,
+            self.tcp_to_cube_distance,
+            self.left_contact_force,
+            self.right_contact_force,
+        )
+        if not np.all(np.isfinite(np.asarray(numeric, dtype=np.float64))):
+            raise PickCubeSourceGenerationError(
+                "progress state contains non-finite values"
+            )
+
+
 class PickCubeSourceCollectionIncompleteError(PickCubeSourceGenerationError):
     """Raised when bounded attempts cannot produce all requested references."""
 
@@ -534,6 +567,10 @@ class SourceEnvironmentFactory(Protocol):
         """Return active-joint names and qpos-then-qvel vector."""
         ...
 
+    def capture_progress_state(self, environment: object) -> PickCubeProgressState:
+        """Capture privileged geometry/contact diagnostics outside observations."""
+        ...
+
 
 class LazyManiSkillSourceEnvironmentFactory:
     """Production source factory backed by the lazy replay runtime bridge."""
@@ -619,6 +656,70 @@ class LazyManiSkillSourceEnvironmentFactory:
             )
         vector = np.concatenate((qpos.reshape(-1), qvel.reshape(-1)))
         return tuple(names), _immutable_array(vector, context="Panda robot state")
+
+    def capture_progress_state(self, environment: object) -> PickCubeProgressState:
+        """Capture public ManiSkill Panda/cube state for P0.2 diagnostics only."""
+        base = _base_environment(environment)
+        agent = getattr(base, "agent", None)
+        robot = getattr(agent, "robot", None)
+        cube = getattr(base, "cube", None)
+        tcp = getattr(agent, "tcp", None)
+        scene = getattr(agent, "scene", None)
+        finger1 = getattr(agent, "finger1_link", None)
+        finger2 = getattr(agent, "finger2_link", None)
+        get_qpos = getattr(robot, "get_qpos", None)
+        is_grasping = getattr(agent, "is_grasping", None)
+        pairwise = getattr(scene, "get_pairwise_contact_forces", None)
+        if (
+            cube is None
+            or tcp is None
+            or not callable(get_qpos)
+            or not callable(is_grasping)
+            or not callable(pairwise)
+            or finger1 is None
+            or finger2 is None
+        ):
+            raise PickCubeSourceGenerationError(
+                "Panda progress diagnostics are unavailable from public handles"
+            )
+        qpos = _runtime_array(get_qpos(), context="Panda progress qpos").reshape(-1)
+        tcp_xyz = _runtime_array(
+            getattr(getattr(tcp, "pose", None), "p", None),
+            context="Panda TCP position",
+        ).reshape(-1)
+        cube_xyz = _runtime_array(
+            getattr(getattr(cube, "pose", None), "p", None),
+            context="PickCube position",
+        ).reshape(-1)
+        left = _runtime_array(
+            pairwise(finger1, cube), context="left finger contact force"
+        ).reshape(-1, 3)
+        right = _runtime_array(
+            pairwise(finger2, cube), context="right finger contact force"
+        ).reshape(-1, 3)
+        grasped_array = _runtime_array(
+            is_grasping(cube), context="Panda grasp state"
+        ).reshape(-1)
+        if (
+            qpos.shape != (9,)
+            or tcp_xyz.shape != (3,)
+            or cube_xyz.shape != (3,)
+            or grasped_array.shape != (1,)
+            or not np.issubdtype(grasped_array.dtype, np.bool_)
+        ):
+            raise PickCubeSourceGenerationError(
+                "Panda progress diagnostic shape or grasp dtype changed"
+            )
+        return PickCubeProgressState(
+            joint_positions=tuple(float(value) for value in qpos),
+            gripper_position=float(np.mean(qpos[-2:])),
+            tcp_position=cast(tuple[float, float, float], tuple(map(float, tcp_xyz))),
+            cube_position=cast(tuple[float, float, float], tuple(map(float, cube_xyz))),
+            tcp_to_cube_distance=float(np.linalg.norm(tcp_xyz - cube_xyz)),
+            left_contact_force=float(np.linalg.norm(left, axis=1)[0]),
+            right_contact_force=float(np.linalg.norm(right, axis=1)[0]),
+            grasped=bool(grasped_array[0]),
+        )
 
 
 @dataclass(frozen=True, slots=True)
@@ -1110,6 +1211,7 @@ __all__ = [
     "ROBOT_STATE_SEMANTIC",
     "LazyManiSkillSourceEnvironmentFactory",
     "PickCubeEpisodeEndedError",
+    "PickCubeProgressState",
     "PickCubeSourceCollectionIncompleteError",
     "PickCubeSourceGenerationError",
     "PickCubeTrajectoryActionLimitError",

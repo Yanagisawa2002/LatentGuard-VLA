@@ -54,6 +54,11 @@ from latentguard.policies.act.evaluation import (
     classify_final_checkpoint,
     summarize_checkpoint_evaluation,
 )
+from latentguard.policies.act.grasp_supervision import (
+    PickCubeProgressSample,
+    PickCubeStagedGateCounts,
+    analyze_progress_trace,
+)
 from latentguard.policies.act.runtime import (
     PickCubeActInferenceRuntime,
     PickCubeActRuntimeError,
@@ -280,7 +285,12 @@ def _run_episode(
     key_contract: PickCubeTaskKeyContract,
     render_plan: PickCubeVisualRenderPlan,
     execution_horizon: int,
-) -> PickCubeActEpisodeEvaluation:
+    progress_diagnostics: bool = False,
+    pregrasp_distance: float = 0.08,
+    close_threshold: float = -0.5,
+    contact_force_threshold: float = 0.05,
+    lift_height_delta: float = 0.03,
+) -> tuple[PickCubeActEpisodeEvaluation, Mapping[str, object] | None]:
     factory = LazyManiSkillSourceEnvironmentFactory()
     renderer = LazyManiSkillPickCubeVisualRenderer()
     environment: object | None = None
@@ -296,6 +306,11 @@ def _run_episode(
     post_grasp_drop = False
     release_failure = False
     workspace_violation = False
+    progress_samples: list[PickCubeProgressSample] = []
+    query_records: list[Mapping[str, object]] = []
+    initial_joint_positions: tuple[float, ...] | None = None
+    initial_cube_height: float | None = None
+    diagnostic_exception: Mapping[str, str] | None = None
     try:
         with warnings.catch_warnings():
             warnings.filterwarnings(
@@ -317,6 +332,10 @@ def _run_episode(
         )
         recorder.reset(seed=seed)
         handle = renderer.prepare(environment, render_plan)
+        if progress_diagnostics:
+            initial = factory.capture_progress_state(environment)
+            initial_joint_positions = initial.joint_positions
+            initial_cube_height = initial.cube_position[2]
         runtime.reset()
         torch.cuda.reset_peak_memory_stats()
         while len(actions) < 50:
@@ -335,19 +354,52 @@ def _run_episode(
                 break
             torch.cuda.synchronize()
             latencies.append(time.perf_counter() - started)
-            for action in chunk[:execution_horizon]:
+            query_index = len(query_records)
+            query_records.append(
+                {
+                    "action_chunk": chunk.tolist(),
+                    "inference_latency_seconds": latencies[-1],
+                    "query_index": query_index,
+                }
+            )
+            for action_index, action in enumerate(chunk[:execution_horizon]):
+                step_started = time.perf_counter()
                 try:
                     recorder.step(action)
                     actions.append(np.array(action, copy=True))
                 except PickCubeEpisodeEndedError as exc:
                     actions.append(np.array(action, copy=True))
                     ended = exc
-                    break
+                environment_step_latency = time.perf_counter() - step_started
+                if progress_diagnostics:
+                    state = factory.capture_progress_state(environment)
+                    progress_samples.append(
+                        PickCubeProgressSample(
+                            step_index=len(actions) - 1,
+                            query_index=query_index,
+                            action_index_in_chunk=action_index,
+                            joint_positions=state.joint_positions,
+                            commanded_action=cast(
+                                tuple[float, ...], tuple(map(float, action))
+                            ),
+                            gripper_position=state.gripper_position,
+                            commanded_gripper=float(action[7]),
+                            tcp_position=state.tcp_position,
+                            cube_position=state.cube_position,
+                            tcp_to_cube_distance=state.tcp_to_cube_distance,
+                            left_contact_force=state.left_contact_force,
+                            right_contact_force=state.right_contact_force,
+                            grasped=state.grasped,
+                            environment_step_latency_seconds=(environment_step_latency),
+                        )
+                    )
                 snapshot = factory.capture_task_snapshot(environment, key_contract)
                 evidence = build_pickcube_task_evidence(snapshot, key_contract)
                 if evidence.status is TerminalTaskStatus.COMPLETE:
                     grasped, _, _ = _task_flags(evidence)
                     grasp_ever = grasp_ever or grasped
+                if ended is not None:
+                    break
             if ended is not None:
                 break
         if not action_contract_violation:
@@ -363,10 +415,14 @@ def _run_episode(
             if evidence.status is TerminalTaskStatus.COMPLETE:
                 _, placed, static = _task_flags(evidence)
                 release_failure = not success and placed and not static
-    except Exception:
+    except Exception as exc:
         simulator_error = True
         category = "simulator_error"
         success = False
+        diagnostic_exception = {
+            "message": str(exc)[:512],
+            "type": type(exc).__name__,
+        }
     finally:
         peak_memory = (
             torch.cuda.max_memory_allocated() if torch.cuda.is_available() else 0
@@ -381,7 +437,7 @@ def _run_episode(
     if len(actions) > 1:
         differences = np.diff(np.stack(actions, axis=0), axis=0)
         smoothness = float(np.linalg.norm(differences, axis=1).mean())
-    return PickCubeActEpisodeEvaluation(
+    episode = PickCubeActEpisodeEvaluation(
         seed=seed,
         success=success,
         termination_category=category,
@@ -397,6 +453,74 @@ def _run_episode(
         query_latencies_seconds=tuple(latencies),
         peak_gpu_memory_allocated_bytes=peak_memory,
     )
+    progress: Mapping[str, object] | None = None
+    if progress_diagnostics:
+        if initial_joint_positions is None or initial_cube_height is None:
+            progress = {
+                "diagnostic_exception": diagnostic_exception,
+                "passed": False,
+                "schema_version": "pickcube-act-p02-progress-trace-v1",
+                "seed": seed,
+            }
+        else:
+            analyzed = (
+                analyze_progress_trace(
+                    progress_samples,
+                    initial_joint_positions=initial_joint_positions,
+                    initial_cube_height=initial_cube_height,
+                    success=episode.success,
+                    pregrasp_distance=pregrasp_distance,
+                    contact_force_threshold=contact_force_threshold,
+                    lift_height_delta=lift_height_delta,
+                    close_threshold=close_threshold,
+                )
+                if progress_samples
+                else None
+            )
+            step_records = []
+            distance_history: list[float] = []
+            for sample in progress_samples:
+                distance_history.append(sample.tcp_to_cube_distance)
+                prior = distance_history[max(0, len(distance_history) - 5)]
+                step_records.append(
+                    {
+                        "action_index_in_chunk": sample.action_index_in_chunk,
+                        "commanded_action": list(sample.commanded_action),
+                        "commanded_gripper": sample.commanded_gripper,
+                        "cube_position": list(sample.cube_position),
+                        "environment_step_latency_seconds": (
+                            sample.environment_step_latency_seconds
+                        ),
+                        "grasped": sample.grasped,
+                        "gripper_position": sample.gripper_position,
+                        "joint_positions": list(sample.joint_positions),
+                        "left_contact_force": sample.left_contact_force,
+                        "no_progress_over_last_five_steps": bool(
+                            len(distance_history) >= 5
+                            and prior - sample.tcp_to_cube_distance < 1e-3
+                        ),
+                        "query_index": sample.query_index,
+                        "right_contact_force": sample.right_contact_force,
+                        "step_index": sample.step_index,
+                        "tcp_position": list(sample.tcp_position),
+                        "tcp_to_cube_distance": sample.tcp_to_cube_distance,
+                    }
+                )
+            progress = {
+                "diagnostic_exception": diagnostic_exception,
+                "event_summary": (
+                    None if analyzed is None else dict(analyzed.to_mapping())
+                ),
+                "execution_horizon": execution_horizon,
+                "initial_cube_height": initial_cube_height,
+                "initial_joint_positions": list(initial_joint_positions),
+                "passed": diagnostic_exception is None,
+                "queries": query_records,
+                "schema_version": "pickcube-act-p02-progress-trace-v1",
+                "seed": seed,
+                "steps": step_records,
+            }
+    return episode, progress
 
 
 def evaluate(
@@ -417,16 +541,46 @@ def evaluate(
     schema = config.get("schema_version")
     bounded_development = schema == "pickcube-act-bounded-development-config-v1"
     bounded_final = schema == "pickcube-act-bounded-final-config-v1"
+    p02_development = schema == "pickcube-act-p02-development-config-v1"
     if schema != "pickcube-native-act-evaluation-config-v1" and not (
-        bounded_development or bounded_final
+        bounded_development or bounded_final or p02_development
     ):
         _fail("evaluation config", "schema mismatch")
     if _integer(config, "native_episode_horizon", minimum=1) != 50:
         _fail("evaluation config", "native horizon changed")
     execution_horizon = _integer(config, "execution_horizon", minimum=1)
-    if execution_horizon != 4:
+    if p02_development:
+        if execution_horizon not in {1, 2, 4}:
+            _fail("evaluation config", "P0.2 horizon must be one of 1,2,4")
+    elif execution_horizon != 4:
         _fail("evaluation config", "execution horizon changed")
-    if bounded_development:
+    p02_thresholds: dict[str, float] = {}
+    if p02_development:
+        if evaluation_kind != "development":
+            _fail("evaluation config", "P0.2 cannot open another split")
+        if config.get("progress_diagnostics") is not True:
+            _fail("evaluation config", "P0.2 progress diagnostics are required")
+        phase = config
+        declared = _integer(config, "episode_count", minimum=1)
+        episode_count = episode_count_override or declared
+        if declared != 10 or episode_count not in {10, 30}:
+            _fail("evaluation config", "P0.2 development count changed")
+        p02_thresholds = {
+            "close_threshold": _number(config, "valid_close_threshold"),
+            "contact_force_threshold": _number(
+                config, "contact_force_threshold_newtons"
+            ),
+            "lift_height_delta": _number(config, "lift_height_delta_meters"),
+            "pregrasp_distance": _number(config, "pregrasp_distance_meters"),
+        }
+        if p02_thresholds != {
+            "close_threshold": -0.5,
+            "contact_force_threshold": 0.05,
+            "lift_height_delta": 0.03,
+            "pregrasp_distance": 0.08,
+        }:
+            _fail("evaluation config", "P0.2 progress thresholds changed")
+    elif bounded_development:
         if evaluation_kind != "development":
             _fail("evaluation config", "bounded development cannot open another split")
         phase = config
@@ -563,14 +717,22 @@ def evaluate(
     episode_root = root / "episodes"
     episode_root.mkdir(parents=True, exist_ok=True)
     episodes: list[PickCubeActEpisodeEvaluation] = []
+    progress_summaries: list[Mapping[str, object]] = []
+    progress_root = root / "progress"
+    if p02_development:
+        progress_root.mkdir(parents=True, exist_ok=True)
     for seed in range(seed_start, seed_start + episode_count):
         path = episode_root / f"seed-{seed:010d}.json"
+        progress_path = progress_root / f"seed-{seed:010d}.json"
+        progress: Mapping[str, object] | None = None
         if path.exists():
             episode = _episode_from_mapping(_mapping(path, context="episode result"))
             if episode.seed != seed:
                 _fail("episode result", "path/seed binding changed")
+            if p02_development:
+                progress = _mapping(progress_path, context="progress result")
         else:
-            episode = _run_episode(
+            episode, progress = _run_episode(
                 seed=seed,
                 runtime=runtime,
                 settings=settings,
@@ -578,8 +740,19 @@ def evaluate(
                 key_contract=key_contract,
                 render_plan=render_plan,
                 execution_horizon=execution_horizon,
+                progress_diagnostics=p02_development,
+                **p02_thresholds,
             )
             write_atomic_json(path, episode.to_mapping())
+            if p02_development:
+                if progress is None:
+                    _fail("progress result", "P0.2 trace was not produced")
+                write_atomic_json(progress_path, progress)
+        if p02_development:
+            event_summary = progress.get("event_summary")
+            if not isinstance(event_summary, Mapping):
+                _fail("progress result", "event summary is missing")
+            progress_summaries.append(cast(Mapping[str, object], event_summary))
         episodes.append(episode)
         print(
             json.dumps(
@@ -595,7 +768,7 @@ def evaluate(
             flush=True,
         )
 
-    repeat = _run_episode(
+    repeat, _ = _run_episode(
         seed=seed_start,
         runtime=runtime,
         settings=settings,
@@ -643,6 +816,48 @@ def evaluate(
             "training_identity": dict(training_identity),
         }
     )
+    if p02_development:
+        pregrasp_count = sum(
+            item.get("entered_pregrasp") is True for item in progress_summaries
+        )
+        valid_close_count = sum(
+            item.get("valid_close") is True for item in progress_summaries
+        )
+        lift_count = sum(item.get("lifted") is True for item in progress_summaries)
+        summary["progress_counts"] = {
+            "entered_pregrasp": pregrasp_count,
+            "grasp": summary["grasp_success_count"],
+            "lift": lift_count,
+            "valid_close": valid_close_count,
+        }
+        summary["progress_failure_taxonomy"] = dict(
+            sorted(
+                {
+                    str(name): sum(
+                        item.get("failure") == name for item in progress_summaries
+                    )
+                    for name in {
+                        item.get("failure")
+                        for item in progress_summaries
+                        if isinstance(item.get("failure"), str)
+                    }
+                }.items()
+            )
+        )
+        summary["execution_horizon"] = execution_horizon
+        if episode_count == 30:
+            staged = PickCubeStagedGateCounts(
+                episode_count=30,
+                action_integrity_failures=cast(
+                    int, summary["action_contract_violation_count"]
+                ),
+                pregrasp_count=pregrasp_count,
+                valid_close_count=valid_close_count,
+                grasp_count=cast(int, summary["grasp_success_count"]),
+                lift_count=lift_count,
+                success_count=cast(int, summary["success_count"]),
+            )
+            summary["staged_gates"] = dict(staged.to_mapping())
     if evaluation_kind == "final":
         promotion = config if bounded_final else config.get("promotion")
         if not isinstance(promotion, Mapping):

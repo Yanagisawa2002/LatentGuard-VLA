@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import math
 import os
 import random
 import shutil
@@ -26,6 +27,12 @@ from latentguard.policies.act.data import (
     action_chunk_at,
     collect_episode_references,
 )
+from latentguard.policies.act.grasp_supervision import (
+    derive_gripper_events,
+    phase_from_expert_label,
+    phase_weights_from_train_labels,
+    supervision_identity,
+)
 from latentguard.policies.act.types import (
     PICKCUBE_ACT_ACTION_FEATURE,
     PICKCUBE_ACT_BOUNDED_CHECKPOINT_SCHEMA,
@@ -33,6 +40,7 @@ from latentguard.policies.act.types import (
     PICKCUBE_ACT_LEROBOT_VERSION,
     PICKCUBE_ACT_STATE_FEATURE,
     PickCubeActExperimentConfig,
+    PickCubeActGraspSupervisionConfig,
 )
 from latentguard.policies.actions import (
     BoundedActionTransform,
@@ -277,6 +285,7 @@ class _EpisodeArrays:
     rgb: NDArray[Any]
     state: NDArray[Any]
     action: NDArray[Any]
+    phases: tuple[str, ...] | None = None
 
 
 class PickCubeActDataset(torch.utils.data.Dataset[dict[str, torch.Tensor]]):
@@ -291,6 +300,8 @@ class PickCubeActDataset(torch.utils.data.Dataset[dict[str, torch.Tensor]]):
         limit_samples: int | None = None,
         episode_cache_size: int = 16,
         action_transform: BoundedActionTransform | None = None,
+        grasp_supervision: PickCubeActGraspSupervisionConfig | None = None,
+        phase_weights: Mapping[str, float] | None = None,
     ) -> None:
         self.root = Path(root).absolute()
         self.references = tuple(references)
@@ -303,10 +314,30 @@ class PickCubeActDataset(torch.utils.data.Dataset[dict[str, torch.Tensor]]):
         self.chunk_size = chunk_size
         self.episode_cache_size = episode_cache_size
         self.action_transform = action_transform
+        self.grasp_supervision = grasp_supervision
+        self.phase_weights = None if phase_weights is None else dict(phase_weights)
+        if (self.grasp_supervision is None) != (self.phase_weights is None):
+            _fail(
+                "ACT dataset",
+                "grasp supervision and train-derived phase weights must co-exist",
+            )
+        if self.grasp_supervision is not None and any(
+            not isinstance(name, str)
+            or not name
+            or not isinstance(weight, (int, float))
+            or not math.isfinite(float(weight))
+            or not 0.0 < float(weight) <= self.grasp_supervision.maximum_phase_weight
+            for name, weight in cast(Mapping[str, float], self.phase_weights).items()
+        ):
+            _fail("ACT dataset", "phase weights are invalid")
         samples = [
             (episode_index, frame_index)
             for episode_index, reference in enumerate(self.references)
             for frame_index in range(reference.frame_count)
+            if self.grasp_supervision is None
+            or 0
+            <= frame_index + self.grasp_supervision.temporal_target_offset
+            < reference.frame_count
         ]
         if limit_samples is not None:
             if type(limit_samples) is not int or limit_samples < 1:
@@ -343,7 +374,28 @@ class PickCubeActDataset(torch.utils.data.Dataset[dict[str, torch.Tensor]]):
             or not np.issubdtype(action.dtype, np.floating)
         ):
             _fail("ACT dataset", "persisted episode array contract changed")
-        arrays = _EpisodeArrays(rgb=rgb, state=state, action=action)
+        phases: tuple[str, ...] | None = None
+        if self.grasp_supervision is not None:
+            try:
+                metadata = json.loads(
+                    (directory / "episode.json").read_text(encoding="utf-8")
+                )
+            except (OSError, UnicodeError, json.JSONDecodeError) as exc:
+                raise PickCubeActRuntimeError(
+                    "ACT dataset: invalid episode metadata"
+                ) from exc
+            raw_phases = (
+                metadata.get("phases") if isinstance(metadata, Mapping) else None
+            )
+            if (
+                not isinstance(raw_phases, Sequence)
+                or isinstance(raw_phases, (str, bytes))
+                or len(raw_phases) != reference.frame_count
+                or any(not isinstance(item, str) for item in raw_phases)
+            ):
+                _fail("ACT dataset", "episode phase labels changed")
+            phases = tuple(cast(Sequence[str], raw_phases))
+        arrays = _EpisodeArrays(rgb=rgb, state=state, action=action, phases=phases)
         self._cache[reference.episode_id] = arrays
         while len(self._cache) > self.episode_cache_size:
             self._cache.popitem(last=False)
@@ -353,17 +405,22 @@ class PickCubeActDataset(torch.utils.data.Dataset[dict[str, torch.Tensor]]):
         episode_index, frame_index = self.samples[index]
         reference = self.references[episode_index]
         arrays = self._arrays(reference)
+        target_index = frame_index
+        if self.grasp_supervision is not None:
+            target_index += self.grasp_supervision.temporal_target_offset
         if self.action_transform is None:
+            if self.grasp_supervision is not None:
+                _fail("ACT dataset", "grasp supervision requires bounded targets")
             chunk, padding = action_chunk_at(
                 arrays.action,
-                frame_index,
+                target_index,
                 self.chunk_size,
             )
             action_tensor = torch.from_numpy(chunk)
         else:
-            end = min(arrays.action.shape[0], frame_index + self.chunk_size)
+            end = min(arrays.action.shape[0], target_index + self.chunk_size)
             native = torch.from_numpy(
-                np.array(arrays.action[frame_index:end], dtype=np.float32, copy=True)
+                np.array(arrays.action[target_index:end], dtype=np.float32, copy=True)
             )
             canonical = self.action_transform.normalize_target(native)
             action_tensor = torch.zeros(
@@ -375,12 +432,70 @@ class PickCubeActDataset(torch.utils.data.Dataset[dict[str, torch.Tensor]]):
             padding[: canonical.shape[0]] = False
         image = np.asarray(arrays.rgb[frame_index]).transpose(2, 0, 1).copy()
         state = np.asarray(arrays.state[frame_index]).copy()
-        return {
+        result = {
             PICKCUBE_ACT_ACTION_FEATURE: action_tensor,
             PICKCUBE_ACT_IMAGE_FEATURE: torch.from_numpy(image),
             PICKCUBE_ACT_STATE_FEATURE: torch.from_numpy(state),
             "action_is_pad": torch.from_numpy(padding),
         }
+        if self.grasp_supervision is not None:
+            if arrays.phases is None or self.phase_weights is None:
+                _fail("ACT dataset", "phase metadata is unavailable")
+            phase_values = np.ones((self.chunk_size,), dtype=np.float32)
+            valid_count = int(np.logical_not(padding).sum())
+            target_phases = arrays.phases[target_index : target_index + valid_count]
+            for offset, raw_phase in enumerate(target_phases):
+                phase_name = phase_from_expert_label(raw_phase).value
+                weight = self.phase_weights.get(phase_name)
+                if weight is None:
+                    _fail("ACT dataset", f"missing phase weight {phase_name}")
+                phase_values[offset] = np.float32(weight)
+            all_events = derive_gripper_events(
+                arrays.action[:, 7],
+                close_threshold=self.grasp_supervision.close_threshold,
+                open_threshold=self.grasp_supervision.open_threshold,
+            )
+            event_values = np.zeros((self.chunk_size,), dtype=np.int64)
+            event_values[:valid_count] = all_events[
+                target_index : target_index + valid_count
+            ]
+            result["p02_phase_weight"] = torch.from_numpy(phase_values)
+            result["p02_gripper_event"] = torch.from_numpy(event_values)
+        return result
+
+
+def build_grasp_supervision_view(
+    root: Path,
+    references: Sequence[DemoEpisodeReference],
+    config: PickCubeActGraspSupervisionConfig,
+) -> tuple[Mapping[str, float], Mapping[str, object]]:
+    """Compute immutable phase weights from exactly the supplied train episodes."""
+    dataset_root = Path(root).absolute()
+    labels: list[str] = []
+    for reference in references:
+        directory = dataset_root.joinpath(
+            *PurePosixPath(reference.relative_directory).parts
+        )
+        try:
+            value = json.loads((directory / "episode.json").read_text(encoding="utf-8"))
+        except (OSError, UnicodeError, json.JSONDecodeError) as exc:
+            raise PickCubeActRuntimeError(
+                "grasp supervision: invalid episode metadata"
+            ) from exc
+        phases = value.get("phases") if isinstance(value, Mapping) else None
+        if (
+            not isinstance(phases, Sequence)
+            or isinstance(phases, (str, bytes))
+            or len(phases) != reference.frame_count
+        ):
+            _fail("grasp supervision", "phase inventory differs")
+        labels.extend(phase_from_expert_label(cast(str, item)).value for item in phases)
+    weights = phase_weights_from_train_labels(
+        labels,
+        exponent=config.phase_weight_exponent,
+        maximum=config.maximum_phase_weight,
+    )
+    return weights, supervision_identity(weights=weights, config=config)
 
 
 def validate_dataset_for_training(
@@ -994,6 +1109,7 @@ __all__ = [
     "PickCubeActRuntimeError",
     "build_optimizer",
     "build_policy_and_processors",
+    "build_grasp_supervision_view",
     "installed_runtime_versions",
     "load_checkpoint",
     "load_inference_runtime",
