@@ -6,6 +6,7 @@ from typing import Any
 
 import numpy as np
 import pytest
+import torch
 
 from latentguard.integrations.maniskill_pickcube.session import (
     ManiSkillPickCubeEnvironmentSettings,
@@ -14,6 +15,7 @@ from latentguard.integrations.maniskill_pickcube.session import (
 from latentguard.integrations.maniskill_pickcube.source_generation import (
     OFFICIAL_SOLVER_EXPORT,
     OFFICIAL_SOLVER_MODULE,
+    LazyManiSkillSourceEnvironmentFactory,
     PickCubeEpisodeEndedError,
     PickCubeSourceCollectionIncompleteError,
     PickCubeSourceGenerationError,
@@ -66,6 +68,52 @@ def _keys() -> PickCubeTaskKeyContract:
         robot_static="is_robot_static",
         grasped="is_grasped",
     )
+
+
+def test_progress_capture_accepts_maniskill_boolean_grasp_tensor() -> None:
+    cube = type(
+        "Cube",
+        (),
+        {"pose": type("Pose", (), {"p": torch.tensor([[0.1, 0.2, 0.03]])})()},
+    )()
+    tcp = type(
+        "Tcp",
+        (),
+        {"pose": type("Pose", (), {"p": torch.tensor([[0.1, 0.2, 0.08]])})()},
+    )()
+
+    class ProgressRobot:
+        def get_qpos(self) -> torch.Tensor:
+            return torch.zeros((1, 9), dtype=torch.float32)
+
+    class ProgressScene:
+        def get_pairwise_contact_forces(
+            self, first: object, second: object
+        ) -> torch.Tensor:
+            del first, second
+            return torch.zeros((1, 3), dtype=torch.float32)
+
+    class ProgressAgent:
+        def __init__(self, *, target: object, tcp_handle: object) -> None:
+            self._target = target
+            self.robot = ProgressRobot()
+            self.tcp = tcp_handle
+            self.scene = ProgressScene()
+            self.finger1_link = object()
+            self.finger2_link = object()
+
+        def is_grasping(self, actor: object) -> torch.Tensor:
+            assert actor is self._target
+            return torch.tensor([False], dtype=torch.bool)
+
+    environment = type(
+        "ProgressEnvironment",
+        (),
+        {"agent": ProgressAgent(target=cube, tcp_handle=tcp), "cube": cube},
+    )()
+    state = LazyManiSkillSourceEnvironmentFactory().capture_progress_state(environment)
+    assert state.grasped is False
+    assert state.tcp_to_cube_distance == pytest.approx(0.05)
 
 
 def test_official_solver_filters_only_the_pinned_pose_deprecation() -> None:

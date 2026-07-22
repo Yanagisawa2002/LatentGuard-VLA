@@ -697,16 +697,8 @@ class LazyManiSkillSourceEnvironmentFactory:
         right = _runtime_array(
             pairwise(finger2, cube), context="right finger contact force"
         ).reshape(-1, 3)
-        grasped_array = _runtime_array(
-            is_grasping(cube), context="Panda grasp state"
-        ).reshape(-1)
-        if (
-            qpos.shape != (9,)
-            or tcp_xyz.shape != (3,)
-            or cube_xyz.shape != (3,)
-            or grasped_array.shape != (1,)
-            or not np.issubdtype(grasped_array.dtype, np.bool_)
-        ):
+        grasped = _strict_runtime_bool(is_grasping(cube), context="Panda grasp state")
+        if qpos.shape != (9,) or tcp_xyz.shape != (3,) or cube_xyz.shape != (3,):
             raise PickCubeSourceGenerationError(
                 "Panda progress diagnostic shape or grasp dtype changed"
             )
@@ -718,7 +710,7 @@ class LazyManiSkillSourceEnvironmentFactory:
             tcp_to_cube_distance=float(np.linalg.norm(tcp_xyz - cube_xyz)),
             left_contact_force=float(np.linalg.norm(left, axis=1)[0]),
             right_contact_force=float(np.linalg.norm(right, axis=1)[0]),
-            grasped=bool(grasped_array[0]),
+            grasped=grasped,
         )
 
 
