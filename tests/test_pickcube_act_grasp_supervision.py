@@ -18,11 +18,13 @@ from latentguard.policies.act.grasp_supervision import (
     aligned_frame_pairs,
     analyze_progress_trace,
     classify_p02_result,
+    close_transition_index_in_window,
     derive_gripper_events,
     final_access_authorized,
     phase_from_expert_label,
     phase_gripper_aware_loss,
     phase_weights_from_train_labels,
+    predicted_close_index,
 )
 from latentguard.policies.act.types import PickCubeActGraspSupervisionConfig
 
@@ -75,6 +77,26 @@ def test_gripper_sign_scale_and_transition_are_not_ambiguous() -> None:
         derive_gripper_events(
             [1.0, 0.0, -1.0], close_threshold=-0.5, open_threshold=0.5
         )
+
+
+def test_close_event_metric_uses_transition_windows_not_closed_frames() -> None:
+    phases = (
+        PickCubeManipulationPhase.APPROACH.value,
+        PickCubeManipulationPhase.PREGRASP.value,
+        PickCubeManipulationPhase.GRIPPER_CLOSING.value,
+        PickCubeManipulationPhase.GRIPPER_CLOSING.value,
+        PickCubeManipulationPhase.TRANSPORT_OR_COMPLETION.value,
+    )
+    assert (
+        close_transition_index_in_window(phases, window_start=0, window_length=4) == 2
+    )
+    assert (
+        close_transition_index_in_window(phases, window_start=3, window_length=2)
+        is None
+    )
+    constant_close = np.zeros((4, 8), dtype=np.float32)
+    constant_close[:, 7] = -1.0
+    assert predicted_close_index(constant_close, close_threshold=-0.5) == 0
 
 
 def test_phase_weights_are_train_only_mean_one_and_bounded() -> None:

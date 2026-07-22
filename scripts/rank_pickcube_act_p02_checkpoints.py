@@ -16,7 +16,11 @@ import torch
 
 from latentguard.control.serialization import write_atomic_json
 from latentguard.policies.act.data import PickCubeDemoSplit
-from latentguard.policies.act.grasp_supervision import phase_from_expert_label
+from latentguard.policies.act.grasp_supervision import (
+    close_transition_index_in_window,
+    phase_from_expert_label,
+    predicted_close_index,
+)
 from latentguard.policies.act.runtime import (
     PickCubeActDataset,
     load_inference_runtime,
@@ -188,15 +192,21 @@ def rank(
                     float(np.mean(absolute[chunk_position, :7]))
                 )
                 phase_gripper_errors[phase].append(float(absolute[chunk_position, 7]))
-            predicted_close = valid_predicted[:, 7] <= -0.5
-            target_close = valid_target[:, 7] <= -0.5
-            target_close_count += int(target_close.sum())
-            predicted_close_count += int(predicted_close.sum())
-            true_close_count += int(np.logical_and(target_close, predicted_close).sum())
-            target_indices = np.flatnonzero(target_close)
-            predicted_indices = np.flatnonzero(predicted_close)
-            if len(target_indices) and len(predicted_indices):
-                timing_errors.append(float(predicted_indices[0] - target_indices[0]))
+            target_index = close_transition_index_in_window(
+                episode_phases,
+                window_start=frame_index,
+                window_length=len(valid_predicted),
+            )
+            predicted_index = predicted_close_index(
+                valid_predicted, close_threshold=-0.5
+            )
+            target_close_count += int(target_index is not None)
+            predicted_close_count += int(predicted_index is not None)
+            true_close_count += int(
+                target_index is not None and predicted_index is not None
+            )
+            if target_index is not None and predicted_index is not None:
+                timing_errors.append(float(predicted_index - target_index))
         values = np.concatenate(predicted_rows, axis=0)
         precision = (
             true_close_count / predicted_close_count if predicted_close_count else 0.0

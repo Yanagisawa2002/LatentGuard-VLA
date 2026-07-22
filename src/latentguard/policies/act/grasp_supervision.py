@@ -89,6 +89,49 @@ def phase_from_expert_label(value: str) -> PickCubeManipulationPhase:
         ) from exc
 
 
+def close_transition_index_in_window(
+    phases: Sequence[str],
+    *,
+    window_start: int,
+    window_length: int,
+) -> int | None:
+    """Locate the unique open-to-close phase boundary within one action chunk."""
+    if not phases or any(value not in PickCubeManipulationPhase for value in phases):
+        _fail("close transition window", "phases contain an unsupported value")
+    if (
+        type(window_start) is not int
+        or not 0 <= window_start < len(phases)
+        or type(window_length) is not int
+        or window_length < 1
+    ):
+        _fail("close transition window", "window bounds are invalid")
+    closing = PickCubeManipulationPhase.GRIPPER_CLOSING.value
+    stop = min(len(phases), window_start + window_length)
+    for absolute_index in range(window_start, stop):
+        prior = phases[absolute_index - 1] if absolute_index > 0 else None
+        if phases[absolute_index] == closing and prior != closing:
+            return absolute_index - window_start
+    return None
+
+
+def predicted_close_index(
+    actions: NDArray[Any], *, close_threshold: float
+) -> int | None:
+    """Return the first predicted close command in a finite native-action chunk."""
+    values = np.asarray(actions)
+    if (
+        values.ndim != 2
+        or values.shape[1:] != (8,)
+        or not np.issubdtype(values.dtype, np.floating)
+        or not np.all(np.isfinite(values))
+    ):
+        _fail("predicted close", "actions must be finite floating [T,8]")
+    if not math.isfinite(close_threshold) or not -1.0 < close_threshold < 0.0:
+        _fail("predicted close", "threshold differs from the bounded convention")
+    indices = np.flatnonzero(values[:, 7] <= close_threshold)
+    return None if not len(indices) else int(indices[0])
+
+
 def aligned_frame_pairs(length: int, offset: int) -> tuple[tuple[int, int], ...]:
     """Return boundary-safe ``(observation, action)`` indices for one episode."""
     if type(length) is not int or length < 1:
@@ -590,11 +633,13 @@ __all__ = [
     "analyze_progress_trace",
     "aligned_frame_pairs",
     "classify_p02_result",
+    "close_transition_index_in_window",
     "derive_gripper_events",
     "final_access_authorized",
     "forward_phase_aware_act",
     "phase_from_expert_label",
     "phase_gripper_aware_loss",
     "phase_weights_from_train_labels",
+    "predicted_close_index",
     "supervision_identity",
 ]
