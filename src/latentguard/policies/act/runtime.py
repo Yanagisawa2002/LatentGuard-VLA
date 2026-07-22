@@ -851,11 +851,10 @@ def validate_checkpoint_artifacts(
     manifest = _read_mapping(root / "checkpoint_manifest.json", context="checkpoint")
     complete = _read_mapping(root / "complete.json", context="checkpoint completion")
     experiment = expected_identity.get("experiment")
-    bounded = (
-        isinstance(experiment, Mapping)
-        and experiment.get("schema_version")
-        == "pickcube-native-act-bounded-experiment-v1"
-    )
+    bounded = isinstance(experiment, Mapping) and experiment.get("schema_version") in {
+        "pickcube-native-act-bounded-experiment-v1",
+        "pickcube-native-act-grasp-experiment-v1",
+    }
     expected_schema = (
         PICKCUBE_ACT_BOUNDED_CHECKPOINT_SCHEMA
         if bounded

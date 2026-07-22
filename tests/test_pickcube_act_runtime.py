@@ -282,12 +282,21 @@ def test_checkpoint_is_atomically_completed_with_hash_inventory(tmp_path: Path) 
     assert state["training_control"]["best_validation_step"] == 3
 
 
-def test_bounded_checkpoint_schema_and_transform_are_required(tmp_path: Path) -> None:
+@pytest.mark.parametrize(
+    "experiment_schema",
+    [
+        "pickcube-native-act-bounded-experiment-v1",
+        "pickcube-native-act-grasp-experiment-v1",
+    ],
+)
+def test_bounded_checkpoint_schema_and_transform_are_required(
+    tmp_path: Path, experiment_schema: str
+) -> None:
     transform = _bounded_transform()
     parameter = torch.nn.Parameter(torch.ones(()))
     optimizer = torch.optim.AdamW([parameter])
     identity = {
-        "experiment": {"schema_version": "pickcube-native-act-bounded-experiment-v1"},
+        "experiment": {"schema_version": experiment_schema},
         "training_identity_digest": _DIGEST,
     }
     checkpoint = save_checkpoint(
