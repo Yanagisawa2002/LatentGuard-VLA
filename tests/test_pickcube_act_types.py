@@ -99,9 +99,9 @@ def test_p02_checkpoint_selection_is_bounded_and_development_only() -> None:
         "promotion_success_rate": 0.75,
     }
     development = json.loads(
-        (
-            _ROOT / "configs" / "pickcube_act_p02" / "eval_h2_development.yaml"
-        ).read_text(encoding="utf-8")
+        (_ROOT / "configs" / "pickcube_act_p02" / "eval_h2_development.yaml").read_text(
+            encoding="utf-8"
+        )
     )
     assert development["episode_count"] == 10
     assert selection["selected_checkpoint_development_episode_count"] == 30
