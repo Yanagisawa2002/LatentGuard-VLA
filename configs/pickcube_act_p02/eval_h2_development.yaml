@@ -6,7 +6,7 @@
   "render_seed": 0,
   "native_episode_horizon": 50,
   "execution_horizon": 2,
-  "episode_count": 30,
+  "episode_count": 10,
   "seed_start": 800000,
   "progress_diagnostics": true,
   "pregrasp_distance_meters": 0.08,
