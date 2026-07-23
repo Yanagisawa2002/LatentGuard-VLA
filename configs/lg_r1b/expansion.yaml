@@ -1,5 +1,6 @@
 schema_version: latentguard.lg_r1b.expansion.v1
 task_registry: configs/lg_r1b/task_registry.yaml
+record_all: true
 allowed_phase_order:
   - primary_expansion_1
   - primary_expansion_2
