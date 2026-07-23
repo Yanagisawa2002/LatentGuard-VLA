@@ -10,6 +10,24 @@ LatentGuard-VLA is an action-conditioned verification and failure-analysis frame
 
 **Achieved:** physically validated paired replay, 2,880 strong simulator-verified corrupted outcomes, validation-selected failure prediction, blind one-shot improvement over random, state-preserving multi-view data, and transactional large-run resume. **Not achieved:** a general safety system, repeated learned shielding that beats the fixed primary, high-recall fault interception, cross-task transfer, or real-robot validation.
 
+## Current research status
+
+The evidence-grounded WM-v0 P1 policy-redesign route is **paused and archived
+before implementation** while a new, user-directed technical route is prepared.
+Its evidence review and experiment protocol remain available as a historical
+design, but none of its candidate models, data plans, tracker rows, development
+seeds, or remote stages are active or authorized.
+
+No P1 training, ManiSkill rollout, data collection, checkpoint generation,
+remote-server access, or final-seed access occurred. P0, P0.1, and P0.2 remain
+frozen with their original negative results; final seeds `900000..900099`
+remain sealed. See the
+[P1 pause and handoff record](docs/plans/wm-v0-p1-policy-redesign-archive.md),
+[archived research plan](docs/plans/wm-v0-p1-policy-redesign.md), and
+[inactive experiment tracker](docs/plans/wm-v0-p1-policy-redesign-tracker.md).
+The next technical route is intentionally not inferred in this repository and
+will be documented only after the user provides it.
+
 ## Problem
 
 A robot policy can emit a plausible action chunk that fails after execution. Evaluating only nominal rollouts hides the counterfactual question: from the same physical state, which alternative action would have produced a better terminal outcome? LatentGuard separates that question into explicit contracts for state identity, candidate generation, paired replay, evidence strength, deployable features, blind selection, and transactional execution.

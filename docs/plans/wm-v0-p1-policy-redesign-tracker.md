@@ -1,7 +1,10 @@
 # WM-v0 P1 experiment tracker
 
-**Status:** design-only tracker. Every remote row is blocked pending a separate
-authorization; no run ID or outcome exists yet.
+**Status:** `PAUSED_ARCHIVED`. This is an inactive historical design tracker,
+not an execution queue. The global pause overrides every non-final row below;
+the final row remains sealed. No run ID or outcome exists. Do not resume any row
+without explicit authorization to reactivate this exact route. See
+[`wm-v0-p1-policy-redesign-archive.md`](wm-v0-p1-policy-redesign-archive.md).
 
 | Run ID | Stage | Purpose | System/variant | Data/split | Selection source | Priority | Status | Stop/go decision |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -29,8 +32,11 @@ authorization; no run ID or outcome exists yet.
 
 ## Tracker rules
 
+- Every non-final row is globally `PAUSED_ARCHIVED`, regardless of the
+  historical conditional status shown in its `Status` column.
 - `TODO_NEXT_AUTH` means local implementation may begin only after the user
-  authorizes the next milestone.
+  explicitly reactivates this exact archived route; it is not current
+  authorization.
 - `BLOCKED_NO_REMOTE_AUTH` means do not start the server, connect over SSH,
   train, collect, or run ManiSkill in the current task.
 - A failed run is retained with its exact identity and evidence; its row is not

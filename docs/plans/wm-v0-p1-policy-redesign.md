@@ -1,8 +1,12 @@
 # WM-v0 P1 evidence-grounded policy redesign
 
-**Status:** design complete; no training, ManiSkill rollout, data collection,
-checkpoint generation, final-seed access, SSH, or remote execution was performed
-in this milestone.
+**Status:** `PAUSED_ARCHIVED`. The design is complete but is not an active
+roadmap. It was paused before implementation on 2026-07-23 while a new
+user-directed technical route is prepared. No training, ManiSkill rollout, data
+collection, checkpoint generation, final-seed access, SSH, or remote execution
+was performed. See
+[`wm-v0-p1-policy-redesign-archive.md`](wm-v0-p1-policy-redesign-archive.md)
+for the authoritative pause and handoff record.
 
 **Date:** 2026-07-23
 
