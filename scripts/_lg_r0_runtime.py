@@ -6,6 +6,7 @@ This module is imported only inside the isolated LeRobot 0.6 environment.
 from __future__ import annotations
 
 import hashlib
+import importlib.metadata
 import json
 import os
 import time
@@ -93,11 +94,50 @@ def libero_asset_path() -> Path:
 def configure_libero_assets() -> Path:
     """Bind hf-libero to the explicit pinned snapshot without an online fallback."""
 
+    path = libero_asset_path()
+    prepare_libero_config(path)
+
     import libero.libero
 
-    path = libero_asset_path()
     libero.libero._assets_path_cache = str(path)
     return path
+
+
+def prepare_libero_config(asset_path: Path) -> Path:
+    """Create a run-local hf-libero config before its interactive import."""
+
+    config_root = (output_root() / "libero-config").resolve()
+    configured = os.environ.get("LIBERO_CONFIG_PATH")
+    if configured and Path(configured).resolve() != config_root:
+        raise RuntimeError(
+            "LIBERO_CONFIG_PATH must resolve inside the LG-R0 runtime output: "
+            f"expected {config_root}, received {Path(configured).resolve()}"
+        )
+    os.environ["LIBERO_CONFIG_PATH"] = str(config_root)
+
+    distribution = importlib.metadata.distribution("hf-libero")
+    benchmark_root = Path(str(distribution.locate_file("libero/libero"))).resolve()
+    required = (benchmark_root / "bddl_files", benchmark_root / "init_files")
+    missing = [str(path) for path in required if not path.is_dir()]
+    if missing:
+        raise RuntimeError(f"hf-libero package data is incomplete: {missing}")
+
+    dataset_root = (output_root() / "libero-datasets").resolve()
+    config_root.mkdir(parents=True, exist_ok=True)
+    dataset_root.mkdir(parents=True, exist_ok=True)
+    payload = {
+        "assets": str(asset_path.resolve()),
+        "bddl_files": str(required[0]),
+        "benchmark_root": str(benchmark_root),
+        "datasets": str(dataset_root),
+        "init_states": str(required[1]),
+    }
+    config_file = config_root / "config.yaml"
+    config_file.write_text(
+        json.dumps(payload, indent=2, sort_keys=True) + "\n",
+        encoding="utf-8",
+    )
+    return config_file
 
 
 def output_root() -> Path:

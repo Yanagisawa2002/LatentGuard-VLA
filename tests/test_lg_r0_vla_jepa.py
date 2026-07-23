@@ -1,7 +1,10 @@
 from __future__ import annotations
 
+import importlib
+import importlib.metadata
 import json
 import subprocess
+import sys
 from pathlib import Path
 
 import numpy as np
@@ -275,3 +278,46 @@ def test_eval_schedules_are_fixed_and_not_official_equivalent() -> None:
     assert sum(len(suite["seeds"]) for suite in forty["suites"]) == 40
     assert forty["official_400_episode_equivalent"] is False
     assert forty["action_execution_horizon"] == 7
+
+
+def test_libero_config_is_initialized_noninteractively(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    scripts = ROOT / "scripts"
+    monkeypatch.syspath_prepend(str(scripts))
+    sys.modules.pop("_lg_r0_runtime", None)
+    runtime = importlib.import_module("_lg_r0_runtime")
+
+    package_root = tmp_path / "site-packages" / "libero" / "libero"
+    (package_root / "bddl_files").mkdir(parents=True)
+    (package_root / "init_files").mkdir()
+    assets = tmp_path / "assets"
+    assets.mkdir()
+    output = tmp_path / "runtime-output"
+
+    class FakeDistribution:
+        def locate_file(self, relative: str) -> Path:
+            assert relative == "libero/libero"
+            return package_root
+
+    monkeypatch.setattr(
+        importlib.metadata,
+        "distribution",
+        lambda name: (
+            FakeDistribution()
+            if name == "hf-libero"
+            else pytest.fail(f"unexpected distribution: {name}")
+        ),
+    )
+    monkeypatch.setenv("LG_R0_OUTPUT_ROOT", str(output))
+    monkeypatch.delenv("LIBERO_CONFIG_PATH", raising=False)
+
+    config_file = runtime.prepare_libero_config(assets)
+    payload = json.loads(config_file.read_text(encoding="utf-8"))
+
+    assert config_file == output / "libero-config" / "config.yaml"
+    assert Path(payload["assets"]) == assets.resolve()
+    assert Path(payload["bddl_files"]) == package_root / "bddl_files"
+    assert Path(payload["init_states"]) == package_root / "init_files"
+    assert Path(payload["datasets"]) == output / "libero-datasets"
+    assert Path(runtime.os.environ["LIBERO_CONFIG_PATH"]) == config_file.parent
