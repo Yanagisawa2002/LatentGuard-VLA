@@ -1,0 +1,237 @@
+{
+  "extended_episode_count": 160,
+  "frozen_before_rollout": true,
+  "historical_seed_overlap": [],
+  "outcome_fields_present": false,
+  "pilot_episode_count": 80,
+  "registry_id": "lg-r1-libero-multitask-v1",
+  "schema_version": "latentguard.lg_r1.task_seed_registry.v1",
+  "sealed_final_seed_overlap": [],
+  "seed_schedule": {
+    "extension": [
+      2010,
+      2011,
+      2012,
+      2013,
+      2014,
+      2015,
+      2016,
+      2017,
+      2018,
+      2019
+    ],
+    "historical_development": [
+      1000,
+      1001,
+      1002,
+      1003,
+      1004,
+      1005,
+      1006,
+      1007,
+      1008,
+      1009
+    ],
+    "pilot": [
+      2000,
+      2001,
+      2002,
+      2003,
+      2004,
+      2005,
+      2006,
+      2007,
+      2008,
+      2009
+    ],
+    "sealed_final_range": {
+      "end": 900099,
+      "start": 900000
+    }
+  },
+  "source_config": "configs/lg_r1/task_registry.yaml",
+  "source_config_sha256": "a9dde040b2f5d35ed3c69071be119bd63efa7e8f1f48a8f7459ca4c9e0c012ec",
+  "source_policy": {
+    "action_execution_horizon": 7,
+    "checkpoint_id": "lerobot/VLA-JEPA-LIBERO",
+    "checkpoint_revision": "735d9f692981e286ade093b5046627eda876e5d0",
+    "control_mode": "relative",
+    "lerobot_commit": "30da8e687a6dfc617fcd94afc367ac7071c376ce",
+    "lerobot_version": "0.6.0",
+    "observation_height": 224,
+    "observation_width": 224,
+    "processor_revision": "735d9f692981e286ade093b5046627eda876e5d0"
+  },
+  "status": "pass",
+  "suite_count": 4,
+  "task_count": 8,
+  "tasks": [
+    {
+      "adapter": "pick_place",
+      "episode_horizon": 280,
+      "goal_predicates": [
+        [
+          "on",
+          "akita_black_bowl_1",
+          "plate_1"
+        ]
+      ],
+      "instruction": "pick up the black bowl next to the ramekin and place it on the plate",
+      "manipulated_objects": [
+        "akita_black_bowl_1"
+      ],
+      "selection_reason": "spatial pick-place with a distinct initial relation from LG-R0 task 0",
+      "suite": "libero_spatial",
+      "task_id": 1,
+      "task_name": "pick_up_the_black_bowl_next_to_the_ramekin_and_place_it_on_the_plate"
+    },
+    {
+      "adapter": "pick_place",
+      "episode_horizon": 280,
+      "goal_predicates": [
+        [
+          "on",
+          "akita_black_bowl_1",
+          "plate_1"
+        ]
+      ],
+      "instruction": "pick up the black bowl in the top drawer of the wooden cabinet and place it on the plate",
+      "manipulated_objects": [
+        "akita_black_bowl_1"
+      ],
+      "selection_reason": "spatial pick-place that starts inside a cabinet and requires a different access pattern",
+      "suite": "libero_spatial",
+      "task_id": 4,
+      "task_name": "pick_up_the_black_bowl_in_the_top_drawer_of_the_wooden_cabinet_and_place_it_on_the_plate"
+    },
+    {
+      "adapter": "pick_place",
+      "episode_horizon": 280,
+      "goal_predicates": [
+        [
+          "in",
+          "cream_cheese_1",
+          "basket_1_contain_region"
+        ]
+      ],
+      "instruction": "pick up the cream cheese and place it in the basket",
+      "manipulated_objects": [
+        "cream_cheese_1"
+      ],
+      "selection_reason": "object-conditioned basket placement with a compact rectangular object",
+      "suite": "libero_object",
+      "task_id": 1,
+      "task_name": "pick_up_the_cream_cheese_and_place_it_in_the_basket"
+    },
+    {
+      "adapter": "pick_place",
+      "episode_horizon": 280,
+      "goal_predicates": [
+        [
+          "in",
+          "milk_1",
+          "basket_1_contain_region"
+        ]
+      ],
+      "instruction": "pick up the milk and place it in the basket",
+      "manipulated_objects": [
+        "milk_1"
+      ],
+      "selection_reason": "object-conditioned basket placement with a tall container",
+      "suite": "libero_object",
+      "task_id": 7,
+      "task_name": "pick_up_the_milk_and_place_it_in_the_basket"
+    },
+    {
+      "adapter": "open_place",
+      "auxiliary_entities": [
+        "wooden_cabinet_1_top_region"
+      ],
+      "episode_horizon": 300,
+      "goal_predicates": [
+        [
+          "in",
+          "akita_black_bowl_1",
+          "wooden_cabinet_1_top_region"
+        ]
+      ],
+      "instruction": "open the top drawer and put the bowl inside",
+      "manipulated_objects": [
+        "akita_black_bowl_1"
+      ],
+      "selection_reason": "articulated-fixture access followed by object placement",
+      "suite": "libero_goal",
+      "task_id": 3,
+      "task_name": "open_the_top_drawer_and_put_the_bowl_inside"
+    },
+    {
+      "adapter": "toggle",
+      "episode_horizon": 300,
+      "goal_predicates": [
+        [
+          "turnon",
+          "flat_stove_1"
+        ]
+      ],
+      "instruction": "turn on the stove",
+      "manipulated_objects": [
+        "flat_stove_1"
+      ],
+      "selection_reason": "non-pick-place articulated toggle task",
+      "suite": "libero_goal",
+      "task_id": 7,
+      "task_name": "turn_on_the_stove"
+    },
+    {
+      "adapter": "multi_place",
+      "episode_horizon": 520,
+      "goal_predicates": [
+        [
+          "in",
+          "cream_cheese_1",
+          "basket_1_contain_region"
+        ],
+        [
+          "in",
+          "butter_1",
+          "basket_1_contain_region"
+        ]
+      ],
+      "instruction": "put both the cream cheese box and the butter in the basket",
+      "manipulated_objects": [
+        "cream_cheese_1",
+        "butter_1"
+      ],
+      "selection_reason": "two-object long-horizon task with two independently observable subgoals",
+      "suite": "libero_10",
+      "task_id": 1,
+      "task_name": "LIVING_ROOM_SCENE2_put_both_the_cream_cheese_box_and_the_butter_in_the_basket"
+    },
+    {
+      "adapter": "place_close",
+      "auxiliary_entities": [
+        "white_cabinet_1_bottom_region"
+      ],
+      "episode_horizon": 520,
+      "goal_predicates": [
+        [
+          "close",
+          "white_cabinet_1_bottom_region"
+        ],
+        [
+          "in",
+          "akita_black_bowl_1",
+          "white_cabinet_1_bottom_region"
+        ]
+      ],
+      "instruction": "put the black bowl in the bottom drawer of the cabinet and close it",
+      "manipulated_objects": [
+        "akita_black_bowl_1"
+      ],
+      "selection_reason": "long-horizon placement followed by an articulated close requirement",
+      "suite": "libero_10",
+      "task_id": 3,
+      "task_name": "KITCHEN_SCENE4_put_the_black_bowl_in_the_bottom_drawer_of_the_cabinet_and_close_it"
+    }
+  ]
+}

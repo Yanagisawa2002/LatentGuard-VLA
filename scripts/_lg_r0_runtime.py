@@ -9,13 +9,19 @@ import hashlib
 import importlib.metadata
 import json
 import os
+import sys
 import time
 from dataclasses import dataclass, field
 from pathlib import Path
 from types import MethodType
 from typing import Any
 
-from latentguard.adapters.vla_jepa.model_loader import (
+_REPOSITORY_ROOT = Path(__file__).resolve().parents[1]
+_SOURCE_ROOT = _REPOSITORY_ROOT / "src"
+if str(_SOURCE_ROOT) not in sys.path:
+    sys.path.insert(0, str(_SOURCE_ROOT))
+
+from latentguard.adapters.vla_jepa.model_loader import (  # noqa: E402
     LoadedVLAJepa,
     load_local_vla_jepa,
 )
@@ -24,7 +30,7 @@ from latentguard.adapters.vla_jepa.model_loader import (
 def repo_root() -> Path:
     """Return the repository root containing this script."""
 
-    return Path(__file__).resolve().parents[1]
+    return _REPOSITORY_ROOT
 
 
 def read_json(path: Path) -> dict[str, Any]:

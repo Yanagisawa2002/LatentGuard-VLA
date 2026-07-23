@@ -4,6 +4,7 @@ __pycache__/
 *.egg-info/
 .venv/
 .venv-lg-r0/
+.venv-lg-r1/
 venv/
 build/
 dist/
@@ -37,6 +38,9 @@ artifacts/*
 !artifacts/lg_r0/
 artifacts/lg_r0/*
 !artifacts/lg_r0/*.json
+!artifacts/lg_r1/
+artifacts/lg_r1/*
+!artifacts/lg_r1/*.json
 !artifacts/wm_v0/
 artifacts/wm_v0/*
 !artifacts/wm_v0/dataset_manifest.json

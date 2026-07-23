@@ -127,6 +127,20 @@ def inspect_training_world_model(
         condition = action_tokens[:, :expected_action_tokens].float()
         predicted = native_model.video_predictor(current.float(), condition)
         l1 = functional.l1_loss(predicted, target.float(), reduction="mean")
+        predicted_temporal = predicted.float().reshape(
+            batch_size,
+            context_steps,
+            tokens_per_step,
+            predicted.shape[-1],
+        )
+        temporal_change = (
+            (predicted_temporal[:, 1:] - predicted_temporal[:, :-1]).abs().mean()
+            if context_steps > 1
+            else torch.zeros((), device=predicted.device)
+        )
+        current_predicted_l1 = functional.l1_loss(
+            predicted, current.float(), reduction="mean"
+        )
 
     return VLAJepaWorldModelOutput(
         current_latent=current,
@@ -144,6 +158,15 @@ def inspect_training_world_model(
             "tokens_per_temporal_position": int(tokens_per_step),
             "action_token_shape": list(condition.shape),
             "action_token_dtype": str(condition.dtype),
+            "action_token_norm_mean": float(condition.norm(dim=-1).mean().item()),
+            "current_latent_norm_mean": float(
+                current.float().norm(dim=-1).mean().item()
+            ),
+            "predicted_latent_norm_mean": float(
+                predicted.float().norm(dim=-1).mean().item()
+            ),
+            "current_predicted_l1": float(current_predicted_l1.item()),
+            "predicted_temporal_change_mean": float(temporal_change.item()),
             "l1_distance": float(l1.item()),
             "optimizer_steps": 0,
             "backward_calls": 0,

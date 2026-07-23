@@ -1,0 +1,16 @@
+schema_version: latentguard.lg_r1.representation_probe.v1
+seed: 0
+feature: current_vla_jepa_qwen_embodied_tokens_mean_pool
+head: linear
+hidden_dim: null
+stage_loss_weight: 1.0
+progress_loss_weight: 1.0
+learning_rate: 0.001
+weight_decay: 0.0001
+batch_size: 128
+feature_sample_limit: 3000
+max_steps: 3000
+eval_every_steps: 100
+early_stopping_patience: 8
+backbone_frozen: true
+failure_head: false

@@ -1,0 +1,16 @@
+schema_version: latentguard.lg_r1.dataset.v1
+task_registry: configs/lg_r1/task_registry.yaml
+split_seed: 71031
+split_fractions:
+  train: 0.60
+  validation: 0.20
+  test: 0.20
+group_by: [suite, task_id, seed, episode_id]
+window_steps:
+  short: 7
+  medium: 21
+  long: 49
+frame_stride: 7
+require_episode_atomicity: true
+require_seed_exclusivity: true
+allow_privileged_model_inputs: false

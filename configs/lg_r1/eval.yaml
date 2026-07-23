@@ -1,0 +1,16 @@
+schema_version: latentguard.lg_r1.eval.v1
+selection_split: validation
+report_splits: [validation, test, held_out_task]
+stagnation_threshold_source: validation
+negative_progress_threshold_source: validation
+metrics:
+  stage: [accuracy, macro_f1, per_stage_f1, confusion_matrix]
+  progress: [mae, rmse, spearman, kendall]
+  pairwise: [accuracy, same_stage_accuracy, cross_stage_accuracy]
+  temporal:
+    - monotonicity_violation
+    - stage_regression_detection
+    - stagnation_detection
+    - negative_progress_detection
+    - pre_terminal_progress
+    - plateau_length

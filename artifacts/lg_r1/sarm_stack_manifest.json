@@ -1,0 +1,58 @@
+{
+  "architecture": {
+    "clip_revision": "3d74acf9a28c67741b2f4f2ea7635f0aaf6f0268",
+    "frame_sampling": {
+      "frame_gap": 7,
+      "max_rewind_steps": 4,
+      "n_obs_steps": 8
+    },
+    "inputs": [
+      "CLIP image embeddings",
+      "CLIP task-text embedding",
+      "allowlisted robot state"
+    ],
+    "outputs": [
+      "stage logits",
+      "stage completion",
+      "overall progress"
+    ],
+    "progress_module": "lerobot.rewards.sarm.SubtaskTransformer",
+    "stage_module": "lerobot.rewards.sarm.StageTransformer",
+    "unsupported_outputs": [
+      "action-conditioned pairwise progress",
+      "reward delta"
+    ],
+    "visual_language_backbone": "openai/clip-vit-base-patch32"
+  },
+  "checkpoint": {
+    "checkpoint_revision": null,
+    "community_checkpoints_accepted_as_official": false,
+    "official_compatible_libero_checkpoint_found": false,
+    "training_data": null,
+    "zero_shot_supported_for_lg_r1_schema": false
+  },
+  "decision": "SARM-style small baseline using the official LeRobot SARM modules",
+  "exact_commit": "30da8e687a6dfc617fcd94afc367ac7071c376ce",
+  "implementation": "lerobot.rewards.sarm",
+  "installation": "LeRobot reward-model extra in the frozen LG-R0 environment",
+  "installed_version": null,
+  "license": "Apache-2.0 source headers; upstream dependency terms apply",
+  "module_available_in_runtime": false,
+  "official_release_component": true,
+  "post_release_main_used": false,
+  "processor": {
+    "inference_memory_measured_in_remote_run": false,
+    "serialization_required": true,
+    "training_memory_measured_in_remote_run": false
+  },
+  "release": "v0.6.0",
+  "repository": "huggingface/lerobot",
+  "schema_version": "latentguard.lg_r1.sarm_stack_manifest.v1",
+  "source_files": [],
+  "status": "source_review_only",
+  "supervision": {
+    "label_protocol_is_official_sarm_reproduction": false,
+    "lg_r1_uses_simulator_grounded_stage_adapters": true,
+    "official_requires_subtask_annotations": true
+  }
+}

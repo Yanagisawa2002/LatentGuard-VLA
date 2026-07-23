@@ -1,0 +1,34 @@
+schema_version: latentguard.lg_r1.rollout_collection.v1
+task_registry: configs/lg_r1/task_registry.yaml
+phase: pilot
+record_all: true
+use_videos: true
+upload_to_hub: false
+dataset_format: LeRobotDataset-v3
+camera_names: [agentview_image, robot0_eye_in_hand_image]
+policy_sampling_seed_base: 420000
+required_fields:
+  - observation.images.image
+  - observation.images.image2
+  - observation.state
+  - action
+  - next.reward
+  - next.success
+  - next.done
+sidecar:
+  schema_version: latentguard.lg_r1.privileged_sidecar.v1
+  model_input_allowed: false
+  record_full_sim_state_digest: true
+  record_object_poses: true
+  record_goal_predicates: true
+  record_contacts: true
+gates:
+  minimum_valid_episodes: 80
+  minimum_tasks: 4
+  minimum_suites: 2
+  minimum_natural_failures: 10
+  reload_completeness: 0.99
+  identity_completeness: 1.0
+  nonfinite_actions: 0
+  action_contract_errors: 0
+  infrastructure_errors: 0

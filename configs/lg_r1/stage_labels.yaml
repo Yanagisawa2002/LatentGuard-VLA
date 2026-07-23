@@ -1,0 +1,14 @@
+schema_version: latentguard.lg_r1.stage_labels.v1
+task_registry: configs/lg_r1/task_registry.yaml
+critical_error_limit: 0
+minor_disagreement_rate_limit: 0.05
+minimum_review_episodes_per_task: 2
+minimum_review_episodes_total: 20
+distance_thresholds:
+  approach_meters: 0.18
+  aligned_meters: 0.08
+  contact_meters: 0.045
+  lift_delta_meters: 0.035
+  target_near_meters: 0.12
+progress_epsilon: 0.02
+plateau_min_steps: 21
