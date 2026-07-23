@@ -38,6 +38,15 @@ def _dataset_metadata_identities(path: Path) -> dict[str, dict[str, int | str]]:
     }
 
 
+def _public_manifest(payload: dict[str, Any]) -> dict[str, Any]:
+    public_payload = json.loads(json.dumps(payload))
+    for entry in public_payload["episodes"]:
+        entry.pop("dataset_runtime_path", None)
+        entry["dataset_locator"] = f"dataset_root/{entry['episode_id']}"
+    public_payload["processor_manifest"] = "processor_serialization_manifest.json"
+    return public_payload
+
+
 def main() -> None:
     """Record the fixed four-episode schedule without uploading or training."""
 
@@ -263,11 +272,7 @@ def main() -> None:
     }
     write_json(args.output, payload)
     if args.public_output is not None:
-        public_payload = json.loads(json.dumps(payload))
-        for entry in public_payload["episodes"]:
-            entry.pop("dataset_runtime_path", None)
-            entry["dataset_locator"] = f"dataset_root/{entry['episode_id']}"
-        write_json(args.public_output, public_payload)
+        write_json(args.public_output, _public_manifest(payload))
     print(
         json.dumps(
             {

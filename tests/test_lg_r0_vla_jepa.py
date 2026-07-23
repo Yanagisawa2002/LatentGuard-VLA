@@ -351,3 +351,31 @@ def test_recording_manifest_binds_lerobot_v3_metadata(tmp_path: Path) -> None:
     (metadata / "tasks.parquet").unlink()
     with pytest.raises(FileNotFoundError, match="metadata is incomplete"):
         recorder._dataset_metadata_identities(dataset)
+
+
+def test_recording_public_manifest_removes_runtime_paths() -> None:
+    scripts = ROOT / "scripts"
+    sys.path.insert(0, str(scripts))
+    try:
+        recorder = importlib.import_module("lg_r0_record_libero_rollouts")
+    finally:
+        sys.path.remove(str(scripts))
+    payload = {
+        "processor_manifest": "/runtime/processor_serialization_manifest.json",
+        "episodes": [
+            {
+                "episode_id": "libero_spatial-task0-seed1000",
+                "dataset_runtime_path": "/runtime/dataset",
+            }
+        ],
+    }
+
+    public = recorder._public_manifest(payload)
+
+    assert public["processor_manifest"] == "processor_serialization_manifest.json"
+    assert "dataset_runtime_path" not in public["episodes"][0]
+    assert (
+        public["episodes"][0]["dataset_locator"]
+        == "dataset_root/libero_spatial-task0-seed1000"
+    )
+    assert payload["episodes"][0]["dataset_runtime_path"] == "/runtime/dataset"
