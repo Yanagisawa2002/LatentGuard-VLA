@@ -69,7 +69,7 @@ def main() -> None:
         )
     )
     result["failure_categories_for_diversity"] = sorted(categories)
-    result["source_dataset_manifest"] = str(dataset_path.as_posix())
+    result["source_dataset_manifest"] = dataset_path.name
     destination = (
         resolve_repo_path(args.output)
         if args.output is not None

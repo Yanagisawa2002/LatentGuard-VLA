@@ -48,7 +48,7 @@ def main() -> None:
                 ),
             )
         )
-    result["source_manifest"] = str(args.manifest.as_posix())
+    result["source_manifest"] = args.manifest.name
     write_json(resolve_repo_path(args.output), result)
     print(json.dumps(result, sort_keys=True))
 
