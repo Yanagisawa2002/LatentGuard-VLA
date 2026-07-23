@@ -289,6 +289,23 @@ def main() -> None:
     selected_state = torch.load(best, map_location=device, weights_only=False)
     stage_model.load_state_dict(selected_state["stage_model"])
     subtask_model.load_state_dict(selected_state["subtask_model"])
+    adapted_held_out_test = _split_metrics(
+        stage_model,
+        subtask_model,
+        arrays,
+        split="test",
+        device=device,
+    )
+    frozen_stage_model, frozen_subtask_model = _models(config, device)
+    frozen_stage_model.load_state_dict(initial_state["stage_model"])
+    frozen_subtask_model.load_state_dict(initial_state["subtask_model"])
+    frozen_initial_held_out_test = _split_metrics(
+        frozen_stage_model,
+        frozen_subtask_model,
+        arrays,
+        split="test",
+        device=device,
+    )
     result = {
         "schema_version": "latentguard.lg_r1b.sarm_adaptation_results.v1",
         "status": "pass",
@@ -298,13 +315,10 @@ def main() -> None:
         "optimizer_steps": step,
         "best_validation_step": int(selected_state["step"]),
         "validation": selected_state["validation"],
-        "held_out_test": _split_metrics(
-            stage_model,
-            subtask_model,
-            arrays,
-            split="test",
-            device=device,
-        ),
+        "held_out_test": adapted_held_out_test,
+        "frozen_initial_held_out_test": frozen_initial_held_out_test,
+        "test_accessed_before_selection": False,
+        "test_accessed_after_selection": True,
         "frozen_zero_shot_held_out_task": zero["held_out_task"],
         "frozen_modules": config["frozen_modules"],
         "trainable_modules": config["trainable_modules"],
