@@ -40,3 +40,14 @@ promotion threshold remain undecided. LG-R0 fits none of them.
 Intervention is prohibited until an untouched offline ranking experiment,
 calibration, coverage/risk reporting, and a separately frozen promotion gate
 pass. LG-R0 performs zero interventions.
+
+## LG-R0 selection
+
+LG-R0 makes Baseline A and Model C the minimum paired LG-R1 experiment. Model C
+is preferred only as a hypothesis: it must demonstrate validation improvement
+over Baseline A before promotion. The native representation-only Baseline B
+remains a diagnostic and cannot rank external numeric candidates.
+
+LG-R1 training is currently data-blocked. The accepted LG-R0 recordings contain
+421 frames from four successful trajectories and zero failed trajectories.
+They validate mechanics but cannot fit or select a failure head.

@@ -1,0 +1,34 @@
+{
+  "backward_calls": 0,
+  "checkpoint_revision": "735d9f692981e286ade093b5046627eda876e5d0",
+  "files": [
+    {
+      "bytes": 1384,
+      "relative_path": "policy_postprocessor.json",
+      "sha256": "a2f94aaec83fd510a87babb31e9fa64436eb6eca4e9767e2ff8d53dea17b8846"
+    },
+    {
+      "bytes": 1316,
+      "relative_path": "policy_postprocessor_step_2_unnormalizer_processor.safetensors",
+      "sha256": "840a296891a8a316541b54a963aa5a883fc26693accd54e7cce549249d83eac7"
+    },
+    {
+      "bytes": 1328,
+      "relative_path": "policy_preprocessor.json",
+      "sha256": "8ccda832c1e07cea944cfba2357aa8188801247ab513d1d2542be5fb23d764a5"
+    },
+    {
+      "bytes": 1316,
+      "relative_path": "policy_preprocessor_step_3_normalizer_processor.safetensors",
+      "sha256": "840a296891a8a316541b54a963aa5a883fc26693accd54e7cce549249d83eac7"
+    }
+  ],
+  "optimizer_steps": 0,
+  "processor_revision": "735d9f692981e286ade093b5046627eda876e5d0",
+  "reload_success": true,
+  "reloaded_postprocessor_type": "DataProcessorPipeline",
+  "reloaded_preprocessor_type": "DataProcessorPipeline",
+  "runtime_locator": "dataset_root/processors",
+  "schema_version": "latentguard.lg_r0.processor_serialization.v1",
+  "status": "pass"
+}

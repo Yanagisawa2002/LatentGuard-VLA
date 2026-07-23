@@ -1,257 +1,257 @@
-﻿{
-    "backward_calls":  0,
-    "cuda_memory":  {
-                        "allocated_bytes":  6190774272,
-                        "available":  true,
-                        "peak_allocated_bytes":  6296392704,
-                        "peak_reserved_bytes":  6333399040,
-                        "reserved_bytes":  6333399040
-                    },
-    "episodes":  [
-                     {
-                         "action_finite":  true,
-                         "elapsed_seconds":  17.904885488009313,
-                         "episode_id":  "libero_spatial-task0-seed1000-episode0",
-                         "episode_length":  76,
-                         "executed_action_bounds_ok":  true,
-                         "executed_action_sha256_float32":  "deee528055dbb25f90f9b50c0fdd443cd8118bf38577a771cecfc1211ba6af15",
-                         "policy_queries":  11,
-                         "seed":  1000,
-                         "success":  true,
-                         "suite":  "libero_spatial",
-                         "task":  "pick_up_the_black_bowl_between_the_plate_and_the_ramekin_and_place_it_on_the_plate",
-                         "task_id":  0,
-                         "termination":  "success",
-                         "trace_bytes":  33681,
-                         "trace_sha256":  "00720bd35cd42959189fa7b0f1dc1893a3bbcb7085914905ed60b5769fea516b",
-                         "trace_relative_path":  "traces/libero_spatial-task0-seed1000-episode0.json"
-                     }
-                 ],
-    "errors":  [
-
-               ],
-    "instrumentation":  {
-                            "backward_calls":  0,
-                            "chunk_sha256":  [
-                                                 "098d609a93bff24c17c39fe7da6fa2b0c0a16c5e308c993b34828e775efacf8d",
-                                                 "52e512dabd2d43f90205e020bf33b14dc68abd023b65fd72f71a9d29e3e0fda2",
-                                                 "a4167a1d179a4c725957492c60b5fe99e2e5fa87588d73820ea0461c5aef11e8",
-                                                 "7557e2f5657bb86e7da44eb3acca7fb4cf2b2c4cbd50a74257ec33f231f47359",
-                                                 "9e585c0eb1a5e889f95fe6c892725f5ebfff5fa9209b0cf67ec462d00bd90bc3",
-                                                 "fce6c8c1a72bb731289b49e2d803479102873ee01a742bd01c4b8fb51f78efad",
-                                                 "e93f69c6d586d349a4f9e7c5346756e48f0c927c48a24db6b94d4bf45a5e0d12",
-                                                 "a3af134871aab2da031e89baae122560175efdb13889f945726bfbe9db2c58b8",
-                                                 "ac593d2bb79562c96d412c6d9d8851cacccb2c6414deb53e144554e867ab766e",
-                                                 "7916a828e9c2a4e0ac3d50f0382dacb28d6cc8ca1e9772bb65f24f3587b7baec",
-                                                 "8cd5c780e6244e8355f5c8f7ae7f2f997e6404b99f5203bcb1e7dbcd21599617"
-                                             ],
-                            "first_chunks":  [
-                                                 [
-                                                     [
-                                                         [
-                                                             0.0127430260181427,
-                                                             0.00805886834859848,
-                                                             0.06906349956989288,
-                                                             -0.16509059071540833,
-                                                             0.041590794920921326,
-                                                             -0.008618437685072422,
-                                                             1.0127840042114258
-                                                         ],
-                                                         [
-                                                             0.04792596399784088,
-                                                             0.03166840970516205,
-                                                             0.1124778687953949,
-                                                             -0.16513483226299286,
-                                                             0.053987130522727966,
-                                                             -0.0057555437088012695,
-                                                             1.0055619478225708
-                                                         ],
-                                                         [
-                                                             0.12118560075759888,
-                                                             0.09823156893253326,
-                                                             0.15597259998321533,
-                                                             -0.1619424819946289,
-                                                             0.05576199293136597,
-                                                             -0.009165287017822266,
-                                                             1.0076911449432373
-                                                         ],
-                                                         [
-                                                             0.3603522479534149,
-                                                             0.2323240488767624,
-                                                             0.23912428319454193,
-                                                             -0.1652369499206543,
-                                                             0.09308826923370361,
-                                                             -0.0003692507743835449,
-                                                             1.001709222793579
-                                                         ],
-                                                         [
-                                                             0.7752642631530762,
-                                                             0.4577822685241699,
-                                                             0.21282875537872314,
-                                                             -0.1822437196969986,
-                                                             0.12162850797176361,
-                                                             -0.014819594100117683,
-                                                             1.0028975009918213
-                                                         ],
-                                                         [
-                                                             0.8893328309059143,
-                                                             0.5010297298431396,
-                                                             0.1858581304550171,
-                                                             -0.19859251379966736,
-                                                             0.09385916590690613,
-                                                             -0.01622319221496582,
-                                                             1.0023146867752075
-                                                         ],
-                                                         [
-                                                             0.9315202832221985,
-                                                             0.5324305891990662,
-                                                             0.155239999294281,
-                                                             -0.21036502718925476,
-                                                             0.04751226305961609,
-                                                             -0.016378825530409813,
-                                                             0.995240330696106
-                                                         ]
-                                                     ]
-                                                 ],
-                                                 [
-                                                     [
-                                                         [
-                                                             0.9747949838638306,
-                                                             0.5022312998771667,
-                                                             0.196892648935318,
-                                                             -0.22284767031669617,
-                                                             0.09388214349746704,
-                                                             -0.016539663076400757,
-                                                             0.9969325065612793
-                                                         ],
-                                                         [
-                                                             1.0055710077285767,
-                                                             0.516806423664093,
-                                                             0.1686999797821045,
-                                                             -0.21413472294807434,
-                                                             0.05581936240196228,
-                                                             -0.01442611962556839,
-                                                             0.9990882873535156
-                                                         ],
-                                                         [
-                                                             1.0072077512741089,
-                                                             0.5351268649101257,
-                                                             0.1287837028503418,
-                                                             -0.213511124253273,
-                                                             0.02721381187438965,
-                                                             -0.01684822142124176,
-                                                             1.0006663799285889
-                                                         ],
-                                                         [
-                                                             1.0111013650894165,
-                                                             0.5361502170562744,
-                                                             0.0985620766878128,
-                                                             -0.21185314655303955,
-                                                             0.012605279684066772,
-                                                             -0.01230168342590332,
-                                                             1.0011823177337646
-                                                         ],
-                                                         [
-                                                             1.0138771533966064,
-                                                             0.5415506362915039,
-                                                             0.06409066915512085,
-                                                             -0.2120194137096405,
-                                                             0.010187208652496338,
-                                                             -0.009056970477104187,
-                                                             1.0001575946807861
-                                                         ],
-                                                         [
-                                                             1.0192972421646118,
-                                                             0.5430550575256348,
-                                                             0.02250725030899048,
-                                                             -0.21096175909042358,
-                                                             0.014024168252944946,
-                                                             -0.008929997682571411,
-                                                             1.0034828186035156
-                                                         ],
-                                                         [
-                                                             1.0135362148284912,
-                                                             0.5516242980957031,
-                                                             0.010007508099079132,
-                                                             -0.19871649146080017,
-                                                             0.010339707136154175,
-                                                             -0.010065004229545593,
-                                                             1.0036715269088745
-                                                         ]
-                                                     ]
-                                                 ]
-                                             ],
-                            "mean_query_latency_seconds":  0.18607104154547083,
-                            "optimizer_steps":  0,
-                            "p95_query_latency_seconds":  0.5832310734986095,
-                            "policy_queries":  11,
-                            "queries_per_second":  5.374291408776935
-                        },
-    "interventions":  0,
-    "official_400_episode_equivalent":  false,
-    "optimizer_steps":  0,
-    "overall":  {
-                    "action_contract_errors":  0,
-                    "completed_episodes":  1,
-                    "environment_errors":  0,
-                    "expected_episodes":  1,
-                    "mean_episode_length":  76.0,
-                    "nonfinite_action_episodes":  0,
-                    "success_rate":  1.0,
-                    "successes":  1,
-                    "timeouts":  0,
-                    "wilson_95":  [
-                                      0.20654931437723745,
-                                      1.0
-                                  ]
-                },
-    "result_scope":  "one_episode_smoke",
-    "run_id":  "eval_single-1784782459",
-    "schedule":  {
-                     "action_execution_horizon":  7,
-                     "camera_names":  [
-                                          "agentview_image",
-                                          "robot0_eye_in_hand_image"
-                                      ],
-                     "checkpoint_revision":  "735d9f692981e286ade093b5046627eda876e5d0",
-                     "control_mode":  "relative",
-                     "init_states":  true,
-                     "observation_height":  224,
-                     "observation_width":  224,
-                     "policy_sampling_seed":  1000,
-                     "processor_revision":  "735d9f692981e286ade093b5046627eda876e5d0",
-                     "recording":  true,
-                     "replanning_frequency_steps":  7,
-                     "result_changes_action_scale":  false,
-                     "schema_version":  "latentguard.lg_r0.eval.v1",
-                     "suites":  [
-                                    {
-                                        "episode_horizon":  280,
-                                        "episodes_per_task":  1,
-                                        "name":  "libero_spatial",
-                                        "seeds":  [
-                                                      1000
-                                                  ],
-                                        "task_ids":  [
-                                                         0
-                                                     ]
-                                    }
-                                ]
-                 },
-    "schema_version":  "latentguard.lg_r0.libero_evaluation.v1",
-    "status":  "pass",
-    "suite_results":  {
-                          "libero_spatial":  {
-                                                 "episodes":  1,
-                                                 "mean_episode_length":  76.0,
-                                                 "success_rate":  1.0,
-                                                 "successes":  1,
-                                                 "wilson_95":  [
-                                                                   0.20654931437723745,
-                                                                   1.0
-                                                               ]
-                                             }
-                      },
-    "run_locator":  "LG_R0_OUTPUT_ROOT/eval_single-1784782459",
-    "execution_site":  "local"
+{
+  "backward_calls": 0,
+  "cuda_memory": {
+    "allocated_bytes": 6190773760,
+    "available": true,
+    "peak_allocated_bytes": 6296392704,
+    "peak_reserved_bytes": 6333399040,
+    "reserved_bytes": 6333399040
+  },
+  "episodes": [
+    {
+      "action_finite": true,
+      "elapsed_seconds": 15.270068511366844,
+      "episode_id": "libero_spatial-task0-seed1000-episode0",
+      "episode_length": 77,
+      "executed_action_bounds_ok": true,
+      "executed_action_sha256_float32": "929f4c62702932a2cd32232d1403029d8c064d34f0b0480bd89288eb3da0bc57",
+      "policy_queries": 11,
+      "policy_sampling_seed": 2000,
+      "seed": 1000,
+      "success": true,
+      "suite": "libero_spatial",
+      "task": "pick_up_the_black_bowl_between_the_plate_and_the_ramekin_and_place_it_on_the_plate",
+      "task_id": 0,
+      "termination": "success",
+      "trace_bytes": 33883,
+      "trace_relative_path": "traces/libero_spatial-task0-seed1000-episode0.json",
+      "trace_sha256": "d4df8f464b4618f0c4f7aa00b63a6214c5d8a723d3daca5d7872297bddef9d12"
+    }
+  ],
+  "errors": [],
+  "execution_site": "remote",
+  "instrumentation": {
+    "backward_calls": 0,
+    "chunk_sha256": [
+      "03921a67121fb9f4bed05fe03f326e02ced49b0bf166ef3ddbc470eb48b3c337",
+      "1113374e679f755764671daf31caa0874778b62de4de652ee1bb0fe5a0d16d4c",
+      "71155a105ea15cac45983f5e75b958bcee5ddb85e12084a5fea38fd3c1d21d56",
+      "835ef706538d2a7b626214f087e781a012470a6ace060f4d110d8963c01674a0",
+      "806cfa7482cfb176e233ce2007f030a70708737a0d2ca7acb174fdebb8b9ce60",
+      "5d295fb70b7fa406ff923e683afc94d60bdadd175c9b605509d7d068c3018735",
+      "a2644fd3a3cfefad0c1a82d2180e847c07af812c576b459d14ff75f2b5e19031",
+      "1a4a9940fb6d553b2c01c6c9acf54507b728f70584c211c4da03f7a9e5c732cd",
+      "0860c4def01fbeea19385bf30063efb33ec6b5e7dd9c00f6972f53c9776107ec",
+      "c888894120bb7d0002ae26ae181c0a4c3955ca34efb986056f3418db6f1f71ee",
+      "6d01c05eda85a30dffdbe6c2595b739d4122c9116a30e0442f719d8dce4eae81"
+    ],
+    "first_chunks": [
+      [
+        [
+          [
+            0.006751112639904022,
+            0.002000853419303894,
+            0.05284229293465614,
+            -0.16202953457832336,
+            0.019444987177848816,
+            -0.012051127851009369,
+            1.0123050212860107
+          ],
+          [
+            0.01997794210910797,
+            0.03864496946334839,
+            0.09865957498550415,
+            -0.16320642828941345,
+            0.03382359445095062,
+            -0.012331996113061905,
+            1.009962558746338
+          ],
+          [
+            0.10834163427352905,
+            0.12277373671531677,
+            0.1676090806722641,
+            -0.16455338895320892,
+            0.05955980718135834,
+            -0.005473718047142029,
+            1.0036499500274658
+          ],
+          [
+            0.3325662612915039,
+            0.23986291885375977,
+            0.2605040967464447,
+            -0.17478597164154053,
+            0.09634444117546082,
+            -0.005502179265022278,
+            1.0061718225479126
+          ],
+          [
+            0.8023637533187866,
+            0.44297927618026733,
+            0.25639259815216064,
+            -0.21782824397087097,
+            0.1431211233139038,
+            -0.011621803045272827,
+            0.9997298121452332
+          ],
+          [
+            0.9221497178077698,
+            0.4896533489227295,
+            0.20308512449264526,
+            -0.23604077100753784,
+            0.08987747132778168,
+            -0.006603062152862549,
+            1.0015920400619507
+          ],
+          [
+            0.9587026834487915,
+            0.5170019268989563,
+            0.1778165102005005,
+            -0.23796814680099487,
+            0.046551160514354706,
+            -0.016569286584854126,
+            0.9932451248168945
+          ]
+        ]
+      ],
+      [
+        [
+          [
+            0.9980401992797852,
+            0.5094736814498901,
+            0.20790520310401917,
+            -0.23481804132461548,
+            0.10330458730459213,
+            -0.015084788203239441,
+            1.0048617124557495
+          ],
+          [
+            1.0100388526916504,
+            0.5287426710128784,
+            0.18820063769817352,
+            -0.222365140914917,
+            0.05899593234062195,
+            -0.016204502433538437,
+            1.0017831325531006
+          ],
+          [
+            1.0098934173583984,
+            0.5352957248687744,
+            0.1578279733657837,
+            -0.21120449900627136,
+            0.037467941641807556,
+            -0.01659327745437622,
+            0.9996230006217957
+          ],
+          [
+            1.0229687690734863,
+            0.5373004674911499,
+            0.11915341019630432,
+            -0.20484206080436707,
+            0.024795234203338623,
+            -0.016595542430877686,
+            1.0
+          ],
+          [
+            1.019409418106079,
+            0.5334217548370361,
+            0.07400451600551605,
+            -0.20672327280044556,
+            0.02364950254559517,
+            -0.014702342450618744,
+            0.9990408420562744
+          ],
+          [
+            1.0199921131134033,
+            0.5301271677017212,
+            0.02744010090827942,
+            -0.2058040201663971,
+            0.024434678256511688,
+            -0.015469580888748169,
+            0.9991813898086548
+          ],
+          [
+            1.0265835523605347,
+            0.5437285900115967,
+            0.011531688272953033,
+            -0.1949249505996704,
+            0.014537632465362549,
+            -0.0049947649240493774,
+            1.0027430057525635
+          ]
+        ]
+      ]
+    ],
+    "mean_query_latency_seconds": 0.14089531959457832,
+    "optimizer_steps": 0,
+    "p95_query_latency_seconds": 0.3550628237426281,
+    "policy_queries": 11,
+    "queries_per_second": 7.097467842632867
+  },
+  "interventions": 0,
+  "libero_asset_snapshot_name": "libero-assets-0b3ea86",
+  "official_400_episode_equivalent": false,
+  "optimizer_steps": 0,
+  "overall": {
+    "action_contract_errors": 0,
+    "completed_episodes": 1,
+    "environment_errors": 0,
+    "expected_episodes": 1,
+    "mean_episode_length": 77.0,
+    "nonfinite_action_episodes": 0,
+    "success_rate": 1.0,
+    "successes": 1,
+    "timeouts": 0,
+    "wilson_95": [
+      0.20654931437723745,
+      1.0
+    ]
+  },
+  "result_scope": "one_episode_smoke",
+  "run_id": "eval_single-1784794925",
+  "run_locator": "LG_R0_OUTPUT_ROOT/eval_single-1784794925",
+  "schedule": {
+    "action_execution_horizon": 7,
+    "camera_names": [
+      "agentview_image",
+      "robot0_eye_in_hand_image"
+    ],
+    "checkpoint_revision": "735d9f692981e286ade093b5046627eda876e5d0",
+    "control_mode": "relative",
+    "init_states": true,
+    "observation_height": 224,
+    "observation_width": 224,
+    "policy_sampling_seed": 1000,
+    "processor_revision": "735d9f692981e286ade093b5046627eda876e5d0",
+    "recording": true,
+    "replanning_frequency_steps": 7,
+    "result_changes_action_scale": false,
+    "schema_version": "latentguard.lg_r0.eval.v1",
+    "suites": [
+      {
+        "episode_horizon": 280,
+        "episodes_per_task": 1,
+        "name": "libero_spatial",
+        "seeds": [
+          1000
+        ],
+        "task_ids": [
+          0
+        ]
+      }
+    ]
+  },
+  "schema_version": "latentguard.lg_r0.libero_evaluation.v1",
+  "status": "pass",
+  "suite_results": {
+    "libero_spatial": {
+      "episodes": 1,
+      "mean_episode_length": 77.0,
+      "success_rate": 1.0,
+      "successes": 1,
+      "wilson_95": [
+        0.20654931437723745,
+        1.0
+      ]
+    }
+  }
 }

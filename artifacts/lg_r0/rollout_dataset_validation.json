@@ -1,0 +1,109 @@
+{
+  "backward_calls": 0,
+  "datasets": [
+    {
+      "action_nonfinite_frames": 0,
+      "checkpoint_revision": "735d9f692981e286ade093b5046627eda876e5d0",
+      "episode_id": "libero_spatial-task0-seed1000",
+      "episodes": 1,
+      "features": [
+        "action",
+        "episode_index",
+        "frame_index",
+        "index",
+        "next.done",
+        "next.reward",
+        "next.success",
+        "observation.images.image",
+        "observation.images.image2",
+        "observation.state",
+        "task_index",
+        "timestamp"
+      ],
+      "frame_replay": "pass",
+      "frames": 77,
+      "iterated_frames": 77,
+      "policy_identity_bound": true,
+      "processor_revision": "735d9f692981e286ade093b5046627eda876e5d0"
+    },
+    {
+      "action_nonfinite_frames": 0,
+      "checkpoint_revision": "735d9f692981e286ade093b5046627eda876e5d0",
+      "episode_id": "libero_spatial-task0-seed1001",
+      "episodes": 1,
+      "features": [
+        "action",
+        "episode_index",
+        "frame_index",
+        "index",
+        "next.done",
+        "next.reward",
+        "next.success",
+        "observation.images.image",
+        "observation.images.image2",
+        "observation.state",
+        "task_index",
+        "timestamp"
+      ],
+      "frame_replay": "pass",
+      "frames": 74,
+      "iterated_frames": 74,
+      "policy_identity_bound": true,
+      "processor_revision": "735d9f692981e286ade093b5046627eda876e5d0"
+    },
+    {
+      "action_nonfinite_frames": 0,
+      "checkpoint_revision": "735d9f692981e286ade093b5046627eda876e5d0",
+      "episode_id": "libero_object-task0-seed1000",
+      "episodes": 1,
+      "features": [
+        "action",
+        "episode_index",
+        "frame_index",
+        "index",
+        "next.done",
+        "next.reward",
+        "next.success",
+        "observation.images.image",
+        "observation.images.image2",
+        "observation.state",
+        "task_index",
+        "timestamp"
+      ],
+      "frame_replay": "pass",
+      "frames": 135,
+      "iterated_frames": 135,
+      "policy_identity_bound": true,
+      "processor_revision": "735d9f692981e286ade093b5046627eda876e5d0"
+    },
+    {
+      "action_nonfinite_frames": 0,
+      "checkpoint_revision": "735d9f692981e286ade093b5046627eda876e5d0",
+      "episode_id": "libero_object-task0-seed1001",
+      "episodes": 1,
+      "features": [
+        "action",
+        "episode_index",
+        "frame_index",
+        "index",
+        "next.done",
+        "next.reward",
+        "next.success",
+        "observation.images.image",
+        "observation.images.image2",
+        "observation.state",
+        "task_index",
+        "timestamp"
+      ],
+      "frame_replay": "pass",
+      "frames": 135,
+      "iterated_frames": 135,
+      "policy_identity_bound": true,
+      "processor_revision": "735d9f692981e286ade093b5046627eda876e5d0"
+    }
+  ],
+  "failures": [],
+  "optimizer_steps": 0,
+  "schema_version": "latentguard.lg_r0.rollout_dataset_validation.v1",
+  "status": "pass"
+}

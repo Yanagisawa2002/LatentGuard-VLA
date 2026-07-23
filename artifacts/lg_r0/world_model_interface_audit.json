@@ -1,0 +1,979 @@
+{
+  "action_condition": "qwen_special_action_token_hidden_states",
+  "available_samples": {
+    "failure": 0,
+    "success": 20
+  },
+  "backward_calls": 0,
+  "batched_external_candidates_supported": false,
+  "classifier_fit": false,
+  "descriptive_statistics_only": {
+    "failure": {
+      "prediction_target_cosine_distance_mean": null,
+      "prediction_target_l1_mean": null,
+      "predictor_variance_mean": null,
+      "samples": 0
+    },
+    "success": {
+      "prediction_target_cosine_distance_mean": 0.2425866097211838,
+      "prediction_target_l1_mean": 1.3251728653907775,
+      "predictor_variance_mean": 5.375861597061157,
+      "samples": 20
+    }
+  },
+  "external_numeric_candidate_actions_supported": false,
+  "failures": [],
+  "future_target_available_with_temporal_video": true,
+  "inference_default_computes_world_model": false,
+  "native_scalar_scores": {
+    "progress": false,
+    "reconstruction": false,
+    "risk": false,
+    "success": false,
+    "training_l1_loss": true
+  },
+  "numeric_action_chunk_consumed_by_predictor": false,
+  "optimizer_steps": 0,
+  "path_semantic": "official_training_style_offline_diagnostic",
+  "predictor_action_response_conclusion": "The runtime confirms non-constant predicted tensors and Qwen action-token conditioning, but the official API cannot isolate response to arbitrary numeric action candidates; no candidate-response claim is made.",
+  "recommended_failure_head_inputs": [
+    "current_vjepa_visual_tokens",
+    "predicted_future_vjepa_visual_tokens",
+    "target_future_vjepa_visual_tokens_during_training_only",
+    "qwen_action_token_hidden_states",
+    "generated_numeric_action_chunk_as_a_separate_feature"
+  ],
+  "requested_samples": {
+    "failure": 20,
+    "success": 20
+  },
+  "sample_shortfall": {
+    "failure": 20,
+    "success": 0
+  },
+  "samples": [
+    {
+      "current_latent_dtype": "torch.bfloat16",
+      "current_latent_shape": [
+        1,
+        768,
+        2048
+      ],
+      "episode_id": "libero_spatial-task0-seed1000",
+      "frame_start": 0,
+      "group": "success",
+      "predicted_dtype": "torch.float32",
+      "predicted_future_latents_shape": [
+        1,
+        768,
+        2048
+      ],
+      "prediction_target_cosine_distance": 0.24570143222808838,
+      "prediction_target_l1": 1.3518056869506836,
+      "predictor_metadata": {
+        "action_token_dtype": "torch.float32",
+        "action_token_shape": [
+          1,
+          24,
+          2048
+        ],
+        "available": true,
+        "backward_calls": 0,
+        "condition_tensor": "qwen_special_action_token_hidden_states",
+        "context_temporal_positions": 3,
+        "encoded_temporal_positions": 4,
+        "external_numeric_candidates_supported": false,
+        "inference_default": false,
+        "l1_distance": 1.3518056869506836,
+        "numeric_action_chunk_consumed": false,
+        "optimizer_steps": 0,
+        "path_semantic": "official_training_style_offline_diagnostic",
+        "tokens_per_temporal_position": 256
+      },
+      "predictor_variance": 5.437063694000244,
+      "target_dtype": "torch.bfloat16",
+      "target_future_latents_shape": [
+        1,
+        768,
+        2048
+      ]
+    },
+    {
+      "current_latent_dtype": "torch.bfloat16",
+      "current_latent_shape": [
+        1,
+        768,
+        2048
+      ],
+      "episode_id": "libero_spatial-task0-seed1000",
+      "frame_start": 3,
+      "group": "success",
+      "predicted_dtype": "torch.float32",
+      "predicted_future_latents_shape": [
+        1,
+        768,
+        2048
+      ],
+      "prediction_target_cosine_distance": 0.24597597122192383,
+      "prediction_target_l1": 1.344303846359253,
+      "predictor_metadata": {
+        "action_token_dtype": "torch.float32",
+        "action_token_shape": [
+          1,
+          24,
+          2048
+        ],
+        "available": true,
+        "backward_calls": 0,
+        "condition_tensor": "qwen_special_action_token_hidden_states",
+        "context_temporal_positions": 3,
+        "encoded_temporal_positions": 4,
+        "external_numeric_candidates_supported": false,
+        "inference_default": false,
+        "l1_distance": 1.344303846359253,
+        "numeric_action_chunk_consumed": false,
+        "optimizer_steps": 0,
+        "path_semantic": "official_training_style_offline_diagnostic",
+        "tokens_per_temporal_position": 256
+      },
+      "predictor_variance": 5.493038654327393,
+      "target_dtype": "torch.bfloat16",
+      "target_future_latents_shape": [
+        1,
+        768,
+        2048
+      ]
+    },
+    {
+      "current_latent_dtype": "torch.bfloat16",
+      "current_latent_shape": [
+        1,
+        768,
+        2048
+      ],
+      "episode_id": "libero_spatial-task0-seed1000",
+      "frame_start": 7,
+      "group": "success",
+      "predicted_dtype": "torch.float32",
+      "predicted_future_latents_shape": [
+        1,
+        768,
+        2048
+      ],
+      "prediction_target_cosine_distance": 0.24222183227539062,
+      "prediction_target_l1": 1.3212178945541382,
+      "predictor_metadata": {
+        "action_token_dtype": "torch.float32",
+        "action_token_shape": [
+          1,
+          24,
+          2048
+        ],
+        "available": true,
+        "backward_calls": 0,
+        "condition_tensor": "qwen_special_action_token_hidden_states",
+        "context_temporal_positions": 3,
+        "encoded_temporal_positions": 4,
+        "external_numeric_candidates_supported": false,
+        "inference_default": false,
+        "l1_distance": 1.3212178945541382,
+        "numeric_action_chunk_consumed": false,
+        "optimizer_steps": 0,
+        "path_semantic": "official_training_style_offline_diagnostic",
+        "tokens_per_temporal_position": 256
+      },
+      "predictor_variance": 5.463312149047852,
+      "target_dtype": "torch.bfloat16",
+      "target_future_latents_shape": [
+        1,
+        768,
+        2048
+      ]
+    },
+    {
+      "current_latent_dtype": "torch.bfloat16",
+      "current_latent_shape": [
+        1,
+        768,
+        2048
+      ],
+      "episode_id": "libero_spatial-task0-seed1000",
+      "frame_start": 10,
+      "group": "success",
+      "predicted_dtype": "torch.float32",
+      "predicted_future_latents_shape": [
+        1,
+        768,
+        2048
+      ],
+      "prediction_target_cosine_distance": 0.24439382553100586,
+      "prediction_target_l1": 1.3276889324188232,
+      "predictor_metadata": {
+        "action_token_dtype": "torch.float32",
+        "action_token_shape": [
+          1,
+          24,
+          2048
+        ],
+        "available": true,
+        "backward_calls": 0,
+        "condition_tensor": "qwen_special_action_token_hidden_states",
+        "context_temporal_positions": 3,
+        "encoded_temporal_positions": 4,
+        "external_numeric_candidates_supported": false,
+        "inference_default": false,
+        "l1_distance": 1.3276889324188232,
+        "numeric_action_chunk_consumed": false,
+        "optimizer_steps": 0,
+        "path_semantic": "official_training_style_offline_diagnostic",
+        "tokens_per_temporal_position": 256
+      },
+      "predictor_variance": 5.420711040496826,
+      "target_dtype": "torch.bfloat16",
+      "target_future_latents_shape": [
+        1,
+        768,
+        2048
+      ]
+    },
+    {
+      "current_latent_dtype": "torch.bfloat16",
+      "current_latent_shape": [
+        1,
+        768,
+        2048
+      ],
+      "episode_id": "libero_spatial-task0-seed1000",
+      "frame_start": 14,
+      "group": "success",
+      "predicted_dtype": "torch.float32",
+      "predicted_future_latents_shape": [
+        1,
+        768,
+        2048
+      ],
+      "prediction_target_cosine_distance": 0.24222731590270996,
+      "prediction_target_l1": 1.3134597539901733,
+      "predictor_metadata": {
+        "action_token_dtype": "torch.float32",
+        "action_token_shape": [
+          1,
+          24,
+          2048
+        ],
+        "available": true,
+        "backward_calls": 0,
+        "condition_tensor": "qwen_special_action_token_hidden_states",
+        "context_temporal_positions": 3,
+        "encoded_temporal_positions": 4,
+        "external_numeric_candidates_supported": false,
+        "inference_default": false,
+        "l1_distance": 1.3134597539901733,
+        "numeric_action_chunk_consumed": false,
+        "optimizer_steps": 0,
+        "path_semantic": "official_training_style_offline_diagnostic",
+        "tokens_per_temporal_position": 256
+      },
+      "predictor_variance": 5.412786483764648,
+      "target_dtype": "torch.bfloat16",
+      "target_future_latents_shape": [
+        1,
+        768,
+        2048
+      ]
+    },
+    {
+      "current_latent_dtype": "torch.bfloat16",
+      "current_latent_shape": [
+        1,
+        768,
+        2048
+      ],
+      "episode_id": "libero_spatial-task0-seed1000",
+      "frame_start": 18,
+      "group": "success",
+      "predicted_dtype": "torch.float32",
+      "predicted_future_latents_shape": [
+        1,
+        768,
+        2048
+      ],
+      "prediction_target_cosine_distance": 0.24233317375183105,
+      "prediction_target_l1": 1.3190869092941284,
+      "predictor_metadata": {
+        "action_token_dtype": "torch.float32",
+        "action_token_shape": [
+          1,
+          24,
+          2048
+        ],
+        "available": true,
+        "backward_calls": 0,
+        "condition_tensor": "qwen_special_action_token_hidden_states",
+        "context_temporal_positions": 3,
+        "encoded_temporal_positions": 4,
+        "external_numeric_candidates_supported": false,
+        "inference_default": false,
+        "l1_distance": 1.3190869092941284,
+        "numeric_action_chunk_consumed": false,
+        "optimizer_steps": 0,
+        "path_semantic": "official_training_style_offline_diagnostic",
+        "tokens_per_temporal_position": 256
+      },
+      "predictor_variance": 5.347740650177002,
+      "target_dtype": "torch.bfloat16",
+      "target_future_latents_shape": [
+        1,
+        768,
+        2048
+      ]
+    },
+    {
+      "current_latent_dtype": "torch.bfloat16",
+      "current_latent_shape": [
+        1,
+        768,
+        2048
+      ],
+      "episode_id": "libero_spatial-task0-seed1000",
+      "frame_start": 21,
+      "group": "success",
+      "predicted_dtype": "torch.float32",
+      "predicted_future_latents_shape": [
+        1,
+        768,
+        2048
+      ],
+      "prediction_target_cosine_distance": 0.24071818590164185,
+      "prediction_target_l1": 1.3139934539794922,
+      "predictor_metadata": {
+        "action_token_dtype": "torch.float32",
+        "action_token_shape": [
+          1,
+          24,
+          2048
+        ],
+        "available": true,
+        "backward_calls": 0,
+        "condition_tensor": "qwen_special_action_token_hidden_states",
+        "context_temporal_positions": 3,
+        "encoded_temporal_positions": 4,
+        "external_numeric_candidates_supported": false,
+        "inference_default": false,
+        "l1_distance": 1.3139934539794922,
+        "numeric_action_chunk_consumed": false,
+        "optimizer_steps": 0,
+        "path_semantic": "official_training_style_offline_diagnostic",
+        "tokens_per_temporal_position": 256
+      },
+      "predictor_variance": 5.425529956817627,
+      "target_dtype": "torch.bfloat16",
+      "target_future_latents_shape": [
+        1,
+        768,
+        2048
+      ]
+    },
+    {
+      "current_latent_dtype": "torch.bfloat16",
+      "current_latent_shape": [
+        1,
+        768,
+        2048
+      ],
+      "episode_id": "libero_spatial-task0-seed1000",
+      "frame_start": 25,
+      "group": "success",
+      "predicted_dtype": "torch.float32",
+      "predicted_future_latents_shape": [
+        1,
+        768,
+        2048
+      ],
+      "prediction_target_cosine_distance": 0.23147177696228027,
+      "prediction_target_l1": 1.2900876998901367,
+      "predictor_metadata": {
+        "action_token_dtype": "torch.float32",
+        "action_token_shape": [
+          1,
+          24,
+          2048
+        ],
+        "available": true,
+        "backward_calls": 0,
+        "condition_tensor": "qwen_special_action_token_hidden_states",
+        "context_temporal_positions": 3,
+        "encoded_temporal_positions": 4,
+        "external_numeric_candidates_supported": false,
+        "inference_default": false,
+        "l1_distance": 1.2900876998901367,
+        "numeric_action_chunk_consumed": false,
+        "optimizer_steps": 0,
+        "path_semantic": "official_training_style_offline_diagnostic",
+        "tokens_per_temporal_position": 256
+      },
+      "predictor_variance": 5.4624199867248535,
+      "target_dtype": "torch.bfloat16",
+      "target_future_latents_shape": [
+        1,
+        768,
+        2048
+      ]
+    },
+    {
+      "current_latent_dtype": "torch.bfloat16",
+      "current_latent_shape": [
+        1,
+        768,
+        2048
+      ],
+      "episode_id": "libero_spatial-task0-seed1000",
+      "frame_start": 29,
+      "group": "success",
+      "predicted_dtype": "torch.float32",
+      "predicted_future_latents_shape": [
+        1,
+        768,
+        2048
+      ],
+      "prediction_target_cosine_distance": 0.23044782876968384,
+      "prediction_target_l1": 1.2837870121002197,
+      "predictor_metadata": {
+        "action_token_dtype": "torch.float32",
+        "action_token_shape": [
+          1,
+          24,
+          2048
+        ],
+        "available": true,
+        "backward_calls": 0,
+        "condition_tensor": "qwen_special_action_token_hidden_states",
+        "context_temporal_positions": 3,
+        "encoded_temporal_positions": 4,
+        "external_numeric_candidates_supported": false,
+        "inference_default": false,
+        "l1_distance": 1.2837870121002197,
+        "numeric_action_chunk_consumed": false,
+        "optimizer_steps": 0,
+        "path_semantic": "official_training_style_offline_diagnostic",
+        "tokens_per_temporal_position": 256
+      },
+      "predictor_variance": 5.469003200531006,
+      "target_dtype": "torch.bfloat16",
+      "target_future_latents_shape": [
+        1,
+        768,
+        2048
+      ]
+    },
+    {
+      "current_latent_dtype": "torch.bfloat16",
+      "current_latent_shape": [
+        1,
+        768,
+        2048
+      ],
+      "episode_id": "libero_spatial-task0-seed1000",
+      "frame_start": 32,
+      "group": "success",
+      "predicted_dtype": "torch.float32",
+      "predicted_future_latents_shape": [
+        1,
+        768,
+        2048
+      ],
+      "prediction_target_cosine_distance": 0.23738324642181396,
+      "prediction_target_l1": 1.307570457458496,
+      "predictor_metadata": {
+        "action_token_dtype": "torch.float32",
+        "action_token_shape": [
+          1,
+          24,
+          2048
+        ],
+        "available": true,
+        "backward_calls": 0,
+        "condition_tensor": "qwen_special_action_token_hidden_states",
+        "context_temporal_positions": 3,
+        "encoded_temporal_positions": 4,
+        "external_numeric_candidates_supported": false,
+        "inference_default": false,
+        "l1_distance": 1.307570457458496,
+        "numeric_action_chunk_consumed": false,
+        "optimizer_steps": 0,
+        "path_semantic": "official_training_style_offline_diagnostic",
+        "tokens_per_temporal_position": 256
+      },
+      "predictor_variance": 5.436791896820068,
+      "target_dtype": "torch.bfloat16",
+      "target_future_latents_shape": [
+        1,
+        768,
+        2048
+      ]
+    },
+    {
+      "current_latent_dtype": "torch.bfloat16",
+      "current_latent_shape": [
+        1,
+        768,
+        2048
+      ],
+      "episode_id": "libero_spatial-task0-seed1000",
+      "frame_start": 36,
+      "group": "success",
+      "predicted_dtype": "torch.float32",
+      "predicted_future_latents_shape": [
+        1,
+        768,
+        2048
+      ],
+      "prediction_target_cosine_distance": 0.24190253019332886,
+      "prediction_target_l1": 1.3287137746810913,
+      "predictor_metadata": {
+        "action_token_dtype": "torch.float32",
+        "action_token_shape": [
+          1,
+          24,
+          2048
+        ],
+        "available": true,
+        "backward_calls": 0,
+        "condition_tensor": "qwen_special_action_token_hidden_states",
+        "context_temporal_positions": 3,
+        "encoded_temporal_positions": 4,
+        "external_numeric_candidates_supported": false,
+        "inference_default": false,
+        "l1_distance": 1.3287137746810913,
+        "numeric_action_chunk_consumed": false,
+        "optimizer_steps": 0,
+        "path_semantic": "official_training_style_offline_diagnostic",
+        "tokens_per_temporal_position": 256
+      },
+      "predictor_variance": 5.314159870147705,
+      "target_dtype": "torch.bfloat16",
+      "target_future_latents_shape": [
+        1,
+        768,
+        2048
+      ]
+    },
+    {
+      "current_latent_dtype": "torch.bfloat16",
+      "current_latent_shape": [
+        1,
+        768,
+        2048
+      ],
+      "episode_id": "libero_spatial-task0-seed1000",
+      "frame_start": 39,
+      "group": "success",
+      "predicted_dtype": "torch.float32",
+      "predicted_future_latents_shape": [
+        1,
+        768,
+        2048
+      ],
+      "prediction_target_cosine_distance": 0.24949485063552856,
+      "prediction_target_l1": 1.349403738975525,
+      "predictor_metadata": {
+        "action_token_dtype": "torch.float32",
+        "action_token_shape": [
+          1,
+          24,
+          2048
+        ],
+        "available": true,
+        "backward_calls": 0,
+        "condition_tensor": "qwen_special_action_token_hidden_states",
+        "context_temporal_positions": 3,
+        "encoded_temporal_positions": 4,
+        "external_numeric_candidates_supported": false,
+        "inference_default": false,
+        "l1_distance": 1.349403738975525,
+        "numeric_action_chunk_consumed": false,
+        "optimizer_steps": 0,
+        "path_semantic": "official_training_style_offline_diagnostic",
+        "tokens_per_temporal_position": 256
+      },
+      "predictor_variance": 5.314977645874023,
+      "target_dtype": "torch.bfloat16",
+      "target_future_latents_shape": [
+        1,
+        768,
+        2048
+      ]
+    },
+    {
+      "current_latent_dtype": "torch.bfloat16",
+      "current_latent_shape": [
+        1,
+        768,
+        2048
+      ],
+      "episode_id": "libero_spatial-task0-seed1000",
+      "frame_start": 43,
+      "group": "success",
+      "predicted_dtype": "torch.float32",
+      "predicted_future_latents_shape": [
+        1,
+        768,
+        2048
+      ],
+      "prediction_target_cosine_distance": 0.24907052516937256,
+      "prediction_target_l1": 1.3587669134140015,
+      "predictor_metadata": {
+        "action_token_dtype": "torch.float32",
+        "action_token_shape": [
+          1,
+          24,
+          2048
+        ],
+        "available": true,
+        "backward_calls": 0,
+        "condition_tensor": "qwen_special_action_token_hidden_states",
+        "context_temporal_positions": 3,
+        "encoded_temporal_positions": 4,
+        "external_numeric_candidates_supported": false,
+        "inference_default": false,
+        "l1_distance": 1.3587669134140015,
+        "numeric_action_chunk_consumed": false,
+        "optimizer_steps": 0,
+        "path_semantic": "official_training_style_offline_diagnostic",
+        "tokens_per_temporal_position": 256
+      },
+      "predictor_variance": 5.4129791259765625,
+      "target_dtype": "torch.bfloat16",
+      "target_future_latents_shape": [
+        1,
+        768,
+        2048
+      ]
+    },
+    {
+      "current_latent_dtype": "torch.bfloat16",
+      "current_latent_shape": [
+        1,
+        768,
+        2048
+      ],
+      "episode_id": "libero_spatial-task0-seed1000",
+      "frame_start": 47,
+      "group": "success",
+      "predicted_dtype": "torch.float32",
+      "predicted_future_latents_shape": [
+        1,
+        768,
+        2048
+      ],
+      "prediction_target_cosine_distance": 0.23842954635620117,
+      "prediction_target_l1": 1.3253021240234375,
+      "predictor_metadata": {
+        "action_token_dtype": "torch.float32",
+        "action_token_shape": [
+          1,
+          24,
+          2048
+        ],
+        "available": true,
+        "backward_calls": 0,
+        "condition_tensor": "qwen_special_action_token_hidden_states",
+        "context_temporal_positions": 3,
+        "encoded_temporal_positions": 4,
+        "external_numeric_candidates_supported": false,
+        "inference_default": false,
+        "l1_distance": 1.3253021240234375,
+        "numeric_action_chunk_consumed": false,
+        "optimizer_steps": 0,
+        "path_semantic": "official_training_style_offline_diagnostic",
+        "tokens_per_temporal_position": 256
+      },
+      "predictor_variance": 5.34813928604126,
+      "target_dtype": "torch.bfloat16",
+      "target_future_latents_shape": [
+        1,
+        768,
+        2048
+      ]
+    },
+    {
+      "current_latent_dtype": "torch.bfloat16",
+      "current_latent_shape": [
+        1,
+        768,
+        2048
+      ],
+      "episode_id": "libero_spatial-task0-seed1000",
+      "frame_start": 50,
+      "group": "success",
+      "predicted_dtype": "torch.float32",
+      "predicted_future_latents_shape": [
+        1,
+        768,
+        2048
+      ],
+      "prediction_target_cosine_distance": 0.24568092823028564,
+      "prediction_target_l1": 1.335759162902832,
+      "predictor_metadata": {
+        "action_token_dtype": "torch.float32",
+        "action_token_shape": [
+          1,
+          24,
+          2048
+        ],
+        "available": true,
+        "backward_calls": 0,
+        "condition_tensor": "qwen_special_action_token_hidden_states",
+        "context_temporal_positions": 3,
+        "encoded_temporal_positions": 4,
+        "external_numeric_candidates_supported": false,
+        "inference_default": false,
+        "l1_distance": 1.335759162902832,
+        "numeric_action_chunk_consumed": false,
+        "optimizer_steps": 0,
+        "path_semantic": "official_training_style_offline_diagnostic",
+        "tokens_per_temporal_position": 256
+      },
+      "predictor_variance": 5.293910980224609,
+      "target_dtype": "torch.bfloat16",
+      "target_future_latents_shape": [
+        1,
+        768,
+        2048
+      ]
+    },
+    {
+      "current_latent_dtype": "torch.bfloat16",
+      "current_latent_shape": [
+        1,
+        768,
+        2048
+      ],
+      "episode_id": "libero_spatial-task0-seed1000",
+      "frame_start": 54,
+      "group": "success",
+      "predicted_dtype": "torch.float32",
+      "predicted_future_latents_shape": [
+        1,
+        768,
+        2048
+      ],
+      "prediction_target_cosine_distance": 0.2519475221633911,
+      "prediction_target_l1": 1.357322096824646,
+      "predictor_metadata": {
+        "action_token_dtype": "torch.float32",
+        "action_token_shape": [
+          1,
+          24,
+          2048
+        ],
+        "available": true,
+        "backward_calls": 0,
+        "condition_tensor": "qwen_special_action_token_hidden_states",
+        "context_temporal_positions": 3,
+        "encoded_temporal_positions": 4,
+        "external_numeric_candidates_supported": false,
+        "inference_default": false,
+        "l1_distance": 1.357322096824646,
+        "numeric_action_chunk_consumed": false,
+        "optimizer_steps": 0,
+        "path_semantic": "official_training_style_offline_diagnostic",
+        "tokens_per_temporal_position": 256
+      },
+      "predictor_variance": 5.263406753540039,
+      "target_dtype": "torch.bfloat16",
+      "target_future_latents_shape": [
+        1,
+        768,
+        2048
+      ]
+    },
+    {
+      "current_latent_dtype": "torch.bfloat16",
+      "current_latent_shape": [
+        1,
+        768,
+        2048
+      ],
+      "episode_id": "libero_spatial-task0-seed1000",
+      "frame_start": 58,
+      "group": "success",
+      "predicted_dtype": "torch.float32",
+      "predicted_future_latents_shape": [
+        1,
+        768,
+        2048
+      ],
+      "prediction_target_cosine_distance": 0.24548113346099854,
+      "prediction_target_l1": 1.3307374715805054,
+      "predictor_metadata": {
+        "action_token_dtype": "torch.float32",
+        "action_token_shape": [
+          1,
+          24,
+          2048
+        ],
+        "available": true,
+        "backward_calls": 0,
+        "condition_tensor": "qwen_special_action_token_hidden_states",
+        "context_temporal_positions": 3,
+        "encoded_temporal_positions": 4,
+        "external_numeric_candidates_supported": false,
+        "inference_default": false,
+        "l1_distance": 1.3307374715805054,
+        "numeric_action_chunk_consumed": false,
+        "optimizer_steps": 0,
+        "path_semantic": "official_training_style_offline_diagnostic",
+        "tokens_per_temporal_position": 256
+      },
+      "predictor_variance": 5.337130069732666,
+      "target_dtype": "torch.bfloat16",
+      "target_future_latents_shape": [
+        1,
+        768,
+        2048
+      ]
+    },
+    {
+      "current_latent_dtype": "torch.bfloat16",
+      "current_latent_shape": [
+        1,
+        768,
+        2048
+      ],
+      "episode_id": "libero_spatial-task0-seed1000",
+      "frame_start": 61,
+      "group": "success",
+      "predicted_dtype": "torch.float32",
+      "predicted_future_latents_shape": [
+        1,
+        768,
+        2048
+      ],
+      "prediction_target_cosine_distance": 0.24441438913345337,
+      "prediction_target_l1": 1.3233389854431152,
+      "predictor_metadata": {
+        "action_token_dtype": "torch.float32",
+        "action_token_shape": [
+          1,
+          24,
+          2048
+        ],
+        "available": true,
+        "backward_calls": 0,
+        "condition_tensor": "qwen_special_action_token_hidden_states",
+        "context_temporal_positions": 3,
+        "encoded_temporal_positions": 4,
+        "external_numeric_candidates_supported": false,
+        "inference_default": false,
+        "l1_distance": 1.3233389854431152,
+        "numeric_action_chunk_consumed": false,
+        "optimizer_steps": 0,
+        "path_semantic": "official_training_style_offline_diagnostic",
+        "tokens_per_temporal_position": 256
+      },
+      "predictor_variance": 5.327294826507568,
+      "target_dtype": "torch.bfloat16",
+      "target_future_latents_shape": [
+        1,
+        768,
+        2048
+      ]
+    },
+    {
+      "current_latent_dtype": "torch.bfloat16",
+      "current_latent_shape": [
+        1,
+        768,
+        2048
+      ],
+      "episode_id": "libero_spatial-task0-seed1000",
+      "frame_start": 65,
+      "group": "success",
+      "predicted_dtype": "torch.float32",
+      "predicted_future_latents_shape": [
+        1,
+        768,
+        2048
+      ],
+      "prediction_target_cosine_distance": 0.23909223079681396,
+      "prediction_target_l1": 1.309532880783081,
+      "predictor_metadata": {
+        "action_token_dtype": "torch.float32",
+        "action_token_shape": [
+          1,
+          24,
+          2048
+        ],
+        "available": true,
+        "backward_calls": 0,
+        "condition_tensor": "qwen_special_action_token_hidden_states",
+        "context_temporal_positions": 3,
+        "encoded_temporal_positions": 4,
+        "external_numeric_candidates_supported": false,
+        "inference_default": false,
+        "l1_distance": 1.309532880783081,
+        "numeric_action_chunk_consumed": false,
+        "optimizer_steps": 0,
+        "path_semantic": "official_training_style_offline_diagnostic",
+        "tokens_per_temporal_position": 256
+      },
+      "predictor_variance": 5.312585353851318,
+      "target_dtype": "torch.bfloat16",
+      "target_future_latents_shape": [
+        1,
+        768,
+        2048
+      ]
+    },
+    {
+      "current_latent_dtype": "torch.bfloat16",
+      "current_latent_shape": [
+        1,
+        768,
+        2048
+      ],
+      "episode_id": "libero_spatial-task0-seed1000",
+      "frame_start": 69,
+      "group": "success",
+      "predicted_dtype": "torch.float32",
+      "predicted_future_latents_shape": [
+        1,
+        768,
+        2048
+      ],
+      "prediction_target_cosine_distance": 0.24334394931793213,
+      "prediction_target_l1": 1.3115785121917725,
+      "predictor_metadata": {
+        "action_token_dtype": "torch.float32",
+        "action_token_shape": [
+          1,
+          24,
+          2048
+        ],
+        "available": true,
+        "backward_calls": 0,
+        "condition_tensor": "qwen_special_action_token_hidden_states",
+        "context_temporal_positions": 3,
+        "encoded_temporal_positions": 4,
+        "external_numeric_candidates_supported": false,
+        "inference_default": false,
+        "l1_distance": 1.3115785121917725,
+        "numeric_action_chunk_consumed": false,
+        "optimizer_steps": 0,
+        "path_semantic": "official_training_style_offline_diagnostic",
+        "tokens_per_temporal_position": 256
+      },
+      "predictor_variance": 5.224250316619873,
+      "target_dtype": "torch.bfloat16",
+      "target_future_latents_shape": [
+        1,
+        768,
+        2048
+      ]
+    }
+  ],
+  "schema_version": "latentguard.lg_r0.world_model_interface_audit.v1",
+  "status": "pass",
+  "threshold_selected": false
+}

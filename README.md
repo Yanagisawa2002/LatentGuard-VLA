@@ -98,6 +98,23 @@ The accepted research line covers one ManiSkill PickCube task, one robot/control
 
 Potential extensions include learned-policy proposals, a contract-frozen LangMani adapter, multiple task adapters, broader robot embodiments, and real-robot evaluation. Each requires a new milestone, untouched evidence, and its own compatibility and claim boundary.
 
+## Post-release LG-R0 research snapshot
+
+The frozen PickCube release remains unchanged. A separate LG-R0 route pinned
+LeRobot 0.6 VLA-JEPA and ran a remote, task-0-only 40-episode LIBERO smoke:
+39/40 episodes succeeded, with one preserved `libero_10` horizon exhaustion.
+This is not the official 400-episode benchmark and is not a general VLA or
+safety claim.
+
+LG-R0 is Result B: its temporal V-JEPA predictor executes on real recorded
+windows, but it consumes Qwen action-token hidden states rather than external
+numeric action candidates and exposes no native risk/success score. The four
+accepted recorded trajectories all succeeded, so a future failure head remains
+data-blocked. No training, checkpoint generation, threshold fitting, or
+intervention occurred. See the
+[LIBERO baseline report](docs/lg_r0_libero_baseline_report.md) and
+[world-model interface report](docs/lg_r0_world_model_interface_report.md).
+
 The PickCube release remains frozen. M6A and M6A.1 completed only the LangMani contract, bridge scaffolding, compatibility inventory, and readiness checks. A real LangMani integration probe and performance experiment have **not** executed, and M6B has not started. See the [LangMani compatibility matrix](docs/integrations/langmani/compatibility-matrix.md) for the source-backed status and unresolved gates.
 
 ## Development and remote execution policy

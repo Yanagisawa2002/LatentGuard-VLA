@@ -1,0 +1,121 @@
+{
+  "backward_calls": 0,
+  "dataset_root_locator": "LG_R0_OUTPUT_ROOT/recordings-1784796443",
+  "episodes": [
+    {
+      "action_mask_semantic": "not_emitted_by_native_inference",
+      "checkpoint_revision": "735d9f692981e286ade093b5046627eda876e5d0",
+      "dataset_locator": "dataset_root/libero_spatial-task0-seed1000",
+      "dataset_repo_id": "eval_recording",
+      "elapsed_seconds": 12.078056454658508,
+      "episode_id": "libero_spatial-task0-seed1000",
+      "frame_count": 77,
+      "info_json": {
+        "bytes": 3669,
+        "sha256": "9be5e316278d5dcd2b9b4c24798ef1d5d19beceded832f26b694ab6272cf1d42"
+      },
+      "instruction": "pick up the black bowl between the plate and the ramekin and place it on the plate",
+      "policy_sampling_seed": 2000,
+      "processor_revision": "735d9f692981e286ade093b5046627eda876e5d0",
+      "seed": 1000,
+      "success": true,
+      "suite": "libero_spatial",
+      "task": "pick_up_the_black_bowl_between_the_plate_and_the_ramekin_and_place_it_on_the_plate",
+      "task_id": 0,
+      "tasks_parquet": {
+        "bytes": 2398,
+        "sha256": "1372ec9345c3989d621f071bcc4791cba1a5633d522cab6ac466a0fffe652236"
+      },
+      "termination": "success"
+    },
+    {
+      "action_mask_semantic": "not_emitted_by_native_inference",
+      "checkpoint_revision": "735d9f692981e286ade093b5046627eda876e5d0",
+      "dataset_locator": "dataset_root/libero_spatial-task0-seed1001",
+      "dataset_repo_id": "eval_recording",
+      "elapsed_seconds": 11.912685696035624,
+      "episode_id": "libero_spatial-task0-seed1001",
+      "frame_count": 74,
+      "info_json": {
+        "bytes": 3669,
+        "sha256": "247e3b68543262a1e8e45b7f75ad624636c5498fda446974468dcb35fa46229d"
+      },
+      "instruction": "pick up the black bowl between the plate and the ramekin and place it on the plate",
+      "policy_sampling_seed": 2001,
+      "processor_revision": "735d9f692981e286ade093b5046627eda876e5d0",
+      "seed": 1001,
+      "success": true,
+      "suite": "libero_spatial",
+      "task": "pick_up_the_black_bowl_between_the_plate_and_the_ramekin_and_place_it_on_the_plate",
+      "task_id": 0,
+      "tasks_parquet": {
+        "bytes": 2398,
+        "sha256": "1372ec9345c3989d621f071bcc4791cba1a5633d522cab6ac466a0fffe652236"
+      },
+      "termination": "success"
+    },
+    {
+      "action_mask_semantic": "not_emitted_by_native_inference",
+      "checkpoint_revision": "735d9f692981e286ade093b5046627eda876e5d0",
+      "dataset_locator": "dataset_root/libero_object-task0-seed1000",
+      "dataset_repo_id": "eval_recording",
+      "elapsed_seconds": 16.11162707582116,
+      "episode_id": "libero_object-task0-seed1000",
+      "frame_count": 135,
+      "info_json": {
+        "bytes": 3670,
+        "sha256": "2b13c9cf09fab7613d1ce892b5fa99294748aea6c2f87d6854da21b87dd651ac"
+      },
+      "instruction": "pick up the alphabet soup and place it in the basket",
+      "policy_sampling_seed": 102000,
+      "processor_revision": "735d9f692981e286ade093b5046627eda876e5d0",
+      "seed": 1000,
+      "success": true,
+      "suite": "libero_object",
+      "task": "pick_up_the_alphabet_soup_and_place_it_in_the_basket",
+      "task_id": 0,
+      "tasks_parquet": {
+        "bytes": 2250,
+        "sha256": "dd74cffe5027942420704cd88e9f5edf2b8b1b878b2e4bdb05ea44dd5ae7ca38"
+      },
+      "termination": "success"
+    },
+    {
+      "action_mask_semantic": "not_emitted_by_native_inference",
+      "checkpoint_revision": "735d9f692981e286ade093b5046627eda876e5d0",
+      "dataset_locator": "dataset_root/libero_object-task0-seed1001",
+      "dataset_repo_id": "eval_recording",
+      "elapsed_seconds": 16.442040614783764,
+      "episode_id": "libero_object-task0-seed1001",
+      "frame_count": 135,
+      "info_json": {
+        "bytes": 3670,
+        "sha256": "2b13c9cf09fab7613d1ce892b5fa99294748aea6c2f87d6854da21b87dd651ac"
+      },
+      "instruction": "pick up the alphabet soup and place it in the basket",
+      "policy_sampling_seed": 102001,
+      "processor_revision": "735d9f692981e286ade093b5046627eda876e5d0",
+      "seed": 1001,
+      "success": true,
+      "suite": "libero_object",
+      "task": "pick_up_the_alphabet_soup_and_place_it_in_the_basket",
+      "task_id": 0,
+      "tasks_parquet": {
+        "bytes": 2250,
+        "sha256": "dd74cffe5027942420704cd88e9f5edf2b8b1b878b2e4bdb05ea44dd5ae7ca38"
+      },
+      "termination": "success"
+    }
+  ],
+  "errors": [],
+  "execution_site": "remote",
+  "format": "LeRobotDataset-v3",
+  "libero_asset_snapshot_name": "libero-assets-0b3ea86",
+  "official_lerobot_dataset_writer": true,
+  "optimizer_steps": 0,
+  "processor_manifest": "processor_serialization_manifest.json",
+  "schema_version": "latentguard.lg_r0.rollout_dataset_manifest.v1",
+  "status": "pass",
+  "upload_to_hub": false,
+  "upstream_recording_adapter": "LG-R0 supplies policy-ready flattened state because the LeRobot 0.6 generic raw-frame builder does not traverse LIBERO nested robot_state"
+}

@@ -87,3 +87,45 @@ packages are installed only in the dedicated Linux environment. LangMani paths
 and repositories are excluded from source and Git checks. SSH is limited to
 the exact-revision LG-R0 execution lifecycle; RoboLab, Isaac, ROS 2, LangMani,
 optimizer steps, backward passes, and any form of training remain prohibited.
+
+## Completed outcome
+
+LG-R0 completed as **Result B**. The remote single episode passed and the
+frozen 40-episode smoke completed 39/40 episodes successfully. The preserved
+negative episode was `libero_10` task 0, seed 1007, which exhausted the
+520-step horizon with finite bounded actions. The result is not equivalent to
+the official 400-episode LIBERO benchmark.
+
+Four LeRobotDataset v3 episodes spanning `libero_spatial` and
+`libero_object` were recorded and fully reloaded. All 421 frames passed
+iteration and finite-action checks. All four trajectories succeeded, leaving
+a 20-sample shortfall for the requested failure-side world-model audit.
+
+The dynamic world-model audit exposed real current, predicted, and target
+V-JEPA tensors, but the predictor consumes Qwen action-token hidden states
+rather than external numeric action chunks. It exposes no native
+risk/success/progress/reconstruction score and no multi-candidate API. The
+milestone therefore cannot satisfy Result A.
+
+No training, checkpoint generation, classifier fitting, threshold selection,
+or intervention occurred. Detailed results are in
+`docs/lg_r0_libero_baseline_report.md`,
+`docs/lg_r0_world_model_interface_report.md`, and
+`artifacts/lg_r0/remote_execution_audit.json`.
+
+## Remote revision timeline
+
+- `fc6a1a2ebef2caaca5779f9b663edfa223d5cec1`: environment and initial static
+  gates; first simulator gate stopped at interactive hf-libero initialization.
+- `434618b70585c455122af7a753756ed2946e2c72`: non-interactive LIBERO fix;
+  single and 40-episode rollout passed, then recording stopped on the obsolete
+  `tasks.jsonl` expectation.
+- `9f6547d2e74702966a8c4d270dc200961ca287cd`: LeRobot v3
+  `tasks.parquet` binding; recording, reload, world-model audit, candidate
+  probe, and final static gates passed after completing the FFmpeg runtime.
+- `9e9e7276685e0e4052ee307f9e379d1278f904f1`: public manifest sanitization;
+  compact evidence regenerated without rerunning the model or simulator.
+
+Every revision was pushed before its remote use. Because the server's GitHub
+HTTPS route timed out, later revisions were transferred as SHA256-verified Git
+bundles and imported through `git fetch` plus a fast-forward merge.

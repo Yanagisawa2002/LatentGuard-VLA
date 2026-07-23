@@ -37,17 +37,37 @@ UV_PROJECT_ENVIRONMENT="$LG_R0_ENV" \
   uv sync --frozen --no-dev --extra vla_jepa --extra libero
 ```
 
-The resolver's editable project entry was removed and replaced by an ordinary
-wheel built from the exact detached source commit:
+The remote runtime uses the ordinary PyPI LeRobot 0.6.0 wheel. Its archive was
+downloaded once, inspected to contain the VLA-JEPA implementation, and
+content-bound before installation:
 
 ```text
 lerobot-0.6.0-py3-none-any.whl
-sha256=865257b6e654f6183cc638ac65688944f7a6950965f35944f41e7996c4c244d4
+sha256=b38a564fbc441d98380576863bf68635dde5fc2c42ddc2a39d0486640dc9e9a8
 ```
 
 `environment-manifest.json` records every installed distribution. The runtime
 validator additionally rejects an editable LeRobot install, missing local
 snapshots, unavailable CUDA, and revision/version drift.
+
+The server could not clone GitHub reliably, so the installed wheel itself
+does not provide a cryptographic VCS binding to
+`30da8e687a6dfc617fcd94afc367ac7071c376ce`. That commit remains the reviewed
+source identity, while the exact wheel hash above is the remote runtime
+identity. This limitation is preserved rather than describing the wheel as a
+verified source checkout.
+
+The separately downloaded PyTorch wheel is:
+
+```text
+torch-2.11.0+cu128-cp312-cp312-manylinux_2_28_x86_64.whl
+sha256=d252cf975fb18c94a85336323ad425f473df56dab35a44b00399bd70c7a3b997
+```
+
+LeRobotDataset video reload also requires a complete FFmpeg shared-library
+runtime. The accepted remote run used Ubuntu's FFmpeg
+`4.4.2-0ubuntu0.22.04.1` and TorchCodec `0.11.1+cpu`; a real 77-frame MP4 was
+decoded before the four-dataset reload gate was repeated.
 
 ## Snapshot binding
 
@@ -92,3 +112,20 @@ python scripts/lg_r0_validate_environment.py \
 GPU inference and LIBERO execution run only on the user-authorized remote
 server from an exact pushed LatentGuard commit. The server is not used for
 tracked source edits or training. Local validation remains CPU-only.
+
+## Remote download bootstrap
+
+On the authorized AutoDL image, load the network accelerator once after every
+server boot and before any network download:
+
+```bash
+source /etc/network_turbo
+```
+
+Future package downloads default to an Aliyun mirror. Exact revisions and
+hashes remain mandatory, and the resolved endpoint is recorded in the run
+audit. An alternate endpoint may be used only when the exact artifact is
+unavailable from Aliyun; that exception must be recorded. The completed LG-R0
+run predates this default: model snapshots used `hf-mirror.com`, while the
+system FFmpeg packages came from the server's configured Huawei Cloud Ubuntu
+mirror.

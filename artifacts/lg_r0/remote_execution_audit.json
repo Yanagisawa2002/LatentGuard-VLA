@@ -1,18 +1,333 @@
 {
-  "schema_version": "latentguard.lg_r0.remote_execution_audit.v1",
-  "status": "pending",
-  "ssh_used": true,
-  "remote_server_used": false,
-  "remote_training": false,
-  "remote_simulator": false,
-  "execution_environment": null,
-  "authentication_probe": {
-    "method": "existing_public_key_only",
-    "result": "permission_denied",
-    "state_change": false
+  "branch": "codex/lg-r0-vlajepa-libero",
+  "candidate_probe": {
+    "backward_calls": 0,
+    "native_external_candidate_api": false,
+    "native_multi_candidate_sampling": false,
+    "optimizer_steps": 0,
+    "reason": "VLA-JEPA 0.6 conditions its video predictor on Qwen special-token representations, not externally supplied numeric action chunks",
+    "schema_version": "latentguard.lg_r0.real_candidate_probe.v1",
+    "source_fact": "the predictor receives Qwen special action-token hidden states; the official API does not accept external numeric action chunks",
+    "status": "REAL_CANDIDATE_PROBE_NOT_AVAILABLE",
+    "synthetic_candidates_used": false
   },
-  "explanation": "Remote execution awaits exact-revision synchronization after the newly started instance authorizes the existing LatentGuard public key.",
-  "tracked_source_modified_remotely": false,
-  "optimizer_steps": 0,
-  "backward_calls": 0
+  "environment": {
+    "actual_apt_endpoint": "repo.huaweicloud.com",
+    "actual_model_download_endpoint": "hf-mirror.com",
+    "ffmpeg": "ffmpeg version 4.4.2-0ubuntu0.22.04.1 Copyright (c) 2000-2021 the FFmpeg developers",
+    "future_download_mirror_policy": "aliyun_default",
+    "gpu": "NVIDIA GeForce RTX 5090",
+    "gpu_memory_mib": 32607,
+    "hf_libero": "0.1.4",
+    "lerobot": "0.6.0",
+    "mujoco": "3.8.1",
+    "network_turbo_checked": true,
+    "nvidia_driver": "580.76.05",
+    "python": "3.12.3",
+    "torch": "2.11.0+cu128",
+    "torch_cuda": "12.8",
+    "torchcodec": "0.11.1"
+  },
+  "execution_site": "remote_autodl",
+  "final_head": "9e9e7276685e0e4052ee307f9e379d1278f904f1",
+  "finish_utc": "2026-07-23T09:06:24Z",
+  "gates": {
+    "environment": "pass",
+    "external_asset_identity": "pass",
+    "libero_40_episode_merge": "pass",
+    "model_structure": "pass",
+    "processor_serialization": "pass",
+    "real_candidate_probe": "REAL_CANDIDATE_PROBE_NOT_AVAILABLE",
+    "rollout_dataset_reload": "pass",
+    "rollout_recording": "pass",
+    "single_episode": "pass",
+    "static_inference": "pass",
+    "world_model_dynamic_audit": "pass"
+  },
+  "hostname_redacted": true,
+  "libero": {
+    "development_40_episode": {
+      "action_contract_errors": 0,
+      "completed_episodes": 40,
+      "environment_errors": 0,
+      "expected_episodes": 40,
+      "mean_episode_length": 157.175,
+      "nonfinite_action_episodes": 0,
+      "success_rate": 0.975,
+      "successes": 39,
+      "timeouts": 1,
+      "wilson_95": [
+        0.8711863103652591,
+        0.9955731684973186
+      ]
+    },
+    "official_400_episode_equivalent": false,
+    "result_scope": "remote_40_episode_smoke",
+    "single_episode": {
+      "action_contract_errors": 0,
+      "completed_episodes": 1,
+      "environment_errors": 0,
+      "expected_episodes": 1,
+      "mean_episode_length": 77.0,
+      "nonfinite_action_episodes": 0,
+      "success_rate": 1.0,
+      "successes": 1,
+      "timeouts": 0,
+      "wilson_95": [
+        0.20654931437723745,
+        1.0
+      ]
+    },
+    "suite_results": {
+      "libero_10": {
+        "episodes": 10,
+        "mean_episode_length": 288.0,
+        "success_rate": 0.9,
+        "successes": 9,
+        "wilson_95": [
+          0.5958499732047615,
+          0.9821237869049271
+        ]
+      },
+      "libero_goal": {
+        "episodes": 10,
+        "mean_episode_length": 117.9,
+        "success_rate": 1.0,
+        "successes": 10,
+        "wilson_95": [
+          0.7224672001371107,
+          0.9999999999999999
+        ]
+      },
+      "libero_object": {
+        "episodes": 10,
+        "mean_episode_length": 145.7,
+        "success_rate": 1.0,
+        "successes": 10,
+        "wilson_95": [
+          0.7224672001371107,
+          0.9999999999999999
+        ]
+      },
+      "libero_spatial": {
+        "episodes": 10,
+        "mean_episode_length": 77.1,
+        "success_rate": 1.0,
+        "successes": 10,
+        "wilson_95": [
+          0.7224672001371107,
+          0.9999999999999999
+        ]
+      }
+    }
+  },
+  "model": {
+    "config": {
+      "action_dimension": 7,
+      "action_horizon": 7,
+      "executed_action_steps": 7,
+      "qwen_binding": {
+        "id": "Qwen/Qwen3-VL-2B-Instruct",
+        "revision": "89644892e4d85e24eaac8bacfd4f463576704203"
+      },
+      "state_dimension": 8,
+      "torch_dtype": "bfloat16",
+      "video_frames": 8,
+      "vjepa_binding": {
+        "id": "facebook/vjepa2-vitl-fpc64-256",
+        "revision": "b3c1679b7c34d3255ef3547f27c7b226aefab26f"
+      },
+      "world_model_enabled": true
+    },
+    "cuda_memory_after_load": {
+      "allocated_bytes": 6181191680,
+      "available": true,
+      "peak_allocated_bytes": 6181191680,
+      "peak_reserved_bytes": 6203375616,
+      "reserved_bytes": 6203375616
+    },
+    "parameters_by_top_level_module": {
+      "model.action_model": 155182343,
+      "model.qwen": 2127532032,
+      "model.video_encoder": 325971328,
+      "model.video_predictor": 161647616
+    },
+    "parameters_total": 2770333319
+  },
+  "preserved_failed_attempts": [
+    "initial single rollout: interactive hf-libero config import",
+    "initial recording manifest: obsolete tasks.jsonl expectation",
+    "initial dataset reload: incomplete FFmpeg shared-library runtime"
+  ],
+  "preserved_negative_evidence": [
+    "one libero_10 episode exhausted the frozen 520-step horizon",
+    "recorded audit rollouts contain zero failure trajectories, so failure-window statistics are unavailable",
+    "official VLA-JEPA has no external numeric candidate-action conditioning API",
+    "official VLA-JEPA exposes no native risk, success, progress, or reconstruction scalar"
+  ],
+  "recorded_rollouts": {
+    "episodes": 4,
+    "format": "LeRobotDataset-v3",
+    "raw_data_retained_remote_only": true,
+    "reload_dataset_count": 4,
+    "reload_status": "pass",
+    "successful_episodes": 4,
+    "total_frames": 421
+  },
+  "remote_tree_clean": true,
+  "revision_timeline": [
+    {
+      "outcome": "single rollout blocked before model rollout by interactive hf-libero initialization",
+      "pushed_before_execution": true,
+      "revision": "fc6a1a2ebef2caaca5779f9b663edfa223d5cec1",
+      "scope": "environment, external assets, initial model/static gates"
+    },
+    {
+      "outcome": "single 1/1; merged LIBERO development smoke 39/40; recording rejected obsolete tasks.jsonl expectation",
+      "pushed_before_execution": true,
+      "revision": "434618b70585c455122af7a753756ed2946e2c72",
+      "scope": "single rollout, four independent 10-episode suite shards, deterministic merge"
+    },
+    {
+      "outcome": "all applicable gates passed after FFmpeg runtime completion",
+      "pushed_before_execution": true,
+      "revision": "9f6547d2e74702966a8c4d270dc200961ca287cd",
+      "scope": "LeRobot v3 metadata binding, four recordings, reload, world-model audit, candidate probe, final static gates"
+    },
+    {
+      "outcome": "compact evidence regenerated from accepted raw manifest; no model or simulator rerun",
+      "pushed_before_execution": true,
+      "revision": "9e9e7276685e0e4052ee307f9e379d1278f904f1",
+      "scope": "public rollout-manifest path sanitization"
+    }
+  ],
+  "run_id": "20260723T055958Z_lg-r0-vlajepa-libero_fc6a1a2_seed1000",
+  "schema_version": "latentguard.lg_r0.remote_execution_audit.v1",
+  "scope_exclusions": [
+    "LangMani",
+    "RoboLab",
+    "ROS2",
+    "PickCube final seeds 900000..900099"
+  ],
+  "server_left_online": true,
+  "server_shutdown_requested": false,
+  "start_utc": "2026-07-23T05:59:58Z",
+  "static_inference": {
+    "cuda_memory": {
+      "allocated_bytes": 6197690880,
+      "available": true,
+      "peak_allocated_bytes": 6402897408,
+      "peak_reserved_bytes": 6503268352,
+      "reserved_bytes": 6503268352
+    },
+    "gates": {
+      "batched_inference": "pass",
+      "fixed_seed_reproduction": "pass",
+      "model_load": "pass",
+      "processor_roundtrip": "pass",
+      "single_inference": "pass"
+    },
+    "results": [
+      {
+        "action_mask": null,
+        "batch_size": 1,
+        "finite": true,
+        "native_tensor_returned_unmodified": true,
+        "sha256_float32": "5ddd082c512aad5f583b96107765e162a1a3544de382619de2049abcf60f5c99",
+        "shape": [
+          1,
+          7,
+          7
+        ]
+      },
+      {
+        "action_mask": null,
+        "batch_size": 2,
+        "finite": true,
+        "native_tensor_returned_unmodified": true,
+        "sha256_float32": "8301766ebf93890db52263271100d464682faa846f259d4e71c05aa6382b1ec0",
+        "shape": [
+          2,
+          7,
+          7
+        ]
+      }
+    ],
+    "timing": {
+      "model_total_seconds": 0.5568775311112404,
+      "processor_total_seconds": 0.014793936163187027
+    }
+  },
+  "status": "pass",
+  "sync": {
+    "bundle_sha256_by_revision": {
+      "434618b70585c455122af7a753756ed2946e2c72": "8a7a8164fb434ede8d0004e3b98534f80e98da68e54bf07a0a423a523eca3d86",
+      "9e9e7276685e0e4052ee307f9e379d1278f904f1": "e351cad8e453e2e234f623a5fb468c05b7d8fc24fb5268836af805d72f0db508",
+      "9f6547d2e74702966a8c4d270dc200961ca287cd": "ef35079556998ef7cfbd4afbb4e12af1a58dd1e3eb50e9920ab2eeeb649ba3b5"
+    },
+    "fallback_transport": "git_bundle_fetch_and_fast_forward",
+    "local_origin_push_confirmed_for_all_revisions": true,
+    "remote_github_https_fetch": "timed_out"
+  },
+  "training": {
+    "backward_calls": 0,
+    "checkpoint_generated": false,
+    "classifier_fit": false,
+    "optimizer_steps": 0,
+    "performed": false,
+    "threshold_selected": false
+  },
+  "world_model": {
+    "action_condition": "qwen_special_action_token_hidden_states",
+    "available_samples": {
+      "failure": 0,
+      "success": 20
+    },
+    "descriptive_statistics_only": {
+      "failure": {
+        "prediction_target_cosine_distance_mean": null,
+        "prediction_target_l1_mean": null,
+        "predictor_variance_mean": null,
+        "samples": 0
+      },
+      "success": {
+        "prediction_target_cosine_distance_mean": 0.2425866097211838,
+        "prediction_target_l1_mean": 1.3251728653907775,
+        "predictor_variance_mean": 5.375861597061157,
+        "samples": 20
+      }
+    },
+    "external_numeric_candidate_actions_supported": false,
+    "first_tensor_shapes": {
+      "current": [
+        1,
+        768,
+        2048
+      ],
+      "predicted": [
+        1,
+        768,
+        2048
+      ],
+      "target": [
+        1,
+        768,
+        2048
+      ]
+    },
+    "native_scalar_scores": {
+      "progress": false,
+      "reconstruction": false,
+      "risk": false,
+      "success": false,
+      "training_l1_loss": true
+    },
+    "numeric_action_chunk_consumed_by_predictor": false,
+    "path_semantic": "official_training_style_offline_diagnostic",
+    "sample_shortfall": {
+      "failure": 20,
+      "success": 0
+    },
+    "status": "pass"
+  }
 }
