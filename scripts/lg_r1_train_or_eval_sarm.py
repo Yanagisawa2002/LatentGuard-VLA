@@ -65,6 +65,16 @@ def _clip_output_tensor(value: Any) -> Any:
     return value
 
 
+def _causal_frame_deltas(n_obs_steps: int, frame_gap: int) -> list[int]:
+    """Return exactly ``n_obs_steps`` past-to-current frame offsets."""
+
+    if n_obs_steps < 1:
+        raise ValueError("n_obs_steps must be positive")
+    if frame_gap < 1:
+        raise ValueError("frame_gap must be positive")
+    return [frame_gap * offset for offset in range(-(n_obs_steps - 1), 1)]
+
+
 def _build_clip_cache(
     rows: list[dict[str, Any]],
     *,
@@ -104,8 +114,10 @@ def _build_clip_cache(
     model.eval()
     before = tensor_digest(model)
     cache = EpisodeDatasetCache(runtime)
-    half = int(config["n_obs_steps"]) // 2
-    deltas = [int(config["frame_gap"]) * offset for offset in range(-half, half + 1)]
+    deltas = _causal_frame_deltas(
+        int(config["n_obs_steps"]),
+        int(config["frame_gap"]),
+    )
     video_features: list[np.ndarray] = []
     state_features: list[np.ndarray] = []
     text_features: list[np.ndarray] = []

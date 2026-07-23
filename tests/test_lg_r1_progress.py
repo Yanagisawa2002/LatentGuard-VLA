@@ -469,6 +469,29 @@ def test_rollout_affordance_state_skips_unsupported_native_objects() -> None:
     )
 
 
+def test_sarm_frame_context_is_exactly_causal() -> None:
+    scripts = ROOT / "scripts"
+    sys.path.insert(0, str(scripts))
+    try:
+        module = importlib.import_module("lg_r1_train_or_eval_sarm")
+    finally:
+        sys.path.remove(str(scripts))
+    assert module._causal_frame_deltas(8, 7) == [
+        -49,
+        -42,
+        -35,
+        -28,
+        -21,
+        -14,
+        -7,
+        0,
+    ]
+    with pytest.raises(ValueError, match="n_obs_steps"):
+        module._causal_frame_deltas(0, 7)
+    with pytest.raises(ValueError, match="frame_gap"):
+        module._causal_frame_deltas(8, 0)
+
+
 def test_lg_r1_runtime_has_no_forbidden_integrations_or_corruption() -> None:
     paths = [
         *sorted((ROOT / "src" / "latentguard" / "progress").rglob("*.py")),
