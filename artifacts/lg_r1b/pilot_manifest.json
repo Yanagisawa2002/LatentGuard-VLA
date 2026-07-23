@@ -1,0 +1,3883 @@
+{
+  "action_contract_errors": 0,
+  "action_corruption_used": false,
+  "checkpoint_identity_completeness": 1.0,
+  "environment_infrastructure_errors": 0,
+  "episodes": [
+    {
+      "action_is_pad_semantic": "false_for_every_executed_step",
+      "action_mask_semantic": "not_emitted_by_native_inference",
+      "checkpoint_revision": "735d9f692981e286ade093b5046627eda876e5d0",
+      "dataset_locator": "dataset_root/libero_10-task2-seed3000",
+      "elapsed_seconds": 19.06177133321762,
+      "episode_horizon": 520,
+      "episode_id": "libero_10-task2-seed3000",
+      "frame_count": 234,
+      "instruction": "turn on the stove and put the moka pot on it",
+      "metadata_identities": {
+        "episode_parquet_files": [
+          {
+            "bytes": 66421,
+            "relative_path": "meta/episodes/chunk-000/file-000.parquet",
+            "sha256": "950536227f1944106336aa2dbd387380d222f3a7829cf3daa71a355f5f435365"
+          }
+        ],
+        "info_json": {
+          "bytes": 3670,
+          "sha256": "b29c698b70c220e3cf14933a29816c025c219a50d2fb3122c3d684147d42cee0"
+        },
+        "tasks_parquet": {
+          "bytes": 2208,
+          "sha256": "67b237cc1617c4829d1d77e516e533b128fa6abcb2f1c7e8a68abdb7b5c47878"
+        }
+      },
+      "phase": "primary_pilot",
+      "policy_backward_calls": 0,
+      "policy_config_sha256": "c716d30311fd98d927154b5f49a675579091065686b8cccf5e463a19c2a8d393",
+      "policy_optimizer_steps": 0,
+      "policy_queries": 34,
+      "policy_sampling_seed": 423000,
+      "processor_revision": "735d9f692981e286ade093b5046627eda876e5d0",
+      "reload_validation": {
+        "completeness": 1.0,
+        "frames_expected": 234,
+        "frames_reloaded": 234,
+        "status": "pass"
+      },
+      "seed": 3000,
+      "sidecar_locator": "sidecar_root/libero_10-task2-seed3000.jsonl",
+      "success": true,
+      "suite": "libero_10",
+      "task_id": 2,
+      "task_name": "KITCHEN_SCENE3_turn_on_the_stove_and_put_the_moka_pot_on_it",
+      "termination_reason": "success"
+    },
+    {
+      "action_is_pad_semantic": "false_for_every_executed_step",
+      "action_mask_semantic": "not_emitted_by_native_inference",
+      "checkpoint_revision": "735d9f692981e286ade093b5046627eda876e5d0",
+      "dataset_locator": "dataset_root/libero_10-task2-seed3001",
+      "elapsed_seconds": 18.998772028833628,
+      "episode_horizon": 520,
+      "episode_id": "libero_10-task2-seed3001",
+      "frame_count": 231,
+      "instruction": "turn on the stove and put the moka pot on it",
+      "metadata_identities": {
+        "episode_parquet_files": [
+          {
+            "bytes": 66436,
+            "relative_path": "meta/episodes/chunk-000/file-000.parquet",
+            "sha256": "dd6f3290a7c75b04b71ae6ae00b58d13be48eb9c7b67ec1964fe8eb541b58132"
+          }
+        ],
+        "info_json": {
+          "bytes": 3670,
+          "sha256": "72dd30f0585ec142580dea701cd0905d7fa854256b47a948b6e9d2688f781d7e"
+        },
+        "tasks_parquet": {
+          "bytes": 2208,
+          "sha256": "67b237cc1617c4829d1d77e516e533b128fa6abcb2f1c7e8a68abdb7b5c47878"
+        }
+      },
+      "phase": "primary_pilot",
+      "policy_backward_calls": 0,
+      "policy_config_sha256": "c716d30311fd98d927154b5f49a675579091065686b8cccf5e463a19c2a8d393",
+      "policy_optimizer_steps": 0,
+      "policy_queries": 33,
+      "policy_sampling_seed": 423001,
+      "processor_revision": "735d9f692981e286ade093b5046627eda876e5d0",
+      "reload_validation": {
+        "completeness": 1.0,
+        "frames_expected": 231,
+        "frames_reloaded": 231,
+        "status": "pass"
+      },
+      "seed": 3001,
+      "sidecar_locator": "sidecar_root/libero_10-task2-seed3001.jsonl",
+      "success": true,
+      "suite": "libero_10",
+      "task_id": 2,
+      "task_name": "KITCHEN_SCENE3_turn_on_the_stove_and_put_the_moka_pot_on_it",
+      "termination_reason": "success"
+    },
+    {
+      "action_is_pad_semantic": "false_for_every_executed_step",
+      "action_mask_semantic": "not_emitted_by_native_inference",
+      "checkpoint_revision": "735d9f692981e286ade093b5046627eda876e5d0",
+      "dataset_locator": "dataset_root/libero_10-task2-seed3002",
+      "elapsed_seconds": 20.13872255384922,
+      "episode_horizon": 520,
+      "episode_id": "libero_10-task2-seed3002",
+      "frame_count": 237,
+      "instruction": "turn on the stove and put the moka pot on it",
+      "metadata_identities": {
+        "episode_parquet_files": [
+          {
+            "bytes": 66428,
+            "relative_path": "meta/episodes/chunk-000/file-000.parquet",
+            "sha256": "c25ef93266ec733d548ebb3eed12c29d3230058022b15825943f1cf3d3c185cf"
+          }
+        ],
+        "info_json": {
+          "bytes": 3670,
+          "sha256": "b5dbf303a29d2cd6fa6bf2b993727980c337bcac4698d4387cb0e6217c9a4abf"
+        },
+        "tasks_parquet": {
+          "bytes": 2208,
+          "sha256": "67b237cc1617c4829d1d77e516e533b128fa6abcb2f1c7e8a68abdb7b5c47878"
+        }
+      },
+      "phase": "primary_pilot",
+      "policy_backward_calls": 0,
+      "policy_config_sha256": "c716d30311fd98d927154b5f49a675579091065686b8cccf5e463a19c2a8d393",
+      "policy_optimizer_steps": 0,
+      "policy_queries": 34,
+      "policy_sampling_seed": 423002,
+      "processor_revision": "735d9f692981e286ade093b5046627eda876e5d0",
+      "reload_validation": {
+        "completeness": 1.0,
+        "frames_expected": 237,
+        "frames_reloaded": 237,
+        "status": "pass"
+      },
+      "seed": 3002,
+      "sidecar_locator": "sidecar_root/libero_10-task2-seed3002.jsonl",
+      "success": true,
+      "suite": "libero_10",
+      "task_id": 2,
+      "task_name": "KITCHEN_SCENE3_turn_on_the_stove_and_put_the_moka_pot_on_it",
+      "termination_reason": "success"
+    },
+    {
+      "action_is_pad_semantic": "false_for_every_executed_step",
+      "action_mask_semantic": "not_emitted_by_native_inference",
+      "checkpoint_revision": "735d9f692981e286ade093b5046627eda876e5d0",
+      "dataset_locator": "dataset_root/libero_10-task2-seed3003",
+      "elapsed_seconds": 19.13133594021201,
+      "episode_horizon": 520,
+      "episode_id": "libero_10-task2-seed3003",
+      "frame_count": 242,
+      "instruction": "turn on the stove and put the moka pot on it",
+      "metadata_identities": {
+        "episode_parquet_files": [
+          {
+            "bytes": 66427,
+            "relative_path": "meta/episodes/chunk-000/file-000.parquet",
+            "sha256": "71afc7ee000b76dfe9240d97fe6c6d83b0dc2cf8afe94fa74b597a5631cba9ee"
+          }
+        ],
+        "info_json": {
+          "bytes": 3670,
+          "sha256": "ebe0a4dce956c80563b9726e2d905250b492b0d5736eede9ff18afffa1d0dd1f"
+        },
+        "tasks_parquet": {
+          "bytes": 2208,
+          "sha256": "67b237cc1617c4829d1d77e516e533b128fa6abcb2f1c7e8a68abdb7b5c47878"
+        }
+      },
+      "phase": "primary_pilot",
+      "policy_backward_calls": 0,
+      "policy_config_sha256": "c716d30311fd98d927154b5f49a675579091065686b8cccf5e463a19c2a8d393",
+      "policy_optimizer_steps": 0,
+      "policy_queries": 35,
+      "policy_sampling_seed": 423003,
+      "processor_revision": "735d9f692981e286ade093b5046627eda876e5d0",
+      "reload_validation": {
+        "completeness": 1.0,
+        "frames_expected": 242,
+        "frames_reloaded": 242,
+        "status": "pass"
+      },
+      "seed": 3003,
+      "sidecar_locator": "sidecar_root/libero_10-task2-seed3003.jsonl",
+      "success": true,
+      "suite": "libero_10",
+      "task_id": 2,
+      "task_name": "KITCHEN_SCENE3_turn_on_the_stove_and_put_the_moka_pot_on_it",
+      "termination_reason": "success"
+    },
+    {
+      "action_is_pad_semantic": "false_for_every_executed_step",
+      "action_mask_semantic": "not_emitted_by_native_inference",
+      "checkpoint_revision": "735d9f692981e286ade093b5046627eda876e5d0",
+      "dataset_locator": "dataset_root/libero_10-task2-seed3004",
+      "elapsed_seconds": 18.199699327349663,
+      "episode_horizon": 520,
+      "episode_id": "libero_10-task2-seed3004",
+      "frame_count": 224,
+      "instruction": "turn on the stove and put the moka pot on it",
+      "metadata_identities": {
+        "episode_parquet_files": [
+          {
+            "bytes": 66426,
+            "relative_path": "meta/episodes/chunk-000/file-000.parquet",
+            "sha256": "fa96ab9c95fddbe8aca2472f099a5c7d9f9916a274dc604ce55aa7d6120b9621"
+          }
+        ],
+        "info_json": {
+          "bytes": 3670,
+          "sha256": "efb5d21fb95c56c298e3673445342278aa819642b8190ddba84a9327e0129c2e"
+        },
+        "tasks_parquet": {
+          "bytes": 2208,
+          "sha256": "67b237cc1617c4829d1d77e516e533b128fa6abcb2f1c7e8a68abdb7b5c47878"
+        }
+      },
+      "phase": "primary_pilot",
+      "policy_backward_calls": 0,
+      "policy_config_sha256": "c716d30311fd98d927154b5f49a675579091065686b8cccf5e463a19c2a8d393",
+      "policy_optimizer_steps": 0,
+      "policy_queries": 32,
+      "policy_sampling_seed": 423004,
+      "processor_revision": "735d9f692981e286ade093b5046627eda876e5d0",
+      "reload_validation": {
+        "completeness": 1.0,
+        "frames_expected": 224,
+        "frames_reloaded": 224,
+        "status": "pass"
+      },
+      "seed": 3004,
+      "sidecar_locator": "sidecar_root/libero_10-task2-seed3004.jsonl",
+      "success": true,
+      "suite": "libero_10",
+      "task_id": 2,
+      "task_name": "KITCHEN_SCENE3_turn_on_the_stove_and_put_the_moka_pot_on_it",
+      "termination_reason": "success"
+    },
+    {
+      "action_is_pad_semantic": "false_for_every_executed_step",
+      "action_mask_semantic": "not_emitted_by_native_inference",
+      "checkpoint_revision": "735d9f692981e286ade093b5046627eda876e5d0",
+      "dataset_locator": "dataset_root/libero_10-task2-seed3005",
+      "elapsed_seconds": 19.316507805138826,
+      "episode_horizon": 520,
+      "episode_id": "libero_10-task2-seed3005",
+      "frame_count": 230,
+      "instruction": "turn on the stove and put the moka pot on it",
+      "metadata_identities": {
+        "episode_parquet_files": [
+          {
+            "bytes": 66413,
+            "relative_path": "meta/episodes/chunk-000/file-000.parquet",
+            "sha256": "dd91d136f6a01720d0a613c8defc7c2bfdc9c9daad85194c4377b9bc81fae6c7"
+          }
+        ],
+        "info_json": {
+          "bytes": 3670,
+          "sha256": "557f1db3e62fea021e2e081203475ad5042b0fe1e4998707ca81e6ab446bb173"
+        },
+        "tasks_parquet": {
+          "bytes": 2208,
+          "sha256": "67b237cc1617c4829d1d77e516e533b128fa6abcb2f1c7e8a68abdb7b5c47878"
+        }
+      },
+      "phase": "primary_pilot",
+      "policy_backward_calls": 0,
+      "policy_config_sha256": "c716d30311fd98d927154b5f49a675579091065686b8cccf5e463a19c2a8d393",
+      "policy_optimizer_steps": 0,
+      "policy_queries": 33,
+      "policy_sampling_seed": 423005,
+      "processor_revision": "735d9f692981e286ade093b5046627eda876e5d0",
+      "reload_validation": {
+        "completeness": 1.0,
+        "frames_expected": 230,
+        "frames_reloaded": 230,
+        "status": "pass"
+      },
+      "seed": 3005,
+      "sidecar_locator": "sidecar_root/libero_10-task2-seed3005.jsonl",
+      "success": true,
+      "suite": "libero_10",
+      "task_id": 2,
+      "task_name": "KITCHEN_SCENE3_turn_on_the_stove_and_put_the_moka_pot_on_it",
+      "termination_reason": "success"
+    },
+    {
+      "action_is_pad_semantic": "false_for_every_executed_step",
+      "action_mask_semantic": "not_emitted_by_native_inference",
+      "checkpoint_revision": "735d9f692981e286ade093b5046627eda876e5d0",
+      "dataset_locator": "dataset_root/libero_10-task2-seed3006",
+      "elapsed_seconds": 19.11827987059951,
+      "episode_horizon": 520,
+      "episode_id": "libero_10-task2-seed3006",
+      "frame_count": 234,
+      "instruction": "turn on the stove and put the moka pot on it",
+      "metadata_identities": {
+        "episode_parquet_files": [
+          {
+            "bytes": 66437,
+            "relative_path": "meta/episodes/chunk-000/file-000.parquet",
+            "sha256": "f37f10eddcd932e625642d4dfdd007be6d39072a926625befd9d973ea3f82fd2"
+          }
+        ],
+        "info_json": {
+          "bytes": 3670,
+          "sha256": "b29c698b70c220e3cf14933a29816c025c219a50d2fb3122c3d684147d42cee0"
+        },
+        "tasks_parquet": {
+          "bytes": 2208,
+          "sha256": "67b237cc1617c4829d1d77e516e533b128fa6abcb2f1c7e8a68abdb7b5c47878"
+        }
+      },
+      "phase": "primary_pilot",
+      "policy_backward_calls": 0,
+      "policy_config_sha256": "c716d30311fd98d927154b5f49a675579091065686b8cccf5e463a19c2a8d393",
+      "policy_optimizer_steps": 0,
+      "policy_queries": 34,
+      "policy_sampling_seed": 423006,
+      "processor_revision": "735d9f692981e286ade093b5046627eda876e5d0",
+      "reload_validation": {
+        "completeness": 1.0,
+        "frames_expected": 234,
+        "frames_reloaded": 234,
+        "status": "pass"
+      },
+      "seed": 3006,
+      "sidecar_locator": "sidecar_root/libero_10-task2-seed3006.jsonl",
+      "success": true,
+      "suite": "libero_10",
+      "task_id": 2,
+      "task_name": "KITCHEN_SCENE3_turn_on_the_stove_and_put_the_moka_pot_on_it",
+      "termination_reason": "success"
+    },
+    {
+      "action_is_pad_semantic": "false_for_every_executed_step",
+      "action_mask_semantic": "not_emitted_by_native_inference",
+      "checkpoint_revision": "735d9f692981e286ade093b5046627eda876e5d0",
+      "dataset_locator": "dataset_root/libero_10-task2-seed3007",
+      "elapsed_seconds": 18.500141572207212,
+      "episode_horizon": 520,
+      "episode_id": "libero_10-task2-seed3007",
+      "frame_count": 236,
+      "instruction": "turn on the stove and put the moka pot on it",
+      "metadata_identities": {
+        "episode_parquet_files": [
+          {
+            "bytes": 66423,
+            "relative_path": "meta/episodes/chunk-000/file-000.parquet",
+            "sha256": "ae498209afd36485f16aae080e9c9efd73cbc77f3adfddcd66b68f594f28e8e4"
+          }
+        ],
+        "info_json": {
+          "bytes": 3670,
+          "sha256": "a72a6c034de5926b8baf949bee85ffa513e83becb47e18929eb4fc1981a0b25b"
+        },
+        "tasks_parquet": {
+          "bytes": 2208,
+          "sha256": "67b237cc1617c4829d1d77e516e533b128fa6abcb2f1c7e8a68abdb7b5c47878"
+        }
+      },
+      "phase": "primary_pilot",
+      "policy_backward_calls": 0,
+      "policy_config_sha256": "c716d30311fd98d927154b5f49a675579091065686b8cccf5e463a19c2a8d393",
+      "policy_optimizer_steps": 0,
+      "policy_queries": 34,
+      "policy_sampling_seed": 423007,
+      "processor_revision": "735d9f692981e286ade093b5046627eda876e5d0",
+      "reload_validation": {
+        "completeness": 1.0,
+        "frames_expected": 236,
+        "frames_reloaded": 236,
+        "status": "pass"
+      },
+      "seed": 3007,
+      "sidecar_locator": "sidecar_root/libero_10-task2-seed3007.jsonl",
+      "success": true,
+      "suite": "libero_10",
+      "task_id": 2,
+      "task_name": "KITCHEN_SCENE3_turn_on_the_stove_and_put_the_moka_pot_on_it",
+      "termination_reason": "success"
+    },
+    {
+      "action_is_pad_semantic": "false_for_every_executed_step",
+      "action_mask_semantic": "not_emitted_by_native_inference",
+      "checkpoint_revision": "735d9f692981e286ade093b5046627eda876e5d0",
+      "dataset_locator": "dataset_root/libero_10-task2-seed3008",
+      "elapsed_seconds": 20.81065995246172,
+      "episode_horizon": 520,
+      "episode_id": "libero_10-task2-seed3008",
+      "frame_count": 235,
+      "instruction": "turn on the stove and put the moka pot on it",
+      "metadata_identities": {
+        "episode_parquet_files": [
+          {
+            "bytes": 66416,
+            "relative_path": "meta/episodes/chunk-000/file-000.parquet",
+            "sha256": "7cda54b7c75c24b41adfb83f026420dbdc1474dc20aaed9434540c1b6b0bc704"
+          }
+        ],
+        "info_json": {
+          "bytes": 3670,
+          "sha256": "f29c338b57e57e998c4025a03b261f14fa4c18c72c81118f238a46bb4758e71c"
+        },
+        "tasks_parquet": {
+          "bytes": 2208,
+          "sha256": "67b237cc1617c4829d1d77e516e533b128fa6abcb2f1c7e8a68abdb7b5c47878"
+        }
+      },
+      "phase": "primary_pilot",
+      "policy_backward_calls": 0,
+      "policy_config_sha256": "c716d30311fd98d927154b5f49a675579091065686b8cccf5e463a19c2a8d393",
+      "policy_optimizer_steps": 0,
+      "policy_queries": 34,
+      "policy_sampling_seed": 423008,
+      "processor_revision": "735d9f692981e286ade093b5046627eda876e5d0",
+      "reload_validation": {
+        "completeness": 1.0,
+        "frames_expected": 235,
+        "frames_reloaded": 235,
+        "status": "pass"
+      },
+      "seed": 3008,
+      "sidecar_locator": "sidecar_root/libero_10-task2-seed3008.jsonl",
+      "success": true,
+      "suite": "libero_10",
+      "task_id": 2,
+      "task_name": "KITCHEN_SCENE3_turn_on_the_stove_and_put_the_moka_pot_on_it",
+      "termination_reason": "success"
+    },
+    {
+      "action_is_pad_semantic": "false_for_every_executed_step",
+      "action_mask_semantic": "not_emitted_by_native_inference",
+      "checkpoint_revision": "735d9f692981e286ade093b5046627eda876e5d0",
+      "dataset_locator": "dataset_root/libero_10-task2-seed3009",
+      "elapsed_seconds": 18.88965229317546,
+      "episode_horizon": 520,
+      "episode_id": "libero_10-task2-seed3009",
+      "frame_count": 232,
+      "instruction": "turn on the stove and put the moka pot on it",
+      "metadata_identities": {
+        "episode_parquet_files": [
+          {
+            "bytes": 66416,
+            "relative_path": "meta/episodes/chunk-000/file-000.parquet",
+            "sha256": "39c0fc6736424de0fee570ec61e3eaf65fdef054a2ff892c0aa7e2011091fadf"
+          }
+        ],
+        "info_json": {
+          "bytes": 3670,
+          "sha256": "b26e9b5be90ae0b88577d97ac2da1dad2173724b2db2bc23658025d072dddea9"
+        },
+        "tasks_parquet": {
+          "bytes": 2208,
+          "sha256": "67b237cc1617c4829d1d77e516e533b128fa6abcb2f1c7e8a68abdb7b5c47878"
+        }
+      },
+      "phase": "primary_pilot",
+      "policy_backward_calls": 0,
+      "policy_config_sha256": "c716d30311fd98d927154b5f49a675579091065686b8cccf5e463a19c2a8d393",
+      "policy_optimizer_steps": 0,
+      "policy_queries": 34,
+      "policy_sampling_seed": 423009,
+      "processor_revision": "735d9f692981e286ade093b5046627eda876e5d0",
+      "reload_validation": {
+        "completeness": 1.0,
+        "frames_expected": 232,
+        "frames_reloaded": 232,
+        "status": "pass"
+      },
+      "seed": 3009,
+      "sidecar_locator": "sidecar_root/libero_10-task2-seed3009.jsonl",
+      "success": true,
+      "suite": "libero_10",
+      "task_id": 2,
+      "task_name": "KITCHEN_SCENE3_turn_on_the_stove_and_put_the_moka_pot_on_it",
+      "termination_reason": "success"
+    },
+    {
+      "action_is_pad_semantic": "false_for_every_executed_step",
+      "action_mask_semantic": "not_emitted_by_native_inference",
+      "checkpoint_revision": "735d9f692981e286ade093b5046627eda876e5d0",
+      "dataset_locator": "dataset_root/libero_10-task4-seed3030",
+      "elapsed_seconds": 22.976491689682007,
+      "episode_horizon": 520,
+      "episode_id": "libero_10-task4-seed3030",
+      "frame_count": 223,
+      "instruction": "put the white mug on the left plate and put the yellow and white mug on the right plate",
+      "metadata_identities": {
+        "episode_parquet_files": [
+          {
+            "bytes": 66657,
+            "relative_path": "meta/episodes/chunk-000/file-000.parquet",
+            "sha256": "7e5b7f32373abf276a6640750a0257ce7d3d8d941cb8a808088f9e09f6b87d71"
+          }
+        ],
+        "info_json": {
+          "bytes": 3670,
+          "sha256": "d0e8be4e572bff4944bdb813295e8669cbf65f8ad34a56c31773ae286164c146"
+        },
+        "tasks_parquet": {
+          "bytes": 2405,
+          "sha256": "3f2a11795aecbff341ed0801317a6895e63ed47097f9c5b0b7deea25d9a2fde7"
+        }
+      },
+      "phase": "primary_pilot",
+      "policy_backward_calls": 0,
+      "policy_config_sha256": "c716d30311fd98d927154b5f49a675579091065686b8cccf5e463a19c2a8d393",
+      "policy_optimizer_steps": 0,
+      "policy_queries": 32,
+      "policy_sampling_seed": 423030,
+      "processor_revision": "735d9f692981e286ade093b5046627eda876e5d0",
+      "reload_validation": {
+        "completeness": 1.0,
+        "frames_expected": 223,
+        "frames_reloaded": 223,
+        "status": "pass"
+      },
+      "seed": 3030,
+      "sidecar_locator": "sidecar_root/libero_10-task4-seed3030.jsonl",
+      "success": true,
+      "suite": "libero_10",
+      "task_id": 4,
+      "task_name": "LIVING_ROOM_SCENE5_put_the_white_mug_on_the_left_plate_and_put_the_yellow_and_white_mug_on_the_right_plate",
+      "termination_reason": "success"
+    },
+    {
+      "action_is_pad_semantic": "false_for_every_executed_step",
+      "action_mask_semantic": "not_emitted_by_native_inference",
+      "checkpoint_revision": "735d9f692981e286ade093b5046627eda876e5d0",
+      "dataset_locator": "dataset_root/libero_10-task4-seed3031",
+      "elapsed_seconds": 21.20518070459366,
+      "episode_horizon": 520,
+      "episode_id": "libero_10-task4-seed3031",
+      "frame_count": 222,
+      "instruction": "put the white mug on the left plate and put the yellow and white mug on the right plate",
+      "metadata_identities": {
+        "episode_parquet_files": [
+          {
+            "bytes": 66652,
+            "relative_path": "meta/episodes/chunk-000/file-000.parquet",
+            "sha256": "736fa82c74cdc1e7a4a32a52efbb22e93d703a0d6cabe492b662e7129558954f"
+          }
+        ],
+        "info_json": {
+          "bytes": 3670,
+          "sha256": "7a2c06fc7817c5a97ef9ef4331b798a993817fd3bf144ee129f9c64a90a638f4"
+        },
+        "tasks_parquet": {
+          "bytes": 2405,
+          "sha256": "3f2a11795aecbff341ed0801317a6895e63ed47097f9c5b0b7deea25d9a2fde7"
+        }
+      },
+      "phase": "primary_pilot",
+      "policy_backward_calls": 0,
+      "policy_config_sha256": "c716d30311fd98d927154b5f49a675579091065686b8cccf5e463a19c2a8d393",
+      "policy_optimizer_steps": 0,
+      "policy_queries": 32,
+      "policy_sampling_seed": 423031,
+      "processor_revision": "735d9f692981e286ade093b5046627eda876e5d0",
+      "reload_validation": {
+        "completeness": 1.0,
+        "frames_expected": 222,
+        "frames_reloaded": 222,
+        "status": "pass"
+      },
+      "seed": 3031,
+      "sidecar_locator": "sidecar_root/libero_10-task4-seed3031.jsonl",
+      "success": true,
+      "suite": "libero_10",
+      "task_id": 4,
+      "task_name": "LIVING_ROOM_SCENE5_put_the_white_mug_on_the_left_plate_and_put_the_yellow_and_white_mug_on_the_right_plate",
+      "termination_reason": "success"
+    },
+    {
+      "action_is_pad_semantic": "false_for_every_executed_step",
+      "action_mask_semantic": "not_emitted_by_native_inference",
+      "checkpoint_revision": "735d9f692981e286ade093b5046627eda876e5d0",
+      "dataset_locator": "dataset_root/libero_10-task4-seed3032",
+      "elapsed_seconds": 21.16217629611492,
+      "episode_horizon": 520,
+      "episode_id": "libero_10-task4-seed3032",
+      "frame_count": 224,
+      "instruction": "put the white mug on the left plate and put the yellow and white mug on the right plate",
+      "metadata_identities": {
+        "episode_parquet_files": [
+          {
+            "bytes": 66649,
+            "relative_path": "meta/episodes/chunk-000/file-000.parquet",
+            "sha256": "23a2dbafce331287bb087d37605c49968385119cdce12bb33f53ea180d94bad2"
+          }
+        ],
+        "info_json": {
+          "bytes": 3670,
+          "sha256": "efb5d21fb95c56c298e3673445342278aa819642b8190ddba84a9327e0129c2e"
+        },
+        "tasks_parquet": {
+          "bytes": 2405,
+          "sha256": "3f2a11795aecbff341ed0801317a6895e63ed47097f9c5b0b7deea25d9a2fde7"
+        }
+      },
+      "phase": "primary_pilot",
+      "policy_backward_calls": 0,
+      "policy_config_sha256": "c716d30311fd98d927154b5f49a675579091065686b8cccf5e463a19c2a8d393",
+      "policy_optimizer_steps": 0,
+      "policy_queries": 32,
+      "policy_sampling_seed": 423032,
+      "processor_revision": "735d9f692981e286ade093b5046627eda876e5d0",
+      "reload_validation": {
+        "completeness": 1.0,
+        "frames_expected": 224,
+        "frames_reloaded": 224,
+        "status": "pass"
+      },
+      "seed": 3032,
+      "sidecar_locator": "sidecar_root/libero_10-task4-seed3032.jsonl",
+      "success": true,
+      "suite": "libero_10",
+      "task_id": 4,
+      "task_name": "LIVING_ROOM_SCENE5_put_the_white_mug_on_the_left_plate_and_put_the_yellow_and_white_mug_on_the_right_plate",
+      "termination_reason": "success"
+    },
+    {
+      "action_is_pad_semantic": "false_for_every_executed_step",
+      "action_mask_semantic": "not_emitted_by_native_inference",
+      "checkpoint_revision": "735d9f692981e286ade093b5046627eda876e5d0",
+      "dataset_locator": "dataset_root/libero_10-task4-seed3033",
+      "elapsed_seconds": 20.85208895802498,
+      "episode_horizon": 520,
+      "episode_id": "libero_10-task4-seed3033",
+      "frame_count": 223,
+      "instruction": "put the white mug on the left plate and put the yellow and white mug on the right plate",
+      "metadata_identities": {
+        "episode_parquet_files": [
+          {
+            "bytes": 66661,
+            "relative_path": "meta/episodes/chunk-000/file-000.parquet",
+            "sha256": "8d4bbf7f4a4b0b9d311475a750a4fbe1208a245974df8c5cf33f646a98a6f35c"
+          }
+        ],
+        "info_json": {
+          "bytes": 3670,
+          "sha256": "d0e8be4e572bff4944bdb813295e8669cbf65f8ad34a56c31773ae286164c146"
+        },
+        "tasks_parquet": {
+          "bytes": 2405,
+          "sha256": "3f2a11795aecbff341ed0801317a6895e63ed47097f9c5b0b7deea25d9a2fde7"
+        }
+      },
+      "phase": "primary_pilot",
+      "policy_backward_calls": 0,
+      "policy_config_sha256": "c716d30311fd98d927154b5f49a675579091065686b8cccf5e463a19c2a8d393",
+      "policy_optimizer_steps": 0,
+      "policy_queries": 32,
+      "policy_sampling_seed": 423033,
+      "processor_revision": "735d9f692981e286ade093b5046627eda876e5d0",
+      "reload_validation": {
+        "completeness": 1.0,
+        "frames_expected": 223,
+        "frames_reloaded": 223,
+        "status": "pass"
+      },
+      "seed": 3033,
+      "sidecar_locator": "sidecar_root/libero_10-task4-seed3033.jsonl",
+      "success": true,
+      "suite": "libero_10",
+      "task_id": 4,
+      "task_name": "LIVING_ROOM_SCENE5_put_the_white_mug_on_the_left_plate_and_put_the_yellow_and_white_mug_on_the_right_plate",
+      "termination_reason": "success"
+    },
+    {
+      "action_is_pad_semantic": "false_for_every_executed_step",
+      "action_mask_semantic": "not_emitted_by_native_inference",
+      "checkpoint_revision": "735d9f692981e286ade093b5046627eda876e5d0",
+      "dataset_locator": "dataset_root/libero_10-task4-seed3034",
+      "elapsed_seconds": 22.352027121931314,
+      "episode_horizon": 520,
+      "episode_id": "libero_10-task4-seed3034",
+      "frame_count": 222,
+      "instruction": "put the white mug on the left plate and put the yellow and white mug on the right plate",
+      "metadata_identities": {
+        "episode_parquet_files": [
+          {
+            "bytes": 66653,
+            "relative_path": "meta/episodes/chunk-000/file-000.parquet",
+            "sha256": "f306806c3869c612756ecea317a9183941290198dc6c47370eb2b201075ead68"
+          }
+        ],
+        "info_json": {
+          "bytes": 3670,
+          "sha256": "7a2c06fc7817c5a97ef9ef4331b798a993817fd3bf144ee129f9c64a90a638f4"
+        },
+        "tasks_parquet": {
+          "bytes": 2405,
+          "sha256": "3f2a11795aecbff341ed0801317a6895e63ed47097f9c5b0b7deea25d9a2fde7"
+        }
+      },
+      "phase": "primary_pilot",
+      "policy_backward_calls": 0,
+      "policy_config_sha256": "c716d30311fd98d927154b5f49a675579091065686b8cccf5e463a19c2a8d393",
+      "policy_optimizer_steps": 0,
+      "policy_queries": 32,
+      "policy_sampling_seed": 423034,
+      "processor_revision": "735d9f692981e286ade093b5046627eda876e5d0",
+      "reload_validation": {
+        "completeness": 1.0,
+        "frames_expected": 222,
+        "frames_reloaded": 222,
+        "status": "pass"
+      },
+      "seed": 3034,
+      "sidecar_locator": "sidecar_root/libero_10-task4-seed3034.jsonl",
+      "success": true,
+      "suite": "libero_10",
+      "task_id": 4,
+      "task_name": "LIVING_ROOM_SCENE5_put_the_white_mug_on_the_left_plate_and_put_the_yellow_and_white_mug_on_the_right_plate",
+      "termination_reason": "success"
+    },
+    {
+      "action_is_pad_semantic": "false_for_every_executed_step",
+      "action_mask_semantic": "not_emitted_by_native_inference",
+      "checkpoint_revision": "735d9f692981e286ade093b5046627eda876e5d0",
+      "dataset_locator": "dataset_root/libero_10-task4-seed3035",
+      "elapsed_seconds": 20.83842397481203,
+      "episode_horizon": 520,
+      "episode_id": "libero_10-task4-seed3035",
+      "frame_count": 223,
+      "instruction": "put the white mug on the left plate and put the yellow and white mug on the right plate",
+      "metadata_identities": {
+        "episode_parquet_files": [
+          {
+            "bytes": 66657,
+            "relative_path": "meta/episodes/chunk-000/file-000.parquet",
+            "sha256": "7b939a2a3ee31f39a2797c599d73f84340a9be2d3bea73d09f7e3fe438263c2d"
+          }
+        ],
+        "info_json": {
+          "bytes": 3670,
+          "sha256": "d0e8be4e572bff4944bdb813295e8669cbf65f8ad34a56c31773ae286164c146"
+        },
+        "tasks_parquet": {
+          "bytes": 2405,
+          "sha256": "3f2a11795aecbff341ed0801317a6895e63ed47097f9c5b0b7deea25d9a2fde7"
+        }
+      },
+      "phase": "primary_pilot",
+      "policy_backward_calls": 0,
+      "policy_config_sha256": "c716d30311fd98d927154b5f49a675579091065686b8cccf5e463a19c2a8d393",
+      "policy_optimizer_steps": 0,
+      "policy_queries": 32,
+      "policy_sampling_seed": 423035,
+      "processor_revision": "735d9f692981e286ade093b5046627eda876e5d0",
+      "reload_validation": {
+        "completeness": 1.0,
+        "frames_expected": 223,
+        "frames_reloaded": 223,
+        "status": "pass"
+      },
+      "seed": 3035,
+      "sidecar_locator": "sidecar_root/libero_10-task4-seed3035.jsonl",
+      "success": true,
+      "suite": "libero_10",
+      "task_id": 4,
+      "task_name": "LIVING_ROOM_SCENE5_put_the_white_mug_on_the_left_plate_and_put_the_yellow_and_white_mug_on_the_right_plate",
+      "termination_reason": "success"
+    },
+    {
+      "action_is_pad_semantic": "false_for_every_executed_step",
+      "action_mask_semantic": "not_emitted_by_native_inference",
+      "checkpoint_revision": "735d9f692981e286ade093b5046627eda876e5d0",
+      "dataset_locator": "dataset_root/libero_10-task4-seed3036",
+      "elapsed_seconds": 21.218841068446636,
+      "episode_horizon": 520,
+      "episode_id": "libero_10-task4-seed3036",
+      "frame_count": 222,
+      "instruction": "put the white mug on the left plate and put the yellow and white mug on the right plate",
+      "metadata_identities": {
+        "episode_parquet_files": [
+          {
+            "bytes": 66660,
+            "relative_path": "meta/episodes/chunk-000/file-000.parquet",
+            "sha256": "01f54828413e594efadcb581fd299acb6cbbc545b38caf11c088004f2e9a3f21"
+          }
+        ],
+        "info_json": {
+          "bytes": 3670,
+          "sha256": "7a2c06fc7817c5a97ef9ef4331b798a993817fd3bf144ee129f9c64a90a638f4"
+        },
+        "tasks_parquet": {
+          "bytes": 2405,
+          "sha256": "3f2a11795aecbff341ed0801317a6895e63ed47097f9c5b0b7deea25d9a2fde7"
+        }
+      },
+      "phase": "primary_pilot",
+      "policy_backward_calls": 0,
+      "policy_config_sha256": "c716d30311fd98d927154b5f49a675579091065686b8cccf5e463a19c2a8d393",
+      "policy_optimizer_steps": 0,
+      "policy_queries": 32,
+      "policy_sampling_seed": 423036,
+      "processor_revision": "735d9f692981e286ade093b5046627eda876e5d0",
+      "reload_validation": {
+        "completeness": 1.0,
+        "frames_expected": 222,
+        "frames_reloaded": 222,
+        "status": "pass"
+      },
+      "seed": 3036,
+      "sidecar_locator": "sidecar_root/libero_10-task4-seed3036.jsonl",
+      "success": true,
+      "suite": "libero_10",
+      "task_id": 4,
+      "task_name": "LIVING_ROOM_SCENE5_put_the_white_mug_on_the_left_plate_and_put_the_yellow_and_white_mug_on_the_right_plate",
+      "termination_reason": "success"
+    },
+    {
+      "action_is_pad_semantic": "false_for_every_executed_step",
+      "action_mask_semantic": "not_emitted_by_native_inference",
+      "checkpoint_revision": "735d9f692981e286ade093b5046627eda876e5d0",
+      "dataset_locator": "dataset_root/libero_10-task4-seed3037",
+      "elapsed_seconds": 20.836471799761057,
+      "episode_horizon": 520,
+      "episode_id": "libero_10-task4-seed3037",
+      "frame_count": 223,
+      "instruction": "put the white mug on the left plate and put the yellow and white mug on the right plate",
+      "metadata_identities": {
+        "episode_parquet_files": [
+          {
+            "bytes": 66654,
+            "relative_path": "meta/episodes/chunk-000/file-000.parquet",
+            "sha256": "83c2ee13624ecfe1277c2bcdc8559cf09311e684426565b0ef4cca8cea9b387b"
+          }
+        ],
+        "info_json": {
+          "bytes": 3670,
+          "sha256": "d0e8be4e572bff4944bdb813295e8669cbf65f8ad34a56c31773ae286164c146"
+        },
+        "tasks_parquet": {
+          "bytes": 2405,
+          "sha256": "3f2a11795aecbff341ed0801317a6895e63ed47097f9c5b0b7deea25d9a2fde7"
+        }
+      },
+      "phase": "primary_pilot",
+      "policy_backward_calls": 0,
+      "policy_config_sha256": "c716d30311fd98d927154b5f49a675579091065686b8cccf5e463a19c2a8d393",
+      "policy_optimizer_steps": 0,
+      "policy_queries": 32,
+      "policy_sampling_seed": 423037,
+      "processor_revision": "735d9f692981e286ade093b5046627eda876e5d0",
+      "reload_validation": {
+        "completeness": 1.0,
+        "frames_expected": 223,
+        "frames_reloaded": 223,
+        "status": "pass"
+      },
+      "seed": 3037,
+      "sidecar_locator": "sidecar_root/libero_10-task4-seed3037.jsonl",
+      "success": true,
+      "suite": "libero_10",
+      "task_id": 4,
+      "task_name": "LIVING_ROOM_SCENE5_put_the_white_mug_on_the_left_plate_and_put_the_yellow_and_white_mug_on_the_right_plate",
+      "termination_reason": "success"
+    },
+    {
+      "action_is_pad_semantic": "false_for_every_executed_step",
+      "action_mask_semantic": "not_emitted_by_native_inference",
+      "checkpoint_revision": "735d9f692981e286ade093b5046627eda876e5d0",
+      "dataset_locator": "dataset_root/libero_10-task4-seed3038",
+      "elapsed_seconds": 20.78762847185135,
+      "episode_horizon": 520,
+      "episode_id": "libero_10-task4-seed3038",
+      "frame_count": 222,
+      "instruction": "put the white mug on the left plate and put the yellow and white mug on the right plate",
+      "metadata_identities": {
+        "episode_parquet_files": [
+          {
+            "bytes": 66652,
+            "relative_path": "meta/episodes/chunk-000/file-000.parquet",
+            "sha256": "8640b9c3407e1a28ae0531ef11b940bfa4fb3bb7b70dc70a63b3c66c6c98d118"
+          }
+        ],
+        "info_json": {
+          "bytes": 3670,
+          "sha256": "7a2c06fc7817c5a97ef9ef4331b798a993817fd3bf144ee129f9c64a90a638f4"
+        },
+        "tasks_parquet": {
+          "bytes": 2405,
+          "sha256": "3f2a11795aecbff341ed0801317a6895e63ed47097f9c5b0b7deea25d9a2fde7"
+        }
+      },
+      "phase": "primary_pilot",
+      "policy_backward_calls": 0,
+      "policy_config_sha256": "c716d30311fd98d927154b5f49a675579091065686b8cccf5e463a19c2a8d393",
+      "policy_optimizer_steps": 0,
+      "policy_queries": 32,
+      "policy_sampling_seed": 423038,
+      "processor_revision": "735d9f692981e286ade093b5046627eda876e5d0",
+      "reload_validation": {
+        "completeness": 1.0,
+        "frames_expected": 222,
+        "frames_reloaded": 222,
+        "status": "pass"
+      },
+      "seed": 3038,
+      "sidecar_locator": "sidecar_root/libero_10-task4-seed3038.jsonl",
+      "success": true,
+      "suite": "libero_10",
+      "task_id": 4,
+      "task_name": "LIVING_ROOM_SCENE5_put_the_white_mug_on_the_left_plate_and_put_the_yellow_and_white_mug_on_the_right_plate",
+      "termination_reason": "success"
+    },
+    {
+      "action_is_pad_semantic": "false_for_every_executed_step",
+      "action_mask_semantic": "not_emitted_by_native_inference",
+      "checkpoint_revision": "735d9f692981e286ade093b5046627eda876e5d0",
+      "dataset_locator": "dataset_root/libero_10-task4-seed3039",
+      "elapsed_seconds": 21.613589458167553,
+      "episode_horizon": 520,
+      "episode_id": "libero_10-task4-seed3039",
+      "frame_count": 222,
+      "instruction": "put the white mug on the left plate and put the yellow and white mug on the right plate",
+      "metadata_identities": {
+        "episode_parquet_files": [
+          {
+            "bytes": 66663,
+            "relative_path": "meta/episodes/chunk-000/file-000.parquet",
+            "sha256": "c96e2330cd3a77b8f36c3263d52463327e057f95ec38fea80911e3092b0c489e"
+          }
+        ],
+        "info_json": {
+          "bytes": 3670,
+          "sha256": "7a2c06fc7817c5a97ef9ef4331b798a993817fd3bf144ee129f9c64a90a638f4"
+        },
+        "tasks_parquet": {
+          "bytes": 2405,
+          "sha256": "3f2a11795aecbff341ed0801317a6895e63ed47097f9c5b0b7deea25d9a2fde7"
+        }
+      },
+      "phase": "primary_pilot",
+      "policy_backward_calls": 0,
+      "policy_config_sha256": "c716d30311fd98d927154b5f49a675579091065686b8cccf5e463a19c2a8d393",
+      "policy_optimizer_steps": 0,
+      "policy_queries": 32,
+      "policy_sampling_seed": 423039,
+      "processor_revision": "735d9f692981e286ade093b5046627eda876e5d0",
+      "reload_validation": {
+        "completeness": 1.0,
+        "frames_expected": 222,
+        "frames_reloaded": 222,
+        "status": "pass"
+      },
+      "seed": 3039,
+      "sidecar_locator": "sidecar_root/libero_10-task4-seed3039.jsonl",
+      "success": true,
+      "suite": "libero_10",
+      "task_id": 4,
+      "task_name": "LIVING_ROOM_SCENE5_put_the_white_mug_on_the_left_plate_and_put_the_yellow_and_white_mug_on_the_right_plate",
+      "termination_reason": "success"
+    },
+    {
+      "action_is_pad_semantic": "false_for_every_executed_step",
+      "action_mask_semantic": "not_emitted_by_native_inference",
+      "checkpoint_revision": "735d9f692981e286ade093b5046627eda876e5d0",
+      "dataset_locator": "dataset_root/libero_10-task6-seed3050",
+      "elapsed_seconds": 38.747215524315834,
+      "episode_horizon": 520,
+      "episode_id": "libero_10-task6-seed3050",
+      "frame_count": 520,
+      "instruction": "put the white mug on the plate and put the chocolate pudding to the right of the plate",
+      "metadata_identities": {
+        "episode_parquet_files": [
+          {
+            "bytes": 66641,
+            "relative_path": "meta/episodes/chunk-000/file-000.parquet",
+            "sha256": "8c7a2c14c0fe6d914cd5784fcb06268485690f3ccb44a65f441ce2dd0878ed4c"
+          }
+        ],
+        "info_json": {
+          "bytes": 3670,
+          "sha256": "e33a732644bff5f1a7f9b3dc8a40d1f708cbdd65ba0878a130927404e9ac7ef3"
+        },
+        "tasks_parquet": {
+          "bytes": 2412,
+          "sha256": "31d3541bd7f3c69ce9bbb639a4c1a9606c2ace5b7aab0fb581e89faf4975d16d"
+        }
+      },
+      "phase": "primary_pilot",
+      "policy_backward_calls": 0,
+      "policy_config_sha256": "c716d30311fd98d927154b5f49a675579091065686b8cccf5e463a19c2a8d393",
+      "policy_optimizer_steps": 0,
+      "policy_queries": 75,
+      "policy_sampling_seed": 423050,
+      "processor_revision": "735d9f692981e286ade093b5046627eda876e5d0",
+      "reload_validation": {
+        "completeness": 1.0,
+        "frames_expected": 520,
+        "frames_reloaded": 520,
+        "status": "pass"
+      },
+      "seed": 3050,
+      "sidecar_locator": "sidecar_root/libero_10-task6-seed3050.jsonl",
+      "success": false,
+      "suite": "libero_10",
+      "task_id": 6,
+      "task_name": "LIVING_ROOM_SCENE6_put_the_white_mug_on_the_plate_and_put_the_chocolate_pudding_to_the_right_of_the_plate",
+      "termination_reason": "horizon_exhausted"
+    },
+    {
+      "action_is_pad_semantic": "false_for_every_executed_step",
+      "action_mask_semantic": "not_emitted_by_native_inference",
+      "checkpoint_revision": "735d9f692981e286ade093b5046627eda876e5d0",
+      "dataset_locator": "dataset_root/libero_10-task6-seed3051",
+      "elapsed_seconds": 19.098719120025635,
+      "episode_horizon": 520,
+      "episode_id": "libero_10-task6-seed3051",
+      "frame_count": 217,
+      "instruction": "put the white mug on the plate and put the chocolate pudding to the right of the plate",
+      "metadata_identities": {
+        "episode_parquet_files": [
+          {
+            "bytes": 66665,
+            "relative_path": "meta/episodes/chunk-000/file-000.parquet",
+            "sha256": "d9d30539e4796c9dde37e68975c5990b666c14bcf85ebcfce72ca626d160201f"
+          }
+        ],
+        "info_json": {
+          "bytes": 3670,
+          "sha256": "9fbc5c55387950fc4ee32f85483dda56f2e2239dae77a707fd5b76a543c969b5"
+        },
+        "tasks_parquet": {
+          "bytes": 2412,
+          "sha256": "31d3541bd7f3c69ce9bbb639a4c1a9606c2ace5b7aab0fb581e89faf4975d16d"
+        }
+      },
+      "phase": "primary_pilot",
+      "policy_backward_calls": 0,
+      "policy_config_sha256": "c716d30311fd98d927154b5f49a675579091065686b8cccf5e463a19c2a8d393",
+      "policy_optimizer_steps": 0,
+      "policy_queries": 31,
+      "policy_sampling_seed": 423051,
+      "processor_revision": "735d9f692981e286ade093b5046627eda876e5d0",
+      "reload_validation": {
+        "completeness": 1.0,
+        "frames_expected": 217,
+        "frames_reloaded": 217,
+        "status": "pass"
+      },
+      "seed": 3051,
+      "sidecar_locator": "sidecar_root/libero_10-task6-seed3051.jsonl",
+      "success": true,
+      "suite": "libero_10",
+      "task_id": 6,
+      "task_name": "LIVING_ROOM_SCENE6_put_the_white_mug_on_the_plate_and_put_the_chocolate_pudding_to_the_right_of_the_plate",
+      "termination_reason": "success"
+    },
+    {
+      "action_is_pad_semantic": "false_for_every_executed_step",
+      "action_mask_semantic": "not_emitted_by_native_inference",
+      "checkpoint_revision": "735d9f692981e286ade093b5046627eda876e5d0",
+      "dataset_locator": "dataset_root/libero_10-task6-seed3052",
+      "elapsed_seconds": 38.75596121326089,
+      "episode_horizon": 520,
+      "episode_id": "libero_10-task6-seed3052",
+      "frame_count": 520,
+      "instruction": "put the white mug on the plate and put the chocolate pudding to the right of the plate",
+      "metadata_identities": {
+        "episode_parquet_files": [
+          {
+            "bytes": 66642,
+            "relative_path": "meta/episodes/chunk-000/file-000.parquet",
+            "sha256": "ce1b6fb7831495d71d6cd7d58276b22046d5d197cccd4c43fcbf5e6cce4bbf2d"
+          }
+        ],
+        "info_json": {
+          "bytes": 3670,
+          "sha256": "e33a732644bff5f1a7f9b3dc8a40d1f708cbdd65ba0878a130927404e9ac7ef3"
+        },
+        "tasks_parquet": {
+          "bytes": 2412,
+          "sha256": "31d3541bd7f3c69ce9bbb639a4c1a9606c2ace5b7aab0fb581e89faf4975d16d"
+        }
+      },
+      "phase": "primary_pilot",
+      "policy_backward_calls": 0,
+      "policy_config_sha256": "c716d30311fd98d927154b5f49a675579091065686b8cccf5e463a19c2a8d393",
+      "policy_optimizer_steps": 0,
+      "policy_queries": 75,
+      "policy_sampling_seed": 423052,
+      "processor_revision": "735d9f692981e286ade093b5046627eda876e5d0",
+      "reload_validation": {
+        "completeness": 1.0,
+        "frames_expected": 520,
+        "frames_reloaded": 520,
+        "status": "pass"
+      },
+      "seed": 3052,
+      "sidecar_locator": "sidecar_root/libero_10-task6-seed3052.jsonl",
+      "success": false,
+      "suite": "libero_10",
+      "task_id": 6,
+      "task_name": "LIVING_ROOM_SCENE6_put_the_white_mug_on_the_plate_and_put_the_chocolate_pudding_to_the_right_of_the_plate",
+      "termination_reason": "horizon_exhausted"
+    },
+    {
+      "action_is_pad_semantic": "false_for_every_executed_step",
+      "action_mask_semantic": "not_emitted_by_native_inference",
+      "checkpoint_revision": "735d9f692981e286ade093b5046627eda876e5d0",
+      "dataset_locator": "dataset_root/libero_10-task6-seed3053",
+      "elapsed_seconds": 38.16761642694473,
+      "episode_horizon": 520,
+      "episode_id": "libero_10-task6-seed3053",
+      "frame_count": 520,
+      "instruction": "put the white mug on the plate and put the chocolate pudding to the right of the plate",
+      "metadata_identities": {
+        "episode_parquet_files": [
+          {
+            "bytes": 66636,
+            "relative_path": "meta/episodes/chunk-000/file-000.parquet",
+            "sha256": "9a75ad74a230a74464f6922825d9bc97e0161ec2709bbee6490d04bf72ca5680"
+          }
+        ],
+        "info_json": {
+          "bytes": 3670,
+          "sha256": "e33a732644bff5f1a7f9b3dc8a40d1f708cbdd65ba0878a130927404e9ac7ef3"
+        },
+        "tasks_parquet": {
+          "bytes": 2412,
+          "sha256": "31d3541bd7f3c69ce9bbb639a4c1a9606c2ace5b7aab0fb581e89faf4975d16d"
+        }
+      },
+      "phase": "primary_pilot",
+      "policy_backward_calls": 0,
+      "policy_config_sha256": "c716d30311fd98d927154b5f49a675579091065686b8cccf5e463a19c2a8d393",
+      "policy_optimizer_steps": 0,
+      "policy_queries": 75,
+      "policy_sampling_seed": 423053,
+      "processor_revision": "735d9f692981e286ade093b5046627eda876e5d0",
+      "reload_validation": {
+        "completeness": 1.0,
+        "frames_expected": 520,
+        "frames_reloaded": 520,
+        "status": "pass"
+      },
+      "seed": 3053,
+      "sidecar_locator": "sidecar_root/libero_10-task6-seed3053.jsonl",
+      "success": false,
+      "suite": "libero_10",
+      "task_id": 6,
+      "task_name": "LIVING_ROOM_SCENE6_put_the_white_mug_on_the_plate_and_put_the_chocolate_pudding_to_the_right_of_the_plate",
+      "termination_reason": "horizon_exhausted"
+    },
+    {
+      "action_is_pad_semantic": "false_for_every_executed_step",
+      "action_mask_semantic": "not_emitted_by_native_inference",
+      "checkpoint_revision": "735d9f692981e286ade093b5046627eda876e5d0",
+      "dataset_locator": "dataset_root/libero_10-task6-seed3054",
+      "elapsed_seconds": 23.706660993397236,
+      "episode_horizon": 520,
+      "episode_id": "libero_10-task6-seed3054",
+      "frame_count": 267,
+      "instruction": "put the white mug on the plate and put the chocolate pudding to the right of the plate",
+      "metadata_identities": {
+        "episode_parquet_files": [
+          {
+            "bytes": 66661,
+            "relative_path": "meta/episodes/chunk-000/file-000.parquet",
+            "sha256": "c157942850b29c8d67470b0e27cf8105ee85ec9025c3bdec134f178f0b1d09f5"
+          }
+        ],
+        "info_json": {
+          "bytes": 3670,
+          "sha256": "752f995b2ca23f9e10b73a1950a62dd2bbb8e47c48e07fb1b5b6c3b56cddb30e"
+        },
+        "tasks_parquet": {
+          "bytes": 2412,
+          "sha256": "31d3541bd7f3c69ce9bbb639a4c1a9606c2ace5b7aab0fb581e89faf4975d16d"
+        }
+      },
+      "phase": "primary_pilot",
+      "policy_backward_calls": 0,
+      "policy_config_sha256": "c716d30311fd98d927154b5f49a675579091065686b8cccf5e463a19c2a8d393",
+      "policy_optimizer_steps": 0,
+      "policy_queries": 39,
+      "policy_sampling_seed": 423054,
+      "processor_revision": "735d9f692981e286ade093b5046627eda876e5d0",
+      "reload_validation": {
+        "completeness": 1.0,
+        "frames_expected": 267,
+        "frames_reloaded": 267,
+        "status": "pass"
+      },
+      "seed": 3054,
+      "sidecar_locator": "sidecar_root/libero_10-task6-seed3054.jsonl",
+      "success": true,
+      "suite": "libero_10",
+      "task_id": 6,
+      "task_name": "LIVING_ROOM_SCENE6_put_the_white_mug_on_the_plate_and_put_the_chocolate_pudding_to_the_right_of_the_plate",
+      "termination_reason": "success"
+    },
+    {
+      "action_is_pad_semantic": "false_for_every_executed_step",
+      "action_mask_semantic": "not_emitted_by_native_inference",
+      "checkpoint_revision": "735d9f692981e286ade093b5046627eda876e5d0",
+      "dataset_locator": "dataset_root/libero_10-task6-seed3055",
+      "elapsed_seconds": 21.820148639380932,
+      "episode_horizon": 520,
+      "episode_id": "libero_10-task6-seed3055",
+      "frame_count": 256,
+      "instruction": "put the white mug on the plate and put the chocolate pudding to the right of the plate",
+      "metadata_identities": {
+        "episode_parquet_files": [
+          {
+            "bytes": 66668,
+            "relative_path": "meta/episodes/chunk-000/file-000.parquet",
+            "sha256": "ee91fb4c2975f793cfa49f6d78080d2638c5608c107cd7dd4ae0d15ba4c07431"
+          }
+        ],
+        "info_json": {
+          "bytes": 3670,
+          "sha256": "727adf9425e0c46527ca7c01d4a3d23e5ce6c703f756a1b710fbf6cff5a70b1a"
+        },
+        "tasks_parquet": {
+          "bytes": 2412,
+          "sha256": "31d3541bd7f3c69ce9bbb639a4c1a9606c2ace5b7aab0fb581e89faf4975d16d"
+        }
+      },
+      "phase": "primary_pilot",
+      "policy_backward_calls": 0,
+      "policy_config_sha256": "c716d30311fd98d927154b5f49a675579091065686b8cccf5e463a19c2a8d393",
+      "policy_optimizer_steps": 0,
+      "policy_queries": 37,
+      "policy_sampling_seed": 423055,
+      "processor_revision": "735d9f692981e286ade093b5046627eda876e5d0",
+      "reload_validation": {
+        "completeness": 1.0,
+        "frames_expected": 256,
+        "frames_reloaded": 256,
+        "status": "pass"
+      },
+      "seed": 3055,
+      "sidecar_locator": "sidecar_root/libero_10-task6-seed3055.jsonl",
+      "success": true,
+      "suite": "libero_10",
+      "task_id": 6,
+      "task_name": "LIVING_ROOM_SCENE6_put_the_white_mug_on_the_plate_and_put_the_chocolate_pudding_to_the_right_of_the_plate",
+      "termination_reason": "success"
+    },
+    {
+      "action_is_pad_semantic": "false_for_every_executed_step",
+      "action_mask_semantic": "not_emitted_by_native_inference",
+      "checkpoint_revision": "735d9f692981e286ade093b5046627eda876e5d0",
+      "dataset_locator": "dataset_root/libero_10-task6-seed3056",
+      "elapsed_seconds": 37.80226718261838,
+      "episode_horizon": 520,
+      "episode_id": "libero_10-task6-seed3056",
+      "frame_count": 520,
+      "instruction": "put the white mug on the plate and put the chocolate pudding to the right of the plate",
+      "metadata_identities": {
+        "episode_parquet_files": [
+          {
+            "bytes": 66644,
+            "relative_path": "meta/episodes/chunk-000/file-000.parquet",
+            "sha256": "38f1436f99b0fec552958ae1057236cf23cfc4b5ad94e264ca52cb64518f1f32"
+          }
+        ],
+        "info_json": {
+          "bytes": 3670,
+          "sha256": "e33a732644bff5f1a7f9b3dc8a40d1f708cbdd65ba0878a130927404e9ac7ef3"
+        },
+        "tasks_parquet": {
+          "bytes": 2412,
+          "sha256": "31d3541bd7f3c69ce9bbb639a4c1a9606c2ace5b7aab0fb581e89faf4975d16d"
+        }
+      },
+      "phase": "primary_pilot",
+      "policy_backward_calls": 0,
+      "policy_config_sha256": "c716d30311fd98d927154b5f49a675579091065686b8cccf5e463a19c2a8d393",
+      "policy_optimizer_steps": 0,
+      "policy_queries": 75,
+      "policy_sampling_seed": 423056,
+      "processor_revision": "735d9f692981e286ade093b5046627eda876e5d0",
+      "reload_validation": {
+        "completeness": 1.0,
+        "frames_expected": 520,
+        "frames_reloaded": 520,
+        "status": "pass"
+      },
+      "seed": 3056,
+      "sidecar_locator": "sidecar_root/libero_10-task6-seed3056.jsonl",
+      "success": false,
+      "suite": "libero_10",
+      "task_id": 6,
+      "task_name": "LIVING_ROOM_SCENE6_put_the_white_mug_on_the_plate_and_put_the_chocolate_pudding_to_the_right_of_the_plate",
+      "termination_reason": "horizon_exhausted"
+    },
+    {
+      "action_is_pad_semantic": "false_for_every_executed_step",
+      "action_mask_semantic": "not_emitted_by_native_inference",
+      "checkpoint_revision": "735d9f692981e286ade093b5046627eda876e5d0",
+      "dataset_locator": "dataset_root/libero_10-task6-seed3057",
+      "elapsed_seconds": 22.40962328389287,
+      "episode_horizon": 520,
+      "episode_id": "libero_10-task6-seed3057",
+      "frame_count": 264,
+      "instruction": "put the white mug on the plate and put the chocolate pudding to the right of the plate",
+      "metadata_identities": {
+        "episode_parquet_files": [
+          {
+            "bytes": 66663,
+            "relative_path": "meta/episodes/chunk-000/file-000.parquet",
+            "sha256": "b3238ed13ae921090d6220b4a2671dcbf8b3b14376271e8ae4d24b863639924f"
+          }
+        ],
+        "info_json": {
+          "bytes": 3670,
+          "sha256": "210e5c8195aafa632296057504168af6de95cdfaaa2246315f1608e12a68e6d5"
+        },
+        "tasks_parquet": {
+          "bytes": 2412,
+          "sha256": "31d3541bd7f3c69ce9bbb639a4c1a9606c2ace5b7aab0fb581e89faf4975d16d"
+        }
+      },
+      "phase": "primary_pilot",
+      "policy_backward_calls": 0,
+      "policy_config_sha256": "c716d30311fd98d927154b5f49a675579091065686b8cccf5e463a19c2a8d393",
+      "policy_optimizer_steps": 0,
+      "policy_queries": 38,
+      "policy_sampling_seed": 423057,
+      "processor_revision": "735d9f692981e286ade093b5046627eda876e5d0",
+      "reload_validation": {
+        "completeness": 1.0,
+        "frames_expected": 264,
+        "frames_reloaded": 264,
+        "status": "pass"
+      },
+      "seed": 3057,
+      "sidecar_locator": "sidecar_root/libero_10-task6-seed3057.jsonl",
+      "success": true,
+      "suite": "libero_10",
+      "task_id": 6,
+      "task_name": "LIVING_ROOM_SCENE6_put_the_white_mug_on_the_plate_and_put_the_chocolate_pudding_to_the_right_of_the_plate",
+      "termination_reason": "success"
+    },
+    {
+      "action_is_pad_semantic": "false_for_every_executed_step",
+      "action_mask_semantic": "not_emitted_by_native_inference",
+      "checkpoint_revision": "735d9f692981e286ade093b5046627eda876e5d0",
+      "dataset_locator": "dataset_root/libero_10-task6-seed3058",
+      "elapsed_seconds": 37.746283169835806,
+      "episode_horizon": 520,
+      "episode_id": "libero_10-task6-seed3058",
+      "frame_count": 520,
+      "instruction": "put the white mug on the plate and put the chocolate pudding to the right of the plate",
+      "metadata_identities": {
+        "episode_parquet_files": [
+          {
+            "bytes": 66640,
+            "relative_path": "meta/episodes/chunk-000/file-000.parquet",
+            "sha256": "a02a01caeae079cdcb13a3724760ac4788e291e77740920eb34c36491e2feddf"
+          }
+        ],
+        "info_json": {
+          "bytes": 3670,
+          "sha256": "e33a732644bff5f1a7f9b3dc8a40d1f708cbdd65ba0878a130927404e9ac7ef3"
+        },
+        "tasks_parquet": {
+          "bytes": 2412,
+          "sha256": "31d3541bd7f3c69ce9bbb639a4c1a9606c2ace5b7aab0fb581e89faf4975d16d"
+        }
+      },
+      "phase": "primary_pilot",
+      "policy_backward_calls": 0,
+      "policy_config_sha256": "c716d30311fd98d927154b5f49a675579091065686b8cccf5e463a19c2a8d393",
+      "policy_optimizer_steps": 0,
+      "policy_queries": 75,
+      "policy_sampling_seed": 423058,
+      "processor_revision": "735d9f692981e286ade093b5046627eda876e5d0",
+      "reload_validation": {
+        "completeness": 1.0,
+        "frames_expected": 520,
+        "frames_reloaded": 520,
+        "status": "pass"
+      },
+      "seed": 3058,
+      "sidecar_locator": "sidecar_root/libero_10-task6-seed3058.jsonl",
+      "success": false,
+      "suite": "libero_10",
+      "task_id": 6,
+      "task_name": "LIVING_ROOM_SCENE6_put_the_white_mug_on_the_plate_and_put_the_chocolate_pudding_to_the_right_of_the_plate",
+      "termination_reason": "horizon_exhausted"
+    },
+    {
+      "action_is_pad_semantic": "false_for_every_executed_step",
+      "action_mask_semantic": "not_emitted_by_native_inference",
+      "checkpoint_revision": "735d9f692981e286ade093b5046627eda876e5d0",
+      "dataset_locator": "dataset_root/libero_10-task6-seed3059",
+      "elapsed_seconds": 38.16001075133681,
+      "episode_horizon": 520,
+      "episode_id": "libero_10-task6-seed3059",
+      "frame_count": 520,
+      "instruction": "put the white mug on the plate and put the chocolate pudding to the right of the plate",
+      "metadata_identities": {
+        "episode_parquet_files": [
+          {
+            "bytes": 66649,
+            "relative_path": "meta/episodes/chunk-000/file-000.parquet",
+            "sha256": "fcb6b6778e41bc38b8958fee27cca98b3345e90b10f560b3c8fe9651e3c93eb6"
+          }
+        ],
+        "info_json": {
+          "bytes": 3670,
+          "sha256": "e33a732644bff5f1a7f9b3dc8a40d1f708cbdd65ba0878a130927404e9ac7ef3"
+        },
+        "tasks_parquet": {
+          "bytes": 2412,
+          "sha256": "31d3541bd7f3c69ce9bbb639a4c1a9606c2ace5b7aab0fb581e89faf4975d16d"
+        }
+      },
+      "phase": "primary_pilot",
+      "policy_backward_calls": 0,
+      "policy_config_sha256": "c716d30311fd98d927154b5f49a675579091065686b8cccf5e463a19c2a8d393",
+      "policy_optimizer_steps": 0,
+      "policy_queries": 75,
+      "policy_sampling_seed": 423059,
+      "processor_revision": "735d9f692981e286ade093b5046627eda876e5d0",
+      "reload_validation": {
+        "completeness": 1.0,
+        "frames_expected": 520,
+        "frames_reloaded": 520,
+        "status": "pass"
+      },
+      "seed": 3059,
+      "sidecar_locator": "sidecar_root/libero_10-task6-seed3059.jsonl",
+      "success": false,
+      "suite": "libero_10",
+      "task_id": 6,
+      "task_name": "LIVING_ROOM_SCENE6_put_the_white_mug_on_the_plate_and_put_the_chocolate_pudding_to_the_right_of_the_plate",
+      "termination_reason": "horizon_exhausted"
+    },
+    {
+      "action_is_pad_semantic": "false_for_every_executed_step",
+      "action_mask_semantic": "not_emitted_by_native_inference",
+      "checkpoint_revision": "735d9f692981e286ade093b5046627eda876e5d0",
+      "dataset_locator": "dataset_root/libero_10-task7-seed3040",
+      "elapsed_seconds": 20.97163301706314,
+      "episode_horizon": 520,
+      "episode_id": "libero_10-task7-seed3040",
+      "frame_count": 231,
+      "instruction": "put both the alphabet soup and the cream cheese box in the basket",
+      "metadata_identities": {
+        "episode_parquet_files": [
+          {
+            "bytes": 66543,
+            "relative_path": "meta/episodes/chunk-000/file-000.parquet",
+            "sha256": "3e6b139ed77cc67ef5ab7d2c051ab762f5742019d0370a00c2710cc8b45cbc4f"
+          }
+        ],
+        "info_json": {
+          "bytes": 3670,
+          "sha256": "72dd30f0585ec142580dea701cd0905d7fa854256b47a948b6e9d2688f781d7e"
+        },
+        "tasks_parquet": {
+          "bytes": 2317,
+          "sha256": "8bf26246e4234a9d14543c36e207ac2e5753cf8bfccdd1d092aa63c8a5258e10"
+        }
+      },
+      "phase": "primary_pilot",
+      "policy_backward_calls": 0,
+      "policy_config_sha256": "c716d30311fd98d927154b5f49a675579091065686b8cccf5e463a19c2a8d393",
+      "policy_optimizer_steps": 0,
+      "policy_queries": 33,
+      "policy_sampling_seed": 423040,
+      "processor_revision": "735d9f692981e286ade093b5046627eda876e5d0",
+      "reload_validation": {
+        "completeness": 1.0,
+        "frames_expected": 231,
+        "frames_reloaded": 231,
+        "status": "pass"
+      },
+      "seed": 3040,
+      "sidecar_locator": "sidecar_root/libero_10-task7-seed3040.jsonl",
+      "success": true,
+      "suite": "libero_10",
+      "task_id": 7,
+      "task_name": "LIVING_ROOM_SCENE1_put_both_the_alphabet_soup_and_the_cream_cheese_box_in_the_basket",
+      "termination_reason": "success"
+    },
+    {
+      "action_is_pad_semantic": "false_for_every_executed_step",
+      "action_mask_semantic": "not_emitted_by_native_inference",
+      "checkpoint_revision": "735d9f692981e286ade093b5046627eda876e5d0",
+      "dataset_locator": "dataset_root/libero_10-task7-seed3041",
+      "elapsed_seconds": 20.53867806494236,
+      "episode_horizon": 520,
+      "episode_id": "libero_10-task7-seed3041",
+      "frame_count": 236,
+      "instruction": "put both the alphabet soup and the cream cheese box in the basket",
+      "metadata_identities": {
+        "episode_parquet_files": [
+          {
+            "bytes": 66538,
+            "relative_path": "meta/episodes/chunk-000/file-000.parquet",
+            "sha256": "39e86c4cc418df34d0dc7d38cc39b34c2915eed877c89927ae2adf8cd59757ca"
+          }
+        ],
+        "info_json": {
+          "bytes": 3670,
+          "sha256": "a72a6c034de5926b8baf949bee85ffa513e83becb47e18929eb4fc1981a0b25b"
+        },
+        "tasks_parquet": {
+          "bytes": 2317,
+          "sha256": "8bf26246e4234a9d14543c36e207ac2e5753cf8bfccdd1d092aa63c8a5258e10"
+        }
+      },
+      "phase": "primary_pilot",
+      "policy_backward_calls": 0,
+      "policy_config_sha256": "c716d30311fd98d927154b5f49a675579091065686b8cccf5e463a19c2a8d393",
+      "policy_optimizer_steps": 0,
+      "policy_queries": 34,
+      "policy_sampling_seed": 423041,
+      "processor_revision": "735d9f692981e286ade093b5046627eda876e5d0",
+      "reload_validation": {
+        "completeness": 1.0,
+        "frames_expected": 236,
+        "frames_reloaded": 236,
+        "status": "pass"
+      },
+      "seed": 3041,
+      "sidecar_locator": "sidecar_root/libero_10-task7-seed3041.jsonl",
+      "success": true,
+      "suite": "libero_10",
+      "task_id": 7,
+      "task_name": "LIVING_ROOM_SCENE1_put_both_the_alphabet_soup_and_the_cream_cheese_box_in_the_basket",
+      "termination_reason": "success"
+    },
+    {
+      "action_is_pad_semantic": "false_for_every_executed_step",
+      "action_mask_semantic": "not_emitted_by_native_inference",
+      "checkpoint_revision": "735d9f692981e286ade093b5046627eda876e5d0",
+      "dataset_locator": "dataset_root/libero_10-task7-seed3042",
+      "elapsed_seconds": 20.501258000731468,
+      "episode_horizon": 520,
+      "episode_id": "libero_10-task7-seed3042",
+      "frame_count": 229,
+      "instruction": "put both the alphabet soup and the cream cheese box in the basket",
+      "metadata_identities": {
+        "episode_parquet_files": [
+          {
+            "bytes": 66536,
+            "relative_path": "meta/episodes/chunk-000/file-000.parquet",
+            "sha256": "907e6c3db7d89436f202c30819088607ea1385b128e1d6155313fdc5829d3030"
+          }
+        ],
+        "info_json": {
+          "bytes": 3670,
+          "sha256": "2090616866e9e1f6f0dfd599cc03ab5cdd28b6a7807b194b6c0f4c0d0f38991b"
+        },
+        "tasks_parquet": {
+          "bytes": 2317,
+          "sha256": "8bf26246e4234a9d14543c36e207ac2e5753cf8bfccdd1d092aa63c8a5258e10"
+        }
+      },
+      "phase": "primary_pilot",
+      "policy_backward_calls": 0,
+      "policy_config_sha256": "c716d30311fd98d927154b5f49a675579091065686b8cccf5e463a19c2a8d393",
+      "policy_optimizer_steps": 0,
+      "policy_queries": 33,
+      "policy_sampling_seed": 423042,
+      "processor_revision": "735d9f692981e286ade093b5046627eda876e5d0",
+      "reload_validation": {
+        "completeness": 1.0,
+        "frames_expected": 229,
+        "frames_reloaded": 229,
+        "status": "pass"
+      },
+      "seed": 3042,
+      "sidecar_locator": "sidecar_root/libero_10-task7-seed3042.jsonl",
+      "success": true,
+      "suite": "libero_10",
+      "task_id": 7,
+      "task_name": "LIVING_ROOM_SCENE1_put_both_the_alphabet_soup_and_the_cream_cheese_box_in_the_basket",
+      "termination_reason": "success"
+    },
+    {
+      "action_is_pad_semantic": "false_for_every_executed_step",
+      "action_mask_semantic": "not_emitted_by_native_inference",
+      "checkpoint_revision": "735d9f692981e286ade093b5046627eda876e5d0",
+      "dataset_locator": "dataset_root/libero_10-task7-seed3043",
+      "elapsed_seconds": 20.803161289542913,
+      "episode_horizon": 520,
+      "episode_id": "libero_10-task7-seed3043",
+      "frame_count": 231,
+      "instruction": "put both the alphabet soup and the cream cheese box in the basket",
+      "metadata_identities": {
+        "episode_parquet_files": [
+          {
+            "bytes": 66550,
+            "relative_path": "meta/episodes/chunk-000/file-000.parquet",
+            "sha256": "3528b6423b2195930582b6e98865220aff3685ad46d8934c513dbaa519f7eaec"
+          }
+        ],
+        "info_json": {
+          "bytes": 3670,
+          "sha256": "72dd30f0585ec142580dea701cd0905d7fa854256b47a948b6e9d2688f781d7e"
+        },
+        "tasks_parquet": {
+          "bytes": 2317,
+          "sha256": "8bf26246e4234a9d14543c36e207ac2e5753cf8bfccdd1d092aa63c8a5258e10"
+        }
+      },
+      "phase": "primary_pilot",
+      "policy_backward_calls": 0,
+      "policy_config_sha256": "c716d30311fd98d927154b5f49a675579091065686b8cccf5e463a19c2a8d393",
+      "policy_optimizer_steps": 0,
+      "policy_queries": 33,
+      "policy_sampling_seed": 423043,
+      "processor_revision": "735d9f692981e286ade093b5046627eda876e5d0",
+      "reload_validation": {
+        "completeness": 1.0,
+        "frames_expected": 231,
+        "frames_reloaded": 231,
+        "status": "pass"
+      },
+      "seed": 3043,
+      "sidecar_locator": "sidecar_root/libero_10-task7-seed3043.jsonl",
+      "success": true,
+      "suite": "libero_10",
+      "task_id": 7,
+      "task_name": "LIVING_ROOM_SCENE1_put_both_the_alphabet_soup_and_the_cream_cheese_box_in_the_basket",
+      "termination_reason": "success"
+    },
+    {
+      "action_is_pad_semantic": "false_for_every_executed_step",
+      "action_mask_semantic": "not_emitted_by_native_inference",
+      "checkpoint_revision": "735d9f692981e286ade093b5046627eda876e5d0",
+      "dataset_locator": "dataset_root/libero_10-task7-seed3044",
+      "elapsed_seconds": 20.976724699139595,
+      "episode_horizon": 520,
+      "episode_id": "libero_10-task7-seed3044",
+      "frame_count": 231,
+      "instruction": "put both the alphabet soup and the cream cheese box in the basket",
+      "metadata_identities": {
+        "episode_parquet_files": [
+          {
+            "bytes": 66539,
+            "relative_path": "meta/episodes/chunk-000/file-000.parquet",
+            "sha256": "e89a169061b6b95721e71c469bd044e45974b978b2efe1cf68ed8e9807e0b07d"
+          }
+        ],
+        "info_json": {
+          "bytes": 3670,
+          "sha256": "72dd30f0585ec142580dea701cd0905d7fa854256b47a948b6e9d2688f781d7e"
+        },
+        "tasks_parquet": {
+          "bytes": 2317,
+          "sha256": "8bf26246e4234a9d14543c36e207ac2e5753cf8bfccdd1d092aa63c8a5258e10"
+        }
+      },
+      "phase": "primary_pilot",
+      "policy_backward_calls": 0,
+      "policy_config_sha256": "c716d30311fd98d927154b5f49a675579091065686b8cccf5e463a19c2a8d393",
+      "policy_optimizer_steps": 0,
+      "policy_queries": 33,
+      "policy_sampling_seed": 423044,
+      "processor_revision": "735d9f692981e286ade093b5046627eda876e5d0",
+      "reload_validation": {
+        "completeness": 1.0,
+        "frames_expected": 231,
+        "frames_reloaded": 231,
+        "status": "pass"
+      },
+      "seed": 3044,
+      "sidecar_locator": "sidecar_root/libero_10-task7-seed3044.jsonl",
+      "success": true,
+      "suite": "libero_10",
+      "task_id": 7,
+      "task_name": "LIVING_ROOM_SCENE1_put_both_the_alphabet_soup_and_the_cream_cheese_box_in_the_basket",
+      "termination_reason": "success"
+    },
+    {
+      "action_is_pad_semantic": "false_for_every_executed_step",
+      "action_mask_semantic": "not_emitted_by_native_inference",
+      "checkpoint_revision": "735d9f692981e286ade093b5046627eda876e5d0",
+      "dataset_locator": "dataset_root/libero_10-task7-seed3045",
+      "elapsed_seconds": 20.79415139555931,
+      "episode_horizon": 520,
+      "episode_id": "libero_10-task7-seed3045",
+      "frame_count": 238,
+      "instruction": "put both the alphabet soup and the cream cheese box in the basket",
+      "metadata_identities": {
+        "episode_parquet_files": [
+          {
+            "bytes": 66539,
+            "relative_path": "meta/episodes/chunk-000/file-000.parquet",
+            "sha256": "e63efecf3fd565274a0dbafb05f4eee0d9da626f7dd93ec58a46f2284c6f9315"
+          }
+        ],
+        "info_json": {
+          "bytes": 3670,
+          "sha256": "96d8ad910872f31695c4112a3f29d220e0c4980bdcb168737c63f0629b18826a"
+        },
+        "tasks_parquet": {
+          "bytes": 2317,
+          "sha256": "8bf26246e4234a9d14543c36e207ac2e5753cf8bfccdd1d092aa63c8a5258e10"
+        }
+      },
+      "phase": "primary_pilot",
+      "policy_backward_calls": 0,
+      "policy_config_sha256": "c716d30311fd98d927154b5f49a675579091065686b8cccf5e463a19c2a8d393",
+      "policy_optimizer_steps": 0,
+      "policy_queries": 34,
+      "policy_sampling_seed": 423045,
+      "processor_revision": "735d9f692981e286ade093b5046627eda876e5d0",
+      "reload_validation": {
+        "completeness": 1.0,
+        "frames_expected": 238,
+        "frames_reloaded": 238,
+        "status": "pass"
+      },
+      "seed": 3045,
+      "sidecar_locator": "sidecar_root/libero_10-task7-seed3045.jsonl",
+      "success": true,
+      "suite": "libero_10",
+      "task_id": 7,
+      "task_name": "LIVING_ROOM_SCENE1_put_both_the_alphabet_soup_and_the_cream_cheese_box_in_the_basket",
+      "termination_reason": "success"
+    },
+    {
+      "action_is_pad_semantic": "false_for_every_executed_step",
+      "action_mask_semantic": "not_emitted_by_native_inference",
+      "checkpoint_revision": "735d9f692981e286ade093b5046627eda876e5d0",
+      "dataset_locator": "dataset_root/libero_10-task7-seed3046",
+      "elapsed_seconds": 20.40872658416629,
+      "episode_horizon": 520,
+      "episode_id": "libero_10-task7-seed3046",
+      "frame_count": 229,
+      "instruction": "put both the alphabet soup and the cream cheese box in the basket",
+      "metadata_identities": {
+        "episode_parquet_files": [
+          {
+            "bytes": 66539,
+            "relative_path": "meta/episodes/chunk-000/file-000.parquet",
+            "sha256": "de4831e55b67c5c3d9f8174cec5baa0a0afcc0abd7ce5756a76752702ffb8125"
+          }
+        ],
+        "info_json": {
+          "bytes": 3670,
+          "sha256": "2090616866e9e1f6f0dfd599cc03ab5cdd28b6a7807b194b6c0f4c0d0f38991b"
+        },
+        "tasks_parquet": {
+          "bytes": 2317,
+          "sha256": "8bf26246e4234a9d14543c36e207ac2e5753cf8bfccdd1d092aa63c8a5258e10"
+        }
+      },
+      "phase": "primary_pilot",
+      "policy_backward_calls": 0,
+      "policy_config_sha256": "c716d30311fd98d927154b5f49a675579091065686b8cccf5e463a19c2a8d393",
+      "policy_optimizer_steps": 0,
+      "policy_queries": 33,
+      "policy_sampling_seed": 423046,
+      "processor_revision": "735d9f692981e286ade093b5046627eda876e5d0",
+      "reload_validation": {
+        "completeness": 1.0,
+        "frames_expected": 229,
+        "frames_reloaded": 229,
+        "status": "pass"
+      },
+      "seed": 3046,
+      "sidecar_locator": "sidecar_root/libero_10-task7-seed3046.jsonl",
+      "success": true,
+      "suite": "libero_10",
+      "task_id": 7,
+      "task_name": "LIVING_ROOM_SCENE1_put_both_the_alphabet_soup_and_the_cream_cheese_box_in_the_basket",
+      "termination_reason": "success"
+    },
+    {
+      "action_is_pad_semantic": "false_for_every_executed_step",
+      "action_mask_semantic": "not_emitted_by_native_inference",
+      "checkpoint_revision": "735d9f692981e286ade093b5046627eda876e5d0",
+      "dataset_locator": "dataset_root/libero_10-task7-seed3047",
+      "elapsed_seconds": 21.854812141507864,
+      "episode_horizon": 520,
+      "episode_id": "libero_10-task7-seed3047",
+      "frame_count": 237,
+      "instruction": "put both the alphabet soup and the cream cheese box in the basket",
+      "metadata_identities": {
+        "episode_parquet_files": [
+          {
+            "bytes": 66534,
+            "relative_path": "meta/episodes/chunk-000/file-000.parquet",
+            "sha256": "5a3d65aa0d08b26d08ef32967fbff54149bea1fec8363bc8be242bec08e45dce"
+          }
+        ],
+        "info_json": {
+          "bytes": 3670,
+          "sha256": "b5dbf303a29d2cd6fa6bf2b993727980c337bcac4698d4387cb0e6217c9a4abf"
+        },
+        "tasks_parquet": {
+          "bytes": 2317,
+          "sha256": "8bf26246e4234a9d14543c36e207ac2e5753cf8bfccdd1d092aa63c8a5258e10"
+        }
+      },
+      "phase": "primary_pilot",
+      "policy_backward_calls": 0,
+      "policy_config_sha256": "c716d30311fd98d927154b5f49a675579091065686b8cccf5e463a19c2a8d393",
+      "policy_optimizer_steps": 0,
+      "policy_queries": 34,
+      "policy_sampling_seed": 423047,
+      "processor_revision": "735d9f692981e286ade093b5046627eda876e5d0",
+      "reload_validation": {
+        "completeness": 1.0,
+        "frames_expected": 237,
+        "frames_reloaded": 237,
+        "status": "pass"
+      },
+      "seed": 3047,
+      "sidecar_locator": "sidecar_root/libero_10-task7-seed3047.jsonl",
+      "success": true,
+      "suite": "libero_10",
+      "task_id": 7,
+      "task_name": "LIVING_ROOM_SCENE1_put_both_the_alphabet_soup_and_the_cream_cheese_box_in_the_basket",
+      "termination_reason": "success"
+    },
+    {
+      "action_is_pad_semantic": "false_for_every_executed_step",
+      "action_mask_semantic": "not_emitted_by_native_inference",
+      "checkpoint_revision": "735d9f692981e286ade093b5046627eda876e5d0",
+      "dataset_locator": "dataset_root/libero_10-task7-seed3048",
+      "elapsed_seconds": 20.63679840415716,
+      "episode_horizon": 520,
+      "episode_id": "libero_10-task7-seed3048",
+      "frame_count": 231,
+      "instruction": "put both the alphabet soup and the cream cheese box in the basket",
+      "metadata_identities": {
+        "episode_parquet_files": [
+          {
+            "bytes": 66536,
+            "relative_path": "meta/episodes/chunk-000/file-000.parquet",
+            "sha256": "1049899c4a019fddae796f1c17a44023e881c4a5e6c48ddead70ea56d805292b"
+          }
+        ],
+        "info_json": {
+          "bytes": 3670,
+          "sha256": "72dd30f0585ec142580dea701cd0905d7fa854256b47a948b6e9d2688f781d7e"
+        },
+        "tasks_parquet": {
+          "bytes": 2317,
+          "sha256": "8bf26246e4234a9d14543c36e207ac2e5753cf8bfccdd1d092aa63c8a5258e10"
+        }
+      },
+      "phase": "primary_pilot",
+      "policy_backward_calls": 0,
+      "policy_config_sha256": "c716d30311fd98d927154b5f49a675579091065686b8cccf5e463a19c2a8d393",
+      "policy_optimizer_steps": 0,
+      "policy_queries": 33,
+      "policy_sampling_seed": 423048,
+      "processor_revision": "735d9f692981e286ade093b5046627eda876e5d0",
+      "reload_validation": {
+        "completeness": 1.0,
+        "frames_expected": 231,
+        "frames_reloaded": 231,
+        "status": "pass"
+      },
+      "seed": 3048,
+      "sidecar_locator": "sidecar_root/libero_10-task7-seed3048.jsonl",
+      "success": true,
+      "suite": "libero_10",
+      "task_id": 7,
+      "task_name": "LIVING_ROOM_SCENE1_put_both_the_alphabet_soup_and_the_cream_cheese_box_in_the_basket",
+      "termination_reason": "success"
+    },
+    {
+      "action_is_pad_semantic": "false_for_every_executed_step",
+      "action_mask_semantic": "not_emitted_by_native_inference",
+      "checkpoint_revision": "735d9f692981e286ade093b5046627eda876e5d0",
+      "dataset_locator": "dataset_root/libero_10-task7-seed3049",
+      "elapsed_seconds": 20.13174533843994,
+      "episode_horizon": 520,
+      "episode_id": "libero_10-task7-seed3049",
+      "frame_count": 229,
+      "instruction": "put both the alphabet soup and the cream cheese box in the basket",
+      "metadata_identities": {
+        "episode_parquet_files": [
+          {
+            "bytes": 66541,
+            "relative_path": "meta/episodes/chunk-000/file-000.parquet",
+            "sha256": "096e69f2cc01a388a85e9584ab1fa1c70d13683f27dcb04fc03b3db0e28dc94f"
+          }
+        ],
+        "info_json": {
+          "bytes": 3670,
+          "sha256": "2090616866e9e1f6f0dfd599cc03ab5cdd28b6a7807b194b6c0f4c0d0f38991b"
+        },
+        "tasks_parquet": {
+          "bytes": 2317,
+          "sha256": "8bf26246e4234a9d14543c36e207ac2e5753cf8bfccdd1d092aa63c8a5258e10"
+        }
+      },
+      "phase": "primary_pilot",
+      "policy_backward_calls": 0,
+      "policy_config_sha256": "c716d30311fd98d927154b5f49a675579091065686b8cccf5e463a19c2a8d393",
+      "policy_optimizer_steps": 0,
+      "policy_queries": 33,
+      "policy_sampling_seed": 423049,
+      "processor_revision": "735d9f692981e286ade093b5046627eda876e5d0",
+      "reload_validation": {
+        "completeness": 1.0,
+        "frames_expected": 229,
+        "frames_reloaded": 229,
+        "status": "pass"
+      },
+      "seed": 3049,
+      "sidecar_locator": "sidecar_root/libero_10-task7-seed3049.jsonl",
+      "success": true,
+      "suite": "libero_10",
+      "task_id": 7,
+      "task_name": "LIVING_ROOM_SCENE1_put_both_the_alphabet_soup_and_the_cream_cheese_box_in_the_basket",
+      "termination_reason": "success"
+    },
+    {
+      "action_is_pad_semantic": "false_for_every_executed_step",
+      "action_mask_semantic": "not_emitted_by_native_inference",
+      "checkpoint_revision": "735d9f692981e286ade093b5046627eda876e5d0",
+      "dataset_locator": "dataset_root/libero_10-task8-seed3020",
+      "elapsed_seconds": 25.78283118829131,
+      "episode_horizon": 520,
+      "episode_id": "libero_10-task8-seed3020",
+      "frame_count": 367,
+      "instruction": "put both moka pots on the stove",
+      "metadata_identities": {
+        "episode_parquet_files": [
+          {
+            "bytes": 66381,
+            "relative_path": "meta/episodes/chunk-000/file-000.parquet",
+            "sha256": "7052d56e18182e058bc2db712146e19fe5f6f4c90168c39a4719a865c6c41091"
+          }
+        ],
+        "info_json": {
+          "bytes": 3670,
+          "sha256": "206797c918b8f14d6dfa94e0fa871e548ee9d03141d1b2ca19581396513f89ec"
+        },
+        "tasks_parquet": {
+          "bytes": 2145,
+          "sha256": "05618c684023185380df2e088bedcf6bb39b19b41942a01da2fa010c1b80da2d"
+        }
+      },
+      "phase": "primary_pilot",
+      "policy_backward_calls": 0,
+      "policy_config_sha256": "c716d30311fd98d927154b5f49a675579091065686b8cccf5e463a19c2a8d393",
+      "policy_optimizer_steps": 0,
+      "policy_queries": 53,
+      "policy_sampling_seed": 423020,
+      "processor_revision": "735d9f692981e286ade093b5046627eda876e5d0",
+      "reload_validation": {
+        "completeness": 1.0,
+        "frames_expected": 367,
+        "frames_reloaded": 367,
+        "status": "pass"
+      },
+      "seed": 3020,
+      "sidecar_locator": "sidecar_root/libero_10-task8-seed3020.jsonl",
+      "success": true,
+      "suite": "libero_10",
+      "task_id": 8,
+      "task_name": "KITCHEN_SCENE8_put_both_moka_pots_on_the_stove",
+      "termination_reason": "success"
+    },
+    {
+      "action_is_pad_semantic": "false_for_every_executed_step",
+      "action_mask_semantic": "not_emitted_by_native_inference",
+      "checkpoint_revision": "735d9f692981e286ade093b5046627eda876e5d0",
+      "dataset_locator": "dataset_root/libero_10-task8-seed3021",
+      "elapsed_seconds": 29.048175487667322,
+      "episode_horizon": 520,
+      "episode_id": "libero_10-task8-seed3021",
+      "frame_count": 393,
+      "instruction": "put both moka pots on the stove",
+      "metadata_identities": {
+        "episode_parquet_files": [
+          {
+            "bytes": 66373,
+            "relative_path": "meta/episodes/chunk-000/file-000.parquet",
+            "sha256": "64a325e709a42b86626cce1e4c4feeb1916d57cc9156981a19955d4484670255"
+          }
+        ],
+        "info_json": {
+          "bytes": 3670,
+          "sha256": "8a3044ff312f7aa84401732a2608da45232768ab949c07a89ce149be9bfbba51"
+        },
+        "tasks_parquet": {
+          "bytes": 2145,
+          "sha256": "05618c684023185380df2e088bedcf6bb39b19b41942a01da2fa010c1b80da2d"
+        }
+      },
+      "phase": "primary_pilot",
+      "policy_backward_calls": 0,
+      "policy_config_sha256": "c716d30311fd98d927154b5f49a675579091065686b8cccf5e463a19c2a8d393",
+      "policy_optimizer_steps": 0,
+      "policy_queries": 57,
+      "policy_sampling_seed": 423021,
+      "processor_revision": "735d9f692981e286ade093b5046627eda876e5d0",
+      "reload_validation": {
+        "completeness": 1.0,
+        "frames_expected": 393,
+        "frames_reloaded": 393,
+        "status": "pass"
+      },
+      "seed": 3021,
+      "sidecar_locator": "sidecar_root/libero_10-task8-seed3021.jsonl",
+      "success": true,
+      "suite": "libero_10",
+      "task_id": 8,
+      "task_name": "KITCHEN_SCENE8_put_both_moka_pots_on_the_stove",
+      "termination_reason": "success"
+    },
+    {
+      "action_is_pad_semantic": "false_for_every_executed_step",
+      "action_mask_semantic": "not_emitted_by_native_inference",
+      "checkpoint_revision": "735d9f692981e286ade093b5046627eda876e5d0",
+      "dataset_locator": "dataset_root/libero_10-task8-seed3022",
+      "elapsed_seconds": 27.84432427585125,
+      "episode_horizon": 520,
+      "episode_id": "libero_10-task8-seed3022",
+      "frame_count": 374,
+      "instruction": "put both moka pots on the stove",
+      "metadata_identities": {
+        "episode_parquet_files": [
+          {
+            "bytes": 66375,
+            "relative_path": "meta/episodes/chunk-000/file-000.parquet",
+            "sha256": "94e159ac7bebdbcb4a7e358ec9fe9e7a873fe934045f132faa89204abf2b096b"
+          }
+        ],
+        "info_json": {
+          "bytes": 3670,
+          "sha256": "802f93560f152244ae92772f2198c96bea1d32a6d36744b2a946139125680ea5"
+        },
+        "tasks_parquet": {
+          "bytes": 2145,
+          "sha256": "05618c684023185380df2e088bedcf6bb39b19b41942a01da2fa010c1b80da2d"
+        }
+      },
+      "phase": "primary_pilot",
+      "policy_backward_calls": 0,
+      "policy_config_sha256": "c716d30311fd98d927154b5f49a675579091065686b8cccf5e463a19c2a8d393",
+      "policy_optimizer_steps": 0,
+      "policy_queries": 54,
+      "policy_sampling_seed": 423022,
+      "processor_revision": "735d9f692981e286ade093b5046627eda876e5d0",
+      "reload_validation": {
+        "completeness": 1.0,
+        "frames_expected": 374,
+        "frames_reloaded": 374,
+        "status": "pass"
+      },
+      "seed": 3022,
+      "sidecar_locator": "sidecar_root/libero_10-task8-seed3022.jsonl",
+      "success": true,
+      "suite": "libero_10",
+      "task_id": 8,
+      "task_name": "KITCHEN_SCENE8_put_both_moka_pots_on_the_stove",
+      "termination_reason": "success"
+    },
+    {
+      "action_is_pad_semantic": "false_for_every_executed_step",
+      "action_mask_semantic": "not_emitted_by_native_inference",
+      "checkpoint_revision": "735d9f692981e286ade093b5046627eda876e5d0",
+      "dataset_locator": "dataset_root/libero_10-task8-seed3023",
+      "elapsed_seconds": 26.642635241150856,
+      "episode_horizon": 520,
+      "episode_id": "libero_10-task8-seed3023",
+      "frame_count": 372,
+      "instruction": "put both moka pots on the stove",
+      "metadata_identities": {
+        "episode_parquet_files": [
+          {
+            "bytes": 66376,
+            "relative_path": "meta/episodes/chunk-000/file-000.parquet",
+            "sha256": "225d643a10b953e52102bcb389d318c6cfab1dc8ff4bf87238f76eeea46a4eae"
+          }
+        ],
+        "info_json": {
+          "bytes": 3670,
+          "sha256": "9bb38b8b6d2eecdc199b169f88c5e2bc9fd7da9c9311183b5fb197a434f0ef04"
+        },
+        "tasks_parquet": {
+          "bytes": 2145,
+          "sha256": "05618c684023185380df2e088bedcf6bb39b19b41942a01da2fa010c1b80da2d"
+        }
+      },
+      "phase": "primary_pilot",
+      "policy_backward_calls": 0,
+      "policy_config_sha256": "c716d30311fd98d927154b5f49a675579091065686b8cccf5e463a19c2a8d393",
+      "policy_optimizer_steps": 0,
+      "policy_queries": 54,
+      "policy_sampling_seed": 423023,
+      "processor_revision": "735d9f692981e286ade093b5046627eda876e5d0",
+      "reload_validation": {
+        "completeness": 1.0,
+        "frames_expected": 372,
+        "frames_reloaded": 372,
+        "status": "pass"
+      },
+      "seed": 3023,
+      "sidecar_locator": "sidecar_root/libero_10-task8-seed3023.jsonl",
+      "success": true,
+      "suite": "libero_10",
+      "task_id": 8,
+      "task_name": "KITCHEN_SCENE8_put_both_moka_pots_on_the_stove",
+      "termination_reason": "success"
+    },
+    {
+      "action_is_pad_semantic": "false_for_every_executed_step",
+      "action_mask_semantic": "not_emitted_by_native_inference",
+      "checkpoint_revision": "735d9f692981e286ade093b5046627eda876e5d0",
+      "dataset_locator": "dataset_root/libero_10-task8-seed3024",
+      "elapsed_seconds": 26.676582399755716,
+      "episode_horizon": 520,
+      "episode_id": "libero_10-task8-seed3024",
+      "frame_count": 362,
+      "instruction": "put both moka pots on the stove",
+      "metadata_identities": {
+        "episode_parquet_files": [
+          {
+            "bytes": 66378,
+            "relative_path": "meta/episodes/chunk-000/file-000.parquet",
+            "sha256": "0923fe04a891c4e06e6a24f3fbeff08ebd682cdbbac8c1485b51e2ddc8e02c67"
+          }
+        ],
+        "info_json": {
+          "bytes": 3670,
+          "sha256": "03a3f0b2761f50045ec81b99bae203581adb25b2a386b21b6361904c121b7c82"
+        },
+        "tasks_parquet": {
+          "bytes": 2145,
+          "sha256": "05618c684023185380df2e088bedcf6bb39b19b41942a01da2fa010c1b80da2d"
+        }
+      },
+      "phase": "primary_pilot",
+      "policy_backward_calls": 0,
+      "policy_config_sha256": "c716d30311fd98d927154b5f49a675579091065686b8cccf5e463a19c2a8d393",
+      "policy_optimizer_steps": 0,
+      "policy_queries": 52,
+      "policy_sampling_seed": 423024,
+      "processor_revision": "735d9f692981e286ade093b5046627eda876e5d0",
+      "reload_validation": {
+        "completeness": 1.0,
+        "frames_expected": 362,
+        "frames_reloaded": 362,
+        "status": "pass"
+      },
+      "seed": 3024,
+      "sidecar_locator": "sidecar_root/libero_10-task8-seed3024.jsonl",
+      "success": true,
+      "suite": "libero_10",
+      "task_id": 8,
+      "task_name": "KITCHEN_SCENE8_put_both_moka_pots_on_the_stove",
+      "termination_reason": "success"
+    },
+    {
+      "action_is_pad_semantic": "false_for_every_executed_step",
+      "action_mask_semantic": "not_emitted_by_native_inference",
+      "checkpoint_revision": "735d9f692981e286ade093b5046627eda876e5d0",
+      "dataset_locator": "dataset_root/libero_10-task8-seed3025",
+      "elapsed_seconds": 27.7121552079916,
+      "episode_horizon": 520,
+      "episode_id": "libero_10-task8-seed3025",
+      "frame_count": 386,
+      "instruction": "put both moka pots on the stove",
+      "metadata_identities": {
+        "episode_parquet_files": [
+          {
+            "bytes": 66377,
+            "relative_path": "meta/episodes/chunk-000/file-000.parquet",
+            "sha256": "ffc29b4eb213f5ec1ffe7804936f7264480aa28717d8db3d1bf9e7107a6c251a"
+          }
+        ],
+        "info_json": {
+          "bytes": 3670,
+          "sha256": "1ca777b4eb3c175398acf00b49910ffa5930d9bcb938bfec07195c5be939475c"
+        },
+        "tasks_parquet": {
+          "bytes": 2145,
+          "sha256": "05618c684023185380df2e088bedcf6bb39b19b41942a01da2fa010c1b80da2d"
+        }
+      },
+      "phase": "primary_pilot",
+      "policy_backward_calls": 0,
+      "policy_config_sha256": "c716d30311fd98d927154b5f49a675579091065686b8cccf5e463a19c2a8d393",
+      "policy_optimizer_steps": 0,
+      "policy_queries": 56,
+      "policy_sampling_seed": 423025,
+      "processor_revision": "735d9f692981e286ade093b5046627eda876e5d0",
+      "reload_validation": {
+        "completeness": 1.0,
+        "frames_expected": 386,
+        "frames_reloaded": 386,
+        "status": "pass"
+      },
+      "seed": 3025,
+      "sidecar_locator": "sidecar_root/libero_10-task8-seed3025.jsonl",
+      "success": true,
+      "suite": "libero_10",
+      "task_id": 8,
+      "task_name": "KITCHEN_SCENE8_put_both_moka_pots_on_the_stove",
+      "termination_reason": "success"
+    },
+    {
+      "action_is_pad_semantic": "false_for_every_executed_step",
+      "action_mask_semantic": "not_emitted_by_native_inference",
+      "checkpoint_revision": "735d9f692981e286ade093b5046627eda876e5d0",
+      "dataset_locator": "dataset_root/libero_10-task8-seed3026",
+      "elapsed_seconds": 32.88648321852088,
+      "episode_horizon": 520,
+      "episode_id": "libero_10-task8-seed3026",
+      "frame_count": 484,
+      "instruction": "put both moka pots on the stove",
+      "metadata_identities": {
+        "episode_parquet_files": [
+          {
+            "bytes": 66376,
+            "relative_path": "meta/episodes/chunk-000/file-000.parquet",
+            "sha256": "feb95f9d7f79e54b972f090284df7ffde704e9e62502bf97e7bd8a568399589c"
+          }
+        ],
+        "info_json": {
+          "bytes": 3670,
+          "sha256": "5637454216707c3d04940363d4156430d89f77daa0802254f59e91aaeb50b035"
+        },
+        "tasks_parquet": {
+          "bytes": 2145,
+          "sha256": "05618c684023185380df2e088bedcf6bb39b19b41942a01da2fa010c1b80da2d"
+        }
+      },
+      "phase": "primary_pilot",
+      "policy_backward_calls": 0,
+      "policy_config_sha256": "c716d30311fd98d927154b5f49a675579091065686b8cccf5e463a19c2a8d393",
+      "policy_optimizer_steps": 0,
+      "policy_queries": 70,
+      "policy_sampling_seed": 423026,
+      "processor_revision": "735d9f692981e286ade093b5046627eda876e5d0",
+      "reload_validation": {
+        "completeness": 1.0,
+        "frames_expected": 484,
+        "frames_reloaded": 484,
+        "status": "pass"
+      },
+      "seed": 3026,
+      "sidecar_locator": "sidecar_root/libero_10-task8-seed3026.jsonl",
+      "success": true,
+      "suite": "libero_10",
+      "task_id": 8,
+      "task_name": "KITCHEN_SCENE8_put_both_moka_pots_on_the_stove",
+      "termination_reason": "success"
+    },
+    {
+      "action_is_pad_semantic": "false_for_every_executed_step",
+      "action_mask_semantic": "not_emitted_by_native_inference",
+      "checkpoint_revision": "735d9f692981e286ade093b5046627eda876e5d0",
+      "dataset_locator": "dataset_root/libero_10-task8-seed3027",
+      "elapsed_seconds": 26.1824648976326,
+      "episode_horizon": 520,
+      "episode_id": "libero_10-task8-seed3027",
+      "frame_count": 361,
+      "instruction": "put both moka pots on the stove",
+      "metadata_identities": {
+        "episode_parquet_files": [
+          {
+            "bytes": 66371,
+            "relative_path": "meta/episodes/chunk-000/file-000.parquet",
+            "sha256": "72451bdcbdfd12dc6f234450e31160ed3b58c3a702da85bfb2eb876ccfcd5122"
+          }
+        ],
+        "info_json": {
+          "bytes": 3670,
+          "sha256": "96bdc6dd092945745b2c214a81c1c128ec0db82b3effec0eb3b0f2a6098ec5ff"
+        },
+        "tasks_parquet": {
+          "bytes": 2145,
+          "sha256": "05618c684023185380df2e088bedcf6bb39b19b41942a01da2fa010c1b80da2d"
+        }
+      },
+      "phase": "primary_pilot",
+      "policy_backward_calls": 0,
+      "policy_config_sha256": "c716d30311fd98d927154b5f49a675579091065686b8cccf5e463a19c2a8d393",
+      "policy_optimizer_steps": 0,
+      "policy_queries": 52,
+      "policy_sampling_seed": 423027,
+      "processor_revision": "735d9f692981e286ade093b5046627eda876e5d0",
+      "reload_validation": {
+        "completeness": 1.0,
+        "frames_expected": 361,
+        "frames_reloaded": 361,
+        "status": "pass"
+      },
+      "seed": 3027,
+      "sidecar_locator": "sidecar_root/libero_10-task8-seed3027.jsonl",
+      "success": true,
+      "suite": "libero_10",
+      "task_id": 8,
+      "task_name": "KITCHEN_SCENE8_put_both_moka_pots_on_the_stove",
+      "termination_reason": "success"
+    },
+    {
+      "action_is_pad_semantic": "false_for_every_executed_step",
+      "action_mask_semantic": "not_emitted_by_native_inference",
+      "checkpoint_revision": "735d9f692981e286ade093b5046627eda876e5d0",
+      "dataset_locator": "dataset_root/libero_10-task8-seed3028",
+      "elapsed_seconds": 26.687465026974678,
+      "episode_horizon": 520,
+      "episode_id": "libero_10-task8-seed3028",
+      "frame_count": 372,
+      "instruction": "put both moka pots on the stove",
+      "metadata_identities": {
+        "episode_parquet_files": [
+          {
+            "bytes": 66377,
+            "relative_path": "meta/episodes/chunk-000/file-000.parquet",
+            "sha256": "6462a3637db5f9deab8b85244294fd146869aa3e21a30e815901803658f6a351"
+          }
+        ],
+        "info_json": {
+          "bytes": 3670,
+          "sha256": "9bb38b8b6d2eecdc199b169f88c5e2bc9fd7da9c9311183b5fb197a434f0ef04"
+        },
+        "tasks_parquet": {
+          "bytes": 2145,
+          "sha256": "05618c684023185380df2e088bedcf6bb39b19b41942a01da2fa010c1b80da2d"
+        }
+      },
+      "phase": "primary_pilot",
+      "policy_backward_calls": 0,
+      "policy_config_sha256": "c716d30311fd98d927154b5f49a675579091065686b8cccf5e463a19c2a8d393",
+      "policy_optimizer_steps": 0,
+      "policy_queries": 54,
+      "policy_sampling_seed": 423028,
+      "processor_revision": "735d9f692981e286ade093b5046627eda876e5d0",
+      "reload_validation": {
+        "completeness": 1.0,
+        "frames_expected": 372,
+        "frames_reloaded": 372,
+        "status": "pass"
+      },
+      "seed": 3028,
+      "sidecar_locator": "sidecar_root/libero_10-task8-seed3028.jsonl",
+      "success": true,
+      "suite": "libero_10",
+      "task_id": 8,
+      "task_name": "KITCHEN_SCENE8_put_both_moka_pots_on_the_stove",
+      "termination_reason": "success"
+    },
+    {
+      "action_is_pad_semantic": "false_for_every_executed_step",
+      "action_mask_semantic": "not_emitted_by_native_inference",
+      "checkpoint_revision": "735d9f692981e286ade093b5046627eda876e5d0",
+      "dataset_locator": "dataset_root/libero_10-task8-seed3029",
+      "elapsed_seconds": 31.453498139977455,
+      "episode_horizon": 520,
+      "episode_id": "libero_10-task8-seed3029",
+      "frame_count": 450,
+      "instruction": "put both moka pots on the stove",
+      "metadata_identities": {
+        "episode_parquet_files": [
+          {
+            "bytes": 66354,
+            "relative_path": "meta/episodes/chunk-000/file-000.parquet",
+            "sha256": "22c277080da399a4d5bc7b038f9ac084e281ff967902d75ef999e0b2f2b7f4f6"
+          }
+        ],
+        "info_json": {
+          "bytes": 3670,
+          "sha256": "eb8fb657612d2a9d468cc78c472ac8dae6633b8b2ed93de9f1a63bde45b2ca7e"
+        },
+        "tasks_parquet": {
+          "bytes": 2145,
+          "sha256": "05618c684023185380df2e088bedcf6bb39b19b41942a01da2fa010c1b80da2d"
+        }
+      },
+      "phase": "primary_pilot",
+      "policy_backward_calls": 0,
+      "policy_config_sha256": "c716d30311fd98d927154b5f49a675579091065686b8cccf5e463a19c2a8d393",
+      "policy_optimizer_steps": 0,
+      "policy_queries": 65,
+      "policy_sampling_seed": 423029,
+      "processor_revision": "735d9f692981e286ade093b5046627eda876e5d0",
+      "reload_validation": {
+        "completeness": 1.0,
+        "frames_expected": 450,
+        "frames_reloaded": 450,
+        "status": "pass"
+      },
+      "seed": 3029,
+      "sidecar_locator": "sidecar_root/libero_10-task8-seed3029.jsonl",
+      "success": true,
+      "suite": "libero_10",
+      "task_id": 8,
+      "task_name": "KITCHEN_SCENE8_put_both_moka_pots_on_the_stove",
+      "termination_reason": "success"
+    },
+    {
+      "action_is_pad_semantic": "false_for_every_executed_step",
+      "action_mask_semantic": "not_emitted_by_native_inference",
+      "checkpoint_revision": "735d9f692981e286ade093b5046627eda876e5d0",
+      "dataset_locator": "dataset_root/libero_10-task9-seed3010",
+      "elapsed_seconds": 21.22886112704873,
+      "episode_horizon": 520,
+      "episode_id": "libero_10-task9-seed3010",
+      "frame_count": 241,
+      "instruction": "put the yellow and white mug in the microwave and close it",
+      "metadata_identities": {
+        "episode_parquet_files": [
+          {
+            "bytes": 66507,
+            "relative_path": "meta/episodes/chunk-000/file-000.parquet",
+            "sha256": "6cbede74052c7e5234b812a509d5e242faf5cad8c0f13fe8e9fcfa3a38e3223a"
+          }
+        ],
+        "info_json": {
+          "bytes": 3670,
+          "sha256": "54934a9e013543e2818c086d2e2194749913be52678750e96b21d2afda13ddea"
+        },
+        "tasks_parquet": {
+          "bytes": 2278,
+          "sha256": "581cb0e66e4c1f6d6117e934f033dff2bdb4c8c8930108fe01988375ae408ddd"
+        }
+      },
+      "phase": "primary_pilot",
+      "policy_backward_calls": 0,
+      "policy_config_sha256": "c716d30311fd98d927154b5f49a675579091065686b8cccf5e463a19c2a8d393",
+      "policy_optimizer_steps": 0,
+      "policy_queries": 35,
+      "policy_sampling_seed": 423010,
+      "processor_revision": "735d9f692981e286ade093b5046627eda876e5d0",
+      "reload_validation": {
+        "completeness": 1.0,
+        "frames_expected": 241,
+        "frames_reloaded": 241,
+        "status": "pass"
+      },
+      "seed": 3010,
+      "sidecar_locator": "sidecar_root/libero_10-task9-seed3010.jsonl",
+      "success": true,
+      "suite": "libero_10",
+      "task_id": 9,
+      "task_name": "KITCHEN_SCENE6_put_the_yellow_and_white_mug_in_the_microwave_and_close_it",
+      "termination_reason": "success"
+    },
+    {
+      "action_is_pad_semantic": "false_for_every_executed_step",
+      "action_mask_semantic": "not_emitted_by_native_inference",
+      "checkpoint_revision": "735d9f692981e286ade093b5046627eda876e5d0",
+      "dataset_locator": "dataset_root/libero_10-task9-seed3011",
+      "elapsed_seconds": 19.93782301992178,
+      "episode_horizon": 520,
+      "episode_id": "libero_10-task9-seed3011",
+      "frame_count": 247,
+      "instruction": "put the yellow and white mug in the microwave and close it",
+      "metadata_identities": {
+        "episode_parquet_files": [
+          {
+            "bytes": 66520,
+            "relative_path": "meta/episodes/chunk-000/file-000.parquet",
+            "sha256": "e9fa30d82876b67953fc83f736cac002e4eed2841b07cdff552a2589fcaca088"
+          }
+        ],
+        "info_json": {
+          "bytes": 3670,
+          "sha256": "551b5463d4813d4c2db144524350982e0b7ec391511c2afe53ff497f1da2b48f"
+        },
+        "tasks_parquet": {
+          "bytes": 2278,
+          "sha256": "581cb0e66e4c1f6d6117e934f033dff2bdb4c8c8930108fe01988375ae408ddd"
+        }
+      },
+      "phase": "primary_pilot",
+      "policy_backward_calls": 0,
+      "policy_config_sha256": "c716d30311fd98d927154b5f49a675579091065686b8cccf5e463a19c2a8d393",
+      "policy_optimizer_steps": 0,
+      "policy_queries": 36,
+      "policy_sampling_seed": 423011,
+      "processor_revision": "735d9f692981e286ade093b5046627eda876e5d0",
+      "reload_validation": {
+        "completeness": 1.0,
+        "frames_expected": 247,
+        "frames_reloaded": 247,
+        "status": "pass"
+      },
+      "seed": 3011,
+      "sidecar_locator": "sidecar_root/libero_10-task9-seed3011.jsonl",
+      "success": true,
+      "suite": "libero_10",
+      "task_id": 9,
+      "task_name": "KITCHEN_SCENE6_put_the_yellow_and_white_mug_in_the_microwave_and_close_it",
+      "termination_reason": "success"
+    },
+    {
+      "action_is_pad_semantic": "false_for_every_executed_step",
+      "action_mask_semantic": "not_emitted_by_native_inference",
+      "checkpoint_revision": "735d9f692981e286ade093b5046627eda876e5d0",
+      "dataset_locator": "dataset_root/libero_10-task9-seed3012",
+      "elapsed_seconds": 20.23160209879279,
+      "episode_horizon": 520,
+      "episode_id": "libero_10-task9-seed3012",
+      "frame_count": 240,
+      "instruction": "put the yellow and white mug in the microwave and close it",
+      "metadata_identities": {
+        "episode_parquet_files": [
+          {
+            "bytes": 66494,
+            "relative_path": "meta/episodes/chunk-000/file-000.parquet",
+            "sha256": "7686c2e864899e84c1a69eb9957ba2e4a36ec62d23bb34ca56fdf8a783ef7bbe"
+          }
+        ],
+        "info_json": {
+          "bytes": 3670,
+          "sha256": "5dc104d84aa8c0aa674c657795fdde8b32f71d973f3ed85f647c799442ef5c73"
+        },
+        "tasks_parquet": {
+          "bytes": 2278,
+          "sha256": "581cb0e66e4c1f6d6117e934f033dff2bdb4c8c8930108fe01988375ae408ddd"
+        }
+      },
+      "phase": "primary_pilot",
+      "policy_backward_calls": 0,
+      "policy_config_sha256": "c716d30311fd98d927154b5f49a675579091065686b8cccf5e463a19c2a8d393",
+      "policy_optimizer_steps": 0,
+      "policy_queries": 35,
+      "policy_sampling_seed": 423012,
+      "processor_revision": "735d9f692981e286ade093b5046627eda876e5d0",
+      "reload_validation": {
+        "completeness": 1.0,
+        "frames_expected": 240,
+        "frames_reloaded": 240,
+        "status": "pass"
+      },
+      "seed": 3012,
+      "sidecar_locator": "sidecar_root/libero_10-task9-seed3012.jsonl",
+      "success": true,
+      "suite": "libero_10",
+      "task_id": 9,
+      "task_name": "KITCHEN_SCENE6_put_the_yellow_and_white_mug_in_the_microwave_and_close_it",
+      "termination_reason": "success"
+    },
+    {
+      "action_is_pad_semantic": "false_for_every_executed_step",
+      "action_mask_semantic": "not_emitted_by_native_inference",
+      "checkpoint_revision": "735d9f692981e286ade093b5046627eda876e5d0",
+      "dataset_locator": "dataset_root/libero_10-task9-seed3013",
+      "elapsed_seconds": 19.40280507877469,
+      "episode_horizon": 520,
+      "episode_id": "libero_10-task9-seed3013",
+      "frame_count": 246,
+      "instruction": "put the yellow and white mug in the microwave and close it",
+      "metadata_identities": {
+        "episode_parquet_files": [
+          {
+            "bytes": 66504,
+            "relative_path": "meta/episodes/chunk-000/file-000.parquet",
+            "sha256": "47483097725c609362d203061d63307fd89e3c5cd65bba3a834e55ac51bf69ba"
+          }
+        ],
+        "info_json": {
+          "bytes": 3670,
+          "sha256": "f267e679dfa104643704d225d824cbb6f3ed464ccaff0896a7766db5f819a242"
+        },
+        "tasks_parquet": {
+          "bytes": 2278,
+          "sha256": "581cb0e66e4c1f6d6117e934f033dff2bdb4c8c8930108fe01988375ae408ddd"
+        }
+      },
+      "phase": "primary_pilot",
+      "policy_backward_calls": 0,
+      "policy_config_sha256": "c716d30311fd98d927154b5f49a675579091065686b8cccf5e463a19c2a8d393",
+      "policy_optimizer_steps": 0,
+      "policy_queries": 36,
+      "policy_sampling_seed": 423013,
+      "processor_revision": "735d9f692981e286ade093b5046627eda876e5d0",
+      "reload_validation": {
+        "completeness": 1.0,
+        "frames_expected": 246,
+        "frames_reloaded": 246,
+        "status": "pass"
+      },
+      "seed": 3013,
+      "sidecar_locator": "sidecar_root/libero_10-task9-seed3013.jsonl",
+      "success": true,
+      "suite": "libero_10",
+      "task_id": 9,
+      "task_name": "KITCHEN_SCENE6_put_the_yellow_and_white_mug_in_the_microwave_and_close_it",
+      "termination_reason": "success"
+    },
+    {
+      "action_is_pad_semantic": "false_for_every_executed_step",
+      "action_mask_semantic": "not_emitted_by_native_inference",
+      "checkpoint_revision": "735d9f692981e286ade093b5046627eda876e5d0",
+      "dataset_locator": "dataset_root/libero_10-task9-seed3014",
+      "elapsed_seconds": 19.768661748617887,
+      "episode_horizon": 520,
+      "episode_id": "libero_10-task9-seed3014",
+      "frame_count": 242,
+      "instruction": "put the yellow and white mug in the microwave and close it",
+      "metadata_identities": {
+        "episode_parquet_files": [
+          {
+            "bytes": 66489,
+            "relative_path": "meta/episodes/chunk-000/file-000.parquet",
+            "sha256": "7482cb9dbc2dbabee7d4fa80bf67b75cc7ea146401ba60b14b0cb2bc296f9c45"
+          }
+        ],
+        "info_json": {
+          "bytes": 3670,
+          "sha256": "ebe0a4dce956c80563b9726e2d905250b492b0d5736eede9ff18afffa1d0dd1f"
+        },
+        "tasks_parquet": {
+          "bytes": 2278,
+          "sha256": "581cb0e66e4c1f6d6117e934f033dff2bdb4c8c8930108fe01988375ae408ddd"
+        }
+      },
+      "phase": "primary_pilot",
+      "policy_backward_calls": 0,
+      "policy_config_sha256": "c716d30311fd98d927154b5f49a675579091065686b8cccf5e463a19c2a8d393",
+      "policy_optimizer_steps": 0,
+      "policy_queries": 35,
+      "policy_sampling_seed": 423014,
+      "processor_revision": "735d9f692981e286ade093b5046627eda876e5d0",
+      "reload_validation": {
+        "completeness": 1.0,
+        "frames_expected": 242,
+        "frames_reloaded": 242,
+        "status": "pass"
+      },
+      "seed": 3014,
+      "sidecar_locator": "sidecar_root/libero_10-task9-seed3014.jsonl",
+      "success": true,
+      "suite": "libero_10",
+      "task_id": 9,
+      "task_name": "KITCHEN_SCENE6_put_the_yellow_and_white_mug_in_the_microwave_and_close_it",
+      "termination_reason": "success"
+    },
+    {
+      "action_is_pad_semantic": "false_for_every_executed_step",
+      "action_mask_semantic": "not_emitted_by_native_inference",
+      "checkpoint_revision": "735d9f692981e286ade093b5046627eda876e5d0",
+      "dataset_locator": "dataset_root/libero_10-task9-seed3015",
+      "elapsed_seconds": 18.80633555725217,
+      "episode_horizon": 520,
+      "episode_id": "libero_10-task9-seed3015",
+      "frame_count": 240,
+      "instruction": "put the yellow and white mug in the microwave and close it",
+      "metadata_identities": {
+        "episode_parquet_files": [
+          {
+            "bytes": 66478,
+            "relative_path": "meta/episodes/chunk-000/file-000.parquet",
+            "sha256": "5c2e4bf0eb84de7bb31fe56b9e226c7adf6f9ced553d36e0782570960231f249"
+          }
+        ],
+        "info_json": {
+          "bytes": 3670,
+          "sha256": "5dc104d84aa8c0aa674c657795fdde8b32f71d973f3ed85f647c799442ef5c73"
+        },
+        "tasks_parquet": {
+          "bytes": 2278,
+          "sha256": "581cb0e66e4c1f6d6117e934f033dff2bdb4c8c8930108fe01988375ae408ddd"
+        }
+      },
+      "phase": "primary_pilot",
+      "policy_backward_calls": 0,
+      "policy_config_sha256": "c716d30311fd98d927154b5f49a675579091065686b8cccf5e463a19c2a8d393",
+      "policy_optimizer_steps": 0,
+      "policy_queries": 35,
+      "policy_sampling_seed": 423015,
+      "processor_revision": "735d9f692981e286ade093b5046627eda876e5d0",
+      "reload_validation": {
+        "completeness": 1.0,
+        "frames_expected": 240,
+        "frames_reloaded": 240,
+        "status": "pass"
+      },
+      "seed": 3015,
+      "sidecar_locator": "sidecar_root/libero_10-task9-seed3015.jsonl",
+      "success": true,
+      "suite": "libero_10",
+      "task_id": 9,
+      "task_name": "KITCHEN_SCENE6_put_the_yellow_and_white_mug_in_the_microwave_and_close_it",
+      "termination_reason": "success"
+    },
+    {
+      "action_is_pad_semantic": "false_for_every_executed_step",
+      "action_mask_semantic": "not_emitted_by_native_inference",
+      "checkpoint_revision": "735d9f692981e286ade093b5046627eda876e5d0",
+      "dataset_locator": "dataset_root/libero_10-task9-seed3016",
+      "elapsed_seconds": 20.14104787260294,
+      "episode_horizon": 520,
+      "episode_id": "libero_10-task9-seed3016",
+      "frame_count": 250,
+      "instruction": "put the yellow and white mug in the microwave and close it",
+      "metadata_identities": {
+        "episode_parquet_files": [
+          {
+            "bytes": 66472,
+            "relative_path": "meta/episodes/chunk-000/file-000.parquet",
+            "sha256": "cbb5775176dd9c096a2d115fbde7e0afe2017bd7939b40655201024f7c0967c2"
+          }
+        ],
+        "info_json": {
+          "bytes": 3670,
+          "sha256": "57113c14d6dcb8d7c848264259c8145da92400e2a38d354a52247cb781e12c93"
+        },
+        "tasks_parquet": {
+          "bytes": 2278,
+          "sha256": "581cb0e66e4c1f6d6117e934f033dff2bdb4c8c8930108fe01988375ae408ddd"
+        }
+      },
+      "phase": "primary_pilot",
+      "policy_backward_calls": 0,
+      "policy_config_sha256": "c716d30311fd98d927154b5f49a675579091065686b8cccf5e463a19c2a8d393",
+      "policy_optimizer_steps": 0,
+      "policy_queries": 36,
+      "policy_sampling_seed": 423016,
+      "processor_revision": "735d9f692981e286ade093b5046627eda876e5d0",
+      "reload_validation": {
+        "completeness": 1.0,
+        "frames_expected": 250,
+        "frames_reloaded": 250,
+        "status": "pass"
+      },
+      "seed": 3016,
+      "sidecar_locator": "sidecar_root/libero_10-task9-seed3016.jsonl",
+      "success": true,
+      "suite": "libero_10",
+      "task_id": 9,
+      "task_name": "KITCHEN_SCENE6_put_the_yellow_and_white_mug_in_the_microwave_and_close_it",
+      "termination_reason": "success"
+    },
+    {
+      "action_is_pad_semantic": "false_for_every_executed_step",
+      "action_mask_semantic": "not_emitted_by_native_inference",
+      "checkpoint_revision": "735d9f692981e286ade093b5046627eda876e5d0",
+      "dataset_locator": "dataset_root/libero_10-task9-seed3017",
+      "elapsed_seconds": 22.416039630770683,
+      "episode_horizon": 520,
+      "episode_id": "libero_10-task9-seed3017",
+      "frame_count": 303,
+      "instruction": "put the yellow and white mug in the microwave and close it",
+      "metadata_identities": {
+        "episode_parquet_files": [
+          {
+            "bytes": 66517,
+            "relative_path": "meta/episodes/chunk-000/file-000.parquet",
+            "sha256": "e47ea08b2f6be421a53e6994f9960f2eb26e8205f0d641cae34c28cee47c1b68"
+          }
+        ],
+        "info_json": {
+          "bytes": 3670,
+          "sha256": "0098f3546cedda8077d9d5e5ff884715e0412bccca72cbf851dc593fbe95ad0a"
+        },
+        "tasks_parquet": {
+          "bytes": 2278,
+          "sha256": "581cb0e66e4c1f6d6117e934f033dff2bdb4c8c8930108fe01988375ae408ddd"
+        }
+      },
+      "phase": "primary_pilot",
+      "policy_backward_calls": 0,
+      "policy_config_sha256": "c716d30311fd98d927154b5f49a675579091065686b8cccf5e463a19c2a8d393",
+      "policy_optimizer_steps": 0,
+      "policy_queries": 44,
+      "policy_sampling_seed": 423017,
+      "processor_revision": "735d9f692981e286ade093b5046627eda876e5d0",
+      "reload_validation": {
+        "completeness": 1.0,
+        "frames_expected": 303,
+        "frames_reloaded": 303,
+        "status": "pass"
+      },
+      "seed": 3017,
+      "sidecar_locator": "sidecar_root/libero_10-task9-seed3017.jsonl",
+      "success": true,
+      "suite": "libero_10",
+      "task_id": 9,
+      "task_name": "KITCHEN_SCENE6_put_the_yellow_and_white_mug_in_the_microwave_and_close_it",
+      "termination_reason": "success"
+    },
+    {
+      "action_is_pad_semantic": "false_for_every_executed_step",
+      "action_mask_semantic": "not_emitted_by_native_inference",
+      "checkpoint_revision": "735d9f692981e286ade093b5046627eda876e5d0",
+      "dataset_locator": "dataset_root/libero_10-task9-seed3018",
+      "elapsed_seconds": 20.029982920736074,
+      "episode_horizon": 520,
+      "episode_id": "libero_10-task9-seed3018",
+      "frame_count": 244,
+      "instruction": "put the yellow and white mug in the microwave and close it",
+      "metadata_identities": {
+        "episode_parquet_files": [
+          {
+            "bytes": 66500,
+            "relative_path": "meta/episodes/chunk-000/file-000.parquet",
+            "sha256": "f911602167573233e9d495dd531f710c2949f9b5c3325530efbfa3d4a906601c"
+          }
+        ],
+        "info_json": {
+          "bytes": 3670,
+          "sha256": "5a3f301e70bdae78bf12539d407b23fcd09006792e927798176cfe95229b47f9"
+        },
+        "tasks_parquet": {
+          "bytes": 2278,
+          "sha256": "581cb0e66e4c1f6d6117e934f033dff2bdb4c8c8930108fe01988375ae408ddd"
+        }
+      },
+      "phase": "primary_pilot",
+      "policy_backward_calls": 0,
+      "policy_config_sha256": "c716d30311fd98d927154b5f49a675579091065686b8cccf5e463a19c2a8d393",
+      "policy_optimizer_steps": 0,
+      "policy_queries": 35,
+      "policy_sampling_seed": 423018,
+      "processor_revision": "735d9f692981e286ade093b5046627eda876e5d0",
+      "reload_validation": {
+        "completeness": 1.0,
+        "frames_expected": 244,
+        "frames_reloaded": 244,
+        "status": "pass"
+      },
+      "seed": 3018,
+      "sidecar_locator": "sidecar_root/libero_10-task9-seed3018.jsonl",
+      "success": true,
+      "suite": "libero_10",
+      "task_id": 9,
+      "task_name": "KITCHEN_SCENE6_put_the_yellow_and_white_mug_in_the_microwave_and_close_it",
+      "termination_reason": "success"
+    },
+    {
+      "action_is_pad_semantic": "false_for_every_executed_step",
+      "action_mask_semantic": "not_emitted_by_native_inference",
+      "checkpoint_revision": "735d9f692981e286ade093b5046627eda876e5d0",
+      "dataset_locator": "dataset_root/libero_10-task9-seed3019",
+      "elapsed_seconds": 20.336740855127573,
+      "episode_horizon": 520,
+      "episode_id": "libero_10-task9-seed3019",
+      "frame_count": 251,
+      "instruction": "put the yellow and white mug in the microwave and close it",
+      "metadata_identities": {
+        "episode_parquet_files": [
+          {
+            "bytes": 66512,
+            "relative_path": "meta/episodes/chunk-000/file-000.parquet",
+            "sha256": "4b38a965c39f059c593972a0cca734cc3d30228144027980ebd84dfaca854a16"
+          }
+        ],
+        "info_json": {
+          "bytes": 3670,
+          "sha256": "6c547fedd9ed706caf1b8455d7bef53203690f2b0fc88f2415bb6cd0ab1630c5"
+        },
+        "tasks_parquet": {
+          "bytes": 2278,
+          "sha256": "581cb0e66e4c1f6d6117e934f033dff2bdb4c8c8930108fe01988375ae408ddd"
+        }
+      },
+      "phase": "primary_pilot",
+      "policy_backward_calls": 0,
+      "policy_config_sha256": "c716d30311fd98d927154b5f49a675579091065686b8cccf5e463a19c2a8d393",
+      "policy_optimizer_steps": 0,
+      "policy_queries": 36,
+      "policy_sampling_seed": 423019,
+      "processor_revision": "735d9f692981e286ade093b5046627eda876e5d0",
+      "reload_validation": {
+        "completeness": 1.0,
+        "frames_expected": 251,
+        "frames_reloaded": 251,
+        "status": "pass"
+      },
+      "seed": 3019,
+      "sidecar_locator": "sidecar_root/libero_10-task9-seed3019.jsonl",
+      "success": true,
+      "suite": "libero_10",
+      "task_id": 9,
+      "task_name": "KITCHEN_SCENE6_put_the_yellow_and_white_mug_in_the_microwave_and_close_it",
+      "termination_reason": "success"
+    },
+    {
+      "action_is_pad_semantic": "false_for_every_executed_step",
+      "action_mask_semantic": "not_emitted_by_native_inference",
+      "checkpoint_revision": "735d9f692981e286ade093b5046627eda876e5d0",
+      "dataset_locator": "dataset_root/libero_goal-task6-seed3060",
+      "elapsed_seconds": 11.783475060015917,
+      "episode_horizon": 300,
+      "episode_id": "libero_goal-task6-seed3060",
+      "frame_count": 85,
+      "instruction": "put the cream cheese on the bowl",
+      "metadata_identities": {
+        "episode_parquet_files": [
+          {
+            "bytes": 66375,
+            "relative_path": "meta/episodes/chunk-000/file-000.parquet",
+            "sha256": "2b9a842c098c516b37732e512a7b8bf5ebbc462b4e5cb3d532b688c99ed5de67"
+          }
+        ],
+        "info_json": {
+          "bytes": 3669,
+          "sha256": "4c8bde5167fb790cf6cc9b86078a87d8cf55262c01883127441b9f09e55c5c42"
+        },
+        "tasks_parquet": {
+          "bytes": 2150,
+          "sha256": "db33f4761b608b605a84cbe5519f31e286a3e32b7eea0b5f8d808e3a238151ed"
+        }
+      },
+      "phase": "primary_pilot",
+      "policy_backward_calls": 0,
+      "policy_config_sha256": "c716d30311fd98d927154b5f49a675579091065686b8cccf5e463a19c2a8d393",
+      "policy_optimizer_steps": 0,
+      "policy_queries": 13,
+      "policy_sampling_seed": 423060,
+      "processor_revision": "735d9f692981e286ade093b5046627eda876e5d0",
+      "reload_validation": {
+        "completeness": 1.0,
+        "frames_expected": 85,
+        "frames_reloaded": 85,
+        "status": "pass"
+      },
+      "seed": 3060,
+      "sidecar_locator": "sidecar_root/libero_goal-task6-seed3060.jsonl",
+      "success": true,
+      "suite": "libero_goal",
+      "task_id": 6,
+      "task_name": "put_the_cream_cheese_in_the_bowl",
+      "termination_reason": "success"
+    },
+    {
+      "action_is_pad_semantic": "false_for_every_executed_step",
+      "action_mask_semantic": "not_emitted_by_native_inference",
+      "checkpoint_revision": "735d9f692981e286ade093b5046627eda876e5d0",
+      "dataset_locator": "dataset_root/libero_goal-task6-seed3061",
+      "elapsed_seconds": 12.012236587703228,
+      "episode_horizon": 300,
+      "episode_id": "libero_goal-task6-seed3061",
+      "frame_count": 86,
+      "instruction": "put the cream cheese on the bowl",
+      "metadata_identities": {
+        "episode_parquet_files": [
+          {
+            "bytes": 66392,
+            "relative_path": "meta/episodes/chunk-000/file-000.parquet",
+            "sha256": "690451e0735e0ce9856955db9649a97679e99255ae1d8d6d3b12f6f55911d5f6"
+          }
+        ],
+        "info_json": {
+          "bytes": 3669,
+          "sha256": "ae399bfe8520a37a1513435533770b058940edac0d440dae2125d17e332fb6b7"
+        },
+        "tasks_parquet": {
+          "bytes": 2150,
+          "sha256": "db33f4761b608b605a84cbe5519f31e286a3e32b7eea0b5f8d808e3a238151ed"
+        }
+      },
+      "phase": "primary_pilot",
+      "policy_backward_calls": 0,
+      "policy_config_sha256": "c716d30311fd98d927154b5f49a675579091065686b8cccf5e463a19c2a8d393",
+      "policy_optimizer_steps": 0,
+      "policy_queries": 13,
+      "policy_sampling_seed": 423061,
+      "processor_revision": "735d9f692981e286ade093b5046627eda876e5d0",
+      "reload_validation": {
+        "completeness": 1.0,
+        "frames_expected": 86,
+        "frames_reloaded": 86,
+        "status": "pass"
+      },
+      "seed": 3061,
+      "sidecar_locator": "sidecar_root/libero_goal-task6-seed3061.jsonl",
+      "success": true,
+      "suite": "libero_goal",
+      "task_id": 6,
+      "task_name": "put_the_cream_cheese_in_the_bowl",
+      "termination_reason": "success"
+    },
+    {
+      "action_is_pad_semantic": "false_for_every_executed_step",
+      "action_mask_semantic": "not_emitted_by_native_inference",
+      "checkpoint_revision": "735d9f692981e286ade093b5046627eda876e5d0",
+      "dataset_locator": "dataset_root/libero_goal-task6-seed3062",
+      "elapsed_seconds": 11.359321184456348,
+      "episode_horizon": 300,
+      "episode_id": "libero_goal-task6-seed3062",
+      "frame_count": 87,
+      "instruction": "put the cream cheese on the bowl",
+      "metadata_identities": {
+        "episode_parquet_files": [
+          {
+            "bytes": 66400,
+            "relative_path": "meta/episodes/chunk-000/file-000.parquet",
+            "sha256": "196bb19f1c4d5b5cb5f2369b6fd62475e7229503547666830b5807b961c9d872"
+          }
+        ],
+        "info_json": {
+          "bytes": 3669,
+          "sha256": "e4f415fc11b0ac1789bfd1c0ad4b6b5fe81c2adfe60e20a1ef30ff6dbe6e0549"
+        },
+        "tasks_parquet": {
+          "bytes": 2150,
+          "sha256": "db33f4761b608b605a84cbe5519f31e286a3e32b7eea0b5f8d808e3a238151ed"
+        }
+      },
+      "phase": "primary_pilot",
+      "policy_backward_calls": 0,
+      "policy_config_sha256": "c716d30311fd98d927154b5f49a675579091065686b8cccf5e463a19c2a8d393",
+      "policy_optimizer_steps": 0,
+      "policy_queries": 13,
+      "policy_sampling_seed": 423062,
+      "processor_revision": "735d9f692981e286ade093b5046627eda876e5d0",
+      "reload_validation": {
+        "completeness": 1.0,
+        "frames_expected": 87,
+        "frames_reloaded": 87,
+        "status": "pass"
+      },
+      "seed": 3062,
+      "sidecar_locator": "sidecar_root/libero_goal-task6-seed3062.jsonl",
+      "success": true,
+      "suite": "libero_goal",
+      "task_id": 6,
+      "task_name": "put_the_cream_cheese_in_the_bowl",
+      "termination_reason": "success"
+    },
+    {
+      "action_is_pad_semantic": "false_for_every_executed_step",
+      "action_mask_semantic": "not_emitted_by_native_inference",
+      "checkpoint_revision": "735d9f692981e286ade093b5046627eda876e5d0",
+      "dataset_locator": "dataset_root/libero_goal-task6-seed3063",
+      "elapsed_seconds": 12.439115859568119,
+      "episode_horizon": 300,
+      "episode_id": "libero_goal-task6-seed3063",
+      "frame_count": 90,
+      "instruction": "put the cream cheese on the bowl",
+      "metadata_identities": {
+        "episode_parquet_files": [
+          {
+            "bytes": 66375,
+            "relative_path": "meta/episodes/chunk-000/file-000.parquet",
+            "sha256": "fc9066d799f89f74a3ffe38cb4216ee0f1b56c1d0a338b0617637e35c6235397"
+          }
+        ],
+        "info_json": {
+          "bytes": 3669,
+          "sha256": "7c978a0945d2b63dd60be872765b0cfeb5103d16ba171852c9ccab549ea8d1eb"
+        },
+        "tasks_parquet": {
+          "bytes": 2150,
+          "sha256": "db33f4761b608b605a84cbe5519f31e286a3e32b7eea0b5f8d808e3a238151ed"
+        }
+      },
+      "phase": "primary_pilot",
+      "policy_backward_calls": 0,
+      "policy_config_sha256": "c716d30311fd98d927154b5f49a675579091065686b8cccf5e463a19c2a8d393",
+      "policy_optimizer_steps": 0,
+      "policy_queries": 13,
+      "policy_sampling_seed": 423063,
+      "processor_revision": "735d9f692981e286ade093b5046627eda876e5d0",
+      "reload_validation": {
+        "completeness": 1.0,
+        "frames_expected": 90,
+        "frames_reloaded": 90,
+        "status": "pass"
+      },
+      "seed": 3063,
+      "sidecar_locator": "sidecar_root/libero_goal-task6-seed3063.jsonl",
+      "success": true,
+      "suite": "libero_goal",
+      "task_id": 6,
+      "task_name": "put_the_cream_cheese_in_the_bowl",
+      "termination_reason": "success"
+    },
+    {
+      "action_is_pad_semantic": "false_for_every_executed_step",
+      "action_mask_semantic": "not_emitted_by_native_inference",
+      "checkpoint_revision": "735d9f692981e286ade093b5046627eda876e5d0",
+      "dataset_locator": "dataset_root/libero_goal-task6-seed3064",
+      "elapsed_seconds": 11.399035781621933,
+      "episode_horizon": 300,
+      "episode_id": "libero_goal-task6-seed3064",
+      "frame_count": 85,
+      "instruction": "put the cream cheese on the bowl",
+      "metadata_identities": {
+        "episode_parquet_files": [
+          {
+            "bytes": 66389,
+            "relative_path": "meta/episodes/chunk-000/file-000.parquet",
+            "sha256": "ad16345e264ef99b65047e1ccfaf05c8674868010ba114f787648fb8821402ee"
+          }
+        ],
+        "info_json": {
+          "bytes": 3669,
+          "sha256": "4c8bde5167fb790cf6cc9b86078a87d8cf55262c01883127441b9f09e55c5c42"
+        },
+        "tasks_parquet": {
+          "bytes": 2150,
+          "sha256": "db33f4761b608b605a84cbe5519f31e286a3e32b7eea0b5f8d808e3a238151ed"
+        }
+      },
+      "phase": "primary_pilot",
+      "policy_backward_calls": 0,
+      "policy_config_sha256": "c716d30311fd98d927154b5f49a675579091065686b8cccf5e463a19c2a8d393",
+      "policy_optimizer_steps": 0,
+      "policy_queries": 13,
+      "policy_sampling_seed": 423064,
+      "processor_revision": "735d9f692981e286ade093b5046627eda876e5d0",
+      "reload_validation": {
+        "completeness": 1.0,
+        "frames_expected": 85,
+        "frames_reloaded": 85,
+        "status": "pass"
+      },
+      "seed": 3064,
+      "sidecar_locator": "sidecar_root/libero_goal-task6-seed3064.jsonl",
+      "success": true,
+      "suite": "libero_goal",
+      "task_id": 6,
+      "task_name": "put_the_cream_cheese_in_the_bowl",
+      "termination_reason": "success"
+    },
+    {
+      "action_is_pad_semantic": "false_for_every_executed_step",
+      "action_mask_semantic": "not_emitted_by_native_inference",
+      "checkpoint_revision": "735d9f692981e286ade093b5046627eda876e5d0",
+      "dataset_locator": "dataset_root/libero_goal-task6-seed3065",
+      "elapsed_seconds": 12.31729220598936,
+      "episode_horizon": 300,
+      "episode_id": "libero_goal-task6-seed3065",
+      "frame_count": 89,
+      "instruction": "put the cream cheese on the bowl",
+      "metadata_identities": {
+        "episode_parquet_files": [
+          {
+            "bytes": 66402,
+            "relative_path": "meta/episodes/chunk-000/file-000.parquet",
+            "sha256": "30aae7217d683a0a2100286842ed7561112981ffc971ff7b14c95fa41f67b78e"
+          }
+        ],
+        "info_json": {
+          "bytes": 3669,
+          "sha256": "eff52bdce55b9dfce52314a26ec9a4c8884fec833d64fb551f0c1f726bfacc89"
+        },
+        "tasks_parquet": {
+          "bytes": 2150,
+          "sha256": "db33f4761b608b605a84cbe5519f31e286a3e32b7eea0b5f8d808e3a238151ed"
+        }
+      },
+      "phase": "primary_pilot",
+      "policy_backward_calls": 0,
+      "policy_config_sha256": "c716d30311fd98d927154b5f49a675579091065686b8cccf5e463a19c2a8d393",
+      "policy_optimizer_steps": 0,
+      "policy_queries": 13,
+      "policy_sampling_seed": 423065,
+      "processor_revision": "735d9f692981e286ade093b5046627eda876e5d0",
+      "reload_validation": {
+        "completeness": 1.0,
+        "frames_expected": 89,
+        "frames_reloaded": 89,
+        "status": "pass"
+      },
+      "seed": 3065,
+      "sidecar_locator": "sidecar_root/libero_goal-task6-seed3065.jsonl",
+      "success": true,
+      "suite": "libero_goal",
+      "task_id": 6,
+      "task_name": "put_the_cream_cheese_in_the_bowl",
+      "termination_reason": "success"
+    },
+    {
+      "action_is_pad_semantic": "false_for_every_executed_step",
+      "action_mask_semantic": "not_emitted_by_native_inference",
+      "checkpoint_revision": "735d9f692981e286ade093b5046627eda876e5d0",
+      "dataset_locator": "dataset_root/libero_goal-task6-seed3066",
+      "elapsed_seconds": 11.094430845230818,
+      "episode_horizon": 300,
+      "episode_id": "libero_goal-task6-seed3066",
+      "frame_count": 84,
+      "instruction": "put the cream cheese on the bowl",
+      "metadata_identities": {
+        "episode_parquet_files": [
+          {
+            "bytes": 66394,
+            "relative_path": "meta/episodes/chunk-000/file-000.parquet",
+            "sha256": "b0d7e00b39c72fb201094138e3cc8a727386ddb8c356f34c80a4f70a42276550"
+          }
+        ],
+        "info_json": {
+          "bytes": 3669,
+          "sha256": "3fae78b1369cdd3d5ff5c8c1182c5ac97a54af3fd18898898665f53ce3f0ee02"
+        },
+        "tasks_parquet": {
+          "bytes": 2150,
+          "sha256": "db33f4761b608b605a84cbe5519f31e286a3e32b7eea0b5f8d808e3a238151ed"
+        }
+      },
+      "phase": "primary_pilot",
+      "policy_backward_calls": 0,
+      "policy_config_sha256": "c716d30311fd98d927154b5f49a675579091065686b8cccf5e463a19c2a8d393",
+      "policy_optimizer_steps": 0,
+      "policy_queries": 12,
+      "policy_sampling_seed": 423066,
+      "processor_revision": "735d9f692981e286ade093b5046627eda876e5d0",
+      "reload_validation": {
+        "completeness": 1.0,
+        "frames_expected": 84,
+        "frames_reloaded": 84,
+        "status": "pass"
+      },
+      "seed": 3066,
+      "sidecar_locator": "sidecar_root/libero_goal-task6-seed3066.jsonl",
+      "success": true,
+      "suite": "libero_goal",
+      "task_id": 6,
+      "task_name": "put_the_cream_cheese_in_the_bowl",
+      "termination_reason": "success"
+    },
+    {
+      "action_is_pad_semantic": "false_for_every_executed_step",
+      "action_mask_semantic": "not_emitted_by_native_inference",
+      "checkpoint_revision": "735d9f692981e286ade093b5046627eda876e5d0",
+      "dataset_locator": "dataset_root/libero_goal-task6-seed3067",
+      "elapsed_seconds": 11.980335533618927,
+      "episode_horizon": 300,
+      "episode_id": "libero_goal-task6-seed3067",
+      "frame_count": 91,
+      "instruction": "put the cream cheese on the bowl",
+      "metadata_identities": {
+        "episode_parquet_files": [
+          {
+            "bytes": 66394,
+            "relative_path": "meta/episodes/chunk-000/file-000.parquet",
+            "sha256": "1173b944ba7214b64bc5b8a07053fdec2d0ef20c7256fd8d36fbfc09a5d2afb0"
+          }
+        ],
+        "info_json": {
+          "bytes": 3669,
+          "sha256": "e7b1baf1c5fe86007764be0478f6331d9615db96ad8c81885070fa5ebc5297b0"
+        },
+        "tasks_parquet": {
+          "bytes": 2150,
+          "sha256": "db33f4761b608b605a84cbe5519f31e286a3e32b7eea0b5f8d808e3a238151ed"
+        }
+      },
+      "phase": "primary_pilot",
+      "policy_backward_calls": 0,
+      "policy_config_sha256": "c716d30311fd98d927154b5f49a675579091065686b8cccf5e463a19c2a8d393",
+      "policy_optimizer_steps": 0,
+      "policy_queries": 13,
+      "policy_sampling_seed": 423067,
+      "processor_revision": "735d9f692981e286ade093b5046627eda876e5d0",
+      "reload_validation": {
+        "completeness": 1.0,
+        "frames_expected": 91,
+        "frames_reloaded": 91,
+        "status": "pass"
+      },
+      "seed": 3067,
+      "sidecar_locator": "sidecar_root/libero_goal-task6-seed3067.jsonl",
+      "success": true,
+      "suite": "libero_goal",
+      "task_id": 6,
+      "task_name": "put_the_cream_cheese_in_the_bowl",
+      "termination_reason": "success"
+    },
+    {
+      "action_is_pad_semantic": "false_for_every_executed_step",
+      "action_mask_semantic": "not_emitted_by_native_inference",
+      "checkpoint_revision": "735d9f692981e286ade093b5046627eda876e5d0",
+      "dataset_locator": "dataset_root/libero_goal-task6-seed3068",
+      "elapsed_seconds": 10.697972696274519,
+      "episode_horizon": 300,
+      "episode_id": "libero_goal-task6-seed3068",
+      "frame_count": 81,
+      "instruction": "put the cream cheese on the bowl",
+      "metadata_identities": {
+        "episode_parquet_files": [
+          {
+            "bytes": 66389,
+            "relative_path": "meta/episodes/chunk-000/file-000.parquet",
+            "sha256": "83e33551fedbe0a3cbd1b390c7ef436e1ff1beb1f688bf5105524c7e52e9a065"
+          }
+        ],
+        "info_json": {
+          "bytes": 3669,
+          "sha256": "d978c1f0c6dd281346645a236e26047a729fdcbfeaec30aa00cd02e44d8627bb"
+        },
+        "tasks_parquet": {
+          "bytes": 2150,
+          "sha256": "db33f4761b608b605a84cbe5519f31e286a3e32b7eea0b5f8d808e3a238151ed"
+        }
+      },
+      "phase": "primary_pilot",
+      "policy_backward_calls": 0,
+      "policy_config_sha256": "c716d30311fd98d927154b5f49a675579091065686b8cccf5e463a19c2a8d393",
+      "policy_optimizer_steps": 0,
+      "policy_queries": 12,
+      "policy_sampling_seed": 423068,
+      "processor_revision": "735d9f692981e286ade093b5046627eda876e5d0",
+      "reload_validation": {
+        "completeness": 1.0,
+        "frames_expected": 81,
+        "frames_reloaded": 81,
+        "status": "pass"
+      },
+      "seed": 3068,
+      "sidecar_locator": "sidecar_root/libero_goal-task6-seed3068.jsonl",
+      "success": true,
+      "suite": "libero_goal",
+      "task_id": 6,
+      "task_name": "put_the_cream_cheese_in_the_bowl",
+      "termination_reason": "success"
+    },
+    {
+      "action_is_pad_semantic": "false_for_every_executed_step",
+      "action_mask_semantic": "not_emitted_by_native_inference",
+      "checkpoint_revision": "735d9f692981e286ade093b5046627eda876e5d0",
+      "dataset_locator": "dataset_root/libero_goal-task6-seed3069",
+      "elapsed_seconds": 11.207879476249218,
+      "episode_horizon": 300,
+      "episode_id": "libero_goal-task6-seed3069",
+      "frame_count": 83,
+      "instruction": "put the cream cheese on the bowl",
+      "metadata_identities": {
+        "episode_parquet_files": [
+          {
+            "bytes": 66393,
+            "relative_path": "meta/episodes/chunk-000/file-000.parquet",
+            "sha256": "105d7b4f97dd9009bb06e4d6a9fad98da9e2c8798711077c8db89080c02c5495"
+          }
+        ],
+        "info_json": {
+          "bytes": 3669,
+          "sha256": "be166befc301f2028699a82d3914d0f173eac8b7ceca2ac4a2b24bd18fdcb3b5"
+        },
+        "tasks_parquet": {
+          "bytes": 2150,
+          "sha256": "db33f4761b608b605a84cbe5519f31e286a3e32b7eea0b5f8d808e3a238151ed"
+        }
+      },
+      "phase": "primary_pilot",
+      "policy_backward_calls": 0,
+      "policy_config_sha256": "c716d30311fd98d927154b5f49a675579091065686b8cccf5e463a19c2a8d393",
+      "policy_optimizer_steps": 0,
+      "policy_queries": 12,
+      "policy_sampling_seed": 423069,
+      "processor_revision": "735d9f692981e286ade093b5046627eda876e5d0",
+      "reload_validation": {
+        "completeness": 1.0,
+        "frames_expected": 83,
+        "frames_reloaded": 83,
+        "status": "pass"
+      },
+      "seed": 3069,
+      "sidecar_locator": "sidecar_root/libero_goal-task6-seed3069.jsonl",
+      "success": true,
+      "suite": "libero_goal",
+      "task_id": 6,
+      "task_name": "put_the_cream_cheese_in_the_bowl",
+      "termination_reason": "success"
+    },
+    {
+      "action_is_pad_semantic": "false_for_every_executed_step",
+      "action_mask_semantic": "not_emitted_by_native_inference",
+      "checkpoint_revision": "735d9f692981e286ade093b5046627eda876e5d0",
+      "dataset_locator": "dataset_root/libero_goal-task9-seed3070",
+      "elapsed_seconds": 25.966154258698225,
+      "episode_horizon": 300,
+      "episode_id": "libero_goal-task9-seed3070",
+      "frame_count": 300,
+      "instruction": "put the wine bottle on the rack",
+      "metadata_identities": {
+        "episode_parquet_files": [
+          {
+            "bytes": 66350,
+            "relative_path": "meta/episodes/chunk-000/file-000.parquet",
+            "sha256": "749129be0e16fc5d79933fb7ac74a78641abc32fe7613108d1f7e52d895fbc2f"
+          }
+        ],
+        "info_json": {
+          "bytes": 3670,
+          "sha256": "d3668f7650c734b7875646c83869f283e915ced682132af4c803dd0f57618797"
+        },
+        "tasks_parquet": {
+          "bytes": 2145,
+          "sha256": "cb07911e591350af125af554fc49ea0763b3058c6cea69e1213c6e326be2460c"
+        }
+      },
+      "phase": "primary_pilot",
+      "policy_backward_calls": 0,
+      "policy_config_sha256": "c716d30311fd98d927154b5f49a675579091065686b8cccf5e463a19c2a8d393",
+      "policy_optimizer_steps": 0,
+      "policy_queries": 43,
+      "policy_sampling_seed": 423070,
+      "processor_revision": "735d9f692981e286ade093b5046627eda876e5d0",
+      "reload_validation": {
+        "completeness": 1.0,
+        "frames_expected": 300,
+        "frames_reloaded": 300,
+        "status": "pass"
+      },
+      "seed": 3070,
+      "sidecar_locator": "sidecar_root/libero_goal-task9-seed3070.jsonl",
+      "success": false,
+      "suite": "libero_goal",
+      "task_id": 9,
+      "task_name": "put_the_wine_bottle_on_the_rack",
+      "termination_reason": "horizon_exhausted"
+    },
+    {
+      "action_is_pad_semantic": "false_for_every_executed_step",
+      "action_mask_semantic": "not_emitted_by_native_inference",
+      "checkpoint_revision": "735d9f692981e286ade093b5046627eda876e5d0",
+      "dataset_locator": "dataset_root/libero_goal-task9-seed3071",
+      "elapsed_seconds": 14.553481556475163,
+      "episode_horizon": 300,
+      "episode_id": "libero_goal-task9-seed3071",
+      "frame_count": 136,
+      "instruction": "put the wine bottle on the rack",
+      "metadata_identities": {
+        "episode_parquet_files": [
+          {
+            "bytes": 66382,
+            "relative_path": "meta/episodes/chunk-000/file-000.parquet",
+            "sha256": "307bdba3264fa1192f90af46ab01704e18f61cf8d105c383dd42a5023211d8c3"
+          }
+        ],
+        "info_json": {
+          "bytes": 3670,
+          "sha256": "8d2971fc91347d25f8b905e030ebddb952a3a066c4a121805761d73098079240"
+        },
+        "tasks_parquet": {
+          "bytes": 2145,
+          "sha256": "cb07911e591350af125af554fc49ea0763b3058c6cea69e1213c6e326be2460c"
+        }
+      },
+      "phase": "primary_pilot",
+      "policy_backward_calls": 0,
+      "policy_config_sha256": "c716d30311fd98d927154b5f49a675579091065686b8cccf5e463a19c2a8d393",
+      "policy_optimizer_steps": 0,
+      "policy_queries": 20,
+      "policy_sampling_seed": 423071,
+      "processor_revision": "735d9f692981e286ade093b5046627eda876e5d0",
+      "reload_validation": {
+        "completeness": 1.0,
+        "frames_expected": 136,
+        "frames_reloaded": 136,
+        "status": "pass"
+      },
+      "seed": 3071,
+      "sidecar_locator": "sidecar_root/libero_goal-task9-seed3071.jsonl",
+      "success": true,
+      "suite": "libero_goal",
+      "task_id": 9,
+      "task_name": "put_the_wine_bottle_on_the_rack",
+      "termination_reason": "success"
+    },
+    {
+      "action_is_pad_semantic": "false_for_every_executed_step",
+      "action_mask_semantic": "not_emitted_by_native_inference",
+      "checkpoint_revision": "735d9f692981e286ade093b5046627eda876e5d0",
+      "dataset_locator": "dataset_root/libero_goal-task9-seed3072",
+      "elapsed_seconds": 14.806077815592289,
+      "episode_horizon": 300,
+      "episode_id": "libero_goal-task9-seed3072",
+      "frame_count": 147,
+      "instruction": "put the wine bottle on the rack",
+      "metadata_identities": {
+        "episode_parquet_files": [
+          {
+            "bytes": 66397,
+            "relative_path": "meta/episodes/chunk-000/file-000.parquet",
+            "sha256": "563fa27eeda3c9ee2934774b86e42d1705690a455ff34107edebb6d0c14e9050"
+          }
+        ],
+        "info_json": {
+          "bytes": 3670,
+          "sha256": "8f7b7547874054ec22a639d81327979b29bef0815c36d280071a640c22bb1a41"
+        },
+        "tasks_parquet": {
+          "bytes": 2145,
+          "sha256": "cb07911e591350af125af554fc49ea0763b3058c6cea69e1213c6e326be2460c"
+        }
+      },
+      "phase": "primary_pilot",
+      "policy_backward_calls": 0,
+      "policy_config_sha256": "c716d30311fd98d927154b5f49a675579091065686b8cccf5e463a19c2a8d393",
+      "policy_optimizer_steps": 0,
+      "policy_queries": 21,
+      "policy_sampling_seed": 423072,
+      "processor_revision": "735d9f692981e286ade093b5046627eda876e5d0",
+      "reload_validation": {
+        "completeness": 1.0,
+        "frames_expected": 147,
+        "frames_reloaded": 147,
+        "status": "pass"
+      },
+      "seed": 3072,
+      "sidecar_locator": "sidecar_root/libero_goal-task9-seed3072.jsonl",
+      "success": true,
+      "suite": "libero_goal",
+      "task_id": 9,
+      "task_name": "put_the_wine_bottle_on_the_rack",
+      "termination_reason": "success"
+    },
+    {
+      "action_is_pad_semantic": "false_for_every_executed_step",
+      "action_mask_semantic": "not_emitted_by_native_inference",
+      "checkpoint_revision": "735d9f692981e286ade093b5046627eda876e5d0",
+      "dataset_locator": "dataset_root/libero_goal-task9-seed3073",
+      "elapsed_seconds": 15.821975648403168,
+      "episode_horizon": 300,
+      "episode_id": "libero_goal-task9-seed3073",
+      "frame_count": 154,
+      "instruction": "put the wine bottle on the rack",
+      "metadata_identities": {
+        "episode_parquet_files": [
+          {
+            "bytes": 66395,
+            "relative_path": "meta/episodes/chunk-000/file-000.parquet",
+            "sha256": "ebca0bd4c55c7c6aebf922a9e813d34e44cce9310e76098fed403d68e607006d"
+          }
+        ],
+        "info_json": {
+          "bytes": 3670,
+          "sha256": "cba505aadf5ea2c40321e9cc263d2409d914438322dc907a29ed1fcb181c5789"
+        },
+        "tasks_parquet": {
+          "bytes": 2145,
+          "sha256": "cb07911e591350af125af554fc49ea0763b3058c6cea69e1213c6e326be2460c"
+        }
+      },
+      "phase": "primary_pilot",
+      "policy_backward_calls": 0,
+      "policy_config_sha256": "c716d30311fd98d927154b5f49a675579091065686b8cccf5e463a19c2a8d393",
+      "policy_optimizer_steps": 0,
+      "policy_queries": 22,
+      "policy_sampling_seed": 423073,
+      "processor_revision": "735d9f692981e286ade093b5046627eda876e5d0",
+      "reload_validation": {
+        "completeness": 1.0,
+        "frames_expected": 154,
+        "frames_reloaded": 154,
+        "status": "pass"
+      },
+      "seed": 3073,
+      "sidecar_locator": "sidecar_root/libero_goal-task9-seed3073.jsonl",
+      "success": true,
+      "suite": "libero_goal",
+      "task_id": 9,
+      "task_name": "put_the_wine_bottle_on_the_rack",
+      "termination_reason": "success"
+    },
+    {
+      "action_is_pad_semantic": "false_for_every_executed_step",
+      "action_mask_semantic": "not_emitted_by_native_inference",
+      "checkpoint_revision": "735d9f692981e286ade093b5046627eda876e5d0",
+      "dataset_locator": "dataset_root/libero_goal-task9-seed3074",
+      "elapsed_seconds": 15.957300912588835,
+      "episode_horizon": 300,
+      "episode_id": "libero_goal-task9-seed3074",
+      "frame_count": 151,
+      "instruction": "put the wine bottle on the rack",
+      "metadata_identities": {
+        "episode_parquet_files": [
+          {
+            "bytes": 66390,
+            "relative_path": "meta/episodes/chunk-000/file-000.parquet",
+            "sha256": "856b204b19850157ff1abce6c8cab7224126bb819ede97ff3b2ec2134db55205"
+          }
+        ],
+        "info_json": {
+          "bytes": 3670,
+          "sha256": "b5d32983198ac63a5705c53e12be5ffabc1c98c4c2dd9cf3d3f56fbb1cb0c446"
+        },
+        "tasks_parquet": {
+          "bytes": 2145,
+          "sha256": "cb07911e591350af125af554fc49ea0763b3058c6cea69e1213c6e326be2460c"
+        }
+      },
+      "phase": "primary_pilot",
+      "policy_backward_calls": 0,
+      "policy_config_sha256": "c716d30311fd98d927154b5f49a675579091065686b8cccf5e463a19c2a8d393",
+      "policy_optimizer_steps": 0,
+      "policy_queries": 22,
+      "policy_sampling_seed": 423074,
+      "processor_revision": "735d9f692981e286ade093b5046627eda876e5d0",
+      "reload_validation": {
+        "completeness": 1.0,
+        "frames_expected": 151,
+        "frames_reloaded": 151,
+        "status": "pass"
+      },
+      "seed": 3074,
+      "sidecar_locator": "sidecar_root/libero_goal-task9-seed3074.jsonl",
+      "success": true,
+      "suite": "libero_goal",
+      "task_id": 9,
+      "task_name": "put_the_wine_bottle_on_the_rack",
+      "termination_reason": "success"
+    },
+    {
+      "action_is_pad_semantic": "false_for_every_executed_step",
+      "action_mask_semantic": "not_emitted_by_native_inference",
+      "checkpoint_revision": "735d9f692981e286ade093b5046627eda876e5d0",
+      "dataset_locator": "dataset_root/libero_goal-task9-seed3075",
+      "elapsed_seconds": 16.03877303004265,
+      "episode_horizon": 300,
+      "episode_id": "libero_goal-task9-seed3075",
+      "frame_count": 155,
+      "instruction": "put the wine bottle on the rack",
+      "metadata_identities": {
+        "episode_parquet_files": [
+          {
+            "bytes": 66365,
+            "relative_path": "meta/episodes/chunk-000/file-000.parquet",
+            "sha256": "d6b952d7807dc505aaf913d6f599472f7f8b829919f6b9ace90163acd91c596c"
+          }
+        ],
+        "info_json": {
+          "bytes": 3670,
+          "sha256": "de433315b3fc0a14c30964ea145625373d4b2d1386f32685a6a45241b1e14d27"
+        },
+        "tasks_parquet": {
+          "bytes": 2145,
+          "sha256": "cb07911e591350af125af554fc49ea0763b3058c6cea69e1213c6e326be2460c"
+        }
+      },
+      "phase": "primary_pilot",
+      "policy_backward_calls": 0,
+      "policy_config_sha256": "c716d30311fd98d927154b5f49a675579091065686b8cccf5e463a19c2a8d393",
+      "policy_optimizer_steps": 0,
+      "policy_queries": 23,
+      "policy_sampling_seed": 423075,
+      "processor_revision": "735d9f692981e286ade093b5046627eda876e5d0",
+      "reload_validation": {
+        "completeness": 1.0,
+        "frames_expected": 155,
+        "frames_reloaded": 155,
+        "status": "pass"
+      },
+      "seed": 3075,
+      "sidecar_locator": "sidecar_root/libero_goal-task9-seed3075.jsonl",
+      "success": true,
+      "suite": "libero_goal",
+      "task_id": 9,
+      "task_name": "put_the_wine_bottle_on_the_rack",
+      "termination_reason": "success"
+    },
+    {
+      "action_is_pad_semantic": "false_for_every_executed_step",
+      "action_mask_semantic": "not_emitted_by_native_inference",
+      "checkpoint_revision": "735d9f692981e286ade093b5046627eda876e5d0",
+      "dataset_locator": "dataset_root/libero_goal-task9-seed3076",
+      "elapsed_seconds": 15.345262460410595,
+      "episode_horizon": 300,
+      "episode_id": "libero_goal-task9-seed3076",
+      "frame_count": 150,
+      "instruction": "put the wine bottle on the rack",
+      "metadata_identities": {
+        "episode_parquet_files": [
+          {
+            "bytes": 66355,
+            "relative_path": "meta/episodes/chunk-000/file-000.parquet",
+            "sha256": "a481d89d221713a263cc3283aa5212d7c3b1310d99df6a877458678fdbb193e4"
+          }
+        ],
+        "info_json": {
+          "bytes": 3670,
+          "sha256": "71f0a207af97a2f15d9c3d5bb1992695f3a6b053a0e61d749aabcc3cb98b391d"
+        },
+        "tasks_parquet": {
+          "bytes": 2145,
+          "sha256": "cb07911e591350af125af554fc49ea0763b3058c6cea69e1213c6e326be2460c"
+        }
+      },
+      "phase": "primary_pilot",
+      "policy_backward_calls": 0,
+      "policy_config_sha256": "c716d30311fd98d927154b5f49a675579091065686b8cccf5e463a19c2a8d393",
+      "policy_optimizer_steps": 0,
+      "policy_queries": 22,
+      "policy_sampling_seed": 423076,
+      "processor_revision": "735d9f692981e286ade093b5046627eda876e5d0",
+      "reload_validation": {
+        "completeness": 1.0,
+        "frames_expected": 150,
+        "frames_reloaded": 150,
+        "status": "pass"
+      },
+      "seed": 3076,
+      "sidecar_locator": "sidecar_root/libero_goal-task9-seed3076.jsonl",
+      "success": true,
+      "suite": "libero_goal",
+      "task_id": 9,
+      "task_name": "put_the_wine_bottle_on_the_rack",
+      "termination_reason": "success"
+    },
+    {
+      "action_is_pad_semantic": "false_for_every_executed_step",
+      "action_mask_semantic": "not_emitted_by_native_inference",
+      "checkpoint_revision": "735d9f692981e286ade093b5046627eda876e5d0",
+      "dataset_locator": "dataset_root/libero_goal-task9-seed3077",
+      "elapsed_seconds": 14.733897466212511,
+      "episode_horizon": 300,
+      "episode_id": "libero_goal-task9-seed3077",
+      "frame_count": 145,
+      "instruction": "put the wine bottle on the rack",
+      "metadata_identities": {
+        "episode_parquet_files": [
+          {
+            "bytes": 66361,
+            "relative_path": "meta/episodes/chunk-000/file-000.parquet",
+            "sha256": "ba3c231d69a9b5bf907ca1adbf51be8852ef82e973f455eef714ec01b4fec947"
+          }
+        ],
+        "info_json": {
+          "bytes": 3670,
+          "sha256": "650f372e5d9f110163325aa6edb48c82b25cd5954904d95776c362a9572bb606"
+        },
+        "tasks_parquet": {
+          "bytes": 2145,
+          "sha256": "cb07911e591350af125af554fc49ea0763b3058c6cea69e1213c6e326be2460c"
+        }
+      },
+      "phase": "primary_pilot",
+      "policy_backward_calls": 0,
+      "policy_config_sha256": "c716d30311fd98d927154b5f49a675579091065686b8cccf5e463a19c2a8d393",
+      "policy_optimizer_steps": 0,
+      "policy_queries": 21,
+      "policy_sampling_seed": 423077,
+      "processor_revision": "735d9f692981e286ade093b5046627eda876e5d0",
+      "reload_validation": {
+        "completeness": 1.0,
+        "frames_expected": 145,
+        "frames_reloaded": 145,
+        "status": "pass"
+      },
+      "seed": 3077,
+      "sidecar_locator": "sidecar_root/libero_goal-task9-seed3077.jsonl",
+      "success": true,
+      "suite": "libero_goal",
+      "task_id": 9,
+      "task_name": "put_the_wine_bottle_on_the_rack",
+      "termination_reason": "success"
+    },
+    {
+      "action_is_pad_semantic": "false_for_every_executed_step",
+      "action_mask_semantic": "not_emitted_by_native_inference",
+      "checkpoint_revision": "735d9f692981e286ade093b5046627eda876e5d0",
+      "dataset_locator": "dataset_root/libero_goal-task9-seed3078",
+      "elapsed_seconds": 14.610533997416496,
+      "episode_horizon": 300,
+      "episode_id": "libero_goal-task9-seed3078",
+      "frame_count": 133,
+      "instruction": "put the wine bottle on the rack",
+      "metadata_identities": {
+        "episode_parquet_files": [
+          {
+            "bytes": 66380,
+            "relative_path": "meta/episodes/chunk-000/file-000.parquet",
+            "sha256": "b4d4b1e3250ba5cba7e03b1bc0e3d7e7b2b1f1a5943e19508b33ecabb99431eb"
+          }
+        ],
+        "info_json": {
+          "bytes": 3670,
+          "sha256": "6a8a30c46601f35098e3b18d21564b202d301d29515516b7d57507e5d98b20b3"
+        },
+        "tasks_parquet": {
+          "bytes": 2145,
+          "sha256": "cb07911e591350af125af554fc49ea0763b3058c6cea69e1213c6e326be2460c"
+        }
+      },
+      "phase": "primary_pilot",
+      "policy_backward_calls": 0,
+      "policy_config_sha256": "c716d30311fd98d927154b5f49a675579091065686b8cccf5e463a19c2a8d393",
+      "policy_optimizer_steps": 0,
+      "policy_queries": 19,
+      "policy_sampling_seed": 423078,
+      "processor_revision": "735d9f692981e286ade093b5046627eda876e5d0",
+      "reload_validation": {
+        "completeness": 1.0,
+        "frames_expected": 133,
+        "frames_reloaded": 133,
+        "status": "pass"
+      },
+      "seed": 3078,
+      "sidecar_locator": "sidecar_root/libero_goal-task9-seed3078.jsonl",
+      "success": true,
+      "suite": "libero_goal",
+      "task_id": 9,
+      "task_name": "put_the_wine_bottle_on_the_rack",
+      "termination_reason": "success"
+    },
+    {
+      "action_is_pad_semantic": "false_for_every_executed_step",
+      "action_mask_semantic": "not_emitted_by_native_inference",
+      "checkpoint_revision": "735d9f692981e286ade093b5046627eda876e5d0",
+      "dataset_locator": "dataset_root/libero_goal-task9-seed3079",
+      "elapsed_seconds": 15.412242736667395,
+      "episode_horizon": 300,
+      "episode_id": "libero_goal-task9-seed3079",
+      "frame_count": 149,
+      "instruction": "put the wine bottle on the rack",
+      "metadata_identities": {
+        "episode_parquet_files": [
+          {
+            "bytes": 66394,
+            "relative_path": "meta/episodes/chunk-000/file-000.parquet",
+            "sha256": "570464443b52f43f0080c8e1fb03c8f56f323d75c77129a8c3baad34cbc006fc"
+          }
+        ],
+        "info_json": {
+          "bytes": 3670,
+          "sha256": "266c76c4c2bf68919de30bd7422dd9e59c4369c9b0ad36f3728b27a3203a3151"
+        },
+        "tasks_parquet": {
+          "bytes": 2145,
+          "sha256": "cb07911e591350af125af554fc49ea0763b3058c6cea69e1213c6e326be2460c"
+        }
+      },
+      "phase": "primary_pilot",
+      "policy_backward_calls": 0,
+      "policy_config_sha256": "c716d30311fd98d927154b5f49a675579091065686b8cccf5e463a19c2a8d393",
+      "policy_optimizer_steps": 0,
+      "policy_queries": 22,
+      "policy_sampling_seed": 423079,
+      "processor_revision": "735d9f692981e286ade093b5046627eda876e5d0",
+      "reload_validation": {
+        "completeness": 1.0,
+        "frames_expected": 149,
+        "frames_reloaded": 149,
+        "status": "pass"
+      },
+      "seed": 3079,
+      "sidecar_locator": "sidecar_root/libero_goal-task9-seed3079.jsonl",
+      "success": true,
+      "suite": "libero_goal",
+      "task_id": 9,
+      "task_name": "put_the_wine_bottle_on_the_rack",
+      "termination_reason": "success"
+    }
+  ],
+  "errors": [],
+  "execution_site": "remote",
+  "failed_tasks": 2,
+  "natural_failed_episodes": 7,
+  "nonfinite_actions": 0,
+  "phase": "primary_pilot",
+  "policy_backward_calls": 0,
+  "policy_optimizer_steps": 0,
+  "processor_identity_completeness": 1.0,
+  "processor_manifest": "processor_serialization_manifest.json",
+  "processor_manifest_status": "pass",
+  "reload_completeness": 1.0,
+  "runtime_identity": {
+    "git_branch": "codex/lg-r1b-hard-task-failures",
+    "git_commit": "c2d87c21869d78d91d3b1fdcc9ffb0f5c662671f",
+    "hostname": "autodl-container-c47c48a71b-504676bc",
+    "platform": "Linux-5.15.0-119-generic-x86_64-with-glibc2.35",
+    "python": "3.12.3",
+    "torch": {
+      "available": true,
+      "cuda_available": true,
+      "cuda_version": "12.8",
+      "gpu_name": "NVIDIA GeForce RTX 5090",
+      "version": "2.11.0+cu128"
+    }
+  },
+  "scheduled_episodes": 80,
+  "schema_version": "latentguard.lg_r1b.rollout_manifest.v1",
+  "status": "pass",
+  "suite_count": 2,
+  "synthetic_failure_samples": 0,
+  "task_count": 8,
+  "task_registry_sha256": "ae58687791115b371e1203bdfd9f89ae0c98a5286ef2f1427fb5db042cc64578",
+  "upload_to_hub": false,
+  "valid_episodes": 80
+}

@@ -1,0 +1,45 @@
+{
+  "episode_leakage": 0,
+  "failure_episodes": 27,
+  "failure_windows": 7025,
+  "files": {
+    "failure_windows": {
+      "bytes": 4257099,
+      "locator": "failure_windows/failure_windows.jsonl",
+      "sha256": "f2a5235543edbb27929d7a62b1531411f25b23dc04960d4bb9bb6b8c4b80a8af"
+    },
+    "matched_success_windows": {
+      "bytes": 1407858,
+      "locator": "failure_windows/matched_success_windows.jsonl",
+      "sha256": "2139cd76a198c61dbf7b2de9ed97ef248c0e649e78bf05fb958e0991758e3a48"
+    }
+  },
+  "horizon_distribution": {
+    "pre_failure_long": 2326,
+    "pre_failure_medium": 2336,
+    "pre_failure_short": 2336,
+    "terminal_failure": 27
+  },
+  "matched_success_windows": 2315,
+  "same_split_matching": true,
+  "same_task_matching": true,
+  "schema_version": "latentguard.lg_r1b.failure_window_manifest.v1",
+  "seed_leakage": 0,
+  "stage_distribution": {
+    "0": 13,
+    "1": 231,
+    "2": 15,
+    "3": 1391,
+    "4": 4758,
+    "5": 503,
+    "6": 114
+  },
+  "status": "pass",
+  "task_distribution": {
+    "libero_10/task6": 6054,
+    "libero_10/task8": 146,
+    "libero_10/task9": 653,
+    "libero_goal/task9": 172
+  },
+  "unmatched_failure_windows": 4710
+}

@@ -1,0 +1,51 @@
+{
+  "artifact_statuses": {
+    "adaptation": "pass",
+    "dataset": "pass",
+    "failure_registry": "pass",
+    "failure_windows": "pass",
+    "lg_r2_gate": "pass",
+    "pilot": "pass",
+    "progress_failure": "pass",
+    "rollout": "pass",
+    "stage": "pass",
+    "vlajepa_descriptive": "pass",
+    "zero_shot": "pass"
+  },
+  "checks": {
+    "clean_remote_checkout": true,
+    "exact_commit": true,
+    "failure_head_training_performed": false,
+    "final_seed_accessed": false,
+    "intervention_performed": false,
+    "langmani_modified": false,
+    "network_turbo_sourced": true,
+    "policy_training_performed": false,
+    "remote_execution_only": true,
+    "robolab_executed": false,
+    "server_left_online": true,
+    "server_shutdown_requested": false,
+    "synthetic_failure_generated": false,
+    "tracked_source_edited_remotely": false,
+    "vlajepa_finetuning_performed": false
+  },
+  "download_policy": "source /etc/network_turbo after boot; Aliyun mirrors by default; no unreviewed dependency upgrades",
+  "runtime_identity": {
+    "git_branch": "codex/lg-r1b-hard-task-failures",
+    "git_commit": "6965f1619fa4d9c40f4fc252bd35d2e336cec849",
+    "hostname": "autodl-container-c47c48a71b-504676bc",
+    "platform": "Linux-5.15.0-119-generic-x86_64-with-glibc2.35",
+    "python": "3.12.3",
+    "torch": {
+      "available": true,
+      "cuda_available": true,
+      "cuda_version": "12.8",
+      "gpu_name": "NVIDIA GeForce RTX 5090",
+      "version": "2.11.0+cu128"
+    }
+  },
+  "sarm_adaptation_performed": true,
+  "schema_version": "latentguard.lg_r1b.remote_execution_audit.v1",
+  "server_left_online": true,
+  "status": "pass"
+}

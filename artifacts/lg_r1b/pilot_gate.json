@@ -1,0 +1,12 @@
+{
+  "input": {
+    "expected_episodes": 80,
+    "infrastructure_errors": 0,
+    "natural_failures": 7,
+    "valid_episodes": 80
+  },
+  "next_action": "uniform_primary_expansion_to_20_40_per_task",
+  "schema_version": "latentguard.lg_r1b.pilot_gate.v1",
+  "source_manifest": "pilot_manifest.json",
+  "status": "PILOT_B"
+}

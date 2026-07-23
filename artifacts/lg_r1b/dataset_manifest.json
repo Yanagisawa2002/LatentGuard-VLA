@@ -1,0 +1,37 @@
+{
+  "checkpoint_identity_completeness": 1.0,
+  "current_samples": 79326,
+  "episode_split_leakage": 0,
+  "failed_tasks": 4,
+  "failure_head_samples": 0,
+  "failure_window_manifest_sha256": "55e0ffea1b1d56c4299b5767f61d5f9d346ba8500e1a6700afdd4244746b5840",
+  "failure_windows": 7025,
+  "files": {
+    "current_samples": {
+      "bytes": 50351034,
+      "locator": "progress_dataset/current_samples.jsonl",
+      "sha256": "4d96c60c54586d8d4534d477da3e3a94608c7e80b843fb795303ac999393419a"
+    }
+  },
+  "matched_success_windows": 2315,
+  "model_input_allowlist": [
+    "observation.images.image",
+    "observation.images.image2",
+    "observation.state",
+    "task"
+  ],
+  "natural_failed_episodes": 27,
+  "privileged_model_inputs": [],
+  "processor_identity_completeness": 1.0,
+  "schema_version": "latentguard.lg_r1b.dataset_manifest.v1",
+  "seed_split_leakage": 0,
+  "source_rollout_manifest_sha256": "74f0b5b74af0dcf6115e9c316ece83db312c407f73e7470137b22e525886a08d",
+  "source_stage_report_sha256": "f7874c2dc6dd79c2dfb3ef49cf1a7e94fb723d02cd1fcfc268d770dc83887d6f",
+  "source_task_registry_sha256": "ae58687791115b371e1203bdfd9f89ae0c98a5286ef2f1427fb5db042cc64578",
+  "stage_annotation_passed": true,
+  "status": "pass",
+  "suites": 2,
+  "synthetic_corruption_samples": 0,
+  "tasks": 8,
+  "valid_rollout_episodes": 320
+}

@@ -193,3 +193,156 @@ After remote work: Linux/CUDA smoke, JSON parsing, artifact hashes, source and
 sensitive-path validation, compact artifact retrieval, evidence documents,
 full local validation, final diff review, commit, push, clean-tree/upstream
 confirmation, and a final server-online check.
+
+## Completion record
+
+LG-R1b followed the pre-registered Pilot B path. The 80-episode pilot had 7
+natural failures, so all eight primary tasks were expanded uniformly in three
+additional 80-episode rounds. The completed run has 320 valid episodes, 27
+natural failures and four failed tasks. The secondary task group was never
+activated.
+
+The remote run identifier is
+`20260723T174522Z_lg-r1b-hard-tasks_c2d87c2_seed3000-3079`. The identifier
+retains the revision at directory creation; the final execution audit binds
+the completed artifacts to exact execution revision
+`6965f1619fa4d9c40f4fc252bd35d2e336cec849`.
+
+Recorded per-episode rollout time totals 6,821.24 seconds (1.895 GPU-hours):
+
+| Phase | Episodes | Recorded time |
+|---|---:|---:|
+| Primary pilot | 80 | 0.470 h |
+| Expansion 1 | 80 | 0.466 h |
+| Expansion 2 | 80 | 0.478 h |
+| Expansion 3 | 80 | 0.481 h |
+
+The median episode time was 20.67 seconds. Stage construction, zero-shot
+evaluation, adaptation and diagnostics completed within the original
+3–5-hour wall-clock ETA, but their exact GPU-active duration was not persisted
+as a content-bound metric; no more precise total GPU-hour claim is made.
+
+The data-readiness gate passes, while frozen SARM held-out-task
+generalization is Result C. The mechanical gate artifact preserves
+`LG_R2_AUTHORIZED=true` according to the pre-registered data thresholds, but
+direct LG-R2 execution remains withheld until a new milestone addresses the
+task-specific progress/stage failure.
+
+## Reproducible command sequence
+
+The remote environment supplied the path variables below. Real hostnames,
+credentials and machine-specific paths are intentionally not tracked.
+
+```bash
+source /etc/network_turbo
+export PYTHONPATH=src
+export LG_R1B_NETWORK_TURBO_SOURCED=1
+cd "$LATENTGUARD_REMOTE_REPO"
+
+# Registry and local/CPU protocol checks
+python scripts/lg_r1b_build_task_registry.py \
+  --config configs/lg_r1b/task_registry.yaml
+
+# One-episode execution gate, then frozen pilot
+python scripts/lg_r1b_collect_rollouts.py \
+  --config configs/lg_r1b/pilot.yaml \
+  --phase primary_pilot --max-episodes 1 --resume
+python scripts/lg_r1b_collect_rollouts.py \
+  --config configs/lg_r1b/pilot.yaml \
+  --phase primary_pilot --resume
+python scripts/lg_r1b_check_pilot_gate.py \
+  --manifest "$LG_R1B_OUTPUT_ROOT/pilot_manifest.json"
+
+# Pilot-B uniform expansion
+for phase in primary_expansion_1 primary_expansion_2 primary_expansion_3; do
+  python scripts/lg_r1b_collect_rollouts.py \
+    --config configs/lg_r1b/expansion.yaml \
+    --phase "$phase" --resume
+done
+
+# Stage labels and dataset
+python scripts/lg_r1b_build_stage_labels.py \
+  --config configs/lg_r1b/stages.yaml
+python scripts/lg_r1b_validate_stage_labels.py \
+  --report "$LG_R1B_OUTPUT_ROOT/stage_annotation_report.json"
+python scripts/lg_r1b_build_progress_dataset.py \
+  --runtime-root "$LG_R1B_OUTPUT_ROOT"
+
+# Frozen zero-shot evaluation before adaptation
+python scripts/lg_r1b_evaluate_frozen_sarm.py \
+  --config configs/lg_r1b/eval_zero_shot.yaml \
+  --runtime-root "$LG_R1B_OUTPUT_ROOT" --dry-run
+python scripts/lg_r1b_evaluate_frozen_sarm.py \
+  --config configs/lg_r1b/eval_zero_shot.yaml \
+  --runtime-root "$LG_R1B_OUTPUT_ROOT"
+
+# Triggered lightweight adaptation: dry-run, one-step save, resume, full run
+python scripts/lg_r1b_adapt_sarm.py \
+  --config configs/lg_r1b/adaptation.yaml \
+  --runtime-root "$LG_R1B_OUTPUT_ROOT" --dry-run
+python scripts/lg_r1b_adapt_sarm.py \
+  --config configs/lg_r1b/adaptation.yaml \
+  --runtime-root "$LG_R1B_OUTPUT_ROOT" \
+  --output-dir "$LG_R1B_OUTPUT_ROOT/sarm-adaptation-smoke" \
+  --result "$LG_R1B_OUTPUT_ROOT/sarm-adaptation-smoke/results.json" \
+  --max-steps 1 --limit-samples 64
+python scripts/lg_r1b_adapt_sarm.py \
+  --config configs/lg_r1b/adaptation.yaml \
+  --runtime-root "$LG_R1B_OUTPUT_ROOT" \
+  --output-dir "$LG_R1B_OUTPUT_ROOT/sarm-adaptation-smoke" \
+  --result "$LG_R1B_OUTPUT_ROOT/sarm-adaptation-smoke/resume-results.json" \
+  --max-steps 2 --limit-samples 64 --resume
+python scripts/lg_r1b_adapt_sarm.py \
+  --config configs/lg_r1b/adaptation.yaml \
+  --runtime-root "$LG_R1B_OUTPUT_ROOT"
+
+# Natural-failure analysis and frozen VLA-JEPA diagnostic
+python scripts/lg_r1b_build_failure_windows.py \
+  --config configs/lg_r1b/failure_windows.yaml \
+  --runtime-root "$LG_R1B_OUTPUT_ROOT"
+python scripts/lg_r1b_analyze_failure_signals.py \
+  --config configs/lg_r1b/analysis.yaml \
+  --runtime-root "$LG_R1B_OUTPUT_ROOT"
+python scripts/lg_r1b_analyze_vlajepa_descriptive.py \
+  --runtime-root "$LG_R1B_OUTPUT_ROOT" --max-samples 64
+python scripts/lg_r1b_check_lg_r2_gate.py \
+  --manifest "$LG_R1B_OUTPUT_ROOT/dataset_manifest.json" \
+  --runtime-root "$LG_R1B_OUTPUT_ROOT" \
+  --output "$LG_R1B_OUTPUT_ROOT/lg_r2_gate.json"
+
+# Final exact-revision/source/audit validation
+python scripts/lg_r1b_validate_sources.py \
+  --expected-commit 6965f1619fa4d9c40f4fc252bd35d2e336cec849 \
+  --artifact-root "$LG_R1B_OUTPUT_ROOT" \
+  --output "$LG_R1B_OUTPUT_ROOT/source_validation.json"
+python -m pytest -q
+python scripts/lg_r1b_write_remote_audit.py \
+  --expected-commit 6965f1619fa4d9c40f4fc252bd35d2e336cec849 \
+  --runtime-root "$LG_R1B_OUTPUT_ROOT" \
+  --output "$LG_R1B_OUTPUT_ROOT/remote_execution_audit.json"
+```
+
+All remote sessions sourced `/etc/network_turbo`. No additional package
+download was required; Ruff, mypy and package builds remained authoritative
+local checks. The server remained online after the final audit.
+
+## Validation record
+
+- Local Windows: 1,715 passed and 3 platform-capability symlink tests skipped.
+- Remote Linux: 1,718 passed.
+- Ruff check: passed.
+- Ruff format check: 420 files already formatted.
+- mypy: no issues in 238 source files.
+- sdist and wheel: built successfully.
+- Task registry and all four executed phases: validated at exactly 80 scheduled
+  episodes per phase.
+- Local LG-R2 recomputation: semantically identical to the retrieved remote
+  artifact. Byte serialization differs under Windows newline handling; the
+  retrieved files themselves were verified byte-for-byte against remote
+  SHA-256 values.
+- Remote source validation and execution audit: passed at exact revision
+  `6965f1619fa4d9c40f4fc252bd35d2e336cec849`.
+- JSON parse, artifact hash, sensitive content and machine-path scans: passed.
+- Remote audit confirms no final-seed access, synthetic failure generation,
+  policy/failure-head/VLA-JEPA training, intervention, RoboLab execution,
+  LangMani modification or tracked remote source edit.

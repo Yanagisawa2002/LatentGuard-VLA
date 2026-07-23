@@ -1,0 +1,19 @@
+{
+  "checks": {
+    "config_parse": true,
+    "expected_commit": true,
+    "json_parse": true,
+    "langmani_isolation": true,
+    "package_import": true,
+    "repository_identity": true,
+    "sensitive_content": true
+  },
+  "commit": "6965f1619fa4d9c40f4fc252bd35d2e336cec849",
+  "config_errors": [],
+  "forbidden_paths": [],
+  "json_errors": [],
+  "package_path": "src/latentguard/__init__.py",
+  "schema_version": "latentguard.lg_r1b.source_validation.v1",
+  "sensitive_hits": [],
+  "status": "pass"
+}

@@ -1,0 +1,564 @@
+{
+  "best_validation_step": 400,
+  "claim_boundary": "Task-level SARM adaptation; not a failure head.",
+  "cuda_memory": {
+    "available": true,
+    "peak_allocated_bytes": 179132928,
+    "peak_reserved_bytes": 209715200
+  },
+  "feature_manifest": {
+    "clip_digest_after": "a12cd7a357e29d5bfb3a3a90b803490215d0b2bc8bc60310643dad8316c2aaa3",
+    "clip_digest_before": "a12cd7a357e29d5bfb3a3a90b803490215d0b2bc8bc60310643dad8316c2aaa3",
+    "clip_frozen": true,
+    "clip_model_id": "openai/clip-vit-base-patch32",
+    "clip_revision": "3d74acf9a28c67741b2f4f2ea7635f0aaf6f0268",
+    "feature_shapes": {
+      "state": [
+        6000,
+        8,
+        32
+      ],
+      "text": [
+        6000,
+        512
+      ],
+      "video": [
+        6000,
+        8,
+        512
+      ]
+    },
+    "frame_deltas": [
+      -49,
+      -42,
+      -35,
+      -28,
+      -21,
+      -14,
+      -7,
+      0
+    ],
+    "optimizer_contains_clip": false,
+    "processor_serialization": {
+      "files": [
+        {
+          "bytes": 581,
+          "relative_path": "processor_config.json",
+          "sha256": "38d5457ba35b9eee2b4fb2b8d3f151ca8cb5932348e6979d1c5d8f05966ce810"
+        },
+        {
+          "bytes": 3642073,
+          "relative_path": "tokenizer.json",
+          "sha256": "6d9109cc838977f3ca94a379eec36aecc7c807e1785cd729660ca2fc0171fb35"
+        },
+        {
+          "bytes": 360,
+          "relative_path": "tokenizer_config.json",
+          "sha256": "d3162e85b1c6f8fa84190848aef6e4429849ba43da53bc143d9c1ba539f31610"
+        }
+      ],
+      "reloaded_type": "CLIPProcessor",
+      "status": "pass"
+    },
+    "sample_identity": "e1ce91adb20da6333128e62becea4941f3a00601c5acfab6949de3af80281afc"
+  },
+  "frozen_initial_held_out_test": {
+    "pairwise": {
+      "accuracy": 0.46549295774647886,
+      "cross_stage_accuracy": 0.4078014184397163,
+      "same_stage_accuracy": 0.4797891036906854
+    },
+    "progress": {
+      "mae": 0.22163672765600495,
+      "rmse": 0.27490856826847776,
+      "spearman": 0.2854414471685435
+    },
+    "samples": 1500,
+    "stage": {
+      "accuracy": 0.27266666666666667,
+      "confusion_matrix": [
+        [
+          241,
+          13,
+          24,
+          255,
+          14,
+          0,
+          0,
+          0
+        ],
+        [
+          86,
+          101,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          50,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          238,
+          3,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          40,
+          46,
+          13,
+          77,
+          41,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          60,
+          134,
+          38,
+          26,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      ],
+      "macro_f1": 0.1803950444377736,
+      "per_stage_f1": {
+        "0": 0.4184027777777778,
+        "1": 0.5771428571428572,
+        "2": 0.0,
+        "3": 0.0,
+        "4": 0.2645161290322581,
+        "5": 0.18309859154929578,
+        "6": 0.0,
+        "7": 0.0
+      }
+    },
+    "stage_completion": {
+      "mae": 0.3673109362889081,
+      "rmse": 0.48365958559069844,
+      "spearman": 0.13303734375113505
+    },
+    "temporal": {
+      "monotonicity_violation_rate": 0.15704225352112677,
+      "negative_progress_detection_recall": 0.0,
+      "stage_regression_detection_recall": 0.0,
+      "stagnation_detection_recall": 0.5352877307274702
+    }
+  },
+  "frozen_modules": [
+    "VLA-JEPA",
+    "Qwen",
+    "policy",
+    "processor",
+    "CLIP"
+  ],
+  "frozen_zero_shot_held_out_task": {
+    "pairwise": {
+      "accuracy": 0.5244791666666667,
+      "cross_stage_accuracy": 0.39950576606260296,
+      "same_stage_accuracy": 0.5479430869161769
+    },
+    "progress": {
+      "mae": 0.2112068338945637,
+      "rmse": 0.28987929547042507,
+      "spearman": 0.3775481906890227
+    },
+    "samples": 8000,
+    "stage": {
+      "accuracy": 0.372875,
+      "confusion_matrix": [
+        [
+          1342,
+          26,
+          123,
+          366,
+          23,
+          0,
+          224,
+          0
+        ],
+        [
+          273,
+          325,
+          191,
+          104,
+          101,
+          0,
+          0,
+          0
+        ],
+        [
+          201,
+          0,
+          278,
+          160,
+          228,
+          0,
+          7,
+          0
+        ],
+        [
+          314,
+          36,
+          204,
+          266,
+          113,
+          4,
+          367,
+          0
+        ],
+        [
+          310,
+          177,
+          71,
+          136,
+          425,
+          0,
+          451,
+          0
+        ],
+        [
+          134,
+          46,
+          78,
+          206,
+          215,
+          43,
+          9,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          97,
+          22,
+          0,
+          304,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      ],
+      "macro_f1": 0.28157017844378557,
+      "per_stage_f1": {
+        "0": 0.5737494655835828,
+        "1": 0.40523690773067333,
+        "2": 0.30566245189664654,
+        "3": 0.20159151193633953,
+        "4": 0.3151649981460882,
+        "5": 0.11053984575835475,
+        "6": 0.34061624649859945,
+        "7": 0.0
+      }
+    },
+    "stage_completion": {
+      "mae": 0.3056588393741695,
+      "rmse": 0.43333855704716917,
+      "spearman": 0.15913017643063493
+    },
+    "temporal": {
+      "monotonicity_violation_rate": 0.11692708333333333,
+      "negative_progress_detection_recall": 0.0,
+      "stage_regression_detection_recall": 0.0,
+      "stagnation_detection_recall": 0.5981703026038001
+    }
+  },
+  "held_out_test": {
+    "pairwise": {
+      "accuracy": 0.5535211267605634,
+      "cross_stage_accuracy": 0.6063829787234043,
+      "same_stage_accuracy": 0.5404217926186292
+    },
+    "progress": {
+      "mae": 0.2058196522096405,
+      "rmse": 0.26407362908469123,
+      "spearman": 0.38060840733484436
+    },
+    "samples": 1500,
+    "stage": {
+      "accuracy": 0.254,
+      "confusion_matrix": [
+        [
+          203,
+          74,
+          10,
+          257,
+          0,
+          0,
+          3,
+          0
+        ],
+        [
+          113,
+          74,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          43,
+          0,
+          0,
+          7,
+          0
+        ],
+        [
+          206,
+          21,
+          14,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          25,
+          61,
+          43,
+          33,
+          55,
+          0
+        ],
+        [
+          0,
+          0,
+          19,
+          175,
+          3,
+          61,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      ],
+      "macro_f1": 0.18363895550941034,
+      "per_stage_f1": {
+        "0": 0.37979420018709076,
+        "1": 0.4157303370786517,
+        "2": 0.0,
+        "3": 0.0,
+        "4": 0.3269961977186312,
+        "5": 0.3465909090909091,
+        "6": 0.0,
+        "7": 0.0
+      }
+    },
+    "stage_completion": {
+      "mae": 0.3476523571945727,
+      "rmse": 0.482361601115111,
+      "spearman": -0.020688369699437856
+    },
+    "temporal": {
+      "monotonicity_violation_rate": 0.24295774647887325,
+      "negative_progress_detection_recall": 0.0,
+      "stage_regression_detection_recall": 0.0,
+      "stagnation_detection_recall": 0.5298588490770901
+    }
+  },
+  "initial_checkpoint_sha256": "f6cc0ace62e790c1c69ec7ceb67a5a8ef2fe8653eb161db56f71b284844b9873",
+  "optimizer_steps": 900,
+  "schema_version": "latentguard.lg_r1b.sarm_adaptation_results.v1",
+  "status": "pass",
+  "task_level_split": true,
+  "test_accessed_after_selection": true,
+  "test_accessed_before_selection": false,
+  "trainable_modules": [
+    "StageTransformer",
+    "SubtaskTransformer"
+  ],
+  "validation": {
+    "pairwise": {
+      "accuracy": 0.4823943661971831,
+      "cross_stage_accuracy": 0.4265232974910394,
+      "same_stage_accuracy": 0.49605609114811566
+    },
+    "progress": {
+      "mae": 0.13172506885424567,
+      "rmse": 0.1958936167671527,
+      "spearman": 0.7664707610288578
+    },
+    "samples": 1500,
+    "stage": {
+      "accuracy": 0.44133333333333336,
+      "confusion_matrix": [
+        [
+          120,
+          144,
+          0,
+          40,
+          115,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          112,
+          13,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          6,
+          29,
+          373,
+          30,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          18,
+          401,
+          49,
+          2,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          5,
+          43,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      ],
+      "macro_f1": 0.2143336788858437,
+      "per_stage_f1": {
+        "0": 0.4452690166975881,
+        "1": 0.5879265091863517,
+        "2": 0.0,
+        "3": 0.10943396226415095,
+        "4": 0.572039942938659,
+        "5": 0.0,
+        "6": 0.0,
+        "7": 0.0
+      }
+    },
+    "stage_completion": {
+      "mae": 0.2976987938055148,
+      "rmse": 0.3697216055398187,
+      "spearman": 0.4736936884566065
+    },
+    "temporal": {
+      "monotonicity_violation_rate": 0.14929577464788732,
+      "negative_progress_detection_recall": 0.029411764705882353,
+      "stage_regression_detection_recall": 0.029411764705882353,
+      "stagnation_detection_recall": 0.5362035225048923
+    }
+  },
+  "zero_shot_result_sha256": "dbf37448ec4ec6e5e3aac923b1b002c7627e759bd173e82327586bf5744cdc8c"
+}
