@@ -369,6 +369,37 @@ def test_lg_r1_validate_only_clis(tmp_path: Path) -> None:
     assert json.loads(output.read_text(encoding="utf-8"))["task_count"] == 8
 
 
+def test_rollout_affordance_state_skips_unsupported_native_objects() -> None:
+    scripts = ROOT / "scripts"
+    sys.path.insert(0, str(scripts))
+    try:
+        module = importlib.import_module("lg_r1_collect_rollouts")
+    finally:
+        sys.path.remove(str(scripts))
+
+    class NativeObject:
+        pass
+
+    class Environment:
+        def get_object(self, name: str) -> NativeObject:
+            assert name == "bowl"
+            return NativeObject()
+
+    class ObjectState:
+        def is_open(self) -> bool:
+            raise AssertionError("unsupported affordance must not be evaluated")
+
+    assert (
+        module._affordance_state(
+            Environment(),
+            "bowl",
+            ObjectState(),
+            "is_open",
+        )
+        is None
+    )
+
+
 def test_lg_r1_runtime_has_no_forbidden_integrations_or_corruption() -> None:
     paths = [
         *sorted((ROOT / "src" / "latentguard" / "progress").rglob("*.py")),

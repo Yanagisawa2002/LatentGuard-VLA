@@ -84,6 +84,20 @@ def _contacts_gripper(entity_name: str, pairs: list[tuple[str, str]]) -> bool:
     return False
 
 
+def _affordance_state(
+    task_env: Any,
+    entity_name: str,
+    object_state: Any,
+    method_name: str,
+) -> bool | None:
+    """Evaluate a state only when the native object declares that affordance."""
+
+    native_object = task_env.get_object(entity_name)
+    if not callable(getattr(native_object, method_name, None)):
+        return None
+    return _safe_bool_call(object_state, method_name)
+
+
 def _extract_privileged(
     single_env: Any,
     raw_observation: dict[str, Any],
@@ -107,9 +121,9 @@ def _extract_privileged(
         objects[name] = {
             "position": position.tolist(),
             "quaternion": quaternion.tolist(),
-            "open": _safe_bool_call(object_state, "is_open"),
-            "close": _safe_bool_call(object_state, "is_close"),
-            "turn_on": _safe_bool_call(object_state, "turn_on"),
+            "open": _affordance_state(task_env, name, object_state, "is_open"),
+            "close": _affordance_state(task_env, name, object_state, "is_close"),
+            "turn_on": _affordance_state(task_env, name, object_state, "turn_on"),
             "contact_with_gripper": _contacts_gripper(name, pairs),
         }
     goals = []
