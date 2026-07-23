@@ -1,0 +1,11 @@
+{
+  "backward_calls": 0,
+  "native_external_candidate_api": false,
+  "native_multi_candidate_sampling": false,
+  "optimizer_steps": 0,
+  "reason": "VLA-JEPA 0.6 conditions its video predictor on Qwen special-token representations, not externally supplied numeric action chunks",
+  "schema_version": "latentguard.lg_r0.real_candidate_probe.v1",
+  "source_fact": "the predictor receives Qwen special action-token hidden states; the official API does not accept external numeric action chunks",
+  "status": "REAL_CANDIDATE_PROBE_NOT_AVAILABLE",
+  "synthetic_candidates_used": false
+}

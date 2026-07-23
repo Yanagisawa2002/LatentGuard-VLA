@@ -1,0 +1,45 @@
+{
+  "schema_version": "latentguard.lg_r0.eval.v1",
+  "checkpoint_revision": "735d9f692981e286ade093b5046627eda876e5d0",
+  "processor_revision": "735d9f692981e286ade093b5046627eda876e5d0",
+  "policy_sampling_seed": 1000,
+  "suites": [
+    {
+      "name": "libero_spatial",
+      "task_ids": [0],
+      "seeds": [1000, 1001, 1002, 1003, 1004, 1005, 1006, 1007, 1008, 1009],
+      "episodes_per_task": 10,
+      "episode_horizon": 280
+    },
+    {
+      "name": "libero_object",
+      "task_ids": [0],
+      "seeds": [1000, 1001, 1002, 1003, 1004, 1005, 1006, 1007, 1008, 1009],
+      "episodes_per_task": 10,
+      "episode_horizon": 280
+    },
+    {
+      "name": "libero_goal",
+      "task_ids": [0],
+      "seeds": [1000, 1001, 1002, 1003, 1004, 1005, 1006, 1007, 1008, 1009],
+      "episodes_per_task": 10,
+      "episode_horizon": 300
+    },
+    {
+      "name": "libero_10",
+      "task_ids": [0],
+      "seeds": [1000, 1001, 1002, 1003, 1004, 1005, 1006, 1007, 1008, 1009],
+      "episodes_per_task": 10,
+      "episode_horizon": 520
+    }
+  ],
+  "action_execution_horizon": 7,
+  "replanning_frequency_steps": 7,
+  "observation_height": 224,
+  "observation_width": 224,
+  "camera_names": ["agentview_image", "robot0_eye_in_hand_image"],
+  "control_mode": "relative",
+  "init_states": true,
+  "recording": false,
+  "official_400_episode_equivalent": false
+}

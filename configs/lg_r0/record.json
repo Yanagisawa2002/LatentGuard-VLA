@@ -1,0 +1,16 @@
+{
+  "schema_version": "latentguard.lg_r0.record.v1",
+  "source_evaluation": "configs/lg_r0/eval_40ep.json",
+  "policy_sampling_seed": 1000,
+  "episodes": [
+    {"suite": "libero_spatial", "task_id": 0, "seed": 1000},
+    {"suite": "libero_spatial", "task_id": 0, "seed": 1001},
+    {"suite": "libero_object", "task_id": 0, "seed": 1000},
+    {"suite": "libero_object", "task_id": 0, "seed": 1001}
+  ],
+  "format": "LeRobotDataset-v3",
+  "use_videos": true,
+  "upload_to_hub": false,
+  "required_reload": true,
+  "required_frame_replay": true
+}

@@ -1,0 +1,18 @@
+{
+  "schema_version": "latentguard.lg_r0.remote_execution_audit.v1",
+  "status": "pending",
+  "ssh_used": true,
+  "remote_server_used": false,
+  "remote_training": false,
+  "remote_simulator": false,
+  "execution_environment": null,
+  "authentication_probe": {
+    "method": "existing_public_key_only",
+    "result": "permission_denied",
+    "state_change": false
+  },
+  "explanation": "Remote execution awaits exact-revision synchronization after the newly started instance authorizes the existing LatentGuard public key.",
+  "tracked_source_modified_remotely": false,
+  "optimizer_steps": 0,
+  "backward_calls": 0
+}

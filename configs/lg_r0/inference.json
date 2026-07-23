@@ -1,0 +1,15 @@
+{
+  "schema_version": "latentguard.lg_r0.inference.v1",
+  "fixture": {
+    "image_shape_chw": [3, 224, 224],
+    "state_dimension": 8,
+    "instruction": "pick up the black bowl between the plate and the ramekin and place it on the plate",
+    "batch_sizes": [1, 2],
+    "seed": 0
+  },
+  "device": "cuda",
+  "dtype": "bfloat16",
+  "fixed_seed_repeats": 2,
+  "processor_roundtrip": true,
+  "offline": true
+}

@@ -1,0 +1,55 @@
+﻿{
+    "audit_only":  true,
+    "backward_calls":  0,
+    "checkpoint_revision":  "735d9f692981e286ade093b5046627eda876e5d0",
+    "config":  {
+                   "action_dimension":  7,
+                   "action_horizon":  7,
+                   "executed_action_steps":  7,
+                   "state_dimension":  8,
+                   "torch_dtype":  "bfloat16",
+                   "video_frames":  8,
+                   "world_model_enabled":  true,
+                   "qwen_binding":  {
+                                        "id":  "Qwen/Qwen3-VL-2B-Instruct",
+                                        "revision":  "89644892e4d85e24eaac8bacfd4f463576704203"
+                                    },
+                   "vjepa_binding":  {
+                                         "id":  "facebook/vjepa2-vitl-fpc64-256",
+                                         "revision":  "b3c1679b7c34d3255ef3547f27c7b226aefab26f"
+                                     }
+               },
+    "cuda_memory_after_load":  {
+                                   "allocated_bytes":  6181191680,
+                                   "available":  true,
+                                   "peak_allocated_bytes":  6181191680,
+                                   "peak_reserved_bytes":  6203375616,
+                                   "reserved_bytes":  6203375616
+                               },
+    "fail_closed_load":  true,
+    "missing_keys":  [
+
+                     ],
+    "noncritical_key_explanation":  {
+                                        "model.qwen.model.model.language_model.embed_tokens.weight":  "checkpoint duplicates the exactly equal lm_head tensor; the runtime model ties both names to one storage and safetensors reports the removed duplicate as unexpected"
+                                    },
+    "optimizer_steps":  0,
+    "parameters":  {
+                       "by_top_level_module":  {
+                                                   "model":  2770333319
+                                               },
+                       "frozen_flags_in_checkpoint":  0,
+                       "note":  "requires_grad flags are architecture metadata; no training occurred",
+                       "total":  2770333319,
+                       "trainable_by_top_level_module":  {
+                                                             "model":  2770333319
+                                                         },
+                       "trainable_flags_in_checkpoint":  2770333319
+                   },
+    "schema_version":  "latentguard.lg_r0.model_structure.v1",
+    "status":  "pass",
+    "strict_load":  false,
+    "unexpected_keys":  [
+                            "model.qwen.model.model.language_model.embed_tokens.weight"
+                        ]
+}

@@ -1,0 +1,257 @@
+﻿{
+    "backward_calls":  0,
+    "cuda_memory":  {
+                        "allocated_bytes":  6190774272,
+                        "available":  true,
+                        "peak_allocated_bytes":  6296392704,
+                        "peak_reserved_bytes":  6333399040,
+                        "reserved_bytes":  6333399040
+                    },
+    "episodes":  [
+                     {
+                         "action_finite":  true,
+                         "elapsed_seconds":  17.904885488009313,
+                         "episode_id":  "libero_spatial-task0-seed1000-episode0",
+                         "episode_length":  76,
+                         "executed_action_bounds_ok":  true,
+                         "executed_action_sha256_float32":  "deee528055dbb25f90f9b50c0fdd443cd8118bf38577a771cecfc1211ba6af15",
+                         "policy_queries":  11,
+                         "seed":  1000,
+                         "success":  true,
+                         "suite":  "libero_spatial",
+                         "task":  "pick_up_the_black_bowl_between_the_plate_and_the_ramekin_and_place_it_on_the_plate",
+                         "task_id":  0,
+                         "termination":  "success",
+                         "trace_bytes":  33681,
+                         "trace_sha256":  "00720bd35cd42959189fa7b0f1dc1893a3bbcb7085914905ed60b5769fea516b",
+                         "trace_relative_path":  "traces/libero_spatial-task0-seed1000-episode0.json"
+                     }
+                 ],
+    "errors":  [
+
+               ],
+    "instrumentation":  {
+                            "backward_calls":  0,
+                            "chunk_sha256":  [
+                                                 "098d609a93bff24c17c39fe7da6fa2b0c0a16c5e308c993b34828e775efacf8d",
+                                                 "52e512dabd2d43f90205e020bf33b14dc68abd023b65fd72f71a9d29e3e0fda2",
+                                                 "a4167a1d179a4c725957492c60b5fe99e2e5fa87588d73820ea0461c5aef11e8",
+                                                 "7557e2f5657bb86e7da44eb3acca7fb4cf2b2c4cbd50a74257ec33f231f47359",
+                                                 "9e585c0eb1a5e889f95fe6c892725f5ebfff5fa9209b0cf67ec462d00bd90bc3",
+                                                 "fce6c8c1a72bb731289b49e2d803479102873ee01a742bd01c4b8fb51f78efad",
+                                                 "e93f69c6d586d349a4f9e7c5346756e48f0c927c48a24db6b94d4bf45a5e0d12",
+                                                 "a3af134871aab2da031e89baae122560175efdb13889f945726bfbe9db2c58b8",
+                                                 "ac593d2bb79562c96d412c6d9d8851cacccb2c6414deb53e144554e867ab766e",
+                                                 "7916a828e9c2a4e0ac3d50f0382dacb28d6cc8ca1e9772bb65f24f3587b7baec",
+                                                 "8cd5c780e6244e8355f5c8f7ae7f2f997e6404b99f5203bcb1e7dbcd21599617"
+                                             ],
+                            "first_chunks":  [
+                                                 [
+                                                     [
+                                                         [
+                                                             0.0127430260181427,
+                                                             0.00805886834859848,
+                                                             0.06906349956989288,
+                                                             -0.16509059071540833,
+                                                             0.041590794920921326,
+                                                             -0.008618437685072422,
+                                                             1.0127840042114258
+                                                         ],
+                                                         [
+                                                             0.04792596399784088,
+                                                             0.03166840970516205,
+                                                             0.1124778687953949,
+                                                             -0.16513483226299286,
+                                                             0.053987130522727966,
+                                                             -0.0057555437088012695,
+                                                             1.0055619478225708
+                                                         ],
+                                                         [
+                                                             0.12118560075759888,
+                                                             0.09823156893253326,
+                                                             0.15597259998321533,
+                                                             -0.1619424819946289,
+                                                             0.05576199293136597,
+                                                             -0.009165287017822266,
+                                                             1.0076911449432373
+                                                         ],
+                                                         [
+                                                             0.3603522479534149,
+                                                             0.2323240488767624,
+                                                             0.23912428319454193,
+                                                             -0.1652369499206543,
+                                                             0.09308826923370361,
+                                                             -0.0003692507743835449,
+                                                             1.001709222793579
+                                                         ],
+                                                         [
+                                                             0.7752642631530762,
+                                                             0.4577822685241699,
+                                                             0.21282875537872314,
+                                                             -0.1822437196969986,
+                                                             0.12162850797176361,
+                                                             -0.014819594100117683,
+                                                             1.0028975009918213
+                                                         ],
+                                                         [
+                                                             0.8893328309059143,
+                                                             0.5010297298431396,
+                                                             0.1858581304550171,
+                                                             -0.19859251379966736,
+                                                             0.09385916590690613,
+                                                             -0.01622319221496582,
+                                                             1.0023146867752075
+                                                         ],
+                                                         [
+                                                             0.9315202832221985,
+                                                             0.5324305891990662,
+                                                             0.155239999294281,
+                                                             -0.21036502718925476,
+                                                             0.04751226305961609,
+                                                             -0.016378825530409813,
+                                                             0.995240330696106
+                                                         ]
+                                                     ]
+                                                 ],
+                                                 [
+                                                     [
+                                                         [
+                                                             0.9747949838638306,
+                                                             0.5022312998771667,
+                                                             0.196892648935318,
+                                                             -0.22284767031669617,
+                                                             0.09388214349746704,
+                                                             -0.016539663076400757,
+                                                             0.9969325065612793
+                                                         ],
+                                                         [
+                                                             1.0055710077285767,
+                                                             0.516806423664093,
+                                                             0.1686999797821045,
+                                                             -0.21413472294807434,
+                                                             0.05581936240196228,
+                                                             -0.01442611962556839,
+                                                             0.9990882873535156
+                                                         ],
+                                                         [
+                                                             1.0072077512741089,
+                                                             0.5351268649101257,
+                                                             0.1287837028503418,
+                                                             -0.213511124253273,
+                                                             0.02721381187438965,
+                                                             -0.01684822142124176,
+                                                             1.0006663799285889
+                                                         ],
+                                                         [
+                                                             1.0111013650894165,
+                                                             0.5361502170562744,
+                                                             0.0985620766878128,
+                                                             -0.21185314655303955,
+                                                             0.012605279684066772,
+                                                             -0.01230168342590332,
+                                                             1.0011823177337646
+                                                         ],
+                                                         [
+                                                             1.0138771533966064,
+                                                             0.5415506362915039,
+                                                             0.06409066915512085,
+                                                             -0.2120194137096405,
+                                                             0.010187208652496338,
+                                                             -0.009056970477104187,
+                                                             1.0001575946807861
+                                                         ],
+                                                         [
+                                                             1.0192972421646118,
+                                                             0.5430550575256348,
+                                                             0.02250725030899048,
+                                                             -0.21096175909042358,
+                                                             0.014024168252944946,
+                                                             -0.008929997682571411,
+                                                             1.0034828186035156
+                                                         ],
+                                                         [
+                                                             1.0135362148284912,
+                                                             0.5516242980957031,
+                                                             0.010007508099079132,
+                                                             -0.19871649146080017,
+                                                             0.010339707136154175,
+                                                             -0.010065004229545593,
+                                                             1.0036715269088745
+                                                         ]
+                                                     ]
+                                                 ]
+                                             ],
+                            "mean_query_latency_seconds":  0.18607104154547083,
+                            "optimizer_steps":  0,
+                            "p95_query_latency_seconds":  0.5832310734986095,
+                            "policy_queries":  11,
+                            "queries_per_second":  5.374291408776935
+                        },
+    "interventions":  0,
+    "official_400_episode_equivalent":  false,
+    "optimizer_steps":  0,
+    "overall":  {
+                    "action_contract_errors":  0,
+                    "completed_episodes":  1,
+                    "environment_errors":  0,
+                    "expected_episodes":  1,
+                    "mean_episode_length":  76.0,
+                    "nonfinite_action_episodes":  0,
+                    "success_rate":  1.0,
+                    "successes":  1,
+                    "timeouts":  0,
+                    "wilson_95":  [
+                                      0.20654931437723745,
+                                      1.0
+                                  ]
+                },
+    "result_scope":  "one_episode_smoke",
+    "run_id":  "eval_single-1784782459",
+    "schedule":  {
+                     "action_execution_horizon":  7,
+                     "camera_names":  [
+                                          "agentview_image",
+                                          "robot0_eye_in_hand_image"
+                                      ],
+                     "checkpoint_revision":  "735d9f692981e286ade093b5046627eda876e5d0",
+                     "control_mode":  "relative",
+                     "init_states":  true,
+                     "observation_height":  224,
+                     "observation_width":  224,
+                     "policy_sampling_seed":  1000,
+                     "processor_revision":  "735d9f692981e286ade093b5046627eda876e5d0",
+                     "recording":  true,
+                     "replanning_frequency_steps":  7,
+                     "result_changes_action_scale":  false,
+                     "schema_version":  "latentguard.lg_r0.eval.v1",
+                     "suites":  [
+                                    {
+                                        "episode_horizon":  280,
+                                        "episodes_per_task":  1,
+                                        "name":  "libero_spatial",
+                                        "seeds":  [
+                                                      1000
+                                                  ],
+                                        "task_ids":  [
+                                                         0
+                                                     ]
+                                    }
+                                ]
+                 },
+    "schema_version":  "latentguard.lg_r0.libero_evaluation.v1",
+    "status":  "pass",
+    "suite_results":  {
+                          "libero_spatial":  {
+                                                 "episodes":  1,
+                                                 "mean_episode_length":  76.0,
+                                                 "success_rate":  1.0,
+                                                 "successes":  1,
+                                                 "wilson_95":  [
+                                                                   0.20654931437723745,
+                                                                   1.0
+                                                               ]
+                                             }
+                      },
+    "run_locator":  "LG_R0_OUTPUT_ROOT/eval_single-1784782459",
+    "execution_site":  "local"
+}

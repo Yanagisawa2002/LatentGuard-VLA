@@ -1,0 +1,6 @@
+{
+  "schema_version": "latentguard.lg_r0.candidate_probe.v1",
+  "requires_native_external_candidate_api": true,
+  "synthetic_candidates_allowed": false,
+  "expected_if_unsupported": "REAL_CANDIDATE_PROBE_NOT_AVAILABLE"
+}

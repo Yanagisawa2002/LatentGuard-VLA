@@ -1,0 +1,56 @@
+{
+  "backward_calls": 0,
+  "checks": {
+    "checkpoint_revision": true,
+    "lerobot_commit": true,
+    "lerobot_version": true,
+    "libero_asset_repository": true,
+    "libero_asset_revision": true,
+    "qwen_revision": true,
+    "source_clean": true,
+    "vjepa_revision": true,
+    "vla_jepa_commit": true
+  },
+  "config": {
+    "checkpoint": {
+      "id": "lerobot/VLA-JEPA-LIBERO",
+      "revision": "735d9f692981e286ade093b5046627eda876e5d0"
+    },
+    "execution": {
+      "backward_calls_allowed": 0,
+      "model_root_env": "LG_R0_MODEL_ROOT",
+      "offline": true,
+      "optimizer_steps_allowed": 0,
+      "output_root_env": "LG_R0_OUTPUT_ROOT"
+    },
+    "lerobot": {
+      "commit": "30da8e687a6dfc617fcd94afc367ac7071c376ce",
+      "version": "0.6.0",
+      "vla_jepa_gpu_roundtrip_fix_commit": "18eee1b477e37f1f57883ae768b5ef231f63fe49",
+      "vla_jepa_merge_commit": "2e9cd87bbdb93c23503f7eeca7317bd33027b279"
+    },
+    "libero": {
+      "assets_repository": "lerobot/libero-assets",
+      "assets_revision": "0b3ea86be5fe169d0fd036ae63d1070ec09e90f6",
+      "commit": "8561c60eea2fb93096146f240194649df73d8b1e",
+      "package": "hf-libero",
+      "version": "0.1.4"
+    },
+    "qwen": {
+      "id": "Qwen/Qwen3-VL-2B-Instruct",
+      "revision": "89644892e4d85e24eaac8bacfd4f463576704203"
+    },
+    "schema_version": "latentguard.lg_r0.stack.v1",
+    "vjepa": {
+      "id": "facebook/vjepa2-vitl-fpc64-256",
+      "revision": "b3c1679b7c34d3255ef3547f27c7b226aefab26f"
+    }
+  },
+  "network_access_during_validation": false,
+  "observed_lerobot_commit": "30da8e687a6dfc617fcd94afc367ac7071c376ce",
+  "optimizer_steps": 0,
+  "schema_version": "latentguard.lg_r0.external_stack_audit.v1",
+  "source_clean": true,
+  "source_root_locator": "external_clean_lerobot_checkout",
+  "status": "pass"
+}

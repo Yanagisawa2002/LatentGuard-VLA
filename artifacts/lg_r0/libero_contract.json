@@ -1,0 +1,91 @@
+{
+  "schema_version": "latentguard.lg_r0.libero_contract.v1",
+  "source": {
+    "package": "hf-libero",
+    "version": "0.1.4",
+    "commit": "8561c60eea2fb93096146f240194649df73d8b1e",
+    "lerobot_commit": "30da8e687a6dfc617fcd94afc367ac7071c376ce",
+    "assets_repository": "lerobot/libero-assets",
+    "assets_revision": "0b3ea86be5fe169d0fd036ae63d1070ec09e90f6"
+  },
+  "suite_names": [
+    "libero_spatial",
+    "libero_object",
+    "libero_goal",
+    "libero_10"
+  ],
+  "tasks_per_suite": 10,
+  "evaluated_task_zero": {
+    "libero_spatial": "pick_up_the_black_bowl_between_the_plate_and_the_ramekin_and_place_it_on_the_plate",
+    "libero_object": "pick_up_the_alphabet_soup_and_place_it_in_the_basket",
+    "libero_goal": "open_the_middle_drawer_of_the_cabinet",
+    "libero_10": "LIVING_ROOM_SCENE2_put_both_the_alphabet_soup_and_the_tomato_sauce_in_the_basket"
+  },
+  "camera_keys": [
+    "agentview_image",
+    "robot0_eye_in_hand_image"
+  ],
+  "policy_camera_keys": [
+    "observation.images.image",
+    "observation.images.image2"
+  ],
+  "image_shapes": {
+    "environment_hwc": [224, 224, 3],
+    "policy_chw": [3, 224, 224]
+  },
+  "image_dtype": {
+    "environment": "uint8",
+    "policy": "float32"
+  },
+  "image_range": {
+    "environment": [0, 255],
+    "policy": [0.0, 1.0]
+  },
+  "image_transform": "channel-first conversion then LIBERO 180-degree H/W flip",
+  "proprioception_keys": [
+    "robot0_eef_pos",
+    "robot0_eef_quat",
+    "robot0_gripper_qpos"
+  ],
+  "state_order": [
+    "eef_position_xyz",
+    "eef_quaternion_as_axis_angle_xyz",
+    "gripper_qpos_2"
+  ],
+  "state_dimension": 8,
+  "action_dimension": 7,
+  "action_order": [
+    "delta_position_x",
+    "delta_position_y",
+    "delta_position_z",
+    "delta_rotation_axis_angle_x",
+    "delta_rotation_axis_angle_y",
+    "delta_rotation_axis_angle_z",
+    "gripper"
+  ],
+  "action_units": "normalized relative OSC pose command plus binary gripper",
+  "action_bounds": [-1.0, 1.0],
+  "gripper_convention": "official postprocessor maps to -1 or +1",
+  "control_frequency_hz": 30,
+  "episode_horizon": {
+    "libero_spatial": 280,
+    "libero_object": 280,
+    "libero_goal": 300,
+    "libero_10": 520
+  },
+  "success_definition": "underlying LIBERO environment check_success()",
+  "termination_definition": "underlying done or check_success; horizon exhaustion is reported separately",
+  "seed_definition": "environment RNG seed; init-state ordinal advances deterministically on each reset",
+  "initial_settle_steps": 10,
+  "action_normalization": "checkpoint MIN_MAX normalization statistics",
+  "official_postprocessing": [
+    "clip normalized action to [-1,1]",
+    "pre-snap gripper in normalized space",
+    "unnormalize with checkpoint statistics",
+    "binarize gripper to -1 or +1"
+  ],
+  "action_mask_in_inference": null,
+  "action_mask_semantic": "not emitted by native inference",
+  "optimizer_steps": 0,
+  "backward_calls": 0
+}

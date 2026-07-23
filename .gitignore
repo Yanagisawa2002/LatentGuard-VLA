@@ -3,7 +3,10 @@ __pycache__/
 *.py[cod]
 *.egg-info/
 .venv/
+.venv-lg-r0/
 venv/
+build/
+dist/
 
 # Test, type-check, lint, and coverage state
 .pytest_cache/
@@ -31,6 +34,9 @@ outputs/
 runs/
 checkpoints/
 artifacts/*
+!artifacts/lg_r0/
+artifacts/lg_r0/*
+!artifacts/lg_r0/*.json
 !artifacts/wm_v0/
 artifacts/wm_v0/*
 !artifacts/wm_v0/dataset_manifest.json

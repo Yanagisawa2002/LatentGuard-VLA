@@ -1,0 +1,16 @@
+{
+  "schema_version": "latentguard.lg_r0.world_model_audit.v1",
+  "source_rollouts": "outputs/lg_r0",
+  "minimum_success_states": 20,
+  "minimum_failure_states": 20,
+  "sample_shortfall_policy": "use_all_available_and_report_shortfall",
+  "descriptive_metrics": [
+    "prediction_target_l1",
+    "prediction_target_cosine_distance",
+    "predictor_variance"
+  ],
+  "fit_classifier": false,
+  "select_threshold": false,
+  "optimizer_steps_allowed": 0,
+  "backward_calls_allowed": 0
+}

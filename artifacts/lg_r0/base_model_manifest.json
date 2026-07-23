@@ -1,0 +1,149 @@
+{
+  "schema_version": "latentguard.lg_r0.base_model_manifest.v1",
+  "status": "pass",
+  "load_policy": "local_only_fail_closed",
+  "assets": [
+    {
+      "repository_or_model_id": "lerobot/VLA-JEPA-LIBERO",
+      "revision": "735d9f692981e286ade093b5046627eda876e5d0",
+      "relative_path": "model.safetensors",
+      "bytes": 6163212550,
+      "sha256": "b2a163c16889f89fb1d5e570d95f5c62313c84d0ecebdd384cd87c35e9a8540c",
+      "component_coverage": [
+        "qwen_policy_backbone",
+        "state_encoder",
+        "flow_matching_action_head",
+        "vjepa_video_encoder",
+        "action_conditioned_video_predictor"
+      ]
+    },
+    {
+      "repository_or_model_id": "lerobot/VLA-JEPA-LIBERO",
+      "revision": "735d9f692981e286ade093b5046627eda876e5d0",
+      "relative_path": "config.json",
+      "bytes": 2589,
+      "sha256": "c716d30311fd98d927154b5f49a675579091065686b8cccf5e463a19c2a8d393"
+    },
+    {
+      "repository_or_model_id": "lerobot/VLA-JEPA-LIBERO",
+      "revision": "735d9f692981e286ade093b5046627eda876e5d0",
+      "relative_path": "policy_preprocessor.json",
+      "bytes": 1327,
+      "sha256": "deeada8622800f662fedea622a415a81bd6cb5849ebd51b0eb0dd6892378fb4d"
+    },
+    {
+      "repository_or_model_id": "lerobot/VLA-JEPA-LIBERO",
+      "revision": "735d9f692981e286ade093b5046627eda876e5d0",
+      "relative_path": "policy_postprocessor.json",
+      "bytes": 1384,
+      "sha256": "a2f94aaec83fd510a87babb31e9fa64436eb6eca4e9767e2ff8d53dea17b8846"
+    },
+    {
+      "repository_or_model_id": "lerobot/VLA-JEPA-LIBERO",
+      "revision": "735d9f692981e286ade093b5046627eda876e5d0",
+      "relative_path": "policy_preprocessor_step_3_normalizer_processor.safetensors",
+      "bytes": 1316,
+      "sha256": "840a296891a8a316541b54a963aa5a883fc26693accd54e7cce549249d83eac7"
+    },
+    {
+      "repository_or_model_id": "lerobot/VLA-JEPA-LIBERO",
+      "revision": "735d9f692981e286ade093b5046627eda876e5d0",
+      "relative_path": "policy_postprocessor_step_2_unnormalizer_processor.safetensors",
+      "bytes": 1316,
+      "sha256": "840a296891a8a316541b54a963aa5a883fc26693accd54e7cce549249d83eac7"
+    },
+    {
+      "repository_or_model_id": "Qwen/Qwen3-VL-2B-Instruct",
+      "revision": "89644892e4d85e24eaac8bacfd4f463576704203",
+      "relative_path": "model.safetensors",
+      "bytes": 4255140312,
+      "sha256": "7de1838c87a5349b016c26a1c3f7d2bc400a3d485f95ef39a7059ffd734977a0"
+    },
+    {
+      "repository_or_model_id": "Qwen/Qwen3-VL-2B-Instruct",
+      "revision": "89644892e4d85e24eaac8bacfd4f463576704203",
+      "relative_path": "config.json",
+      "bytes": 1505,
+      "sha256": "bec4b3d446efa05807365c9e1cec03ac590836879d02f3a6da879971154bdd3b"
+    },
+    {
+      "repository_or_model_id": "Qwen/Qwen3-VL-2B-Instruct",
+      "revision": "89644892e4d85e24eaac8bacfd4f463576704203",
+      "relative_path": "tokenizer.json",
+      "bytes": 7032403,
+      "sha256": "a5d85b6dcc535e6b93115a9ef287e6132fdbf30270da6218194ba742261173c7"
+    },
+    {
+      "repository_or_model_id": "Qwen/Qwen3-VL-2B-Instruct",
+      "revision": "89644892e4d85e24eaac8bacfd4f463576704203",
+      "relative_path": "tokenizer_config.json",
+      "bytes": 10868,
+      "sha256": "c2da771801886ad9ae98181793ffd3dfb7f1af30f6f7c6a4e15d7dbba52e2399"
+    },
+    {
+      "repository_or_model_id": "Qwen/Qwen3-VL-2B-Instruct",
+      "revision": "89644892e4d85e24eaac8bacfd4f463576704203",
+      "relative_path": "chat_template.json",
+      "bytes": 5502,
+      "sha256": "6f8a6a55027e3da5160105556cda5dd69f6423f1c32645f6730d32de7773d0c4"
+    },
+    {
+      "repository_or_model_id": "Qwen/Qwen3-VL-2B-Instruct",
+      "revision": "89644892e4d85e24eaac8bacfd4f463576704203",
+      "relative_path": "preprocessor_config.json",
+      "bytes": 390,
+      "sha256": "27225450ac9c6529872ee1924fcb0962ff5634834f817040f444118116f4e516"
+    },
+    {
+      "repository_or_model_id": "Qwen/Qwen3-VL-2B-Instruct",
+      "revision": "89644892e4d85e24eaac8bacfd4f463576704203",
+      "relative_path": "video_preprocessor_config.json",
+      "bytes": 385,
+      "sha256": "7768af27c1fafa9cc9011c1dc20067e03f8915e03b63504550e11d5066986d13"
+    },
+    {
+      "repository_or_model_id": "Qwen/Qwen3-VL-2B-Instruct",
+      "revision": "89644892e4d85e24eaac8bacfd4f463576704203",
+      "relative_path": "merges.txt",
+      "bytes": 1671839,
+      "sha256": "599bab54075088774b1733fde865d5bd747cbcc7a547c5bc12610e874e26f5e3"
+    },
+    {
+      "repository_or_model_id": "Qwen/Qwen3-VL-2B-Instruct",
+      "revision": "89644892e4d85e24eaac8bacfd4f463576704203",
+      "relative_path": "vocab.json",
+      "bytes": 2776833,
+      "sha256": "ca10d7e9fb3ed18575dd1e277a2579c16d108e32f27439684afa0e10b1440910"
+    },
+    {
+      "repository_or_model_id": "facebook/vjepa2-vitl-fpc64-256",
+      "revision": "b3c1679b7c34d3255ef3547f27c7b226aefab26f",
+      "relative_path": "model.safetensors",
+      "bytes": 1303947864,
+      "sha256": "25466aef85727d16546c6cf8c99f12fcfad9cbca8225d45f23685e2e025b786b"
+    },
+    {
+      "repository_or_model_id": "facebook/vjepa2-vitl-fpc64-256",
+      "revision": "b3c1679b7c34d3255ef3547f27c7b226aefab26f",
+      "relative_path": "config.json",
+      "bytes": 785,
+      "sha256": "3dec96fe962e94e569182d3a7b9ef0dd74b6b8c89c337a428e43e10d593e70c9"
+    },
+    {
+      "repository_or_model_id": "facebook/vjepa2-vitl-fpc64-256",
+      "revision": "b3c1679b7c34d3255ef3547f27c7b226aefab26f",
+      "relative_path": "video_preprocessor_config.json",
+      "bytes": 1298,
+      "sha256": "d2fab4418fc0390b62c4cd72ade56908a7929f80c62288adbe10dd8d23421227"
+    }
+  ],
+  "load_exception": {
+    "missing_keys": [],
+    "unexpected_noncritical_keys": [
+      "model.qwen.model.model.language_model.embed_tokens.weight"
+    ],
+    "explanation": "The checkpoint stores both Qwen embedding and lm_head tensors. They were verified exactly equal, and the runtime names remain tied to one storage. Any other missing or unexpected key is rejected."
+  },
+  "optimizer_steps": 0,
+  "backward_calls": 0
+}
