@@ -492,6 +492,30 @@ def test_sarm_frame_context_is_exactly_causal() -> None:
         module._causal_frame_deltas(8, 0)
 
 
+def test_remote_audit_accepts_required_true_and_prohibited_false() -> None:
+    scripts = ROOT / "scripts"
+    sys.path.insert(0, str(scripts))
+    try:
+        module = importlib.import_module("lg_r1_write_remote_audit")
+    finally:
+        sys.path.remove(str(scripts))
+    checks = {
+        "exact_commit": True,
+        "clean_remote_checkout": True,
+        "network_turbo_sourced": True,
+        "remote_execution_only": True,
+        "tracked_source_edited_remotely": False,
+        "server_shutdown_requested": False,
+        "final_seed_accessed": False,
+        "synthetic_failure_generated": False,
+        "policy_training_performed": False,
+        "vlajepa_finetuning_performed": False,
+    }
+    assert module._audit_checks_pass(checks)
+    checks["final_seed_accessed"] = True
+    assert not module._audit_checks_pass(checks)
+
+
 def test_lg_r1_runtime_has_no_forbidden_integrations_or_corruption() -> None:
     paths = [
         *sorted((ROOT / "src" / "latentguard" / "progress").rglob("*.py")),

@@ -17,6 +17,28 @@ from _lg_r1_common import (
 )
 
 
+def _audit_checks_pass(checks: dict[str, bool]) -> bool:
+    """Require execution gates and reject every prohibited activity."""
+
+    required_true = (
+        "exact_commit",
+        "clean_remote_checkout",
+        "network_turbo_sourced",
+        "remote_execution_only",
+    )
+    required_false = (
+        "tracked_source_edited_remotely",
+        "server_shutdown_requested",
+        "final_seed_accessed",
+        "synthetic_failure_generated",
+        "policy_training_performed",
+        "vlajepa_finetuning_performed",
+    )
+    return all(checks[name] for name in required_true) and not any(
+        checks[name] for name in required_false
+    )
+
+
 def _optional_json(path: Path) -> dict[str, Any] | None:
     return read_json(path) if path.is_file() else None
 
@@ -67,7 +89,7 @@ def main() -> None:
     }
     payload = {
         "schema_version": ("latentguard.lg_r1.remote_execution_audit.v1"),
-        "status": "pass" if all(checks.values()) else "fail",
+        "status": "pass" if _audit_checks_pass(checks) else "fail",
         "runtime_identity": identity,
         "checks": checks,
         "download_policy": (
