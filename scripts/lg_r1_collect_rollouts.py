@@ -8,6 +8,7 @@ import json
 import math
 import os
 import time
+import traceback
 from copy import deepcopy
 from dataclasses import asdict
 from datetime import UTC, datetime
@@ -664,6 +665,7 @@ def main() -> None:
                 {
                     "episode_id": job.episode_id,
                     "error": f"{type(exc).__name__}: {exc}",
+                    "traceback": traceback.format_exc(),
                 }
             )
             break
