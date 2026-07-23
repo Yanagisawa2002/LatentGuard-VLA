@@ -321,3 +321,33 @@ def test_libero_config_is_initialized_noninteractively(
     assert Path(payload["init_states"]) == package_root / "init_files"
     assert Path(payload["datasets"]) == output / "libero-datasets"
     assert Path(runtime.os.environ["LIBERO_CONFIG_PATH"]) == config_file.parent
+
+
+def test_recording_manifest_binds_lerobot_v3_metadata(tmp_path: Path) -> None:
+    scripts = ROOT / "scripts"
+    sys.path.insert(0, str(scripts))
+    try:
+        recorder = importlib.import_module("lg_r0_record_libero_rollouts")
+    finally:
+        sys.path.remove(str(scripts))
+
+    dataset = tmp_path / "dataset"
+    metadata = dataset / "meta"
+    metadata.mkdir(parents=True)
+    (metadata / "info.json").write_bytes(b"info")
+    (metadata / "tasks.parquet").write_bytes(b"parquet")
+
+    identities = recorder._dataset_metadata_identities(dataset)
+
+    assert identities["info_json"]["bytes"] == 4
+    assert identities["tasks_parquet"]["bytes"] == 7
+    assert identities["info_json"]["sha256"] == recorder.sha256_path(
+        metadata / "info.json"
+    )
+    assert identities["tasks_parquet"]["sha256"] == recorder.sha256_path(
+        metadata / "tasks.parquet"
+    )
+
+    (metadata / "tasks.parquet").unlink()
+    with pytest.raises(FileNotFoundError, match="metadata is incomplete"):
+        recorder._dataset_metadata_identities(dataset)

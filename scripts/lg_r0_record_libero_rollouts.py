@@ -21,6 +21,23 @@ from _lg_r0_runtime import (
 from latentguard.adapters.vla_jepa.constants import CHECKPOINT_REVISION
 
 
+def _dataset_metadata_identities(path: Path) -> dict[str, dict[str, int | str]]:
+    required = {
+        "info_json": path / "meta" / "info.json",
+        "tasks_parquet": path / "meta" / "tasks.parquet",
+    }
+    missing = [str(file) for file in required.values() if not file.is_file()]
+    if missing:
+        raise FileNotFoundError(f"recorded dataset metadata is incomplete: {missing}")
+    return {
+        name: {
+            "bytes": file.stat().st_size,
+            "sha256": sha256_path(file),
+        }
+        for name, file in required.items()
+    }
+
+
 def main() -> None:
     """Record the fixed four-episode schedule without uploading or training."""
 
@@ -186,8 +203,7 @@ def main() -> None:
             done_index = int(torch.argmax(data["done"][0].to(torch.int64)).item())
             frame_count = done_index + 1
             success = bool(data["success"][0, :frame_count].any().item())
-            info_path = path / "meta" / "info.json"
-            tasks_path = path / "meta" / "tasks.jsonl"
+            metadata_identities = _dataset_metadata_identities(path)
             entries.append(
                 {
                     "episode_id": episode_id,
@@ -203,14 +219,7 @@ def main() -> None:
                     "success": success,
                     "termination": "success" if success else "horizon_exhausted",
                     "elapsed_seconds": time.perf_counter() - started,
-                    "info_json": {
-                        "bytes": info_path.stat().st_size,
-                        "sha256": sha256_path(info_path),
-                    },
-                    "tasks_jsonl": {
-                        "bytes": tasks_path.stat().st_size,
-                        "sha256": sha256_path(tasks_path),
-                    },
+                    **metadata_identities,
                     "checkpoint_revision": CHECKPOINT_REVISION,
                     "processor_revision": CHECKPOINT_REVISION,
                     "action_mask_semantic": "not_emitted_by_native_inference",
