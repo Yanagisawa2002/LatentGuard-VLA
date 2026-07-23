@@ -1,0 +1,22 @@
+schema_version: latentguard.lg_r1b.progress_failure_analysis.v1
+task_registry: configs/lg_r1b/task_registry.yaml
+failure_windows: configs/lg_r1b/failure_windows.yaml
+signal_name: progress-based failure signal
+failure_head_training_allowed: false
+intervention_allowed: false
+threshold_selection_split: validation
+frozen_thresholds:
+  stagnation_delta_absolute_max: 0.02
+  stagnation_min_steps: 21
+  regression_delta_below: -0.02
+report:
+  - pre_failure_progress_delta
+  - plateau_length
+  - regression_count
+  - decline_from_maximum_progress
+  - early_warning_lead_steps
+  - taxonomy_patterns
+  - matched_success_failure_stage_differences
+  - precision
+  - recall
+  - false_alarm_rate

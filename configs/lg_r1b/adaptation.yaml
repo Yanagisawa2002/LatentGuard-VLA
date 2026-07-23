@@ -1,0 +1,19 @@
+schema_version: latentguard.lg_r1b.sarm_adaptation.v1
+base_sarm_config: configs/lg_r1/sarm.yaml
+task_registry: configs/lg_r1b/task_registry.yaml
+zero_shot_result: artifacts/lg_r1b/sarm_zero_shot_results.json
+frozen_lg_r1_checkpoint_locator: sarm-style-small/best.pt
+run_only_when_preregistered_trigger_fires: true
+require_zero_shot_result_frozen: true
+trainable_modules: [StageTransformer, SubtaskTransformer]
+frozen_modules: [VLA-JEPA, Qwen, policy, processor, CLIP]
+seed: 0
+maximum_samples_per_task: 750
+batch_size: 32
+learning_rate: 0.00005
+weight_decay: 0.001
+max_steps: 1000
+eval_every_steps: 100
+early_stopping_patience: 5
+checkpoint_selection: held_out_validation_progress_mae
+held_out_test_access_before_selection: false

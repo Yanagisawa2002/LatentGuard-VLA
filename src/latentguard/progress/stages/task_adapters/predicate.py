@@ -28,6 +28,7 @@ class TaskStageSpec:
             "pick_place",
             "open_place",
             "toggle",
+            "toggle_place",
             "multi_place",
             "place_close",
         }
@@ -96,6 +97,15 @@ class DeclarativeTaskStageAdapter:
                 terminal_success,
                 terminal_failure,
             )
+        if self._spec.adapter == "toggle_place":
+            return self._label_toggle_place(
+                privileged_state,
+                initial_state,
+                thresholds,
+                goal_flags,
+                terminal_success,
+                terminal_failure,
+            )
         if self._spec.adapter == "multi_place":
             return self._label_multi_place(
                 privileged_state,
@@ -112,6 +122,87 @@ class DeclarativeTaskStageAdapter:
             goal_flags,
             terminal_success,
             terminal_failure,
+        )
+
+    def _label_toggle_place(
+        self,
+        state: dict[str, Any],
+        initial: dict[str, Any],
+        thresholds: _Thresholds,
+        goals: list[bool],
+        terminal_success: bool,
+        terminal_failure: bool,
+    ) -> StageLabel:
+        names = (
+            "approach_control",
+            "activate_control",
+            "approach_object",
+            "grasp_contact",
+            "lift",
+            "transport",
+            "place",
+            "success",
+        )
+        object_name = self._spec.manipulated_objects[0]
+        toggle_index = next(
+            (
+                index
+                for index, predicate in enumerate(self._spec.goal_predicates)
+                if predicate[0].lower() == "turnon"
+            ),
+            None,
+        )
+        object_index = next(
+            (
+                index
+                for index, predicate in enumerate(self._spec.goal_predicates)
+                if len(predicate) >= 3
+                and predicate[0].lower() in {"in", "on"}
+                and predicate[1] == object_name
+            ),
+            None,
+        )
+        if toggle_index is None or object_index is None:
+            raise ValueError("toggle_place requires turnon and object-place goals")
+        target_name = self._spec.goal_predicates[object_index][-1]
+        control_name = self._spec.goal_predicates[toggle_index][1]
+        features = _object_features(state, initial, object_name, target_name)
+        features["control"] = control_name
+        features["control_active"] = goals[toggle_index]
+        features["goal_flags"] = goals
+        if terminal_success:
+            return _label(7, names, 1.0, True, terminal_failure, features)
+        if goals[object_index]:
+            return _label(6, names, 0.9, False, terminal_failure, features)
+        if features["target_distance"] <= thresholds.target_near:
+            return _label(6, names, 0.6, False, terminal_failure, features)
+        if features["lift_delta"] > thresholds.lift_delta:
+            stage = 5 if features["target_distance"] > thresholds.target_near else 6
+            return _label(stage, names, 0.6, False, terminal_failure, features)
+        if features["contact"]:
+            return _label(3, names, 0.8, False, terminal_failure, features)
+        if goals[toggle_index]:
+            return _label(
+                2,
+                names,
+                _bounded_inverse(
+                    features["eef_distance"], thresholds.aligned, thresholds.approach
+                ),
+                False,
+                terminal_failure,
+                features,
+            )
+        control_distance = _eef_distance(state, control_name)
+        features["control_eef_distance"] = control_distance
+        if control_distance <= thresholds.aligned:
+            return _label(1, names, 0.6, False, terminal_failure, features)
+        return _label(
+            0,
+            names,
+            _bounded_inverse(control_distance, thresholds.aligned, thresholds.approach),
+            False,
+            terminal_failure,
+            features,
         )
 
     def _label_pick_place(
@@ -207,7 +298,19 @@ class DeclarativeTaskStageAdapter:
             "success",
         )
         object_name = self._spec.manipulated_objects[0]
-        target_name = self._spec.goal_predicates[0][-1]
+        object_goal_index = next(
+            (
+                index
+                for index, predicate in enumerate(self._spec.goal_predicates)
+                if len(predicate) >= 3
+                and predicate[0].lower() in {"in", "on"}
+                and predicate[1] == object_name
+            ),
+            None,
+        )
+        if object_goal_index is None:
+            raise ValueError("open_place requires an object relation goal")
+        target_name = self._spec.goal_predicates[object_goal_index][-1]
         features = _object_features(state, initial, object_name, target_name)
         fixture_name = _fixture_entity_name(
             state,
@@ -219,7 +322,7 @@ class DeclarativeTaskStageAdapter:
         features["fixture_open"] = fixture_open
         if terminal_success:
             return _label(7, names, 1.0, True, terminal_failure, features)
-        if goals[0]:
+        if goals[object_goal_index]:
             return _label(6, names, 0.9, False, terminal_failure, features)
         if features["lift_delta"] > thresholds.lift_delta:
             stage = 5 if features["target_distance"] > thresholds.target_near else 6
@@ -304,12 +407,28 @@ class DeclarativeTaskStageAdapter:
             "final_arrangement",
             "success",
         )
-        completed = sum(goals)
-        active_index = 0 if not goals[0] else 1
+        object_goal_indices = []
+        for object_name in self._spec.manipulated_objects:
+            matches = [
+                index
+                for index, predicate in enumerate(self._spec.goal_predicates)
+                if len(predicate) >= 3
+                and predicate[0].lower() in {"in", "on"}
+                and predicate[1] == object_name
+            ]
+            if len(matches) != 1:
+                raise ValueError(
+                    f"multi_place requires one goal for {object_name}, got {matches}"
+                )
+            object_goal_indices.append(matches[0])
+        object_goals = [goals[index] for index in object_goal_indices]
+        completed = sum(object_goals)
+        active_index = 0 if not object_goals[0] else 1
         object_name = self._spec.manipulated_objects[active_index]
-        predicate = self._spec.goal_predicates[active_index]
+        predicate = self._spec.goal_predicates[object_goal_indices[active_index]]
         features = _object_features(state, initial, object_name, predicate[-1])
         features["goal_flags"] = goals
+        features["object_goal_flags"] = object_goals
         if terminal_success:
             return _label(7, names, 1.0, True, terminal_failure, features)
         if completed == 2:
@@ -470,7 +589,7 @@ def _fixture_entity_name(state: dict[str, Any], configured_name: str) -> str:
     """Resolve a LIBERO drawer region to its articulated fixture body."""
 
     objects = _objects(state)
-    for suffix in ("_top_region", "_bottom_region"):
+    for suffix in ("_top_region", "_bottom_region", "_heating_region"):
         if configured_name.endswith(suffix):
             fixture_name = configured_name[: -len(suffix)]
             if fixture_name in objects:

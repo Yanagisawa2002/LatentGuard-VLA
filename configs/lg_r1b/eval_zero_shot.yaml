@@ -1,0 +1,26 @@
+schema_version: latentguard.lg_r1b.zero_shot_eval.v1
+base_sarm_config: configs/lg_r1/sarm.yaml
+task_registry: configs/lg_r1b/task_registry.yaml
+stage_config: configs/lg_r1b/stages.yaml
+frozen_lg_r1_checkpoint_locator: sarm-style-small/best.pt
+frozen_lg_r1_results: artifacts/lg_r1/sarm_results.json
+checkpoint_selection: inherited_lg_r1_validation_progress_mae
+optimizer_steps: 0
+evaluation_scope: all_active_new_tasks
+maximum_samples_per_task: 1000
+metrics:
+  - progress_mae
+  - progress_spearman
+  - stage_accuracy
+  - stage_macro_f1
+  - pairwise_progress_accuracy
+  - stagnation_recall
+  - regression_recall
+  - monotonicity_violation_rate
+  - per_task_metrics
+adaptation_trigger:
+  any:
+    progress_mae_above: 0.08
+    progress_spearman_below: 0.80
+    pairwise_progress_accuracy_below: 0.70
+freeze_result_before_adaptation: true

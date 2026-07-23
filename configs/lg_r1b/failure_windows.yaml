@@ -1,0 +1,30 @@
+schema_version: latentguard.lg_r1b.failure_windows.v1
+task_registry: configs/lg_r1b/task_registry.yaml
+failure_taxonomy:
+  - HORIZON_EXHAUSTION
+  - STAGNATION
+  - STAGE_REGRESSION
+  - WRONG_OBJECT
+  - WRONG_TARGET
+  - MISSED_GRASP
+  - OBJECT_DROP
+  - FAILED_PLACEMENT
+  - FAILED_OPEN_CLOSE
+  - SUBGOAL_ORDER_ERROR
+  - FALSE_PROGRESS
+  - ENVIRONMENT_ERROR
+  - UNKNOWN
+window_steps:
+  pre_failure_short: 8
+  pre_failure_medium: 24
+  pre_failure_long: 64
+  terminal_failure: 1
+matching:
+  same_task: true
+  maximum_stage_distance: 0
+  maximum_progress_distance: 0.10
+  maximum_remaining_horizon_distance: 32
+  without_replacement: true
+leakage:
+  episode_exclusive: true
+  seed_exclusive: true

@@ -1,0 +1,53 @@
+schema_version: latentguard.lg_r1b.stage_labels.v1
+task_registry: configs/lg_r1b/task_registry.yaml
+critical_error_limit: 0
+minor_disagreement_rate_limit: 0.05
+deterministic_mismatch_limit: 0
+minimum_review_episodes_per_task: 2
+failed_task_minimum_success_reviews: 2
+failed_task_minimum_failure_reviews: 2
+review_all_failures_when_below_minimum: true
+distance_thresholds:
+  approach_meters: 0.18
+  aligned_meters: 0.08
+  contact_meters: 0.045
+  lift_delta_meters: 0.035
+  target_near_meters: 0.12
+progress_epsilon: 0.02
+plateau_min_steps: 21
+contracts:
+  pick_place:
+    stage_names: [approach_object, pre_grasp_alignment, grasp_contact, lift, transport, place, release, success]
+    entry_predicates: [eef_distance, contact_with_gripper, lift_delta, target_distance]
+    completion_predicates: [task_goal_predicate, environment_success]
+    regression_conditions: [contact_lost, object_drop, target_distance_increase]
+    failure_relevant_predicates: [contact_with_gripper, task_goal_predicate]
+    progress_interval: [0.0, 1.0]
+  open_place:
+    stage_names: [approach_fixture, open_fixture, approach_object, grasp_contact, lift, transport, place, success]
+    entry_predicates: [fixture_open, eef_distance, contact_with_gripper, lift_delta]
+    completion_predicates: [object_relation_goal, environment_success]
+    regression_conditions: [fixture_reclosed, contact_lost, object_drop]
+    failure_relevant_predicates: [fixture_open, object_relation_goal]
+    progress_interval: [0.0, 1.0]
+  place_close:
+    stage_names: [approach_fixture, open_fixture, approach_object, grasp_contact, transport, object_placed, close_fixture, success]
+    entry_predicates: [fixture_open, contact_with_gripper, lift_delta, object_relation_goal]
+    completion_predicates: [object_relation_goal, close_goal, environment_success]
+    regression_conditions: [object_relation_lost, fixture_reopened, object_drop]
+    failure_relevant_predicates: [object_relation_goal, close_goal]
+    progress_interval: [0.0, 1.0]
+  multi_place:
+    stage_names: [approach_first_object, manipulate_first_object, first_subgoal_complete, approach_second_object, manipulate_second_object, second_subgoal_complete, final_arrangement, success]
+    entry_predicates: [object_specific_goal_flags, contact_with_gripper, lift_delta]
+    completion_predicates: [both_object_goals, environment_success]
+    regression_conditions: [completed_subgoal_lost, object_drop, wrong_target]
+    failure_relevant_predicates: [object_specific_goal_flags, task_goal_predicates]
+    progress_interval: [0.0, 1.0]
+  toggle_place:
+    stage_names: [approach_control, activate_control, approach_object, grasp_contact, lift, transport, place, success]
+    entry_predicates: [control_distance, turnon_goal, contact_with_gripper, lift_delta]
+    completion_predicates: [turnon_goal, object_relation_goal, environment_success]
+    regression_conditions: [control_deactivated, contact_lost, object_drop]
+    failure_relevant_predicates: [turnon_goal, object_relation_goal]
+    progress_interval: [0.0, 1.0]

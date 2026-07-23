@@ -1,0 +1,18 @@
+schema_version: latentguard.lg_r1b.expansion.v1
+task_registry: configs/lg_r1b/task_registry.yaml
+allowed_phase_order:
+  - primary_expansion_1
+  - primary_expansion_2
+  - primary_expansion_3
+  - secondary_pilot
+  - secondary_completion
+uniform_across_active_tasks: true
+primary_max_episodes_per_task: 40
+secondary_total_episode_target_if_pilot_c: 200
+stop_when_standard_failure_yield_low:
+  cumulative_standard_episodes: 200
+  natural_failures_below: 10
+  status: STANDARD_LIBERO_FAILURE_YIELD_TOO_LOW
+action_corruption_allowed: false
+policy_training_allowed: false
+final_seed_access_allowed: false

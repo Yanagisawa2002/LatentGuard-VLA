@@ -1,0 +1,11 @@
+schema_version: latentguard.lg_r1b.rollout_collection.v1
+task_registry: configs/lg_r1b/task_registry.yaml
+phase: primary_pilot
+expected_episodes: 80
+record_all: true
+use_videos: true
+upload_to_hub: false
+dataset_format: LeRobotDataset-v3
+action_corruption_allowed: false
+policy_training_allowed: false
+final_seed_access_allowed: false
