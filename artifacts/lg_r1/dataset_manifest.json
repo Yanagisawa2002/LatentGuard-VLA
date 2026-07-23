@@ -1,0 +1,45 @@
+{
+  "checkpoint_identity_completeness": 1.0,
+  "current_samples": 24373,
+  "episode_split_leakage": 0,
+  "executed_action_windows": 8878,
+  "failure_windows": 118,
+  "files": {
+    "action_windows": {
+      "bytes": 37581537,
+      "locator": "progress_dataset/action_windows.jsonl",
+      "sha256": "32fe837da7f8616b744f2e950f1f9034630d2161a851c95696f27e6f98eb5de9"
+    },
+    "current_samples": {
+      "bytes": 14944696,
+      "locator": "progress_dataset/current_samples.jsonl",
+      "sha256": "e26e5ddb3c48d41fc5ac5e3b6e524f23fd23ee49de22ec13431f2a6a278c0f6e"
+    },
+    "pairwise_samples": {
+      "bytes": 5881658,
+      "locator": "progress_dataset/pairwise_samples.jsonl",
+      "sha256": "09c7e8131cee272d4e716af9d7f68d42b3bf209677bd34832ad17d732b3701f7"
+    }
+  },
+  "model_input_allowlist": [
+    "observation.images.image",
+    "observation.images.image2",
+    "observation.state",
+    "task"
+  ],
+  "natural_failed_episodes": 1,
+  "pairwise_windows": 8878,
+  "privileged_model_inputs": [],
+  "processor_identity_completeness": 1.0,
+  "schema_version": "latentguard.lg_r1.dataset_manifest.v1",
+  "source_config_sha256": "87e9ee72ff7206a803cf9545107d7318eaf869040809aead5d5a9ae1aec695c1",
+  "source_rollout_manifest_sha256": "8fe37756fadfe0aaf04ba3b190871425203c6be6cc0c51c22aceeadcaa6e1bb2",
+  "source_stage_report_sha256": "07294677e0921bc47f7431668cf1d5799ca156ea6177859bc64559ecac99d01b",
+  "stage_annotation_passed": true,
+  "status": "pass",
+  "successful_windows": 8760,
+  "suites": 4,
+  "synthetic_corruption_samples": 0,
+  "tasks": 8,
+  "valid_rollout_episodes": 160
+}

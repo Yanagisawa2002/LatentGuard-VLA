@@ -112,3 +112,30 @@ on the untouched test split.
 The total estimate is 8–16 RTX 5090 GPU-hours and roughly one to two elapsed
 days, depending on long-horizon failures and video encoding. These are planning
 estimates, not measured results.
+
+## Completion record
+
+LG-R1 completed as **Result B**. The frozen 160-episode extension produced 159
+successes and one natural failure. Stage QA passed, the SARM-style small
+baseline exceeded the online time baseline on validation and retained the
+improvement on test, but the natural-failure requirement (`1 < 10`) failed.
+LG-R2 is therefore not authorized.
+
+Measured primary GPU work was approximately 0.98 hours and remained below
+roughly 1.1 hours including short audits and orchestration, completing within
+one working session. The original 8–16 hour estimate was conservative because
+episodes terminated well before their maximum horizons and frozen feature
+caching made the two small heads inexpensive.
+
+The run used pushed source revisions only. When the remote checkout could not
+authenticate to GitHub over HTTPS, exact pushed revisions were transferred as
+SHA-256-verified incremental Git bundles and checked by full commit identity;
+no remote tracked source was edited. The execution root name retains the
+initial implementation short SHA, while the compact execution summary binds
+the actual rollout (`c9a34f02dea1743e357619e6e7c2b19c28ddfdd1`),
+stage-label (`46fc8aaad4b939ed4dcb49d47f28912f2ec78e7a`), and final-audit
+(`6c131b409e7c59a2cd6d8ad2459e10bc13bf76a3`) revisions.
+
+All raw rollouts, videos, feature caches, predictions, and checkpoints remain
+outside Git. Compact manifests and reports are committed under
+`artifacts/lg_r1/`. The server was left online.

@@ -1,0 +1,156 @@
+{
+  "failure_classifier_trained": false,
+  "failure_mean_progress_curve": [
+    {
+      "normalized_time_bin": 0,
+      "predicted_progress_mean": 0.0013360918696539907,
+      "samples": 13,
+      "target_progress_mean": 0.0
+    },
+    {
+      "normalized_time_bin": 1,
+      "predicted_progress_mean": 0.010718638413689204,
+      "samples": 9,
+      "target_progress_mean": 0.0
+    },
+    {
+      "normalized_time_bin": 2,
+      "predicted_progress_mean": 0.25736976521355764,
+      "samples": 7,
+      "target_progress_mean": 0.2750000059604645
+    },
+    {
+      "normalized_time_bin": 3,
+      "predicted_progress_mean": 0.36275247236092883,
+      "samples": 12,
+      "target_progress_mean": 0.35208333532015484
+    },
+    {
+      "normalized_time_bin": 4,
+      "predicted_progress_mean": 0.5321371654669443,
+      "samples": 12,
+      "target_progress_mean": 0.3791666676600774
+    },
+    {
+      "normalized_time_bin": 5,
+      "predicted_progress_mean": 0.4356073985497157,
+      "samples": 12,
+      "target_progress_mean": 0.2750000059604645
+    },
+    {
+      "normalized_time_bin": 6,
+      "predicted_progress_mean": 0.3254342277844747,
+      "samples": 9,
+      "target_progress_mean": 0.3999999993377262
+    },
+    {
+      "normalized_time_bin": 7,
+      "predicted_progress_mean": 0.2949173802679235,
+      "samples": 11,
+      "target_progress_mean": 0.2750000059604645
+    },
+    {
+      "normalized_time_bin": 8,
+      "predicted_progress_mean": 0.2928274869918823,
+      "samples": 13,
+      "target_progress_mean": 0.2750000059604645
+    },
+    {
+      "normalized_time_bin": 9,
+      "predicted_progress_mean": 0.29902698672734773,
+      "samples": 13,
+      "target_progress_mean": 0.2750000059604645
+    }
+  ],
+  "failure_pre_terminal_delta_mean": 0.0004042983055114746,
+  "intervention_threshold_selected": false,
+  "limitations": [
+    "Feature-cache sampling makes lead and plateau lengths sample counts, not control steps.",
+    "Associations are descriptive and do not establish failure prediction or safety value."
+  ],
+  "regression_before_timeout_sample_count_mean": 67.0,
+  "schema_version": "latentguard.lg_r1.progress_failure_analysis.v1",
+  "scope": "descriptive progress analysis, not safety detection",
+  "status": "pass",
+  "success_mean_progress_curve": [
+    {
+      "normalized_time_bin": 0,
+      "predicted_progress_mean": 0.05745147953944805,
+      "samples": 835,
+      "target_progress_mean": 0.05651197604790419
+    },
+    {
+      "normalized_time_bin": 1,
+      "predicted_progress_mean": 0.06667201585188416,
+      "samples": 805,
+      "target_progress_mean": 0.06905252165623842
+    },
+    {
+      "normalized_time_bin": 2,
+      "predicted_progress_mean": 0.11437672140004962,
+      "samples": 814,
+      "target_progress_mean": 0.11607374995626885
+    },
+    {
+      "normalized_time_bin": 3,
+      "predicted_progress_mean": 0.19402749556695736,
+      "samples": 826,
+      "target_progress_mean": 0.19638440943352392
+    },
+    {
+      "normalized_time_bin": 4,
+      "predicted_progress_mean": 0.30312400779642634,
+      "samples": 779,
+      "target_progress_mean": 0.304393122101798
+    },
+    {
+      "normalized_time_bin": 5,
+      "predicted_progress_mean": 0.42279169660683985,
+      "samples": 826,
+      "target_progress_mean": 0.41607340527405245
+    },
+    {
+      "normalized_time_bin": 6,
+      "predicted_progress_mean": 0.5017559345716085,
+      "samples": 780,
+      "target_progress_mean": 0.49602678204194095
+    },
+    {
+      "normalized_time_bin": 7,
+      "predicted_progress_mean": 0.5893793918631756,
+      "samples": 797,
+      "target_progress_mean": 0.6014728473599912
+    },
+    {
+      "normalized_time_bin": 8,
+      "predicted_progress_mean": 0.6261822899752424,
+      "samples": 802,
+      "target_progress_mean": 0.6331161479105676
+    },
+    {
+      "normalized_time_bin": 9,
+      "predicted_progress_mean": 0.6944454923318845,
+      "samples": 957,
+      "target_progress_mean": 0.7093076957555151
+    }
+  ],
+  "terminal_failure_label_used_for_timeout": false,
+  "test_temporal_metrics": {
+    "monotonicity_violation_rate": 0.009179926560587515,
+    "negative_progress_detection_recall": 0.25,
+    "stage_regression_detection_recall": 0.25,
+    "stagnation_detection_recall": 0.8980028530670471
+  },
+  "threshold_source": "validation",
+  "thresholds": {
+    "negative_progress_delta": -0.02,
+    "stagnation_absolute_delta": 0.02
+  },
+  "timeout_terminal_plateau_sample_count_mean": 51.0,
+  "validation_temporal_metrics": {
+    "monotonicity_violation_rate": 0.008567931456548347,
+    "negative_progress_detection_recall": 0.4,
+    "stage_regression_detection_recall": 0.4,
+    "stagnation_detection_recall": 0.894550601556971
+  }
+}

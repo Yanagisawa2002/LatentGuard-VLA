@@ -1,0 +1,243 @@
+{
+  "best_validation_step": 1300,
+  "checkpoint_resume_validation": "pass",
+  "claim": "frozen-representation linear probe, not a failure head",
+  "cuda_memory": {
+    "available": true,
+    "peak_allocated_bytes": 7862682624,
+    "peak_reserved_bytes": 8277458944
+  },
+  "feature_manifest": {
+    "backbone_digest_after": "53a75f2ee1f3bdee78750e1ec13e986633d64018ecf65ddd5c2a193429973e7b",
+    "backbone_digest_before": "53a75f2ee1f3bdee78750e1ec13e986633d64018ecf65ddd5c2a193429973e7b",
+    "backbone_frozen": true,
+    "feature_shape": [
+      5000,
+      2048
+    ],
+    "input_tensor": "VLAJEPAModel._encode_qwen embodied_action_tokens",
+    "optimizer_contains_backbone": false,
+    "pooling": "mean over embodied-action Qwen tokens",
+    "sample_identity": "0fd98d2447c68b952b4c9626491a30d0442e63128abbc37edd5defdd62fdf93a"
+  },
+  "head_parameters": 18441,
+  "input_shape": [
+    5000,
+    2048
+  ],
+  "input_tensor": "VLAJEPAModel._encode_qwen embodied_action_tokens",
+  "optimizer_parameters": "linear probe only",
+  "optimizer_steps": 2100,
+  "pooling": "token mean",
+  "schema_version": "latentguard.lg_r1.representation_probe_results.v1",
+  "status": "pass",
+  "test": {
+    "progress": {
+      "mae": 0.03636748107081803,
+      "rmse": 0.05095111294279578,
+      "spearman": 0.9765599606975391
+    },
+    "samples": 1000,
+    "stage": {
+      "accuracy": 0.983,
+      "confusion_matrix": [
+        [
+          294,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          2,
+          100,
+          2,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          173,
+          1,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          1,
+          78,
+          4,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          3,
+          193,
+          0,
+          1,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          1,
+          0,
+          74,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          71,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      ],
+      "macro_f1": 0.8564171609914308,
+      "per_stage_f1": {
+        "0": 0.9949238578680203,
+        "1": 0.975609756097561,
+        "2": 0.9885714285714285,
+        "3": 0.9397590361445783,
+        "4": 0.9796954314720813,
+        "5": 0.9866666666666667,
+        "6": 0.9861111111111112,
+        "7": 0.0
+      }
+    }
+  },
+  "validation": {
+    "progress": {
+      "mae": 0.03377982294920366,
+      "rmse": 0.0474805311053867,
+      "spearman": 0.9792510461915362
+    },
+    "samples": 1000,
+    "stage": {
+      "accuracy": 0.978,
+      "confusion_matrix": [
+        [
+          266,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          3,
+          100,
+          1,
+          1,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          4,
+          146,
+          3,
+          1,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          1,
+          80,
+          3,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          3,
+          181,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          1,
+          73,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          132,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      ],
+      "macro_f1": 0.8523818985180077,
+      "per_stage_f1": {
+        "0": 0.994392523364486,
+        "1": 0.9569377990430622,
+        "2": 0.9668874172185431,
+        "3": 0.935672514619883,
+        "4": 0.9757412398921833,
+        "5": 0.9931972789115646,
+        "6": 0.9962264150943396,
+        "7": 0.0
+      }
+    }
+  },
+  "vlajepa_frozen": true
+}

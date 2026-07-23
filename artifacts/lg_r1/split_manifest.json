@@ -1,0 +1,1321 @@
+{
+  "episode_assignments": [
+    {
+      "episode_id": "libero_10-task1-seed2000",
+      "held_out_task": false,
+      "seed": 2000,
+      "split": "validation",
+      "suite": "libero_10",
+      "task_id": 1
+    },
+    {
+      "episode_id": "libero_10-task1-seed2001",
+      "held_out_task": false,
+      "seed": 2001,
+      "split": "test",
+      "suite": "libero_10",
+      "task_id": 1
+    },
+    {
+      "episode_id": "libero_10-task1-seed2002",
+      "held_out_task": false,
+      "seed": 2002,
+      "split": "train",
+      "suite": "libero_10",
+      "task_id": 1
+    },
+    {
+      "episode_id": "libero_10-task1-seed2003",
+      "held_out_task": false,
+      "seed": 2003,
+      "split": "test",
+      "suite": "libero_10",
+      "task_id": 1
+    },
+    {
+      "episode_id": "libero_10-task1-seed2004",
+      "held_out_task": false,
+      "seed": 2004,
+      "split": "validation",
+      "suite": "libero_10",
+      "task_id": 1
+    },
+    {
+      "episode_id": "libero_10-task1-seed2005",
+      "held_out_task": false,
+      "seed": 2005,
+      "split": "train",
+      "suite": "libero_10",
+      "task_id": 1
+    },
+    {
+      "episode_id": "libero_10-task1-seed2006",
+      "held_out_task": false,
+      "seed": 2006,
+      "split": "train",
+      "suite": "libero_10",
+      "task_id": 1
+    },
+    {
+      "episode_id": "libero_10-task1-seed2007",
+      "held_out_task": false,
+      "seed": 2007,
+      "split": "train",
+      "suite": "libero_10",
+      "task_id": 1
+    },
+    {
+      "episode_id": "libero_10-task1-seed2008",
+      "held_out_task": false,
+      "seed": 2008,
+      "split": "test",
+      "suite": "libero_10",
+      "task_id": 1
+    },
+    {
+      "episode_id": "libero_10-task1-seed2009",
+      "held_out_task": false,
+      "seed": 2009,
+      "split": "train",
+      "suite": "libero_10",
+      "task_id": 1
+    },
+    {
+      "episode_id": "libero_10-task1-seed2010",
+      "held_out_task": false,
+      "seed": 2010,
+      "split": "train",
+      "suite": "libero_10",
+      "task_id": 1
+    },
+    {
+      "episode_id": "libero_10-task1-seed2011",
+      "held_out_task": false,
+      "seed": 2011,
+      "split": "validation",
+      "suite": "libero_10",
+      "task_id": 1
+    },
+    {
+      "episode_id": "libero_10-task1-seed2012",
+      "held_out_task": false,
+      "seed": 2012,
+      "split": "train",
+      "suite": "libero_10",
+      "task_id": 1
+    },
+    {
+      "episode_id": "libero_10-task1-seed2013",
+      "held_out_task": false,
+      "seed": 2013,
+      "split": "train",
+      "suite": "libero_10",
+      "task_id": 1
+    },
+    {
+      "episode_id": "libero_10-task1-seed2014",
+      "held_out_task": false,
+      "seed": 2014,
+      "split": "validation",
+      "suite": "libero_10",
+      "task_id": 1
+    },
+    {
+      "episode_id": "libero_10-task1-seed2015",
+      "held_out_task": false,
+      "seed": 2015,
+      "split": "train",
+      "suite": "libero_10",
+      "task_id": 1
+    },
+    {
+      "episode_id": "libero_10-task1-seed2016",
+      "held_out_task": false,
+      "seed": 2016,
+      "split": "test",
+      "suite": "libero_10",
+      "task_id": 1
+    },
+    {
+      "episode_id": "libero_10-task1-seed2017",
+      "held_out_task": false,
+      "seed": 2017,
+      "split": "train",
+      "suite": "libero_10",
+      "task_id": 1
+    },
+    {
+      "episode_id": "libero_10-task1-seed2018",
+      "held_out_task": false,
+      "seed": 2018,
+      "split": "train",
+      "suite": "libero_10",
+      "task_id": 1
+    },
+    {
+      "episode_id": "libero_10-task1-seed2019",
+      "held_out_task": false,
+      "seed": 2019,
+      "split": "train",
+      "suite": "libero_10",
+      "task_id": 1
+    },
+    {
+      "episode_id": "libero_10-task3-seed2000",
+      "held_out_task": false,
+      "seed": 2000,
+      "split": "validation",
+      "suite": "libero_10",
+      "task_id": 3
+    },
+    {
+      "episode_id": "libero_10-task3-seed2001",
+      "held_out_task": false,
+      "seed": 2001,
+      "split": "test",
+      "suite": "libero_10",
+      "task_id": 3
+    },
+    {
+      "episode_id": "libero_10-task3-seed2002",
+      "held_out_task": false,
+      "seed": 2002,
+      "split": "train",
+      "suite": "libero_10",
+      "task_id": 3
+    },
+    {
+      "episode_id": "libero_10-task3-seed2003",
+      "held_out_task": false,
+      "seed": 2003,
+      "split": "test",
+      "suite": "libero_10",
+      "task_id": 3
+    },
+    {
+      "episode_id": "libero_10-task3-seed2004",
+      "held_out_task": false,
+      "seed": 2004,
+      "split": "validation",
+      "suite": "libero_10",
+      "task_id": 3
+    },
+    {
+      "episode_id": "libero_10-task3-seed2005",
+      "held_out_task": false,
+      "seed": 2005,
+      "split": "train",
+      "suite": "libero_10",
+      "task_id": 3
+    },
+    {
+      "episode_id": "libero_10-task3-seed2006",
+      "held_out_task": false,
+      "seed": 2006,
+      "split": "train",
+      "suite": "libero_10",
+      "task_id": 3
+    },
+    {
+      "episode_id": "libero_10-task3-seed2007",
+      "held_out_task": false,
+      "seed": 2007,
+      "split": "train",
+      "suite": "libero_10",
+      "task_id": 3
+    },
+    {
+      "episode_id": "libero_10-task3-seed2008",
+      "held_out_task": false,
+      "seed": 2008,
+      "split": "test",
+      "suite": "libero_10",
+      "task_id": 3
+    },
+    {
+      "episode_id": "libero_10-task3-seed2009",
+      "held_out_task": false,
+      "seed": 2009,
+      "split": "train",
+      "suite": "libero_10",
+      "task_id": 3
+    },
+    {
+      "episode_id": "libero_10-task3-seed2010",
+      "held_out_task": false,
+      "seed": 2010,
+      "split": "train",
+      "suite": "libero_10",
+      "task_id": 3
+    },
+    {
+      "episode_id": "libero_10-task3-seed2011",
+      "held_out_task": false,
+      "seed": 2011,
+      "split": "validation",
+      "suite": "libero_10",
+      "task_id": 3
+    },
+    {
+      "episode_id": "libero_10-task3-seed2012",
+      "held_out_task": false,
+      "seed": 2012,
+      "split": "train",
+      "suite": "libero_10",
+      "task_id": 3
+    },
+    {
+      "episode_id": "libero_10-task3-seed2013",
+      "held_out_task": false,
+      "seed": 2013,
+      "split": "train",
+      "suite": "libero_10",
+      "task_id": 3
+    },
+    {
+      "episode_id": "libero_10-task3-seed2014",
+      "held_out_task": false,
+      "seed": 2014,
+      "split": "validation",
+      "suite": "libero_10",
+      "task_id": 3
+    },
+    {
+      "episode_id": "libero_10-task3-seed2015",
+      "held_out_task": false,
+      "seed": 2015,
+      "split": "train",
+      "suite": "libero_10",
+      "task_id": 3
+    },
+    {
+      "episode_id": "libero_10-task3-seed2016",
+      "held_out_task": false,
+      "seed": 2016,
+      "split": "test",
+      "suite": "libero_10",
+      "task_id": 3
+    },
+    {
+      "episode_id": "libero_10-task3-seed2017",
+      "held_out_task": false,
+      "seed": 2017,
+      "split": "train",
+      "suite": "libero_10",
+      "task_id": 3
+    },
+    {
+      "episode_id": "libero_10-task3-seed2018",
+      "held_out_task": false,
+      "seed": 2018,
+      "split": "train",
+      "suite": "libero_10",
+      "task_id": 3
+    },
+    {
+      "episode_id": "libero_10-task3-seed2019",
+      "held_out_task": false,
+      "seed": 2019,
+      "split": "train",
+      "suite": "libero_10",
+      "task_id": 3
+    },
+    {
+      "episode_id": "libero_goal-task3-seed2000",
+      "held_out_task": false,
+      "seed": 2000,
+      "split": "validation",
+      "suite": "libero_goal",
+      "task_id": 3
+    },
+    {
+      "episode_id": "libero_goal-task3-seed2001",
+      "held_out_task": false,
+      "seed": 2001,
+      "split": "test",
+      "suite": "libero_goal",
+      "task_id": 3
+    },
+    {
+      "episode_id": "libero_goal-task3-seed2002",
+      "held_out_task": false,
+      "seed": 2002,
+      "split": "train",
+      "suite": "libero_goal",
+      "task_id": 3
+    },
+    {
+      "episode_id": "libero_goal-task3-seed2003",
+      "held_out_task": false,
+      "seed": 2003,
+      "split": "test",
+      "suite": "libero_goal",
+      "task_id": 3
+    },
+    {
+      "episode_id": "libero_goal-task3-seed2004",
+      "held_out_task": false,
+      "seed": 2004,
+      "split": "validation",
+      "suite": "libero_goal",
+      "task_id": 3
+    },
+    {
+      "episode_id": "libero_goal-task3-seed2005",
+      "held_out_task": false,
+      "seed": 2005,
+      "split": "train",
+      "suite": "libero_goal",
+      "task_id": 3
+    },
+    {
+      "episode_id": "libero_goal-task3-seed2006",
+      "held_out_task": false,
+      "seed": 2006,
+      "split": "train",
+      "suite": "libero_goal",
+      "task_id": 3
+    },
+    {
+      "episode_id": "libero_goal-task3-seed2007",
+      "held_out_task": false,
+      "seed": 2007,
+      "split": "train",
+      "suite": "libero_goal",
+      "task_id": 3
+    },
+    {
+      "episode_id": "libero_goal-task3-seed2008",
+      "held_out_task": false,
+      "seed": 2008,
+      "split": "test",
+      "suite": "libero_goal",
+      "task_id": 3
+    },
+    {
+      "episode_id": "libero_goal-task3-seed2009",
+      "held_out_task": false,
+      "seed": 2009,
+      "split": "train",
+      "suite": "libero_goal",
+      "task_id": 3
+    },
+    {
+      "episode_id": "libero_goal-task3-seed2010",
+      "held_out_task": false,
+      "seed": 2010,
+      "split": "train",
+      "suite": "libero_goal",
+      "task_id": 3
+    },
+    {
+      "episode_id": "libero_goal-task3-seed2011",
+      "held_out_task": false,
+      "seed": 2011,
+      "split": "validation",
+      "suite": "libero_goal",
+      "task_id": 3
+    },
+    {
+      "episode_id": "libero_goal-task3-seed2012",
+      "held_out_task": false,
+      "seed": 2012,
+      "split": "train",
+      "suite": "libero_goal",
+      "task_id": 3
+    },
+    {
+      "episode_id": "libero_goal-task3-seed2013",
+      "held_out_task": false,
+      "seed": 2013,
+      "split": "train",
+      "suite": "libero_goal",
+      "task_id": 3
+    },
+    {
+      "episode_id": "libero_goal-task3-seed2014",
+      "held_out_task": false,
+      "seed": 2014,
+      "split": "validation",
+      "suite": "libero_goal",
+      "task_id": 3
+    },
+    {
+      "episode_id": "libero_goal-task3-seed2015",
+      "held_out_task": false,
+      "seed": 2015,
+      "split": "train",
+      "suite": "libero_goal",
+      "task_id": 3
+    },
+    {
+      "episode_id": "libero_goal-task3-seed2016",
+      "held_out_task": false,
+      "seed": 2016,
+      "split": "test",
+      "suite": "libero_goal",
+      "task_id": 3
+    },
+    {
+      "episode_id": "libero_goal-task3-seed2017",
+      "held_out_task": false,
+      "seed": 2017,
+      "split": "train",
+      "suite": "libero_goal",
+      "task_id": 3
+    },
+    {
+      "episode_id": "libero_goal-task3-seed2018",
+      "held_out_task": false,
+      "seed": 2018,
+      "split": "train",
+      "suite": "libero_goal",
+      "task_id": 3
+    },
+    {
+      "episode_id": "libero_goal-task3-seed2019",
+      "held_out_task": false,
+      "seed": 2019,
+      "split": "train",
+      "suite": "libero_goal",
+      "task_id": 3
+    },
+    {
+      "episode_id": "libero_goal-task7-seed2000",
+      "held_out_task": false,
+      "seed": 2000,
+      "split": "validation",
+      "suite": "libero_goal",
+      "task_id": 7
+    },
+    {
+      "episode_id": "libero_goal-task7-seed2001",
+      "held_out_task": false,
+      "seed": 2001,
+      "split": "test",
+      "suite": "libero_goal",
+      "task_id": 7
+    },
+    {
+      "episode_id": "libero_goal-task7-seed2002",
+      "held_out_task": false,
+      "seed": 2002,
+      "split": "train",
+      "suite": "libero_goal",
+      "task_id": 7
+    },
+    {
+      "episode_id": "libero_goal-task7-seed2003",
+      "held_out_task": false,
+      "seed": 2003,
+      "split": "test",
+      "suite": "libero_goal",
+      "task_id": 7
+    },
+    {
+      "episode_id": "libero_goal-task7-seed2004",
+      "held_out_task": false,
+      "seed": 2004,
+      "split": "validation",
+      "suite": "libero_goal",
+      "task_id": 7
+    },
+    {
+      "episode_id": "libero_goal-task7-seed2005",
+      "held_out_task": false,
+      "seed": 2005,
+      "split": "train",
+      "suite": "libero_goal",
+      "task_id": 7
+    },
+    {
+      "episode_id": "libero_goal-task7-seed2006",
+      "held_out_task": false,
+      "seed": 2006,
+      "split": "train",
+      "suite": "libero_goal",
+      "task_id": 7
+    },
+    {
+      "episode_id": "libero_goal-task7-seed2007",
+      "held_out_task": false,
+      "seed": 2007,
+      "split": "train",
+      "suite": "libero_goal",
+      "task_id": 7
+    },
+    {
+      "episode_id": "libero_goal-task7-seed2008",
+      "held_out_task": false,
+      "seed": 2008,
+      "split": "test",
+      "suite": "libero_goal",
+      "task_id": 7
+    },
+    {
+      "episode_id": "libero_goal-task7-seed2009",
+      "held_out_task": false,
+      "seed": 2009,
+      "split": "train",
+      "suite": "libero_goal",
+      "task_id": 7
+    },
+    {
+      "episode_id": "libero_goal-task7-seed2010",
+      "held_out_task": false,
+      "seed": 2010,
+      "split": "train",
+      "suite": "libero_goal",
+      "task_id": 7
+    },
+    {
+      "episode_id": "libero_goal-task7-seed2011",
+      "held_out_task": false,
+      "seed": 2011,
+      "split": "validation",
+      "suite": "libero_goal",
+      "task_id": 7
+    },
+    {
+      "episode_id": "libero_goal-task7-seed2012",
+      "held_out_task": false,
+      "seed": 2012,
+      "split": "train",
+      "suite": "libero_goal",
+      "task_id": 7
+    },
+    {
+      "episode_id": "libero_goal-task7-seed2013",
+      "held_out_task": false,
+      "seed": 2013,
+      "split": "train",
+      "suite": "libero_goal",
+      "task_id": 7
+    },
+    {
+      "episode_id": "libero_goal-task7-seed2014",
+      "held_out_task": false,
+      "seed": 2014,
+      "split": "validation",
+      "suite": "libero_goal",
+      "task_id": 7
+    },
+    {
+      "episode_id": "libero_goal-task7-seed2015",
+      "held_out_task": false,
+      "seed": 2015,
+      "split": "train",
+      "suite": "libero_goal",
+      "task_id": 7
+    },
+    {
+      "episode_id": "libero_goal-task7-seed2016",
+      "held_out_task": false,
+      "seed": 2016,
+      "split": "test",
+      "suite": "libero_goal",
+      "task_id": 7
+    },
+    {
+      "episode_id": "libero_goal-task7-seed2017",
+      "held_out_task": false,
+      "seed": 2017,
+      "split": "train",
+      "suite": "libero_goal",
+      "task_id": 7
+    },
+    {
+      "episode_id": "libero_goal-task7-seed2018",
+      "held_out_task": false,
+      "seed": 2018,
+      "split": "train",
+      "suite": "libero_goal",
+      "task_id": 7
+    },
+    {
+      "episode_id": "libero_goal-task7-seed2019",
+      "held_out_task": false,
+      "seed": 2019,
+      "split": "train",
+      "suite": "libero_goal",
+      "task_id": 7
+    },
+    {
+      "episode_id": "libero_object-task1-seed2000",
+      "held_out_task": false,
+      "seed": 2000,
+      "split": "validation",
+      "suite": "libero_object",
+      "task_id": 1
+    },
+    {
+      "episode_id": "libero_object-task1-seed2001",
+      "held_out_task": false,
+      "seed": 2001,
+      "split": "test",
+      "suite": "libero_object",
+      "task_id": 1
+    },
+    {
+      "episode_id": "libero_object-task1-seed2002",
+      "held_out_task": false,
+      "seed": 2002,
+      "split": "train",
+      "suite": "libero_object",
+      "task_id": 1
+    },
+    {
+      "episode_id": "libero_object-task1-seed2003",
+      "held_out_task": false,
+      "seed": 2003,
+      "split": "test",
+      "suite": "libero_object",
+      "task_id": 1
+    },
+    {
+      "episode_id": "libero_object-task1-seed2004",
+      "held_out_task": false,
+      "seed": 2004,
+      "split": "validation",
+      "suite": "libero_object",
+      "task_id": 1
+    },
+    {
+      "episode_id": "libero_object-task1-seed2005",
+      "held_out_task": false,
+      "seed": 2005,
+      "split": "train",
+      "suite": "libero_object",
+      "task_id": 1
+    },
+    {
+      "episode_id": "libero_object-task1-seed2006",
+      "held_out_task": false,
+      "seed": 2006,
+      "split": "train",
+      "suite": "libero_object",
+      "task_id": 1
+    },
+    {
+      "episode_id": "libero_object-task1-seed2007",
+      "held_out_task": false,
+      "seed": 2007,
+      "split": "train",
+      "suite": "libero_object",
+      "task_id": 1
+    },
+    {
+      "episode_id": "libero_object-task1-seed2008",
+      "held_out_task": false,
+      "seed": 2008,
+      "split": "test",
+      "suite": "libero_object",
+      "task_id": 1
+    },
+    {
+      "episode_id": "libero_object-task1-seed2009",
+      "held_out_task": false,
+      "seed": 2009,
+      "split": "train",
+      "suite": "libero_object",
+      "task_id": 1
+    },
+    {
+      "episode_id": "libero_object-task1-seed2010",
+      "held_out_task": false,
+      "seed": 2010,
+      "split": "train",
+      "suite": "libero_object",
+      "task_id": 1
+    },
+    {
+      "episode_id": "libero_object-task1-seed2011",
+      "held_out_task": false,
+      "seed": 2011,
+      "split": "validation",
+      "suite": "libero_object",
+      "task_id": 1
+    },
+    {
+      "episode_id": "libero_object-task1-seed2012",
+      "held_out_task": false,
+      "seed": 2012,
+      "split": "train",
+      "suite": "libero_object",
+      "task_id": 1
+    },
+    {
+      "episode_id": "libero_object-task1-seed2013",
+      "held_out_task": false,
+      "seed": 2013,
+      "split": "train",
+      "suite": "libero_object",
+      "task_id": 1
+    },
+    {
+      "episode_id": "libero_object-task1-seed2014",
+      "held_out_task": false,
+      "seed": 2014,
+      "split": "validation",
+      "suite": "libero_object",
+      "task_id": 1
+    },
+    {
+      "episode_id": "libero_object-task1-seed2015",
+      "held_out_task": false,
+      "seed": 2015,
+      "split": "train",
+      "suite": "libero_object",
+      "task_id": 1
+    },
+    {
+      "episode_id": "libero_object-task1-seed2016",
+      "held_out_task": false,
+      "seed": 2016,
+      "split": "test",
+      "suite": "libero_object",
+      "task_id": 1
+    },
+    {
+      "episode_id": "libero_object-task1-seed2017",
+      "held_out_task": false,
+      "seed": 2017,
+      "split": "train",
+      "suite": "libero_object",
+      "task_id": 1
+    },
+    {
+      "episode_id": "libero_object-task1-seed2018",
+      "held_out_task": false,
+      "seed": 2018,
+      "split": "train",
+      "suite": "libero_object",
+      "task_id": 1
+    },
+    {
+      "episode_id": "libero_object-task1-seed2019",
+      "held_out_task": false,
+      "seed": 2019,
+      "split": "train",
+      "suite": "libero_object",
+      "task_id": 1
+    },
+    {
+      "episode_id": "libero_object-task7-seed2000",
+      "held_out_task": false,
+      "seed": 2000,
+      "split": "validation",
+      "suite": "libero_object",
+      "task_id": 7
+    },
+    {
+      "episode_id": "libero_object-task7-seed2001",
+      "held_out_task": false,
+      "seed": 2001,
+      "split": "test",
+      "suite": "libero_object",
+      "task_id": 7
+    },
+    {
+      "episode_id": "libero_object-task7-seed2002",
+      "held_out_task": false,
+      "seed": 2002,
+      "split": "train",
+      "suite": "libero_object",
+      "task_id": 7
+    },
+    {
+      "episode_id": "libero_object-task7-seed2003",
+      "held_out_task": false,
+      "seed": 2003,
+      "split": "test",
+      "suite": "libero_object",
+      "task_id": 7
+    },
+    {
+      "episode_id": "libero_object-task7-seed2004",
+      "held_out_task": false,
+      "seed": 2004,
+      "split": "validation",
+      "suite": "libero_object",
+      "task_id": 7
+    },
+    {
+      "episode_id": "libero_object-task7-seed2005",
+      "held_out_task": false,
+      "seed": 2005,
+      "split": "train",
+      "suite": "libero_object",
+      "task_id": 7
+    },
+    {
+      "episode_id": "libero_object-task7-seed2006",
+      "held_out_task": false,
+      "seed": 2006,
+      "split": "train",
+      "suite": "libero_object",
+      "task_id": 7
+    },
+    {
+      "episode_id": "libero_object-task7-seed2007",
+      "held_out_task": false,
+      "seed": 2007,
+      "split": "train",
+      "suite": "libero_object",
+      "task_id": 7
+    },
+    {
+      "episode_id": "libero_object-task7-seed2008",
+      "held_out_task": false,
+      "seed": 2008,
+      "split": "test",
+      "suite": "libero_object",
+      "task_id": 7
+    },
+    {
+      "episode_id": "libero_object-task7-seed2009",
+      "held_out_task": false,
+      "seed": 2009,
+      "split": "train",
+      "suite": "libero_object",
+      "task_id": 7
+    },
+    {
+      "episode_id": "libero_object-task7-seed2010",
+      "held_out_task": false,
+      "seed": 2010,
+      "split": "train",
+      "suite": "libero_object",
+      "task_id": 7
+    },
+    {
+      "episode_id": "libero_object-task7-seed2011",
+      "held_out_task": false,
+      "seed": 2011,
+      "split": "validation",
+      "suite": "libero_object",
+      "task_id": 7
+    },
+    {
+      "episode_id": "libero_object-task7-seed2012",
+      "held_out_task": false,
+      "seed": 2012,
+      "split": "train",
+      "suite": "libero_object",
+      "task_id": 7
+    },
+    {
+      "episode_id": "libero_object-task7-seed2013",
+      "held_out_task": false,
+      "seed": 2013,
+      "split": "train",
+      "suite": "libero_object",
+      "task_id": 7
+    },
+    {
+      "episode_id": "libero_object-task7-seed2014",
+      "held_out_task": false,
+      "seed": 2014,
+      "split": "validation",
+      "suite": "libero_object",
+      "task_id": 7
+    },
+    {
+      "episode_id": "libero_object-task7-seed2015",
+      "held_out_task": false,
+      "seed": 2015,
+      "split": "train",
+      "suite": "libero_object",
+      "task_id": 7
+    },
+    {
+      "episode_id": "libero_object-task7-seed2016",
+      "held_out_task": false,
+      "seed": 2016,
+      "split": "test",
+      "suite": "libero_object",
+      "task_id": 7
+    },
+    {
+      "episode_id": "libero_object-task7-seed2017",
+      "held_out_task": false,
+      "seed": 2017,
+      "split": "train",
+      "suite": "libero_object",
+      "task_id": 7
+    },
+    {
+      "episode_id": "libero_object-task7-seed2018",
+      "held_out_task": false,
+      "seed": 2018,
+      "split": "train",
+      "suite": "libero_object",
+      "task_id": 7
+    },
+    {
+      "episode_id": "libero_object-task7-seed2019",
+      "held_out_task": false,
+      "seed": 2019,
+      "split": "train",
+      "suite": "libero_object",
+      "task_id": 7
+    },
+    {
+      "episode_id": "libero_spatial-task1-seed2000",
+      "held_out_task": false,
+      "seed": 2000,
+      "split": "validation",
+      "suite": "libero_spatial",
+      "task_id": 1
+    },
+    {
+      "episode_id": "libero_spatial-task1-seed2001",
+      "held_out_task": false,
+      "seed": 2001,
+      "split": "test",
+      "suite": "libero_spatial",
+      "task_id": 1
+    },
+    {
+      "episode_id": "libero_spatial-task1-seed2002",
+      "held_out_task": false,
+      "seed": 2002,
+      "split": "train",
+      "suite": "libero_spatial",
+      "task_id": 1
+    },
+    {
+      "episode_id": "libero_spatial-task1-seed2003",
+      "held_out_task": false,
+      "seed": 2003,
+      "split": "test",
+      "suite": "libero_spatial",
+      "task_id": 1
+    },
+    {
+      "episode_id": "libero_spatial-task1-seed2004",
+      "held_out_task": false,
+      "seed": 2004,
+      "split": "validation",
+      "suite": "libero_spatial",
+      "task_id": 1
+    },
+    {
+      "episode_id": "libero_spatial-task1-seed2005",
+      "held_out_task": false,
+      "seed": 2005,
+      "split": "train",
+      "suite": "libero_spatial",
+      "task_id": 1
+    },
+    {
+      "episode_id": "libero_spatial-task1-seed2006",
+      "held_out_task": false,
+      "seed": 2006,
+      "split": "train",
+      "suite": "libero_spatial",
+      "task_id": 1
+    },
+    {
+      "episode_id": "libero_spatial-task1-seed2007",
+      "held_out_task": false,
+      "seed": 2007,
+      "split": "train",
+      "suite": "libero_spatial",
+      "task_id": 1
+    },
+    {
+      "episode_id": "libero_spatial-task1-seed2008",
+      "held_out_task": false,
+      "seed": 2008,
+      "split": "test",
+      "suite": "libero_spatial",
+      "task_id": 1
+    },
+    {
+      "episode_id": "libero_spatial-task1-seed2009",
+      "held_out_task": false,
+      "seed": 2009,
+      "split": "train",
+      "suite": "libero_spatial",
+      "task_id": 1
+    },
+    {
+      "episode_id": "libero_spatial-task1-seed2010",
+      "held_out_task": false,
+      "seed": 2010,
+      "split": "train",
+      "suite": "libero_spatial",
+      "task_id": 1
+    },
+    {
+      "episode_id": "libero_spatial-task1-seed2011",
+      "held_out_task": false,
+      "seed": 2011,
+      "split": "validation",
+      "suite": "libero_spatial",
+      "task_id": 1
+    },
+    {
+      "episode_id": "libero_spatial-task1-seed2012",
+      "held_out_task": false,
+      "seed": 2012,
+      "split": "train",
+      "suite": "libero_spatial",
+      "task_id": 1
+    },
+    {
+      "episode_id": "libero_spatial-task1-seed2013",
+      "held_out_task": false,
+      "seed": 2013,
+      "split": "train",
+      "suite": "libero_spatial",
+      "task_id": 1
+    },
+    {
+      "episode_id": "libero_spatial-task1-seed2014",
+      "held_out_task": false,
+      "seed": 2014,
+      "split": "validation",
+      "suite": "libero_spatial",
+      "task_id": 1
+    },
+    {
+      "episode_id": "libero_spatial-task1-seed2015",
+      "held_out_task": false,
+      "seed": 2015,
+      "split": "train",
+      "suite": "libero_spatial",
+      "task_id": 1
+    },
+    {
+      "episode_id": "libero_spatial-task1-seed2016",
+      "held_out_task": false,
+      "seed": 2016,
+      "split": "test",
+      "suite": "libero_spatial",
+      "task_id": 1
+    },
+    {
+      "episode_id": "libero_spatial-task1-seed2017",
+      "held_out_task": false,
+      "seed": 2017,
+      "split": "train",
+      "suite": "libero_spatial",
+      "task_id": 1
+    },
+    {
+      "episode_id": "libero_spatial-task1-seed2018",
+      "held_out_task": false,
+      "seed": 2018,
+      "split": "train",
+      "suite": "libero_spatial",
+      "task_id": 1
+    },
+    {
+      "episode_id": "libero_spatial-task1-seed2019",
+      "held_out_task": false,
+      "seed": 2019,
+      "split": "train",
+      "suite": "libero_spatial",
+      "task_id": 1
+    },
+    {
+      "episode_id": "libero_spatial-task4-seed2000",
+      "held_out_task": false,
+      "seed": 2000,
+      "split": "validation",
+      "suite": "libero_spatial",
+      "task_id": 4
+    },
+    {
+      "episode_id": "libero_spatial-task4-seed2001",
+      "held_out_task": false,
+      "seed": 2001,
+      "split": "test",
+      "suite": "libero_spatial",
+      "task_id": 4
+    },
+    {
+      "episode_id": "libero_spatial-task4-seed2002",
+      "held_out_task": false,
+      "seed": 2002,
+      "split": "train",
+      "suite": "libero_spatial",
+      "task_id": 4
+    },
+    {
+      "episode_id": "libero_spatial-task4-seed2003",
+      "held_out_task": false,
+      "seed": 2003,
+      "split": "test",
+      "suite": "libero_spatial",
+      "task_id": 4
+    },
+    {
+      "episode_id": "libero_spatial-task4-seed2004",
+      "held_out_task": false,
+      "seed": 2004,
+      "split": "validation",
+      "suite": "libero_spatial",
+      "task_id": 4
+    },
+    {
+      "episode_id": "libero_spatial-task4-seed2005",
+      "held_out_task": false,
+      "seed": 2005,
+      "split": "train",
+      "suite": "libero_spatial",
+      "task_id": 4
+    },
+    {
+      "episode_id": "libero_spatial-task4-seed2006",
+      "held_out_task": false,
+      "seed": 2006,
+      "split": "train",
+      "suite": "libero_spatial",
+      "task_id": 4
+    },
+    {
+      "episode_id": "libero_spatial-task4-seed2007",
+      "held_out_task": false,
+      "seed": 2007,
+      "split": "train",
+      "suite": "libero_spatial",
+      "task_id": 4
+    },
+    {
+      "episode_id": "libero_spatial-task4-seed2008",
+      "held_out_task": false,
+      "seed": 2008,
+      "split": "test",
+      "suite": "libero_spatial",
+      "task_id": 4
+    },
+    {
+      "episode_id": "libero_spatial-task4-seed2009",
+      "held_out_task": false,
+      "seed": 2009,
+      "split": "train",
+      "suite": "libero_spatial",
+      "task_id": 4
+    },
+    {
+      "episode_id": "libero_spatial-task4-seed2010",
+      "held_out_task": false,
+      "seed": 2010,
+      "split": "train",
+      "suite": "libero_spatial",
+      "task_id": 4
+    },
+    {
+      "episode_id": "libero_spatial-task4-seed2011",
+      "held_out_task": false,
+      "seed": 2011,
+      "split": "validation",
+      "suite": "libero_spatial",
+      "task_id": 4
+    },
+    {
+      "episode_id": "libero_spatial-task4-seed2012",
+      "held_out_task": false,
+      "seed": 2012,
+      "split": "train",
+      "suite": "libero_spatial",
+      "task_id": 4
+    },
+    {
+      "episode_id": "libero_spatial-task4-seed2013",
+      "held_out_task": false,
+      "seed": 2013,
+      "split": "train",
+      "suite": "libero_spatial",
+      "task_id": 4
+    },
+    {
+      "episode_id": "libero_spatial-task4-seed2014",
+      "held_out_task": false,
+      "seed": 2014,
+      "split": "validation",
+      "suite": "libero_spatial",
+      "task_id": 4
+    },
+    {
+      "episode_id": "libero_spatial-task4-seed2015",
+      "held_out_task": false,
+      "seed": 2015,
+      "split": "train",
+      "suite": "libero_spatial",
+      "task_id": 4
+    },
+    {
+      "episode_id": "libero_spatial-task4-seed2016",
+      "held_out_task": false,
+      "seed": 2016,
+      "split": "test",
+      "suite": "libero_spatial",
+      "task_id": 4
+    },
+    {
+      "episode_id": "libero_spatial-task4-seed2017",
+      "held_out_task": false,
+      "seed": 2017,
+      "split": "train",
+      "suite": "libero_spatial",
+      "task_id": 4
+    },
+    {
+      "episode_id": "libero_spatial-task4-seed2018",
+      "held_out_task": false,
+      "seed": 2018,
+      "split": "train",
+      "suite": "libero_spatial",
+      "task_id": 4
+    },
+    {
+      "episode_id": "libero_spatial-task4-seed2019",
+      "held_out_task": false,
+      "seed": 2019,
+      "split": "train",
+      "suite": "libero_spatial",
+      "task_id": 4
+    }
+  ],
+  "episode_split_leakage": 0,
+  "held_out_seed_supported": true,
+  "held_out_suite_supported": false,
+  "held_out_task_supported": false,
+  "schema_version": "latentguard.lg_r1.split_manifest.v1",
+  "seed_assignments": {
+    "test": [
+      2001,
+      2003,
+      2008,
+      2016
+    ],
+    "train": [
+      2002,
+      2005,
+      2006,
+      2007,
+      2009,
+      2010,
+      2012,
+      2013,
+      2015,
+      2017,
+      2018,
+      2019
+    ],
+    "validation": [
+      2000,
+      2004,
+      2011,
+      2014
+    ]
+  },
+  "seed_split_leakage": 0,
+  "split_seed": 71031,
+  "status": "pass",
+  "unsupported_reason": "Every frozen seed is shared by every task, so a disjoint held-out task or suite would violate seed exclusivity."
+}

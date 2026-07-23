@@ -1,0 +1,33 @@
+{
+  "LG_R2_AUTHORIZED": false,
+  "authorization_scope": "data sufficiency only; starting LG-R2 still requires explicit user authorization and a new milestone",
+  "checks": {
+    "checkpoint_identity": true,
+    "episode_split_leakage": true,
+    "failure_windows": true,
+    "natural_failed_episodes": false,
+    "processor_identity": true,
+    "sarm_evaluation": true,
+    "stage_annotation_gate": true,
+    "successful_windows": true,
+    "suites": true,
+    "tasks": true,
+    "valid_rollout_episodes": true
+  },
+  "failure_head_training_started": false,
+  "input": {
+    "checkpoint_identity_completeness": 1.0,
+    "episode_split_leakage": 0,
+    "failure_windows": 118,
+    "natural_failed_episodes": 1,
+    "processor_identity_completeness": 1.0,
+    "sarm_evaluation_complete": true,
+    "stage_annotation_passed": true,
+    "successful_windows": 8760,
+    "suites": 4,
+    "tasks": 8,
+    "valid_rollout_episodes": 160
+  },
+  "schema_version": "latentguard.lg_r1.lg_r2_gate.v1",
+  "status": "FAILURE_DATA_GATE_NOT_MET"
+}

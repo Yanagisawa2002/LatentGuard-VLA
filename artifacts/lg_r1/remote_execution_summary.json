@@ -1,0 +1,75 @@
+{
+  "artifact_identities": {
+    "dataset_manifest.json": {
+      "bytes": 1591,
+      "sha256": "95edde00bac8ec8b44e38c091b61b9c27f7fe39c2975df2eab859d406bec5114"
+    },
+    "lg_r2_gate.json": {
+      "bytes": 1030,
+      "sha256": "83039002f6585cb497d09a57c0fcbe06e9a55193b9cc5d9ac88fe5c757781a5e"
+    },
+    "progress_evaluation.json": {
+      "bytes": 14363,
+      "sha256": "557a96a445ee419b04f0094b8e0af2abf62819a4ebbab1786d2e52443ac5e2de"
+    },
+    "progress_failure_analysis.json": {
+      "bytes": 4727,
+      "sha256": "9b1f9b596ceeeb147e9f112c1b587e6f2161c14da09220245b039dff46a5a08f"
+    },
+    "remote_execution_audit.json": {
+      "bytes": 1342,
+      "sha256": "896ad6c494057c7b6b9079d3fc81cbd43d24e500d8a91afa43e6791e7ea2cf6c"
+    },
+    "representation_probe_results.json": {
+      "bytes": 4345,
+      "sha256": "e2f1d3a2034e9c541e336ec580291cb5fd84adfdfee8604fac6ee32d4a88472f"
+    },
+    "rollout_manifest.json": {
+      "bytes": 302900,
+      "sha256": "8fe37756fadfe0aaf04ba3b190871425203c6be6cc0c51c22aceeadcaa6e1bb2"
+    },
+    "sarm_results.json": {
+      "bytes": 6630,
+      "sha256": "8674acb28e89c071afbae8c94636772892426d63be331d6fa498a118d52d59bb"
+    },
+    "sarm_stack_manifest.json": {
+      "bytes": 3089,
+      "sha256": "658ad87961b6a99f0749eb2aa3a3d30e3f5ea35d853f0c6c1222a2fd2ccae783"
+    },
+    "source_validation.json": {
+      "bytes": 537,
+      "sha256": "105b99a9043f3bf4fca3fcf9b454bb929ff0620abdbc64dac0cc5f51f25f8674"
+    },
+    "split_manifest.json": {
+      "bytes": 30903,
+      "sha256": "223605e3f5f5bc05c1aa31f5bca7bf716f1a0fae2fbbc161075f67d577b278cc"
+    },
+    "stage_annotation_report.json": {
+      "bytes": 256704,
+      "sha256": "07294677e0921bc47f7431668cf1d5799ca156ea6177859bc64559ecac99d01b"
+    },
+    "time_baseline_results.json": {
+      "bytes": 1664,
+      "sha256": "358e63cff37f149dc578f9119bb3bf4fd50dd8769c7430f9de368b6b5771a5cd"
+    },
+    "vlajepa_descriptive_comparison.json": {
+      "bytes": 21586,
+      "sha256": "851f86c148ad482e8cd1955ce0bb8a0a50344a9727f27171609c9ebe4a25a478"
+    }
+  },
+  "elapsed_seconds": {
+    "progress_evaluation": 31,
+    "representation_probe": 140,
+    "rollout_episode_execution_sum": 2499.1765090748668,
+    "sarm_smoke": 103,
+    "sarm_style_small": 768
+  },
+  "final_audit_commit": "6c131b409e7c59a2cd6d8ad2459e10bc13bf76a3",
+  "rollout_code_commit": "c9a34f02dea1743e357619e6e7c2b19c28ddfdd1",
+  "run_id": "20260723T010000Z_lg-r1-rollouts_b7105e8_seed2000-2019",
+  "schema_version": "latentguard.lg_r1.compact_execution_summary.v1",
+  "server_left_online": true,
+  "stage_label_code_commit": "46fc8aaad4b939ed4dcb49d47f28912f2ec78e7a",
+  "status": "pass",
+  "sync_note": "origin fetch failed because remote GitHub HTTPS authentication was unavailable; every pushed revision was imported through SHA256-verified incremental Git bundles and checked with exact Git commit identity"
+}

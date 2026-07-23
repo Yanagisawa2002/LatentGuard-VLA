@@ -1,0 +1,42 @@
+{
+  "artifact_statuses": {
+    "dataset": "pass",
+    "evaluation": "pass",
+    "lg_r2_gate": "FAILURE_DATA_GATE_NOT_MET",
+    "probe": "pass",
+    "rollout": "pass",
+    "sarm": "pass",
+    "stage": "pass",
+    "time": "pass"
+  },
+  "checks": {
+    "clean_remote_checkout": true,
+    "exact_commit": true,
+    "final_seed_accessed": false,
+    "network_turbo_sourced": true,
+    "policy_training_performed": false,
+    "remote_execution_only": true,
+    "server_shutdown_requested": false,
+    "synthetic_failure_generated": false,
+    "tracked_source_edited_remotely": false,
+    "vlajepa_finetuning_performed": false
+  },
+  "download_policy": "source /etc/network_turbo on boot; use Aliyun package mirrors by default; no unreviewed dependency upgrades",
+  "runtime_identity": {
+    "git_branch": "codex/lg-r1-sarm-progress",
+    "git_commit": "6c131b409e7c59a2cd6d8ad2459e10bc13bf76a3",
+    "hostname": "autodl-container-c47c48a71b-504676bc",
+    "platform": "Linux-5.15.0-119-generic-x86_64-with-glibc2.35",
+    "python": "3.12.3",
+    "torch": {
+      "available": true,
+      "cuda_available": true,
+      "cuda_version": "12.8",
+      "gpu_name": "NVIDIA GeForce RTX 5090",
+      "version": "2.11.0+cu128"
+    }
+  },
+  "schema_version": "latentguard.lg_r1.remote_execution_audit.v1",
+  "server_left_online": true,
+  "status": "pass"
+}

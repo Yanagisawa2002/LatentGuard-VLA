@@ -1,0 +1,53 @@
+{
+  "offline_oracle": "step_index / observed_episode_length",
+  "offline_oracle_is_deployable": false,
+  "online_baseline": "step_index / episode_horizon",
+  "results": {
+    "test": {
+      "offline_oracle": {
+        "episode_macro_kendall_tau_b": 0.8900346621077373,
+        "episodes": 32,
+        "mae": 0.16954656014648622,
+        "rmse": 0.1970722341388177,
+        "samples": 4725,
+        "spearman": 0.8922177702515542
+      },
+      "online_available": {
+        "episode_macro_kendall_tau_b": 0.8900346621077373,
+        "episodes": 32,
+        "mae": 0.17256872415071514,
+        "rmse": 0.21719266686664082,
+        "samples": 4725,
+        "spearman": 0.8667495637904433
+      },
+      "online_pairwise_accuracy": 0.6454810495626823,
+      "online_regression_recall": 0.0,
+      "online_stagnation_recall": 0.0
+    },
+    "validation": {
+      "offline_oracle": {
+        "episode_macro_kendall_tau_b": 0.8866299762109437,
+        "episodes": 32,
+        "mae": 0.17912803732249535,
+        "rmse": 0.20529048543949163,
+        "samples": 5028,
+        "spearman": 0.8345305891623624
+      },
+      "online_available": {
+        "episode_macro_kendall_tau_b": 0.8866299762109437,
+        "episodes": 32,
+        "mae": 0.1777550341622144,
+        "rmse": 0.22151405411007538,
+        "samples": 5028,
+        "spearman": 0.8778820761503072
+      },
+      "online_pairwise_accuracy": 0.6220173535791758,
+      "online_regression_recall": 0.0,
+      "online_stagnation_recall": 0.0
+    }
+  },
+  "schema_version": "latentguard.lg_r1.time_baseline_results.v1",
+  "selection_split": "validation",
+  "status": "pass",
+  "thresholds_fit_on_test": false
+}

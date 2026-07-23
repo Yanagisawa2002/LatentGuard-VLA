@@ -1,0 +1,154 @@
+{
+  "schema_version": "latentguard.lg_r1.stage_review.v1",
+  "reviewer": "codex-agent-structured-trajectory-review",
+  "review_packet_sha256": "52d0c257df8a602656af2b9db28c59dc8d45f60466e840cd2d1fc85408041611",
+  "review_basis": [
+    "stage transition sequence",
+    "current-state privileged evidence",
+    "goal-predicate changes",
+    "environment terminal success",
+    "timeout and regression semantics"
+  ],
+  "decisions": [
+    {
+      "episode_id": "libero_10-task1-seed2000",
+      "critical_errors": 0,
+      "minor_disagreements": 0,
+      "decision": "accept",
+      "notes": "First and second placement predicates change in order; terminal success is consistent."
+    },
+    {
+      "episode_id": "libero_10-task1-seed2001",
+      "critical_errors": 0,
+      "minor_disagreements": 0,
+      "decision": "accept",
+      "notes": "Two-object stage order and both terminal predicates are consistent."
+    },
+    {
+      "episode_id": "libero_10-task3-seed2000",
+      "critical_errors": 0,
+      "minor_disagreements": 0,
+      "decision": "accept",
+      "notes": "Drawer starts open; placement predicate precedes close predicate and terminal success."
+    },
+    {
+      "episode_id": "libero_10-task3-seed2001",
+      "critical_errors": 0,
+      "minor_disagreements": 0,
+      "decision": "accept",
+      "notes": "Object placement then fixture closing agrees with both goal-predicate changes."
+    },
+    {
+      "episode_id": "libero_goal-task3-seed2017",
+      "critical_errors": 0,
+      "minor_disagreements": 0,
+      "decision": "accept",
+      "notes": "Natural timeout opens the drawer, reaches contact and transport, then regresses; goal remains false and timeout is not labeled terminal failure."
+    },
+    {
+      "episode_id": "libero_goal-task3-seed2000",
+      "critical_errors": 0,
+      "minor_disagreements": 0,
+      "decision": "accept",
+      "notes": "Fixture opening, object contact, transport, placement, and terminal goal change are consistent."
+    },
+    {
+      "episode_id": "libero_goal-task7-seed2000",
+      "critical_errors": 0,
+      "minor_disagreements": 0,
+      "decision": "accept",
+      "notes": "Contact-stage jitter is preserved; turn-on predicate and terminal success agree."
+    },
+    {
+      "episode_id": "libero_goal-task7-seed2001",
+      "critical_errors": 0,
+      "minor_disagreements": 0,
+      "decision": "accept",
+      "notes": "Repeated alignment/contact transitions are evidence-grounded and the turn-on goal closes the episode."
+    },
+    {
+      "episode_id": "libero_object-task1-seed2000",
+      "critical_errors": 0,
+      "minor_disagreements": 0,
+      "decision": "accept",
+      "notes": "Approach, contact, transport, placement, and basket predicate progression are consistent."
+    },
+    {
+      "episode_id": "libero_object-task1-seed2001",
+      "critical_errors": 0,
+      "minor_disagreements": 0,
+      "decision": "accept",
+      "notes": "One contact regression is preserved; final placement predicate and terminal success agree."
+    },
+    {
+      "episode_id": "libero_object-task7-seed2000",
+      "critical_errors": 0,
+      "minor_disagreements": 0,
+      "decision": "accept",
+      "notes": "Contact, lift, transport, placement, and terminal basket predicate are consistent."
+    },
+    {
+      "episode_id": "libero_object-task7-seed2001",
+      "critical_errors": 0,
+      "minor_disagreements": 0,
+      "decision": "accept",
+      "notes": "Lift and transport evidence precede placement and terminal goal satisfaction."
+    },
+    {
+      "episode_id": "libero_spatial-task1-seed2000",
+      "critical_errors": 0,
+      "minor_disagreements": 0,
+      "decision": "accept",
+      "notes": "Approach, contact, transport, plate placement, and terminal on-predicate agree."
+    },
+    {
+      "episode_id": "libero_spatial-task1-seed2001",
+      "critical_errors": 0,
+      "minor_disagreements": 0,
+      "decision": "accept",
+      "notes": "Stage transitions and final on-predicate are consistent."
+    },
+    {
+      "episode_id": "libero_spatial-task4-seed2000",
+      "critical_errors": 0,
+      "minor_disagreements": 0,
+      "decision": "accept",
+      "notes": "The object starts elevated in a drawer, so transport is target-distance driven; contact regression, placement, and terminal goal remain consistent."
+    },
+    {
+      "episode_id": "libero_spatial-task4-seed2001",
+      "critical_errors": 0,
+      "minor_disagreements": 0,
+      "decision": "accept",
+      "notes": "Non-monotonic contact/lift/transport transitions are retained and final plate placement is consistent."
+    },
+    {
+      "episode_id": "libero_10-task1-seed2002",
+      "critical_errors": 0,
+      "minor_disagreements": 0,
+      "decision": "accept",
+      "notes": "Both object subgoals transition in order and terminal success matches both predicates."
+    },
+    {
+      "episode_id": "libero_10-task3-seed2002",
+      "critical_errors": 0,
+      "minor_disagreements": 0,
+      "decision": "accept",
+      "notes": "One contact regression is preserved; placement then closing predicates are consistent."
+    },
+    {
+      "episode_id": "libero_10-task1-seed2003",
+      "critical_errors": 0,
+      "minor_disagreements": 0,
+      "decision": "accept",
+      "notes": "A first-object regression is retained; both eventual placement predicates and terminal success agree."
+    },
+    {
+      "episode_id": "libero_10-task3-seed2003",
+      "critical_errors": 0,
+      "minor_disagreements": 0,
+      "decision": "accept",
+      "notes": "Placement and close stages match the two goal-predicate changes and terminal success."
+    }
+  ]
+}

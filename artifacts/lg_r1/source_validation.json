@@ -1,0 +1,23 @@
+{
+  "checks": {
+    "config_parse": true,
+    "expected_commit": true,
+    "json_parse": true,
+    "langmani_isolation": true,
+    "package_import": true,
+    "repository_identity": true,
+    "sensitive_content": true
+  },
+  "commit": "6c131b409e7c59a2cd6d8ad2459e10bc13bf76a3",
+  "config_errors": [],
+  "forbidden_paths": [],
+  "json_errors": [],
+  "package_path": "REMOTE_REPO/src/latentguard/__init__.py",
+  "remote_artifact_sha256": "105b99a9043f3bf4fca3fcf9b454bb929ff0620abdbc64dac0cc5f51f25f8674",
+  "sanitized_fields": [
+    "package_path"
+  ],
+  "schema_version": "latentguard.lg_r1.source_validation.v1",
+  "sensitive_hits": [],
+  "status": "pass"
+}

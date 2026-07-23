@@ -1,0 +1,630 @@
+{
+  "failure_detection_claim": false,
+  "promotion_checks": {
+    "sarm_test_mae_retains_improvement": true,
+    "sarm_validation_mae_better_than_online_time": true
+  },
+  "representation_probe": {
+    "best_validation_step": 1300,
+    "checkpoint_resume_validation": "pass",
+    "claim": "frozen-representation linear probe, not a failure head",
+    "cuda_memory": {
+      "available": true,
+      "peak_allocated_bytes": 7862682624,
+      "peak_reserved_bytes": 8277458944
+    },
+    "feature_manifest": {
+      "backbone_digest_after": "53a75f2ee1f3bdee78750e1ec13e986633d64018ecf65ddd5c2a193429973e7b",
+      "backbone_digest_before": "53a75f2ee1f3bdee78750e1ec13e986633d64018ecf65ddd5c2a193429973e7b",
+      "backbone_frozen": true,
+      "feature_shape": [
+        5000,
+        2048
+      ],
+      "input_tensor": "VLAJEPAModel._encode_qwen embodied_action_tokens",
+      "optimizer_contains_backbone": false,
+      "pooling": "mean over embodied-action Qwen tokens",
+      "sample_identity": "0fd98d2447c68b952b4c9626491a30d0442e63128abbc37edd5defdd62fdf93a"
+    },
+    "head_parameters": 18441,
+    "input_shape": [
+      5000,
+      2048
+    ],
+    "input_tensor": "VLAJEPAModel._encode_qwen embodied_action_tokens",
+    "optimizer_parameters": "linear probe only",
+    "optimizer_steps": 2100,
+    "pooling": "token mean",
+    "schema_version": "latentguard.lg_r1.representation_probe_results.v1",
+    "status": "pass",
+    "test": {
+      "progress": {
+        "mae": 0.03636748107081803,
+        "rmse": 0.05095111294279578,
+        "spearman": 0.9765599606975391
+      },
+      "samples": 1000,
+      "stage": {
+        "accuracy": 0.983,
+        "confusion_matrix": [
+          [
+            294,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            2,
+            100,
+            2,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            173,
+            1,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            1,
+            78,
+            4,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            3,
+            193,
+            0,
+            1,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            1,
+            0,
+            74,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            0,
+            1,
+            71,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        ],
+        "macro_f1": 0.8564171609914308,
+        "per_stage_f1": {
+          "0": 0.9949238578680203,
+          "1": 0.975609756097561,
+          "2": 0.9885714285714285,
+          "3": 0.9397590361445783,
+          "4": 0.9796954314720813,
+          "5": 0.9866666666666667,
+          "6": 0.9861111111111112,
+          "7": 0.0
+        }
+      }
+    },
+    "validation": {
+      "progress": {
+        "mae": 0.03377982294920366,
+        "rmse": 0.0474805311053867,
+        "spearman": 0.9792510461915362
+      },
+      "samples": 1000,
+      "stage": {
+        "accuracy": 0.978,
+        "confusion_matrix": [
+          [
+            266,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            3,
+            100,
+            1,
+            1,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            4,
+            146,
+            3,
+            1,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            1,
+            80,
+            3,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            3,
+            181,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            1,
+            73,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            1,
+            0,
+            132,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        ],
+        "macro_f1": 0.8523818985180077,
+        "per_stage_f1": {
+          "0": 0.994392523364486,
+          "1": 0.9569377990430622,
+          "2": 0.9668874172185431,
+          "3": 0.935672514619883,
+          "4": 0.9757412398921833,
+          "5": 0.9931972789115646,
+          "6": 0.9962264150943396,
+          "7": 0.0
+        }
+      }
+    },
+    "vlajepa_frozen": true
+  },
+  "sarm": {
+    "best_validation_step": 3800,
+    "checkpoint_resume_validation": "pass",
+    "claim_label": "SARM-style small baseline using the official LeRobot SARM modules",
+    "clip_frozen": true,
+    "clip_model_id": "openai/clip-vit-base-patch32",
+    "clip_revision": "3d74acf9a28c67741b2f4f2ea7635f0aaf6f0268",
+    "cuda_memory": {
+      "available": true,
+      "peak_allocated_bytes": 642387968,
+      "peak_reserved_bytes": 752877568
+    },
+    "feature_manifest": {
+      "clip_digest_after": "a12cd7a357e29d5bfb3a3a90b803490215d0b2bc8bc60310643dad8316c2aaa3",
+      "clip_digest_before": "a12cd7a357e29d5bfb3a3a90b803490215d0b2bc8bc60310643dad8316c2aaa3",
+      "clip_frozen": true,
+      "clip_model_id": "openai/clip-vit-base-patch32",
+      "clip_revision": "3d74acf9a28c67741b2f4f2ea7635f0aaf6f0268",
+      "feature_shapes": {
+        "state": [
+          8332,
+          8,
+          32
+        ],
+        "text": [
+          8332,
+          512
+        ],
+        "video": [
+          8332,
+          8,
+          512
+        ]
+      },
+      "frame_deltas": [
+        -49,
+        -42,
+        -35,
+        -28,
+        -21,
+        -14,
+        -7,
+        0
+      ],
+      "optimizer_contains_clip": false,
+      "processor_serialization": {
+        "files": [
+          {
+            "bytes": 581,
+            "relative_path": "processor_config.json",
+            "sha256": "38d5457ba35b9eee2b4fb2b8d3f151ca8cb5932348e6979d1c5d8f05966ce810"
+          },
+          {
+            "bytes": 3642073,
+            "relative_path": "tokenizer.json",
+            "sha256": "6d9109cc838977f3ca94a379eec36aecc7c807e1785cd729660ca2fc0171fb35"
+          },
+          {
+            "bytes": 360,
+            "relative_path": "tokenizer_config.json",
+            "sha256": "d3162e85b1c6f8fa84190848aef6e4429849ba43da53bc143d9c1ba539f31610"
+          }
+        ],
+        "reloaded_type": "CLIPProcessor",
+        "status": "pass"
+      },
+      "sample_identity": "15cd320e5cbf043f938d5df8f92767170a6259596cc05f7c0981791c3f983e4a"
+    },
+    "implementation": "lerobot.rewards.sarm",
+    "lerobot_commit": "30da8e687a6dfc617fcd94afc367ac7071c376ce",
+    "official_checkpoint_compatible": false,
+    "official_checkpoint_zero_shot": false,
+    "optimizer_steps": 4800,
+    "prediction_locator": "sarm_predictions.jsonl",
+    "schema_version": "latentguard.lg_r1.sarm_results.v1",
+    "status": "pass",
+    "test": {
+      "pairwise": {
+        "accuracy": 0.8653610771113831,
+        "cross_stage_accuracy": 0.6691729323308271,
+        "same_stage_accuracy": 0.882744836775483
+      },
+      "progress": {
+        "mae": 0.020546011640564837,
+        "rmse": 0.05200612414225576,
+        "spearman": 0.9774001503647151
+      },
+      "samples": 1666,
+      "stage": {
+        "accuracy": 0.9309723889555822,
+        "confusion_matrix": [
+          [
+            476,
+            6,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            10,
+            162,
+            11,
+            0,
+            5,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            2,
+            275,
+            6,
+            3,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            7,
+            126,
+            7,
+            5,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            6,
+            3,
+            314,
+            7,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            12,
+            1,
+            12,
+            92,
+            2,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            7,
+            3,
+            106,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        ],
+        "macro_f1": 0.7991763428714211,
+        "per_stage_f1": {
+          "0": 0.9834710743801653,
+          "1": 0.9050279329608939,
+          "2": 0.9212730318257957,
+          "3": 0.896797153024911,
+          "4": 0.9262536873156342,
+          "5": 0.8141592920353983,
+          "6": 0.9464285714285714,
+          "7": 0.0
+        }
+      },
+      "stage_completion": {
+        "mae": 0.05532831905527367,
+        "rmse": 0.1158896051516443,
+        "spearman": 0.9024280329295518
+      },
+      "temporal": {
+        "monotonicity_violation_rate": 0.009179926560587515,
+        "negative_progress_detection_recall": 0.25,
+        "stage_regression_detection_recall": 0.25,
+        "stagnation_detection_recall": 0.8980028530670471
+      }
+    },
+    "trainable_parameters": 4169234,
+    "trained_parameters": "StageTransformer and SubtaskTransformer only",
+    "validation": {
+      "pairwise": {
+        "accuracy": 0.8745410036719706,
+        "cross_stage_accuracy": 0.762962962962963,
+        "same_stage_accuracy": 0.8845897264843229
+      },
+      "progress": {
+        "mae": 0.015657252365902,
+        "rmse": 0.03449302150266787,
+        "spearman": 0.9883263234816556
+      },
+      "samples": 1666,
+      "stage": {
+        "accuracy": 0.946578631452581,
+        "confusion_matrix": [
+          [
+            434,
+            3,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            3,
+            152,
+            17,
+            1,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            4,
+            257,
+            2,
+            3,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            10,
+            115,
+            10,
+            2,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            1,
+            3,
+            312,
+            3,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            5,
+            0,
+            14,
+            107,
+            5,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            2,
+            0,
+            200,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        ],
+        "macro_f1": 0.8163562751777298,
+        "per_stage_f1": {
+          "0": 0.992,
+          "1": 0.9156626506024096,
+          "2": 0.9228007181328546,
+          "3": 0.8914728682170543,
+          "4": 0.9454545454545454,
+          "5": 0.8806584362139918,
+          "6": 0.9828009828009828,
+          "7": 0.0
+        }
+      },
+      "stage_completion": {
+        "mae": 0.04676069197312583,
+        "rmse": 0.10018430445455831,
+        "spearman": 0.9164354553807792
+      },
+      "temporal": {
+        "monotonicity_violation_rate": 0.008567931456548347,
+        "negative_progress_detection_recall": 0.4,
+        "stage_regression_detection_recall": 0.4,
+        "stagnation_detection_recall": 0.894550601556971
+      }
+    },
+    "vlajepa_used": false
+  },
+  "sarm_progress_baseline_promoted": true,
+  "schema_version": "latentguard.lg_r1.progress_evaluation.v1",
+  "selection_split": "validation",
+  "status": "pass",
+  "task_success_claim": false,
+  "test_used_for_selection": false,
+  "time_baseline": {
+    "offline_oracle": "step_index / observed_episode_length",
+    "offline_oracle_is_deployable": false,
+    "online_baseline": "step_index / episode_horizon",
+    "results": {
+      "test": {
+        "offline_oracle": {
+          "episode_macro_kendall_tau_b": 0.8900346621077373,
+          "episodes": 32,
+          "mae": 0.16954656014648622,
+          "rmse": 0.1970722341388177,
+          "samples": 4725,
+          "spearman": 0.8922177702515542
+        },
+        "online_available": {
+          "episode_macro_kendall_tau_b": 0.8900346621077373,
+          "episodes": 32,
+          "mae": 0.17256872415071514,
+          "rmse": 0.21719266686664082,
+          "samples": 4725,
+          "spearman": 0.8667495637904433
+        },
+        "online_pairwise_accuracy": 0.6454810495626823,
+        "online_regression_recall": 0.0,
+        "online_stagnation_recall": 0.0
+      },
+      "validation": {
+        "offline_oracle": {
+          "episode_macro_kendall_tau_b": 0.8866299762109437,
+          "episodes": 32,
+          "mae": 0.17912803732249535,
+          "rmse": 0.20529048543949163,
+          "samples": 5028,
+          "spearman": 0.8345305891623624
+        },
+        "online_available": {
+          "episode_macro_kendall_tau_b": 0.8866299762109437,
+          "episodes": 32,
+          "mae": 0.1777550341622144,
+          "rmse": 0.22151405411007538,
+          "samples": 5028,
+          "spearman": 0.8778820761503072
+        },
+        "online_pairwise_accuracy": 0.6220173535791758,
+        "online_regression_recall": 0.0,
+        "online_stagnation_recall": 0.0
+      }
+    },
+    "schema_version": "latentguard.lg_r1.time_baseline_results.v1",
+    "selection_split": "validation",
+    "status": "pass",
+    "thresholds_fit_on_test": false
+  },
+  "vlajepa_descriptive_status": "pass"
+}

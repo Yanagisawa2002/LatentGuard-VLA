@@ -35,9 +35,9 @@
   "exact_commit": "30da8e687a6dfc617fcd94afc367ac7071c376ce",
   "implementation": "lerobot.rewards.sarm",
   "installation": "LeRobot reward-model extra in the frozen LG-R0 environment",
-  "installed_version": null,
+  "installed_version": "0.6.0",
   "license": "Apache-2.0 source headers; upstream dependency terms apply",
-  "module_available_in_runtime": false,
+  "module_available_in_runtime": true,
   "official_release_component": true,
   "post_release_main_used": false,
   "processor": {
@@ -48,8 +48,44 @@
   "release": "v0.6.0",
   "repository": "huggingface/lerobot",
   "schema_version": "latentguard.lg_r1.sarm_stack_manifest.v1",
-  "source_files": [],
-  "status": "source_review_only",
+  "source_files": [
+    {
+      "bytes": 834,
+      "relative_path": "__init__.py",
+      "sha256": "1b64f3b992caf93fdd325464bf5c74d49a3167e32269da817cd1e3c47f098467"
+    },
+    {
+      "bytes": 34614,
+      "relative_path": "compute_rabc_weights.py",
+      "sha256": "f6a83013765fbedb9c178018ba47009b26af58b2673325cb0a8ae1454c2f0779"
+    },
+    {
+      "bytes": 9605,
+      "relative_path": "configuration_sarm.py",
+      "sha256": "61102ae6eecb0dffea94b57f138f68f76ac8e62c4cee9149f42e9c59010d697b"
+    },
+    {
+      "bytes": 31545,
+      "relative_path": "modeling_sarm.py",
+      "sha256": "c7265116b896186c74753565fec00626dd2df5c68675b015847301f976a4ec19"
+    },
+    {
+      "bytes": 22432,
+      "relative_path": "processor_sarm.py",
+      "sha256": "191af712491415bd7e706a23e06fcb51803ed441f865c76dcb5964cac497cf3f"
+    },
+    {
+      "bytes": 12050,
+      "relative_path": "rabc.py",
+      "sha256": "e789cd59a7e1ae4e896a584981ccf4dfe6456bc9dde404cd594b0bd9ddc847f1"
+    },
+    {
+      "bytes": 11268,
+      "relative_path": "sarm_utils.py",
+      "sha256": "279cfd596ba1260f1291c1e39740f3b039d403c11bc39540c0c6317c942fe676"
+    }
+  ],
+  "status": "pass",
   "supervision": {
     "label_protocol_is_official_sarm_reproduction": false,
     "lg_r1_uses_simulator_grounded_stage_adapters": true,

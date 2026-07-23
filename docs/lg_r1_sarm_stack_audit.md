@@ -1,6 +1,6 @@
 # LG-R1 SARM external-stack audit
 
-## Preliminary verdict
+## Final verdict
 
 SARM is part of the official LeRobot 0.6.0 release used by LG-R0. The frozen
 source is `src/lerobot/rewards/sarm` at LeRobot commit
@@ -11,8 +11,9 @@ The implementation is a video-and-language reward model with a stage
 transformer and a stage-conditioned within-stage progress transformer. Its
 processor uses `openai/clip-vit-base-patch32`, includes robot state, and
 supports `single_stage`, `dense_only`, and `dual` annotation modes. The
-official default samples a bidirectional nine-frame observation sequence with
-four rewind placeholders for augmentation.
+upstream processor supports its own temporal augmentation. LG-R1 does not use
+future frames: the executed baseline freezes eight causal frame deltas
+`[-49, -42, -35, -28, -21, -14, -7, 0]`.
 
 LG-R1 freezes the CLIP repository at
 `3d74acf9a28c67741b2f4f2ea7635f0aaf6f0268`.
@@ -29,11 +30,10 @@ claims a zero-shot checkpoint compatible with LIBERO, the LG-R1 stage schema,
 and the frozen two-camera/state contract. Community SARM checkpoints are not
 treated as official or compatible.
 
-LG-R1 will therefore use the official LeRobot SARM modules with frozen CLIP
-features and a deliberately small stage/progress configuration. The result
-will be called a **SARM-style small baseline**, not an official pretrained
-SARM reproduction. This decision is revisited only if an exact, source-backed
-official compatible checkpoint is found before training begins.
+LG-R1 therefore used the official LeRobot SARM modules with frozen CLIP
+features and a deliberately small stage/progress configuration. The result is
+called a **SARM-style small baseline**, not an official pretrained SARM
+reproduction. No zero-shot claim is made.
 
 ## Known supervision mismatch
 
@@ -51,5 +51,12 @@ adapters. This distinction must remain visible in every report.
 - [Frozen SARM source directory](https://github.com/huggingface/lerobot/tree/30da8e687a6dfc617fcd94afc367ac7071c376ce/src/lerobot/rewards/sarm)
 - [SARM paper and project](https://qianzhong-chen.github.io/sarm.github.io/)
 
-The final manifest will additionally bind file hashes, resolved package
-versions, CLIP revision, processor serialization, measured memory, and license.
+The final manifest binds LeRobot 0.6.0, all seven SARM source-file hashes, the
+CLIP revision, and the resolved module availability. The remote run separately
+verified processor save/reload and an unchanged CLIP weight digest. The final
+SARM result reports approximately 0.60 GiB peak allocated training memory after
+feature caching. The source audit itself intentionally retains its pre-run
+memory fields; measured values live in `artifacts/lg_r1/sarm_results.json`.
+
+Only `StageTransformer` and `SubtaskTransformer` were optimized. CLIP,
+VLA-JEPA, Qwen, the policy, and both policy processors remained frozen.
