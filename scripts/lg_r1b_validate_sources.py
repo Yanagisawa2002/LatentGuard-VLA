@@ -123,7 +123,7 @@ def main() -> None:
         "sensitive_hits": sensitive_hits,
         "config_errors": config_errors,
         "json_errors": json_errors,
-        "package_path": str(package_path),
+        "package_path": package_path.relative_to(repo_root()).as_posix(),
     }
     write_json(resolve_repo_path(args.output), payload)
     print(json.dumps(payload, sort_keys=True))
