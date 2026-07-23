@@ -209,8 +209,13 @@ class DeclarativeTaskStageAdapter:
         object_name = self._spec.manipulated_objects[0]
         target_name = self._spec.goal_predicates[0][-1]
         features = _object_features(state, initial, object_name, target_name)
-        fixture = _entity(state, self._spec.auxiliary_entities[0])
+        fixture_name = _fixture_entity_name(
+            state,
+            self._spec.auxiliary_entities[0],
+        )
+        fixture = _entity(state, fixture_name)
         fixture_open = bool(fixture.get("open", False))
+        features["fixture"] = fixture_name
         features["fixture_open"] = fixture_open
         if terminal_success:
             return _label(7, names, 1.0, True, terminal_failure, features)
@@ -225,7 +230,7 @@ class DeclarativeTaskStageAdapter:
             return _label(2, names, 0.7, False, terminal_failure, features)
         if fixture_open:
             return _label(2, names, 0.2, False, terminal_failure, features)
-        fixture_distance = _eef_distance(state, self._spec.auxiliary_entities[0])
+        fixture_distance = _eef_distance(state, fixture_name)
         features["fixture_eef_distance"] = fixture_distance
         if fixture_distance <= thresholds.aligned:
             return _label(1, names, 0.5, False, terminal_failure, features)
@@ -357,7 +362,11 @@ class DeclarativeTaskStageAdapter:
             "success",
         )
         object_name = self._spec.manipulated_objects[0]
-        fixture_name = self._spec.auxiliary_entities[0]
+        target_name = self._spec.auxiliary_entities[0]
+        fixture_name = _fixture_entity_name(
+            state,
+            target_name,
+        )
         object_goal_index = next(
             (
                 index
@@ -374,9 +383,10 @@ class DeclarativeTaskStageAdapter:
             ),
             0,
         )
-        features = _object_features(state, initial, object_name, fixture_name)
+        features = _object_features(state, initial, object_name, target_name)
         fixture = _entity(state, fixture_name)
         fixture_open = bool(fixture.get("open", False))
+        features["fixture"] = fixture_name
         features["fixture_open"] = fixture_open
         features["goal_flags"] = goals
         if terminal_success:
@@ -454,6 +464,20 @@ def _entity(state: dict[str, Any], name: str) -> dict[str, Any]:
     if not isinstance(entity, dict):
         raise ValueError(f"privileged state is missing entity {name}")
     return entity
+
+
+def _fixture_entity_name(state: dict[str, Any], configured_name: str) -> str:
+    """Resolve a LIBERO drawer region to its articulated fixture body."""
+
+    objects = _objects(state)
+    for suffix in ("_top_region", "_bottom_region"):
+        if configured_name.endswith(suffix):
+            fixture_name = configured_name[: -len(suffix)]
+            if fixture_name in objects:
+                return fixture_name
+    if configured_name in objects:
+        return configured_name
+    raise ValueError(f"privileged state is missing fixture {configured_name}")
 
 
 def _position(entity: dict[str, Any], name: str) -> npt.NDArray[np.float64]:

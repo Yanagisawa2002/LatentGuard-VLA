@@ -215,6 +215,51 @@ def test_stage_registry_and_pick_place_semantics() -> None:
     assert success.terminal_success is True
 
 
+def test_articulated_region_uses_fixture_body_affordance() -> None:
+    registry_config = _yaml("configs/lg_r1/task_registry.yaml")
+    registry = LiberoStageRegistry(registry_config["tasks"])
+    cases = [
+        (
+            registry.resolve("libero_goal", 3),
+            "akita_black_bowl_1",
+            "wooden_cabinet_1_top_region",
+            "wooden_cabinet_1",
+            [["in", "akita_black_bowl_1", "wooden_cabinet_1_top_region"]],
+        ),
+        (
+            registry.resolve("libero_10", 3),
+            "akita_black_bowl_1",
+            "white_cabinet_1_bottom_region",
+            "white_cabinet_1",
+            [
+                ["close", "white_cabinet_1_bottom_region"],
+                ["in", "akita_black_bowl_1", "white_cabinet_1_bottom_region"],
+            ],
+        ),
+    ]
+    for adapter, object_name, region_name, fixture_name, predicates in cases:
+        state = _state(
+            object_name=object_name,
+            target_name=region_name,
+            eef_position=(0.3, 0.0, 0.0),
+        )
+        state["goal_predicates"] = [
+            {"predicate": predicate, "satisfied": False} for predicate in predicates
+        ]
+        state["objects"][fixture_name] = {
+            "position": [0.3, 0.0, 0.0],
+            "open": True,
+            "close": False,
+        }
+        label = adapter.label_step(
+            state,
+            {"initial_privileged_state": state},
+        )
+        assert label.stage_name == "approach_object"
+        assert label.evidence["fixture"] == fixture_name
+        assert label.evidence["fixture_open"] is True
+
+
 def test_failure_is_not_forced_to_zero_and_timeout_is_not_failure() -> None:
     adapter = _pick_adapter()
     initial = _state()
