@@ -58,7 +58,7 @@ def _safe_bool_call(value: Any, method_name: str) -> bool | None:
         return None
     try:
         return bool(method())
-    except (AttributeError, KeyError, TypeError, ValueError):
+    except (AttributeError, KeyError, NotImplementedError, TypeError, ValueError):
         return None
 
 

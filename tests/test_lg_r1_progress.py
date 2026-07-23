@@ -399,6 +399,30 @@ def test_rollout_affordance_state_skips_unsupported_native_objects() -> None:
         is None
     )
 
+    class NativeWithOpen:
+        def is_open(self, qpos: object) -> bool:
+            del qpos
+            return False
+
+    class EnvironmentWithOpen:
+        def get_object(self, name: str) -> NativeWithOpen:
+            assert name == "drawer"
+            return NativeWithOpen()
+
+    class UnimplementedObjectState:
+        def is_open(self) -> bool:
+            raise NotImplementedError
+
+    assert (
+        module._affordance_state(
+            EnvironmentWithOpen(),
+            "drawer",
+            UnimplementedObjectState(),
+            "is_open",
+        )
+        is None
+    )
+
 
 def test_lg_r1_runtime_has_no_forbidden_integrations_or_corruption() -> None:
     paths = [
