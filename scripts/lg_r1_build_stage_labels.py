@@ -13,6 +13,8 @@ from _lg_r1_common import (
     read_json,
     read_yaml,
     resolve_repo_path,
+    runtime_identity,
+    sha256_path,
     write_json,
 )
 
@@ -98,11 +100,12 @@ def main() -> None:
         if args.output_root is not None
         else output_root()
     )
-    rollout_manifest = read_json(
+    rollout_manifest_path = (
         resolve_repo_path(args.rollout_manifest)
         if args.rollout_manifest is not None
         else runtime / "rollout_manifest.json"
     )
+    rollout_manifest = read_json(rollout_manifest_path)
     if rollout_manifest.get("status") != "pass":
         raise ValueError("rollout manifest is not complete")
     label_root = runtime / "stage_labels"
@@ -214,6 +217,10 @@ def main() -> None:
     report = {
         "schema_version": ("latentguard.lg_r1.stage_annotation_report.v1"),
         "status": "pending_human_review" if not errors else "fail",
+        "runtime_identity": runtime_identity(),
+        "rollout_runtime_identity": rollout_manifest["runtime_identity"],
+        "rollout_manifest_sha256": sha256_path(rollout_manifest_path),
+        "task_registry_sha256": rollout_manifest["task_registry_sha256"],
         "automated_critical_errors": len(errors),
         "critical_error_limit": int(config["critical_error_limit"]),
         "minor_disagreement_rate_limit": float(config["minor_disagreement_rate_limit"]),
