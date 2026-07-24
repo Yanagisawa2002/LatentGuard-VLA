@@ -1,0 +1,80 @@
+{
+  "best_validation_step": 100,
+  "claim": "frozen-representation linear probe, not a failure head",
+  "cuda_memory": {
+    "available": true,
+    "peak_allocated_bytes": 7863075840,
+    "peak_reserved_bytes": 10475274240
+  },
+  "failure_head_trained": false,
+  "feature_manifest": {
+    "backbone_digest_after": "53a75f2ee1f3bdee78750e1ec13e986633d64018ecf65ddd5c2a193429973e7b",
+    "backbone_digest_before": "53a75f2ee1f3bdee78750e1ec13e986633d64018ecf65ddd5c2a193429973e7b",
+    "backbone_frozen": true,
+    "feature_shape": [
+      5000,
+      2048
+    ],
+    "input_tensor": "VLAJEPAModel._encode_qwen embodied_action_tokens",
+    "optimizer_contains_backbone": false,
+    "pooling": "mean over embodied-action Qwen tokens",
+    "sample_identity": "a3d653ad2ba19c801d5de1f3f98c8b0e14b8698c579980342b5423ea45daab7c"
+  },
+  "foundation_model_backward_calls": 0,
+  "head": "two scalar linear projections",
+  "head_parameters": 4098,
+  "input_shape": [
+    5000,
+    2048
+  ],
+  "input_tensor": "VLAJEPAModel._encode_qwen embodied_action_tokens",
+  "optimizer_parameters": "linear probe only",
+  "optimizer_steps": 900,
+  "pooling": "token mean",
+  "prediction_file": {
+    "bytes": 438554,
+    "locator": "vlajepa-probe/predictions.jsonl",
+    "sha256": "bfbbf497a186e7d4f56572543d5bea4f969922639dd7bc4a3582169f7521245e"
+  },
+  "schema_version": "latentguard.lg_r1c.vlajepa_probe_results.v1",
+  "selection_split": "validation",
+  "status": "pass",
+  "test": {
+    "progress": {
+      "kendall_tau_b": 0.03222892296248955,
+      "mae": 0.23353680892311968,
+      "rmse": 0.2789817641197048,
+      "samples": 1000,
+      "spearman": 0.05382685369660653
+    },
+    "samples": 1000,
+    "success": {
+      "auprc": 0.9925758705468936,
+      "auroc": 0.7612033287348138,
+      "brier": 0.022688569925526574,
+      "positives": 977,
+      "prevalence": 0.977,
+      "samples": 1000
+    }
+  },
+  "test_evaluations": 1,
+  "validation": {
+    "progress": {
+      "kendall_tau_b": 0.435264594090516,
+      "mae": 0.15725795305892826,
+      "rmse": 0.1922934772206478,
+      "samples": 1000,
+      "spearman": 0.5883268264366108
+    },
+    "samples": 1000,
+    "success": {
+      "auprc": 0.5960011936234832,
+      "auroc": 0.4837905236907731,
+      "brier": 0.3993998933246221,
+      "positives": 599,
+      "prevalence": 0.599,
+      "samples": 1000
+    }
+  },
+  "vlajepa_frozen": true
+}

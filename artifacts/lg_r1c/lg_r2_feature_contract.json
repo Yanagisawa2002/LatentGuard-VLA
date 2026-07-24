@@ -48,8 +48,8 @@
           "candidate_time_usable": false,
           "depends_on_future_observation": true,
           "dtype": "float32",
-          "measured_latency_ms": null,
-          "measured_peak_gpu_bytes": null,
+          "measured_latency_ms": 182.4813323154817,
+          "measured_peak_gpu_bytes": 9695927296,
           "online_computable": false,
           "pooling": "last_frame_from_eight_frame_window",
           "shape": [
@@ -63,8 +63,8 @@
           "candidate_time_usable": false,
           "depends_on_future_observation": true,
           "dtype": "float32",
-          "measured_latency_ms": null,
-          "measured_peak_gpu_bytes": null,
+          "measured_latency_ms": 182.4813323154817,
+          "measured_peak_gpu_bytes": 9695927296,
           "online_computable": false,
           "pooling": "last_frame_from_eight_frame_window",
           "shape": [
@@ -78,8 +78,8 @@
           "candidate_time_usable": false,
           "depends_on_future_observation": true,
           "dtype": "float32",
-          "measured_latency_ms": null,
-          "measured_peak_gpu_bytes": null,
+          "measured_latency_ms": 134.8262380628265,
+          "measured_peak_gpu_bytes": 17721989632,
           "online_computable": false,
           "pooling": "terminal_true_token_log_probability",
           "shape": [
@@ -243,8 +243,8 @@
           "candidate_time_usable": false,
           "depends_on_future_observation": true,
           "dtype": "float32",
-          "measured_latency_ms": null,
-          "measured_peak_gpu_bytes": null,
+          "measured_latency_ms": 317.3075703783082,
+          "measured_peak_gpu_bytes": 17721989632,
           "online_computable": false,
           "pooling": "robometer_progress_success_and_topreward_score",
           "shape": [

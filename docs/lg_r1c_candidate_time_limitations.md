@@ -19,3 +19,9 @@ therefore conservatively marked
 `NOT_USABLE_FOR_PRE_EXECUTION_SELECTION` until a separately reviewed adapter
 proves candidate conditioning. The complete typed classification appears in
 `artifacts/lg_r1c/lg_r2_feature_contract.json`.
+
+The completed benchmark does not change this classification. ROBOMETER is the
+nearest task-agnostic baseline, but its partial natural-failure signal appears
+only after the video window exists and it fails the complete promotion gate.
+`LG_R2_REWARD_BASELINE_AUTHORIZED=false`; no reward output is authorized as a
+candidate-time feature.

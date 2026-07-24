@@ -1,0 +1,15 @@
+{
+  "foundation_model_training": false,
+  "optimizer_steps": 0,
+  "prediction_sha256": {
+    "robometer_predictions.jsonl": "0e4817291ab95ec8e9844fe8f7e6bfb69278eafa681ae01d3345dd7c92dfe3da",
+    "sarm_predictions.jsonl": "b0ce9aa9d40fa7a025ffd1da4cdadc90a024b25b84c0cda0c0baf526040d7722",
+    "time_predictions.jsonl": "83ccb64046a7d46802a6fb94737e42eb1bfb5c1679051aa3e9d2658b5709a815",
+    "topreward_predictions.jsonl": "4ff06522469d552658f80095e93b5472d03b5c10eb4b258334dcb7f0056e01c2"
+  },
+  "prediction_windows": 8470,
+  "schema_version": "latentguard.lg_r1c.zero_shot_freeze.v2",
+  "status": "frozen_before_calibration",
+  "test_labels_read": false,
+  "test_metrics_computed": false
+}

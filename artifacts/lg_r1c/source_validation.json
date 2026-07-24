@@ -13,7 +13,7 @@
     "baseline_commit": "61e6ab8b5fb55eb93a7bd76c1c7bbd8957150fdd",
     "baseline_is_ancestor": true,
     "branch": "codex/lg-r1c-task-agnostic-reward",
-    "head_commit": "61e6ab8b5fb55eb93a7bd76c1c7bbd8957150fdd",
+    "head_commit": "26e61be5edee47bbbe1b7c9e24bc17f3998f8a46",
     "origin_repository": "Yanagisawa2002/LatentGuard-VLA"
   },
   "robolab_used": false,

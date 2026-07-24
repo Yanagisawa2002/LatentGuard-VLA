@@ -10,11 +10,13 @@ Every remote shell must first run:
 source /etc/network_turbo
 ```
 
-Python packages use the Aliyun PyPI mirror by default. Hugging Face model
-snapshots are the exception: they are downloaded from their canonical model
-repositories at the exact commit recorded in
-`configs/lg_r1c/reward_stack.yaml`, because the Hub revision and LFS hashes
-are part of the evidence contract.
+Python packages use the Aliyun PyPI mirror by default. Large public model
+weights prefer Alibaba ModelScope when a byte-identical official mirror is
+available. Every mirrored shard must still match the exact size and SHA-256
+frozen from the canonical model revision. Exact Hugging Face revision metadata
+and processor/tokenizer/configuration files remain content-bound because the
+revision and LFS identities are part of the evidence contract. If no validated
+mirror exists, the exact canonical snapshot is used instead.
 
 The execution environment is created outside the checkout:
 
@@ -40,3 +42,8 @@ The overlay must report LeRobot `0.6.0` and the integration commit
 `30da8e687a6dfc617fcd94afc367ac7071c376ce`. Model snapshots are stored
 outside Git. Loading fails closed on a missing revision, missing
 processor/tokenizer, unexpected checkpoint key, or LFS SHA-256 mismatch.
+
+The completed environment used Python 3.12.3, PyTorch 2.11.0+cu128,
+torchvision 0.26.0+cu128, Transformers 5.5.4, Hugging Face Hub 1.22.0,
+LeRobot 0.6.0, and one NVIDIA GeForce RTX 5090. The older LG-R0/LG-R1
+environment was not upgraded.

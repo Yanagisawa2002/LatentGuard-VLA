@@ -1,0 +1,455 @@
+{
+  "diagnostic_only": true,
+  "models": {
+    "frozen_sarm": {
+      "episode_failure": {
+        "auprc": 0.014267111916023603,
+        "auroc": 0.2850909090909091,
+        "brier": 0.35916195679422735,
+        "operating_points": {
+          "0.5": {
+            "false_positive_rate": 0.7127272727272728,
+            "precision": 0.01507537688442211,
+            "recall": 0.6,
+            "requested_recall": 0.5,
+            "threshold": 0.42455244064331055
+          },
+          "0.6": {
+            "false_positive_rate": 0.7127272727272728,
+            "precision": 0.01507537688442211,
+            "recall": 0.6,
+            "requested_recall": 0.6,
+            "threshold": 0.42455244064331055
+          },
+          "0.8": {
+            "false_positive_rate": 0.7236363636363636,
+            "precision": 0.019704433497536946,
+            "recall": 0.8,
+            "requested_recall": 0.8,
+            "threshold": 0.35815656185150146
+          }
+        },
+        "positives": 5,
+        "prevalence": 0.017857142857142856,
+        "samples": 280
+      },
+      "matched_failure": {
+        "auprc": 0.8198927484518812,
+        "auroc": 0.8088483972159592,
+        "brier": 0.22290118244584675,
+        "operating_points": {
+          "0.5": {
+            "false_positive_rate": 0.2103960396039604,
+            "precision": 0.7038327526132404,
+            "recall": 0.5,
+            "requested_recall": 0.5,
+            "threshold": 0.42156076431274414
+          },
+          "0.6": {
+            "false_positive_rate": 0.21782178217821782,
+            "precision": 0.7357357357357357,
+            "recall": 0.6064356435643564,
+            "requested_recall": 0.6,
+            "threshold": 0.30731821060180664
+          },
+          "0.8": {
+            "false_positive_rate": 0.3292079207920792,
+            "precision": 0.710239651416122,
+            "recall": 0.806930693069307,
+            "requested_recall": 0.8,
+            "threshold": 0.2638580799102783
+          }
+        },
+        "positives": 404,
+        "prevalence": 0.5,
+        "samples": 808
+      }
+    },
+    "online_time": {
+      "episode_failure": {
+        "auprc": 0.010765766467727398,
+        "auroc": 0.0,
+        "brier": 0.3071974399116017,
+        "operating_points": {
+          "0.5": {
+            "false_positive_rate": 1.0,
+            "precision": 0.017857142857142856,
+            "recall": 1.0,
+            "requested_recall": 0.5,
+            "threshold": 0.0
+          },
+          "0.6": {
+            "false_positive_rate": 1.0,
+            "precision": 0.017857142857142856,
+            "recall": 1.0,
+            "requested_recall": 0.6,
+            "threshold": 0.0
+          },
+          "0.8": {
+            "false_positive_rate": 1.0,
+            "precision": 0.017857142857142856,
+            "recall": 1.0,
+            "requested_recall": 0.8,
+            "threshold": 0.0
+          }
+        },
+        "positives": 5,
+        "prevalence": 0.017857142857142856,
+        "samples": 280
+      },
+      "matched_failure": {
+        "auprc": 0.31186196569316676,
+        "auroc": 0.038681869424566216,
+        "brier": 0.5311194325302487,
+        "operating_points": {
+          "0.5": {
+            "false_positive_rate": 0.9925742574257426,
+            "precision": 0.3371900826446281,
+            "recall": 0.504950495049505,
+            "requested_recall": 0.5,
+            "threshold": 0.21001926782273606
+          },
+          "0.6": {
+            "false_positive_rate": 1.0,
+            "precision": 0.37846153846153846,
+            "recall": 0.6089108910891089,
+            "requested_recall": 0.6,
+            "threshold": 0.17919075144508667
+          },
+          "0.8": {
+            "false_positive_rate": 1.0,
+            "precision": 0.44505494505494503,
+            "recall": 0.801980198019802,
+            "requested_recall": 0.8,
+            "threshold": 0.11368015414258192
+          }
+        },
+        "positives": 404,
+        "prevalence": 0.5,
+        "samples": 808
+      }
+    },
+    "robometer_calibrated": {
+      "episode_failure": {
+        "auprc": 0.22157030824615936,
+        "auroc": 0.5192727272727272,
+        "brier": 0.088519872998794,
+        "operating_points": {
+          "0.5": {
+            "false_positive_rate": 0.39636363636363636,
+            "precision": 0.026785714285714284,
+            "recall": 0.6,
+            "requested_recall": 0.5,
+            "threshold": 0.29468392362924867
+          },
+          "0.6": {
+            "false_positive_rate": 0.39636363636363636,
+            "precision": 0.026785714285714284,
+            "recall": 0.6,
+            "requested_recall": 0.6,
+            "threshold": 0.29468392362924867
+          },
+          "0.8": {
+            "false_positive_rate": 0.9127272727272727,
+            "precision": 0.01568627450980392,
+            "recall": 0.8,
+            "requested_recall": 0.8,
+            "threshold": 0.2230729925881867
+          }
+        },
+        "positives": 5,
+        "prevalence": 0.017857142857142856,
+        "samples": 280
+      },
+      "matched_failure": {
+        "auprc": 0.404862463175361,
+        "auroc": 0.32227538966767966,
+        "brier": 0.31013219967676336,
+        "operating_points": {
+          "0.5": {
+            "false_positive_rate": 0.7747524752475248,
+            "precision": 0.39223300970873787,
+            "recall": 0.5,
+            "requested_recall": 0.5,
+            "threshold": 0.27142601801614097
+          },
+          "0.6": {
+            "false_positive_rate": 0.8465346534653465,
+            "precision": 0.4153846153846154,
+            "recall": 0.6014851485148515,
+            "requested_recall": 0.6,
+            "threshold": 0.2531620509271284
+          },
+          "0.8": {
+            "false_positive_rate": 0.9133663366336634,
+            "precision": 0.4675324675324675,
+            "recall": 0.801980198019802,
+            "requested_recall": 0.8,
+            "threshold": 0.23243911621618063
+          }
+        },
+        "positives": 404,
+        "prevalence": 0.5,
+        "samples": 808
+      }
+    },
+    "robometer_zero_shot": {
+      "episode_failure": {
+        "auprc": 0.22157030824615936,
+        "auroc": 0.5192727272727272,
+        "brier": 0.3292660121987687,
+        "operating_points": {
+          "0.5": {
+            "false_positive_rate": 0.39636363636363636,
+            "precision": 0.026785714285714284,
+            "recall": 0.6,
+            "requested_recall": 0.5,
+            "threshold": 0.6076631546020508
+          },
+          "0.6": {
+            "false_positive_rate": 0.39636363636363636,
+            "precision": 0.026785714285714284,
+            "recall": 0.6,
+            "requested_recall": 0.6,
+            "threshold": 0.6076631546020508
+          },
+          "0.8": {
+            "false_positive_rate": 0.9127272727272727,
+            "precision": 0.01568627450980392,
+            "recall": 0.8,
+            "requested_recall": 0.8,
+            "threshold": 0.130285382270813
+          }
+        },
+        "positives": 5,
+        "prevalence": 0.017857142857142856,
+        "samples": 280
+      },
+      "matched_failure": {
+        "auprc": 0.404862463175361,
+        "auroc": 0.32227538966767966,
+        "brier": 0.41633094926981756,
+        "operating_points": {
+          "0.5": {
+            "false_positive_rate": 0.7747524752475248,
+            "precision": 0.39223300970873787,
+            "recall": 0.5,
+            "requested_recall": 0.5,
+            "threshold": 0.46174484491348267
+          },
+          "0.6": {
+            "false_positive_rate": 0.8465346534653465,
+            "precision": 0.4153846153846154,
+            "recall": 0.6014851485148515,
+            "requested_recall": 0.6,
+            "threshold": 0.3415824770927429
+          },
+          "0.8": {
+            "false_positive_rate": 0.9133663366336634,
+            "precision": 0.4675324675324675,
+            "recall": 0.801980198019802,
+            "requested_recall": 0.8,
+            "threshold": 0.1980641484260559
+          }
+        },
+        "positives": 404,
+        "prevalence": 0.5,
+        "samples": 808
+      }
+    },
+    "task_agnostic_ensemble": {
+      "episode_failure": {
+        "auprc": 0.22338202797692253,
+        "auroc": 0.528,
+        "brier": 0.24119275093831508,
+        "operating_points": {
+          "0.5": {
+            "false_positive_rate": 0.37454545454545457,
+            "precision": 0.02830188679245283,
+            "recall": 0.6,
+            "requested_recall": 0.5,
+            "threshold": 0.511962421785461
+          },
+          "0.6": {
+            "false_positive_rate": 0.37454545454545457,
+            "precision": 0.02830188679245283,
+            "recall": 0.6,
+            "requested_recall": 0.6,
+            "threshold": 0.511962421785461
+          },
+          "0.8": {
+            "false_positive_rate": 0.9127272727272727,
+            "precision": 0.01568627450980392,
+            "recall": 0.8,
+            "requested_recall": 0.8,
+            "threshold": 0.06575104613288275
+          }
+        },
+        "positives": 5,
+        "prevalence": 0.017857142857142856,
+        "samples": 280
+      },
+      "matched_failure": {
+        "auprc": 0.4058733729959875,
+        "auroc": 0.32170865601411625,
+        "brier": 0.42653494500009015,
+        "operating_points": {
+          "0.5": {
+            "false_positive_rate": 0.7747524752475248,
+            "precision": 0.39223300970873787,
+            "recall": 0.5,
+            "requested_recall": 0.5,
+            "threshold": 0.31278948571607934
+          },
+          "0.6": {
+            "false_positive_rate": 0.844059405940594,
+            "precision": 0.4160958904109589,
+            "recall": 0.6014851485148515,
+            "requested_recall": 0.6,
+            "threshold": 0.1890810109594115
+          },
+          "0.8": {
+            "false_positive_rate": 0.9084158415841584,
+            "precision": 0.46888567293777134,
+            "recall": 0.801980198019802,
+            "requested_recall": 0.8,
+            "threshold": 0.09318060039229555
+          }
+        },
+        "positives": 404,
+        "prevalence": 0.5,
+        "samples": 808
+      }
+    },
+    "topreward_calibrated": {
+      "episode_failure": {
+        "auprc": 0.015902434806444717,
+        "auroc": 0.5,
+        "brier": 0.09714285714285718,
+        "operating_points": {
+          "0.5": {
+            "false_positive_rate": 1.0,
+            "precision": 0.017857142857142856,
+            "recall": 1.0,
+            "requested_recall": 0.5,
+            "threshold": 0.30000000000000004
+          },
+          "0.6": {
+            "false_positive_rate": 1.0,
+            "precision": 0.017857142857142856,
+            "recall": 1.0,
+            "requested_recall": 0.6,
+            "threshold": 0.30000000000000004
+          },
+          "0.8": {
+            "false_positive_rate": 1.0,
+            "precision": 0.017857142857142856,
+            "recall": 1.0,
+            "requested_recall": 0.8,
+            "threshold": 0.30000000000000004
+          }
+        },
+        "positives": 5,
+        "prevalence": 0.017857142857142856,
+        "samples": 280
+      },
+      "matched_failure": {
+        "auprc": 0.5049287903213291,
+        "auroc": 0.5,
+        "brier": 0.29000000000000004,
+        "operating_points": {
+          "0.5": {
+            "false_positive_rate": 1.0,
+            "precision": 0.5,
+            "recall": 1.0,
+            "requested_recall": 0.5,
+            "threshold": 0.30000000000000004
+          },
+          "0.6": {
+            "false_positive_rate": 1.0,
+            "precision": 0.5,
+            "recall": 1.0,
+            "requested_recall": 0.6,
+            "threshold": 0.30000000000000004
+          },
+          "0.8": {
+            "false_positive_rate": 1.0,
+            "precision": 0.5,
+            "recall": 1.0,
+            "requested_recall": 0.8,
+            "threshold": 0.30000000000000004
+          }
+        },
+        "positives": 404,
+        "prevalence": 0.5,
+        "samples": 808
+      }
+    },
+    "topreward_zero_shot": {
+      "episode_failure": {
+        "auprc": 0.022931502546110077,
+        "auroc": 0.4730909090909091,
+        "brier": 0.9821428568034161,
+        "operating_points": {
+          "0.5": {
+            "false_positive_rate": 0.5963636363636363,
+            "precision": 0.017964071856287425,
+            "recall": 0.6,
+            "requested_recall": 0.5,
+            "threshold": 0.9999999998837177
+          },
+          "0.6": {
+            "false_positive_rate": 0.5963636363636363,
+            "precision": 0.017964071856287425,
+            "recall": 0.6,
+            "requested_recall": 0.6,
+            "threshold": 0.9999999998837177
+          },
+          "0.8": {
+            "false_positive_rate": 0.76,
+            "precision": 0.018779342723004695,
+            "recall": 0.8,
+            "requested_recall": 0.8,
+            "threshold": 0.9999999997210532
+          }
+        },
+        "positives": 5,
+        "prevalence": 0.017857142857142856,
+        "samples": 280
+      },
+      "matched_failure": {
+        "auprc": 0.6201914044327154,
+        "auroc": 0.5519679443191844,
+        "brier": 0.4999999998294339,
+        "operating_points": {
+          "0.5": {
+            "false_positive_rate": 0.48514851485148514,
+            "precision": 0.5196078431372549,
+            "recall": 0.5247524752475248,
+            "requested_recall": 0.5,
+            "threshold": 0.9999999999294712
+          },
+          "0.6": {
+            "false_positive_rate": 0.6089108910891089,
+            "precision": 0.5099601593625498,
+            "recall": 0.6336633663366337,
+            "requested_recall": 0.6,
+            "threshold": 0.9999999998682348
+          },
+          "0.8": {
+            "false_positive_rate": 0.8564356435643564,
+            "precision": 0.4948905109489051,
+            "recall": 0.8391089108910891,
+            "requested_recall": 0.8,
+            "threshold": 0.9999999996418252
+          }
+        },
+        "positives": 404,
+        "prevalence": 0.5,
+        "samples": 808
+      }
+    }
+  },
+  "schema_version": "latentguard.lg_r1c.leave_task6_out_results.v1",
+  "status": "pass"
+}

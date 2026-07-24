@@ -39,3 +39,9 @@ Episode and window AUROC/AUPRC, natural prevalence, precision and FPR at fixed
 recall, early-warning lead, false alarms, task macro, and task-6 exclusion are
 all mandatory. A progress or probe improvement does not establish policy task
 success, safety, or intervention efficacy.
+
+The executed manifest contains 8,470 common windows, 4,630 matched windows,
+2,315 matched pairs, and 2,279 strict pairs. The validation-only calibration
+projection contains 4,988 rows and no test labels. The completed zero-shot
+freeze records identical 8,470-window identities for all four baselines and
+explicitly records `test_labels_read=false` and `metrics_computed=false`.

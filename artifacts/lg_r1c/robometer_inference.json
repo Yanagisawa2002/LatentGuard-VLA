@@ -1,0 +1,106 @@
+{
+  "backbone_digest_after": "214424f6d00cf191a2638180b1b10b13a8541ffe57755d273009aaaf6e449cff",
+  "backbone_digest_before": "214424f6d00cf191a2638180b1b10b13a8541ffe57755d273009aaaf6e449cff",
+  "backward_calls": 0,
+  "cuda_memory": {
+    "available": true,
+    "peak_allocated_bytes": 9695927296,
+    "peak_reserved_bytes": 10225713152
+  },
+  "elapsed_seconds": 1545.6168847121298,
+  "foundation_model_frozen": true,
+  "mean_latency_ms": 182.4813323154817,
+  "model_identity": {
+    "files": {
+      "model.safetensors": {
+        "bytes": 8894103800,
+        "locator": "model.safetensors",
+        "sha256": "013709f2ea0b67aa50385b5c5ae61843cf7f2932b8aab7f5e45e0747560d0c14"
+      }
+    },
+    "model_id": "lerobot/Robometer-4B",
+    "revision": "db167a7c369a3ee59cda801fe33ca9da560b1662"
+  },
+  "optimizer_steps": 0,
+  "per_frame_read_only_adapter": true,
+  "prediction_file": {
+    "bytes": 5782975,
+    "locator": "robometer_predictions.jsonl",
+    "sha256": "0e4817291ab95ec8e9844fe8f7e6bfb69278eafa681ae01d3345dd7c92dfe3da"
+  },
+  "preference_head_queried": false,
+  "processor_identity": {
+    "combined_sha256": "93d9ee978cbe90b2ec713f56246f849111e73c66ebda3d4135cf48070b9d849c",
+    "files": [
+      {
+        "bytes": 5502,
+        "relative_path": "chat_template.json",
+        "sha256": "6f8a6a55027e3da5160105556cda5dd69f6423f1c32645f6730d32de7773d0c4"
+      },
+      {
+        "bytes": 1505,
+        "relative_path": "config.json",
+        "sha256": "edac7703329133edfc53e46ac0081835144c99d7eebf28b71c732694d435224d"
+      },
+      {
+        "bytes": 269,
+        "relative_path": "generation_config.json",
+        "sha256": "8469742d1fce0de951c8909b26a2c0c0d8490837ce476efb114da9e0cefc4d44"
+      },
+      {
+        "bytes": 1671839,
+        "relative_path": "merges.txt",
+        "sha256": "599bab54075088774b1733fde865d5bd747cbcc7a547c5bc12610e874e26f5e3"
+      },
+      {
+        "bytes": 64742,
+        "relative_path": "model.safetensors.index.json",
+        "sha256": "58a7841d7bff2548dd91577d216274a83cf1b500bc6a534b809d6c1b1707cf2b"
+      },
+      {
+        "bytes": 390,
+        "relative_path": "preprocessor_config.json",
+        "sha256": "27225450ac9c6529872ee1924fcb0962ff5634834f817040f444118116f4e516"
+      },
+      {
+        "bytes": 7032403,
+        "relative_path": "tokenizer.json",
+        "sha256": "a5d85b6dcc535e6b93115a9ef287e6132fdbf30270da6218194ba742261173c7"
+      },
+      {
+        "bytes": 10868,
+        "relative_path": "tokenizer_config.json",
+        "sha256": "c2da771801886ad9ae98181793ffd3dfb7f1af30f6f7c6a4e15d7dbba52e2399"
+      },
+      {
+        "bytes": 385,
+        "relative_path": "video_preprocessor_config.json",
+        "sha256": "7768af27c1fafa9cc9011c1dc20067e03f8915e03b63504550e11d5066986d13"
+      },
+      {
+        "bytes": 2776833,
+        "relative_path": "vocab.json",
+        "sha256": "ca10d7e9fb3ed18575dd1e277a2579c16d108e32f27439684afa0e10b1440910"
+      }
+    ]
+  },
+  "public_compute_reward_last_frame_only": true,
+  "runtime_identity": {
+    "git_branch": "codex/lg-r1c-task-agnostic-reward",
+    "git_commit": "7ab788dbdb996157625b31159b382d2f36ee0932",
+    "hostname": "autodl-container-c47c48a71b-504676bc",
+    "platform": "Linux-5.15.0-119-generic-x86_64-with-glibc2.35",
+    "python": "3.12.3",
+    "torch": {
+      "available": true,
+      "cuda_available": true,
+      "cuda_version": "12.8",
+      "gpu_name": "NVIDIA GeForce RTX 5090",
+      "version": "2.11.0+cu128"
+    }
+  },
+  "schema_version": "latentguard.lg_r1c.robometer_inference.v1",
+  "status": "pass",
+  "strict_zero_shot": true,
+  "windows": 8470
+}

@@ -1,0 +1,54 @@
+{
+  "schema_version": "latentguard.lg_r1c.environment_manifest.v1",
+  "status": "pass",
+  "run_id": "20260724T034646Z_lg-r1c-task-agnostic-reward_7ab788d",
+  "execution_branch": "codex/lg-r1c-task-agnostic-reward",
+  "execution_commits": {
+    "environment": "ce8cd77e584a1c4a3105e6839dd6082cb889299a",
+    "robometer": "7ab788dbdb996157625b31159b382d2f36ee0932",
+    "topreward": "26e61be5edee47bbbe1b7c9e24bc17f3998f8a46",
+    "evaluation": "26e61be5edee47bbbe1b7c9e24bc17f3998f8a46"
+  },
+  "python": "3.12.3",
+  "packages": {
+    "huggingface-hub": "1.22.0",
+    "lerobot": "0.6.0",
+    "qwen-vl-utils": "0.0.14",
+    "safetensors": "0.8.0",
+    "torch": "2.11.0+cu128",
+    "torchvision": "0.26.0+cu128",
+    "transformers": "5.5.4"
+  },
+  "cuda": {
+    "available": true,
+    "version": "12.8",
+    "gpu": "NVIDIA GeForce RTX 5090",
+    "capability": [
+      12,
+      0
+    ]
+  },
+  "isolation": {
+    "overlay": true,
+    "lg_r0_lg_r1_environment_upgraded": false,
+    "latentguard_import": "src/latentguard/__init__.py",
+    "remote_tracked_source_modified": false,
+    "remote_commit_created": false
+  },
+  "network": {
+    "network_turbo_sourced_every_session": true,
+    "aliyun_pypi_default": true,
+    "modelscope_preferred_for_large_downloads": true
+  },
+  "execution_boundaries": {
+    "langmani_used": false,
+    "simulator_started": false,
+    "new_rollouts": 0,
+    "final_seeds_accessed": false,
+    "foundation_model_training": false,
+    "failure_head_training": false,
+    "intervention": false,
+    "server_left_online": true,
+    "server_shutdown": false
+  }
+}

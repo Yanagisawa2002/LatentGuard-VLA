@@ -1,0 +1,291 @@
+{
+  "LG_R2_REWARD_BASELINE_AUTHORIZED": false,
+  "authorized_models": [],
+  "candidate_gates": {
+    "frozen_sarm": {
+      "LG_R2_REWARD_BASELINE_AUTHORIZED": false,
+      "candidate_metrics": {
+        "failure_auprc": 0.06202597145001191,
+        "failure_fpr_at_recall": 0.7303754266211604,
+        "failure_precision_at_recall": 0.0735930735930736,
+        "failure_recall": 0.6296296296296297,
+        "leave_task6_failure_auprc": 0.014267111916023603,
+        "pairwise_accuracy": 0.3625,
+        "progress_spearman": 0.21688543952480893,
+        "task_macro_success_auroc": 0.46510940631006414
+      },
+      "checks": {
+        "failure_auprc": false,
+        "failure_fpr": false,
+        "failure_precision": false,
+        "failure_recall": true,
+        "leave_task6_stability": true,
+        "pairwise_accuracy": false,
+        "progress_spearman": false,
+        "task_macro_success_auroc": false
+      },
+      "evaluation_scope": "all",
+      "missing_metrics": [],
+      "prevalence": 0.084375,
+      "required_failure_auprc": 0.2,
+      "schema_version": "latentguard.lg_r1c.reward_gate.v1",
+      "status": "not_promoted",
+      "thresholds": {
+        "failure_auprc_floor": 0.2,
+        "failure_fpr_max": 0.35,
+        "failure_precision_min": 0.25,
+        "failure_prevalence_multiplier": 2.0,
+        "failure_recall_min": 0.6,
+        "leave_task6_auprc_drop_max": 0.15,
+        "pairwise_accuracy_min": 0.7,
+        "progress_spearman_min": 0.6,
+        "task_macro_success_auroc_min": 0.75
+      }
+    },
+    "online_time": {
+      "LG_R2_REWARD_BASELINE_AUTHORIZED": false,
+      "candidate_metrics": {
+        "failure_auprc": 0.04498756312693976,
+        "failure_fpr_at_recall": 1.0,
+        "failure_precision_at_recall": 0.084375,
+        "failure_recall": 1.0,
+        "leave_task6_failure_auprc": 0.010765766467727398,
+        "pairwise_accuracy": 0.8447916666666666,
+        "progress_spearman": 0.9178471501072736,
+        "task_macro_success_auroc": 0.206437317251462
+      },
+      "checks": {
+        "failure_auprc": false,
+        "failure_fpr": false,
+        "failure_precision": false,
+        "failure_recall": true,
+        "leave_task6_stability": true,
+        "pairwise_accuracy": true,
+        "progress_spearman": true,
+        "task_macro_success_auroc": false
+      },
+      "evaluation_scope": "all",
+      "missing_metrics": [],
+      "prevalence": 0.084375,
+      "required_failure_auprc": 0.2,
+      "schema_version": "latentguard.lg_r1c.reward_gate.v1",
+      "status": "not_promoted",
+      "thresholds": {
+        "failure_auprc_floor": 0.2,
+        "failure_fpr_max": 0.35,
+        "failure_precision_min": 0.25,
+        "failure_prevalence_multiplier": 2.0,
+        "failure_recall_min": 0.6,
+        "leave_task6_auprc_drop_max": 0.15,
+        "pairwise_accuracy_min": 0.7,
+        "progress_spearman_min": 0.6,
+        "task_macro_success_auroc_min": 0.75
+      }
+    },
+    "robometer_calibrated": {
+      "LG_R2_REWARD_BASELINE_AUTHORIZED": false,
+      "candidate_metrics": {
+        "failure_auprc": 0.047619047619047616,
+        "failure_fpr_at_recall": 0.25316455696202533,
+        "failure_precision_at_recall": 0.047619047619047616,
+        "failure_recall": 1.0,
+        "leave_task6_failure_auprc": 0.047619047619047616,
+        "pairwise_accuracy": 0.3958333333333333,
+        "progress_spearman": 0.12999955293627727,
+        "task_macro_success_auroc": 0.71875
+      },
+      "checks": {
+        "failure_auprc": false,
+        "failure_fpr": true,
+        "failure_precision": false,
+        "failure_recall": true,
+        "leave_task6_stability": true,
+        "pairwise_accuracy": false,
+        "progress_spearman": false,
+        "task_macro_success_auroc": false
+      },
+      "evaluation_scope": "test",
+      "missing_metrics": [],
+      "prevalence": 0.0125,
+      "required_failure_auprc": 0.2,
+      "schema_version": "latentguard.lg_r1c.reward_gate.v1",
+      "status": "not_promoted",
+      "thresholds": {
+        "failure_auprc_floor": 0.2,
+        "failure_fpr_max": 0.35,
+        "failure_precision_min": 0.25,
+        "failure_prevalence_multiplier": 2.0,
+        "failure_recall_min": 0.6,
+        "leave_task6_auprc_drop_max": 0.15,
+        "pairwise_accuracy_min": 0.7,
+        "progress_spearman_min": 0.6,
+        "task_macro_success_auroc_min": 0.75
+      }
+    },
+    "robometer_zero_shot": {
+      "LG_R2_REWARD_BASELINE_AUTHORIZED": false,
+      "candidate_metrics": {
+        "failure_auprc": 0.16378921536308816,
+        "failure_fpr_at_recall": 0.3037542662116041,
+        "failure_precision_at_recall": 0.16037735849056603,
+        "failure_recall": 0.6296296296296297,
+        "leave_task6_failure_auprc": 0.22157030824615936,
+        "pairwise_accuracy": 0.478125,
+        "progress_spearman": 0.2677774289601791,
+        "task_macro_success_auroc": 0.565981567317916
+      },
+      "checks": {
+        "failure_auprc": false,
+        "failure_fpr": true,
+        "failure_precision": false,
+        "failure_recall": true,
+        "leave_task6_stability": true,
+        "pairwise_accuracy": false,
+        "progress_spearman": false,
+        "task_macro_success_auroc": false
+      },
+      "evaluation_scope": "all",
+      "missing_metrics": [],
+      "prevalence": 0.084375,
+      "required_failure_auprc": 0.2,
+      "schema_version": "latentguard.lg_r1c.reward_gate.v1",
+      "status": "not_promoted",
+      "thresholds": {
+        "failure_auprc_floor": 0.2,
+        "failure_fpr_max": 0.35,
+        "failure_precision_min": 0.25,
+        "failure_prevalence_multiplier": 2.0,
+        "failure_recall_min": 0.6,
+        "leave_task6_auprc_drop_max": 0.15,
+        "pairwise_accuracy_min": 0.7,
+        "progress_spearman_min": 0.6,
+        "task_macro_success_auroc_min": 0.75
+      }
+    },
+    "task_agnostic_ensemble": {
+      "LG_R2_REWARD_BASELINE_AUTHORIZED": false,
+      "candidate_metrics": {
+        "failure_auprc": 0.06666666666666667,
+        "failure_fpr_at_recall": 0.17721518987341772,
+        "failure_precision_at_recall": 0.06666666666666667,
+        "failure_recall": 1.0,
+        "leave_task6_failure_auprc": 0.06666666666666667,
+        "pairwise_accuracy": 0.3958333333333333,
+        "progress_spearman": 0.14074701396180256,
+        "task_macro_success_auroc": 0.49038461538461536
+      },
+      "checks": {
+        "failure_auprc": false,
+        "failure_fpr": true,
+        "failure_precision": false,
+        "failure_recall": true,
+        "leave_task6_stability": true,
+        "pairwise_accuracy": false,
+        "progress_spearman": false,
+        "task_macro_success_auroc": false
+      },
+      "evaluation_scope": "test",
+      "missing_metrics": [],
+      "prevalence": 0.0125,
+      "required_failure_auprc": 0.2,
+      "schema_version": "latentguard.lg_r1c.reward_gate.v1",
+      "status": "not_promoted",
+      "thresholds": {
+        "failure_auprc_floor": 0.2,
+        "failure_fpr_max": 0.35,
+        "failure_precision_min": 0.25,
+        "failure_prevalence_multiplier": 2.0,
+        "failure_recall_min": 0.6,
+        "leave_task6_auprc_drop_max": 0.15,
+        "pairwise_accuracy_min": 0.7,
+        "progress_spearman_min": 0.6,
+        "task_macro_success_auroc_min": 0.75
+      }
+    },
+    "topreward_calibrated": {
+      "LG_R2_REWARD_BASELINE_AUTHORIZED": false,
+      "candidate_metrics": {
+        "failure_auprc": 0.024390243902439025,
+        "failure_fpr_at_recall": 1.0,
+        "failure_precision_at_recall": 0.0125,
+        "failure_recall": 1.0,
+        "leave_task6_failure_auprc": 0.024390243902439025,
+        "pairwise_accuracy": 0.11666666666666667,
+        "progress_spearman": 0.2504079675730675,
+        "task_macro_success_auroc": 0.5
+      },
+      "checks": {
+        "failure_auprc": false,
+        "failure_fpr": false,
+        "failure_precision": false,
+        "failure_recall": true,
+        "leave_task6_stability": true,
+        "pairwise_accuracy": false,
+        "progress_spearman": false,
+        "task_macro_success_auroc": false
+      },
+      "evaluation_scope": "test",
+      "missing_metrics": [],
+      "prevalence": 0.0125,
+      "required_failure_auprc": 0.2,
+      "schema_version": "latentguard.lg_r1c.reward_gate.v1",
+      "status": "not_promoted",
+      "thresholds": {
+        "failure_auprc_floor": 0.2,
+        "failure_fpr_max": 0.35,
+        "failure_precision_min": 0.25,
+        "failure_prevalence_multiplier": 2.0,
+        "failure_recall_min": 0.6,
+        "leave_task6_auprc_drop_max": 0.15,
+        "pairwise_accuracy_min": 0.7,
+        "progress_spearman_min": 0.6,
+        "task_macro_success_auroc_min": 0.75
+      }
+    },
+    "topreward_zero_shot": {
+      "LG_R2_REWARD_BASELINE_AUTHORIZED": false,
+      "candidate_metrics": {
+        "failure_auprc": 0.08381135253202254,
+        "failure_fpr_at_recall": 0.5563139931740614,
+        "failure_precision_at_recall": 0.1092896174863388,
+        "failure_recall": 0.7407407407407407,
+        "leave_task6_failure_auprc": 0.022931502546110077,
+        "pairwise_accuracy": 0.15104166666666669,
+        "progress_spearman": -0.10133174846917296,
+        "task_macro_success_auroc": 0.5154208456017666
+      },
+      "checks": {
+        "failure_auprc": false,
+        "failure_fpr": false,
+        "failure_precision": false,
+        "failure_recall": true,
+        "leave_task6_stability": true,
+        "pairwise_accuracy": false,
+        "progress_spearman": false,
+        "task_macro_success_auroc": false
+      },
+      "evaluation_scope": "all",
+      "missing_metrics": [],
+      "prevalence": 0.084375,
+      "required_failure_auprc": 0.2,
+      "schema_version": "latentguard.lg_r1c.reward_gate.v1",
+      "status": "not_promoted",
+      "thresholds": {
+        "failure_auprc_floor": 0.2,
+        "failure_fpr_max": 0.35,
+        "failure_precision_min": 0.25,
+        "failure_prevalence_multiplier": 2.0,
+        "failure_recall_min": 0.6,
+        "leave_task6_auprc_drop_max": 0.15,
+        "pairwise_accuracy_min": 0.7,
+        "progress_spearman_min": 0.6,
+        "task_macro_success_auroc_min": 0.75
+      }
+    }
+  },
+  "nearest_task_agnostic_baseline": "robometer_zero_shot",
+  "result_class": "Result B",
+  "schema_version": "latentguard.lg_r1c.lg_r2_gate.v1",
+  "status": "not_promoted",
+  "thresholds_frozen_before_test": true
+}

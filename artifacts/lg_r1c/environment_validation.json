@@ -1,0 +1,49 @@
+{
+  "cuda": {
+    "available": true,
+    "capability": [
+      12,
+      0
+    ],
+    "device_count": 1,
+    "device_name": "NVIDIA GeForce RTX 5090"
+  },
+  "isolated_overlay": true,
+  "latentguard_import": "src/latentguard/__init__.py",
+  "lerobot_integration_commit": "30da8e687a6dfc617fcd94afc367ac7071c376ce",
+  "lerobot_integration_file_sha256": {
+    "robometer/configuration_robometer.py": "5e27a39cd85cac42c8513636e5fe0e1c50619640bae9cd3f7920ea1cabd2938f",
+    "robometer/modeling_robometer.py": "8b762141a0bebe7fc26c9bb4b392510702c33e3c7618fdc907c18c6d766a1185",
+    "robometer/processor_robometer.py": "f3de52df2110346578098129cad8d3ce8c260807a2eabe4e4aca69757e8e085e",
+    "topreward/configuration_topreward.py": "670dbeab412006eef296b63e1976a8fd67100764ab3f248c0423f54847b931a4",
+    "topreward/modeling_topreward.py": "9eb80053dd0e537a5f3f07b68934865232772ab2a66dfb7d618b0c1c1440af1c",
+    "topreward/processor_topreward.py": "d193598da329102e1b8a9e88d7bad766bd07c8ca3f8e1c0a6802d4fa42ead471"
+  },
+  "lerobot_release": "v0.6.0",
+  "lg_r0_lg_r1_environment_upgraded": false,
+  "runtime_identity": {
+    "git_branch": "codex/lg-r1c-task-agnostic-reward",
+    "git_commit": "ce8cd77e584a1c4a3105e6839dd6082cb889299a",
+    "hostname": "autodl-container-c47c48a71b-504676bc",
+    "platform": "Linux-5.15.0-119-generic-x86_64-with-glibc2.35",
+    "python": "3.12.3",
+    "torch": {
+      "available": true,
+      "cuda_available": true,
+      "cuda_version": "12.8",
+      "gpu_name": "NVIDIA GeForce RTX 5090",
+      "version": "2.11.0+cu128"
+    }
+  },
+  "schema_version": "latentguard.lg_r1c.environment_validation.v1",
+  "status": "pass",
+  "versions": {
+    "huggingface-hub": "1.22.0",
+    "lerobot": "0.6.0",
+    "qwen-vl-utils": "0.0.14",
+    "safetensors": "0.8.0",
+    "torch": "2.11.0+cu128",
+    "torchvision": "0.26.0+cu128",
+    "transformers": "5.5.4"
+  }
+}

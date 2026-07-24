@@ -18,12 +18,38 @@
     "baseline_commit": "61e6ab8b5fb55eb93a7bd76c1c7bbd8957150fdd",
     "baseline_is_ancestor": true,
     "branch": "codex/lg-r1c-task-agnostic-reward",
-    "head_commit": "61e6ab8b5fb55eb93a7bd76c1c7bbd8957150fdd",
+    "head_commit": "ce8cd77e584a1c4a3105e6839dd6082cb889299a",
     "origin_repository": "Yanagisawa2002/LatentGuard-VLA"
   },
   "resplit_performed": false,
   "runtime_reload_validation": {
-    "status": "not_run"
+    "current_samples": 79326,
+    "episode_leakage": 0,
+    "episodes": 320,
+    "failure_windows": 7025,
+    "failures": 27,
+    "files": {
+      "current_samples": {
+        "bytes": 50351034,
+        "locator": "progress_dataset/current_samples.jsonl",
+        "sha256": "4d96c60c54586d8d4534d477da3e3a94608c7e80b843fb795303ac999393419a"
+      },
+      "failure_windows": {
+        "bytes": 4257099,
+        "locator": "failure_windows/failure_windows.jsonl",
+        "sha256": "f2a5235543edbb27929d7a62b1531411f25b23dc04960d4bb9bb6b8c4b80a8af"
+      },
+      "matched_success_windows": {
+        "bytes": 1407858,
+        "locator": "failure_windows/matched_success_windows.jsonl",
+        "sha256": "2139cd76a198c61dbf7b2de9ed97ef248c0e649e78bf05fb958e0991758e3a48"
+      }
+    },
+    "matched_success_windows": 2315,
+    "sealed_final_seed_overlap": [],
+    "seed_leakage": 0,
+    "status": "pass",
+    "successes": 293
   },
   "schema_version": "latentguard.lg_r1c.input_dataset_manifest.v1",
   "sealed_final_seed_overlap": [],
@@ -54,9 +80,9 @@
       "sha256": "f7874c2dc6dd79c2dfb3ef49cf1a7e94fb723d02cd1fcfc268d770dc83887d6f"
     },
     "task_seed_registry": {
-      "bytes": 30286,
+      "bytes": 28987,
       "locator": "artifacts/lg_r1b/task_seed_registry.json",
-      "sha256": "4c166eab18008e7ab074b303626cb633ed786e19a81fa2d8cd66a7587ddba248"
+      "sha256": "68fc87a46f19389e3b0d3863e8525e91725433f978ce65d1e92ebb0fcd10d3e4"
     }
   },
   "source_lg_r1b_commit": "61e6ab8b5fb55eb93a7bd76c1c7bbd8957150fdd",

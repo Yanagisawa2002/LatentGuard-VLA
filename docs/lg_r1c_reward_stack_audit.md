@@ -57,3 +57,39 @@ root file has Hugging Face local-directory metadata bound to the declared full
 revision. Weight files then pass the pre-registered size and SHA-256 checks
 again before model loading. This permits an identical official ModelScope
 weight mirror without weakening the HF revision or content gates.
+
+## Executed identities
+
+Both models passed the frozen-parameter digest check before and after
+inference, with zero optimizer steps and zero backward calls. ROBOMETER's
+preference head was not queried. Its 8,470-window prediction file is bound by
+SHA-256 `0e4817291ab95ec8e9844fe8f7e6bfb69278eafa681ae01d3345dd7c92dfe3da`.
+TOPReward's common-window prediction hash is
+`4ff06522469d552658f80095e93b5472d03b5c10eb4b258334dcb7f0056e01c2`;
+the separate native-16 diagnostic hash is
+`11553f5fadbe4b4414dcea06006750c1a16ebd490e1b3d6f2aab57b0ac5ed8f8`.
+
+Alibaba ModelScope supplied the byte-identical TOPReward/Qwen weight shards.
+Each shard was checked against the frozen Hugging Face content hash before
+loading. Exact-revision processor/configuration metadata remained bound to the
+declared Hugging Face revision. No validated ModelScope mirror existed for the
+custom ROBOMETER checkpoint, so that exact snapshot was retrieved from its
+frozen Hugging Face revision. Model downloads and caches stayed outside Git.
+
+## Primary references
+
+- LeRobot v0.6.0 release:
+  <https://huggingface.co/blog/lerobot-release-v060>
+- LeRobot source: <https://github.com/huggingface/lerobot>
+- ROBOMETER source and paper:
+  <https://github.com/robometer/robometer>,
+  <https://arxiv.org/abs/2603.02115>
+- Evaluated ROBOMETER checkpoint:
+  <https://huggingface.co/lerobot/Robometer-4B>
+- Upstream ROBOMETER checkpoint:
+  <https://huggingface.co/robometer/Robometer-4B>
+- TOPReward source and paper:
+  <https://github.com/TOPReward/TOPReward>,
+  <https://arxiv.org/abs/2602.19313>
+- ModelScope download contract:
+  <https://modelscope.cn/docs/models/download>

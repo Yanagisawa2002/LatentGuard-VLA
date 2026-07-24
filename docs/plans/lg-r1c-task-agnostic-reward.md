@@ -78,13 +78,28 @@ artifact review. Remote work uses one RTX 5090 and an isolated overlay:
 - TOPReward zero-shot plus native 16-frame diagnostic: 4-10 GPU-hours;
 - calibration, evaluation, and artifact checks: under 1 GPU-hour.
 
-The initial total estimate is 8-22 GPU-hours and 12-30 elapsed hours,
-including model downloads and conservative resume checks. A measured
-small-window throughput gate will update the ETA without changing the frozen
-window set. If either model cannot load within 32 GB, has an identity/hash
-mismatch, or would require quantization/configuration changes not
-pre-registered here, that baseline stops as an execution limitation instead
-of silently changing the experiment.
+The initial total estimate was 8-22 GPU-hours and 12-30 elapsed hours,
+including model downloads and conservative resume checks. The completed run
+was materially cheaper:
+
+- ROBOMETER common-window forward time: 1,545.6 seconds;
+- TOPReward common plus native-16 forward time: 1,395.1 seconds;
+- directly timed large-model forward total: 0.817 GPU-hours;
+- remote phase from run creation to final compact evidence: approximately
+  1 hour 47 minutes.
+
+Small load gates, SARM, and the VLA-JEPA probe were not all separately
+wall-timed, so exact total GPU occupancy is unavailable. The report preserves
+that limitation rather than treating elapsed wall time as GPU time.
+
+## Completed decision
+
+The milestone ended as **Result B: useful partial signal, not promoted**.
+ROBOMETER zero-shot improved natural-failure AUPRC over frozen SARM and met the
+FPR bound at the recall operating point, but failed the pre-registered AUPRC,
+precision, progress, pairwise, and task-macro success checks. TOPReward,
+validation calibration, and the ensemble did not close those gaps.
+`LG_R2_REWARD_BASELINE_AUTHORIZED=false`, with no authorized model.
 
 ## Exclusions and freeze audit
 

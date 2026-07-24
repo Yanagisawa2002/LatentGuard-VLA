@@ -1,0 +1,93 @@
+{
+  "anchor_windows": 3840,
+  "calibration_validation_windows": {
+    "file": {
+      "bytes": 6201080,
+      "locator": "calibration_validation_windows.jsonl",
+      "sha256": "12e96e2bbdb52e1c50caa22909a78da799c103c62920b44abe395cb3efa0a930"
+    },
+    "rows": 4988,
+    "selection_split": "validation",
+    "test_labels_included": false
+  },
+  "common_sampled_frames": 8,
+  "configuration": {
+    "anchor_fractions": [
+      0.25,
+      0.5,
+      0.75,
+      1.0
+    ],
+    "camera_key": "observation.images.image",
+    "contexts": {
+      "long": {
+        "common_sampled_frames": 8,
+        "span_steps": 64,
+        "topreward_native_diagnostic_frames": 16
+      },
+      "medium": {
+        "common_sampled_frames": 8,
+        "span_steps": 32
+      },
+      "short": {
+        "common_sampled_frames": 8,
+        "span_steps": 8
+      }
+    },
+    "early_boundary": "repeat_nearest_available_frame",
+    "frozen_before_model_inference": true,
+    "matched_failure_protocol": {
+      "common_sampled_frames": 8,
+      "include_every_existing_matched_success_window": true,
+      "include_only_referenced_failure_windows": true,
+      "strict_match": {
+        "maximum_progress_distance": 0.025,
+        "maximum_remaining_horizon_distance": 32,
+        "maximum_stage_distance": 0
+      }
+    },
+    "model_result_dependent_sampling": false,
+    "primary_progress_context": "medium",
+    "same_camera_across_models": true,
+    "same_endpoint_across_models": true,
+    "same_instruction_across_models": true,
+    "sampling": "inclusive_uniform_integer_linspace",
+    "schema_version": "latentguard.lg_r1c.windows.v1"
+  },
+  "context_counts": {
+    "long": 2806,
+    "medium": 2808,
+    "short": 2808,
+    "terminal_failure": 48
+  },
+  "frozen_before_model_inference": true,
+  "matched_pairs": 2315,
+  "matched_windows": 4630,
+  "model_result_dependent_sampling": false,
+  "same_camera_across_models": true,
+  "same_endpoint_across_models": true,
+  "same_instruction_across_models": true,
+  "schema_version": "latentguard.lg_r1c.window_manifest.v1",
+  "source_episodes": 320,
+  "source_frames": 79326,
+  "status": "pass",
+  "strict_matched_pairs": 2279,
+  "task_counts": {
+    "libero_10/task2": 480,
+    "libero_10/task4": 480,
+    "libero_10/task6": 4302,
+    "libero_10/task7": 480,
+    "libero_10/task8": 686,
+    "libero_10/task9": 912,
+    "libero_goal/task6": 480,
+    "libero_goal/task9": 650
+  },
+  "topreward_native_diagnostic_windows": 1280,
+  "window_count": 8470,
+  "window_endpoint_digest": "5c3c731f8649a8983b1105d63115687288b026013c17aa3434700913b282a0ef",
+  "windows_file": {
+    "bytes": 9754225,
+    "locator": "reward_windows.jsonl",
+    "sha256": "274e9a84a15b79f1748a3fb9a30c12d48e4ef2ae2ae19ef05c72e3eeba860574"
+  }
+}
