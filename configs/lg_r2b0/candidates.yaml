@@ -1,0 +1,38 @@
+schema_version: latentguard.lg_r2b0.candidates.v1
+milestone: LG-R2b0
+candidate_source: frozen_vla_jepa_native_flow_sampling
+source_priority: A
+source_audit:
+  suite: libero_10
+  task_id: 2
+  seed: 3000
+  episode_horizon: 520
+  instruction: turn on the stove and put the moka pot on it
+  sampling_seeds: [700100, 700101, 700102, 700103]
+candidates_per_anchor: 4
+minimum_valid_candidates: 3
+maximum_sampling_attempts: 8
+candidate_seed_base: 720000
+state_restore_tolerance: 0.000001
+episode_horizons:
+  libero_10: 520
+  libero_goal: 300
+diversity_thresholds:
+  near_full_chunk_l2: 0.01
+  meaningful_full_chunk_l2: 0.10
+  meaningful_endpoint_translation: 0.03
+  meaningful_cumulative_rotation: 0.10
+  gripper_disagreement_epsilon: 0.50
+threshold_basis:
+  action_contract: artifacts/lg_r2a/action_contract.json
+  action_shape: [7, 7]
+  translation_native_range: [-1.0, 1.0]
+  rotation_observed_absolute_maximum: 0.375
+  gripper_native_values: [-1.0, 1.0]
+  frozen_before_candidate_results: true
+prohibitions:
+  synthetic_perturbations: true
+  optimizer_steps: true
+  backward_calls: true
+  candidate_ranker: true
+  final_seed_range: [900000, 900099]

@@ -1,0 +1,23 @@
+schema_version: latentguard.lg_r2b0.collection.v1
+milestone: LG-R2b0
+task_registry: configs/lg_r1b/task_registry.yaml
+stage_config: configs/lg_r1b/stages.yaml
+episode_horizons:
+  libero_10: 520
+  libero_goal: 300
+candidate_execution_horizon: 7
+short_horizons: [7, 21, 49]
+continuation_policy: frozen_primary_vla_jepa
+continuation_seed_base: 730000
+state_restore_tolerance: 0.000001
+progress_epsilon: 0.000001
+event_progress_epsilon: 0.02
+stagnation_threshold: 0.02
+minimum_valid_anchors: 50
+minimum_valid_branches: 150
+preferred_branches: 240
+maximum_task6_ratio: 0.35
+online_selection: false
+intervention: false
+optimizer_steps: 0
+backward_calls: 0

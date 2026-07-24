@@ -1,0 +1,21 @@
+schema_version: latentguard.lg_r2b0.analysis.v1
+milestone: LG-R2b0
+analysis_kind: descriptive_within_anchor_only
+grouping_key: anchor_id
+short_horizons: [7, 21, 49]
+meaningful_progress_spread: 0.05
+rank_tie_epsilon: 0.02
+promotion_gate:
+  minimum_valid_anchors: 50
+  minimum_valid_branches: 150
+  minimum_three_distinct_anchor_ratio: 0.70
+  maximum_exact_duplicate_rate: 0.20
+  minimum_progress_spread_anchor_ratio: 0.30
+  minimum_local_event_disagreement_anchors: 15
+  minimum_mixed_terminal_anchors: 10
+  require_non_task6_divergence: true
+  maximum_rank_tie_rate: 0.70
+prohibitions:
+  cross_anchor_prediction: true
+  learned_ranker: true
+  outcome_conditioned_anchor_selection: true
