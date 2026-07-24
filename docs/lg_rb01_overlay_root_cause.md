@@ -55,11 +55,19 @@ contains exactly:
 
 They are canonicalized only when the exact namespace is allowlisted and the
 mapping is strictly empty. Non-empty values and unknown empty namespaces fail.
-Whether both remain empty at every replay step is established only by the
-post-patch canonicalization audit, not assumed from the initial snapshot.
+The post-patch audit covered 1,230 comparisons (initial state plus 40 steps
+across 30 attempts). Both live-only mappings were empty and removed in every
+comparison, canonicalization was symmetric, and no numeric value changed.
 
 ## Root-cause boundary
 
 This is a recorded-config compatibility defect: JSON can restore declarative
 values but cannot restore executable code identity. No evidence supports a
 physics, solver, action, task-predicate, recording, or tolerance change.
+
+The patch removes this blocker: all 30 overlays and replays complete without a
+callable exception. It does not make repeated replay faithful. Repeat zero
+matches exactly for all ten recordings, while repeats one and two drift at all
+40 checked steps for every recording. This repeat-dependent state drift is a
+separate, confirmed blocker; its exact internal source was not localized
+because the milestone permits only one compatibility patch.

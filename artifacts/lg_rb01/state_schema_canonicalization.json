@@ -1,0 +1,953 @@
+{
+  "allowed_optional_empty_namespaces": [
+    "/deformable_object",
+    "/gripper"
+  ],
+  "comparison_count": 1230,
+  "numeric_state_changed": false,
+  "schema_version": "lg_rb01_state_schema_canonicalization_v1",
+  "shards": [
+    {
+      "allowed_optional_empty_namespaces": [
+        "/deformable_object",
+        "/gripper"
+      ],
+      "comparison_count": 123,
+      "numeric_state_changed": false,
+      "observed_patterns": [
+        {
+          "count": 123,
+          "first_comparison": {
+            "expected": {
+              "after_paths": [
+                "articulation/robot/joint_position",
+                "articulation/robot/joint_velocity",
+                "articulation/robot/root_pose",
+                "articulation/robot/root_velocity",
+                "rigid_object/banana/root_pose",
+                "rigid_object/banana/root_velocity",
+                "rigid_object/bowl/root_pose",
+                "rigid_object/bowl/root_velocity",
+                "rigid_object/table/root_pose",
+                "rigid_object/table/root_velocity"
+              ],
+              "after_sha256": "e627541f55efc5781ab79d46548ed9c5db9b0889d323f3ab5470004e193c2d26",
+              "allowed_optional_empty_namespaces": [
+                "/deformable_object",
+                "/gripper"
+              ],
+              "before_paths": [
+                "articulation/robot/joint_position",
+                "articulation/robot/joint_velocity",
+                "articulation/robot/root_pose",
+                "articulation/robot/root_velocity",
+                "rigid_object/banana/root_pose",
+                "rigid_object/banana/root_velocity",
+                "rigid_object/bowl/root_pose",
+                "rigid_object/bowl/root_velocity",
+                "rigid_object/table/root_pose",
+                "rigid_object/table/root_velocity"
+              ],
+              "before_sha256": "e627541f55efc5781ab79d46548ed9c5db9b0889d323f3ab5470004e193c2d26",
+              "removed_empty_namespaces": []
+            },
+            "observed": {
+              "after_paths": [
+                "articulation/robot/joint_position",
+                "articulation/robot/joint_velocity",
+                "articulation/robot/root_pose",
+                "articulation/robot/root_velocity",
+                "rigid_object/banana/root_pose",
+                "rigid_object/banana/root_velocity",
+                "rigid_object/bowl/root_pose",
+                "rigid_object/bowl/root_velocity",
+                "rigid_object/table/root_pose",
+                "rigid_object/table/root_velocity"
+              ],
+              "after_sha256": "e627541f55efc5781ab79d46548ed9c5db9b0889d323f3ab5470004e193c2d26",
+              "allowed_optional_empty_namespaces": [
+                "/deformable_object",
+                "/gripper"
+              ],
+              "before_paths": [
+                "articulation/robot/joint_position",
+                "articulation/robot/joint_velocity",
+                "articulation/robot/root_pose",
+                "articulation/robot/root_velocity",
+                "deformable_object/<empty-mapping>",
+                "gripper/<empty-mapping>",
+                "rigid_object/banana/root_pose",
+                "rigid_object/banana/root_velocity",
+                "rigid_object/bowl/root_pose",
+                "rigid_object/bowl/root_velocity",
+                "rigid_object/table/root_pose",
+                "rigid_object/table/root_velocity"
+              ],
+              "before_sha256": "115e727521f859a14ca55c7c5aa710d38710b3411d4b8762f50ba85e2daf2496",
+              "removed_empty_namespaces": [
+                "/deformable_object",
+                "/gripper"
+              ]
+            }
+          },
+          "first_context": "BananaInBowlTask-seed-810000:repeat-0:initial"
+        }
+      ],
+      "schema_version": "lg_rb01_state_schema_canonicalization_v1",
+      "status": "fail",
+      "symmetric": true
+    },
+    {
+      "allowed_optional_empty_namespaces": [
+        "/deformable_object",
+        "/gripper"
+      ],
+      "comparison_count": 123,
+      "numeric_state_changed": false,
+      "observed_patterns": [
+        {
+          "count": 123,
+          "first_comparison": {
+            "expected": {
+              "after_paths": [
+                "articulation/robot/joint_position",
+                "articulation/robot/joint_velocity",
+                "articulation/robot/root_pose",
+                "articulation/robot/root_velocity",
+                "rigid_object/banana/root_pose",
+                "rigid_object/banana/root_velocity",
+                "rigid_object/bowl/root_pose",
+                "rigid_object/bowl/root_velocity",
+                "rigid_object/table/root_pose",
+                "rigid_object/table/root_velocity"
+              ],
+              "after_sha256": "e627541f55efc5781ab79d46548ed9c5db9b0889d323f3ab5470004e193c2d26",
+              "allowed_optional_empty_namespaces": [
+                "/deformable_object",
+                "/gripper"
+              ],
+              "before_paths": [
+                "articulation/robot/joint_position",
+                "articulation/robot/joint_velocity",
+                "articulation/robot/root_pose",
+                "articulation/robot/root_velocity",
+                "rigid_object/banana/root_pose",
+                "rigid_object/banana/root_velocity",
+                "rigid_object/bowl/root_pose",
+                "rigid_object/bowl/root_velocity",
+                "rigid_object/table/root_pose",
+                "rigid_object/table/root_velocity"
+              ],
+              "before_sha256": "e627541f55efc5781ab79d46548ed9c5db9b0889d323f3ab5470004e193c2d26",
+              "removed_empty_namespaces": []
+            },
+            "observed": {
+              "after_paths": [
+                "articulation/robot/joint_position",
+                "articulation/robot/joint_velocity",
+                "articulation/robot/root_pose",
+                "articulation/robot/root_velocity",
+                "rigid_object/banana/root_pose",
+                "rigid_object/banana/root_velocity",
+                "rigid_object/bowl/root_pose",
+                "rigid_object/bowl/root_velocity",
+                "rigid_object/table/root_pose",
+                "rigid_object/table/root_velocity"
+              ],
+              "after_sha256": "e627541f55efc5781ab79d46548ed9c5db9b0889d323f3ab5470004e193c2d26",
+              "allowed_optional_empty_namespaces": [
+                "/deformable_object",
+                "/gripper"
+              ],
+              "before_paths": [
+                "articulation/robot/joint_position",
+                "articulation/robot/joint_velocity",
+                "articulation/robot/root_pose",
+                "articulation/robot/root_velocity",
+                "deformable_object/<empty-mapping>",
+                "gripper/<empty-mapping>",
+                "rigid_object/banana/root_pose",
+                "rigid_object/banana/root_velocity",
+                "rigid_object/bowl/root_pose",
+                "rigid_object/bowl/root_velocity",
+                "rigid_object/table/root_pose",
+                "rigid_object/table/root_velocity"
+              ],
+              "before_sha256": "115e727521f859a14ca55c7c5aa710d38710b3411d4b8762f50ba85e2daf2496",
+              "removed_empty_namespaces": [
+                "/deformable_object",
+                "/gripper"
+              ]
+            }
+          },
+          "first_context": "BananaInBowlTask-seed-810001:repeat-0:initial"
+        }
+      ],
+      "schema_version": "lg_rb01_state_schema_canonicalization_v1",
+      "status": "fail",
+      "symmetric": true
+    },
+    {
+      "allowed_optional_empty_namespaces": [
+        "/deformable_object",
+        "/gripper"
+      ],
+      "comparison_count": 123,
+      "numeric_state_changed": false,
+      "observed_patterns": [
+        {
+          "count": 123,
+          "first_comparison": {
+            "expected": {
+              "after_paths": [
+                "articulation/robot/joint_position",
+                "articulation/robot/joint_velocity",
+                "articulation/robot/root_pose",
+                "articulation/robot/root_velocity",
+                "rigid_object/banana/root_pose",
+                "rigid_object/banana/root_velocity",
+                "rigid_object/bowl/root_pose",
+                "rigid_object/bowl/root_velocity",
+                "rigid_object/table/root_pose",
+                "rigid_object/table/root_velocity"
+              ],
+              "after_sha256": "e627541f55efc5781ab79d46548ed9c5db9b0889d323f3ab5470004e193c2d26",
+              "allowed_optional_empty_namespaces": [
+                "/deformable_object",
+                "/gripper"
+              ],
+              "before_paths": [
+                "articulation/robot/joint_position",
+                "articulation/robot/joint_velocity",
+                "articulation/robot/root_pose",
+                "articulation/robot/root_velocity",
+                "rigid_object/banana/root_pose",
+                "rigid_object/banana/root_velocity",
+                "rigid_object/bowl/root_pose",
+                "rigid_object/bowl/root_velocity",
+                "rigid_object/table/root_pose",
+                "rigid_object/table/root_velocity"
+              ],
+              "before_sha256": "e627541f55efc5781ab79d46548ed9c5db9b0889d323f3ab5470004e193c2d26",
+              "removed_empty_namespaces": []
+            },
+            "observed": {
+              "after_paths": [
+                "articulation/robot/joint_position",
+                "articulation/robot/joint_velocity",
+                "articulation/robot/root_pose",
+                "articulation/robot/root_velocity",
+                "rigid_object/banana/root_pose",
+                "rigid_object/banana/root_velocity",
+                "rigid_object/bowl/root_pose",
+                "rigid_object/bowl/root_velocity",
+                "rigid_object/table/root_pose",
+                "rigid_object/table/root_velocity"
+              ],
+              "after_sha256": "e627541f55efc5781ab79d46548ed9c5db9b0889d323f3ab5470004e193c2d26",
+              "allowed_optional_empty_namespaces": [
+                "/deformable_object",
+                "/gripper"
+              ],
+              "before_paths": [
+                "articulation/robot/joint_position",
+                "articulation/robot/joint_velocity",
+                "articulation/robot/root_pose",
+                "articulation/robot/root_velocity",
+                "deformable_object/<empty-mapping>",
+                "gripper/<empty-mapping>",
+                "rigid_object/banana/root_pose",
+                "rigid_object/banana/root_velocity",
+                "rigid_object/bowl/root_pose",
+                "rigid_object/bowl/root_velocity",
+                "rigid_object/table/root_pose",
+                "rigid_object/table/root_velocity"
+              ],
+              "before_sha256": "115e727521f859a14ca55c7c5aa710d38710b3411d4b8762f50ba85e2daf2496",
+              "removed_empty_namespaces": [
+                "/deformable_object",
+                "/gripper"
+              ]
+            }
+          },
+          "first_context": "BananaInBowlTask-seed-810002:repeat-0:initial"
+        }
+      ],
+      "schema_version": "lg_rb01_state_schema_canonicalization_v1",
+      "status": "fail",
+      "symmetric": true
+    },
+    {
+      "allowed_optional_empty_namespaces": [
+        "/deformable_object",
+        "/gripper"
+      ],
+      "comparison_count": 123,
+      "numeric_state_changed": false,
+      "observed_patterns": [
+        {
+          "count": 123,
+          "first_comparison": {
+            "expected": {
+              "after_paths": [
+                "articulation/robot/joint_position",
+                "articulation/robot/joint_velocity",
+                "articulation/robot/root_pose",
+                "articulation/robot/root_velocity",
+                "rigid_object/banana/root_pose",
+                "rigid_object/banana/root_velocity",
+                "rigid_object/bowl/root_pose",
+                "rigid_object/bowl/root_velocity",
+                "rigid_object/table/root_pose",
+                "rigid_object/table/root_velocity"
+              ],
+              "after_sha256": "e627541f55efc5781ab79d46548ed9c5db9b0889d323f3ab5470004e193c2d26",
+              "allowed_optional_empty_namespaces": [
+                "/deformable_object",
+                "/gripper"
+              ],
+              "before_paths": [
+                "articulation/robot/joint_position",
+                "articulation/robot/joint_velocity",
+                "articulation/robot/root_pose",
+                "articulation/robot/root_velocity",
+                "rigid_object/banana/root_pose",
+                "rigid_object/banana/root_velocity",
+                "rigid_object/bowl/root_pose",
+                "rigid_object/bowl/root_velocity",
+                "rigid_object/table/root_pose",
+                "rigid_object/table/root_velocity"
+              ],
+              "before_sha256": "e627541f55efc5781ab79d46548ed9c5db9b0889d323f3ab5470004e193c2d26",
+              "removed_empty_namespaces": []
+            },
+            "observed": {
+              "after_paths": [
+                "articulation/robot/joint_position",
+                "articulation/robot/joint_velocity",
+                "articulation/robot/root_pose",
+                "articulation/robot/root_velocity",
+                "rigid_object/banana/root_pose",
+                "rigid_object/banana/root_velocity",
+                "rigid_object/bowl/root_pose",
+                "rigid_object/bowl/root_velocity",
+                "rigid_object/table/root_pose",
+                "rigid_object/table/root_velocity"
+              ],
+              "after_sha256": "e627541f55efc5781ab79d46548ed9c5db9b0889d323f3ab5470004e193c2d26",
+              "allowed_optional_empty_namespaces": [
+                "/deformable_object",
+                "/gripper"
+              ],
+              "before_paths": [
+                "articulation/robot/joint_position",
+                "articulation/robot/joint_velocity",
+                "articulation/robot/root_pose",
+                "articulation/robot/root_velocity",
+                "deformable_object/<empty-mapping>",
+                "gripper/<empty-mapping>",
+                "rigid_object/banana/root_pose",
+                "rigid_object/banana/root_velocity",
+                "rigid_object/bowl/root_pose",
+                "rigid_object/bowl/root_velocity",
+                "rigid_object/table/root_pose",
+                "rigid_object/table/root_velocity"
+              ],
+              "before_sha256": "115e727521f859a14ca55c7c5aa710d38710b3411d4b8762f50ba85e2daf2496",
+              "removed_empty_namespaces": [
+                "/deformable_object",
+                "/gripper"
+              ]
+            }
+          },
+          "first_context": "BananaInBowlTask-seed-810003:repeat-0:initial"
+        }
+      ],
+      "schema_version": "lg_rb01_state_schema_canonicalization_v1",
+      "status": "fail",
+      "symmetric": true
+    },
+    {
+      "allowed_optional_empty_namespaces": [
+        "/deformable_object",
+        "/gripper"
+      ],
+      "comparison_count": 123,
+      "numeric_state_changed": false,
+      "observed_patterns": [
+        {
+          "count": 123,
+          "first_comparison": {
+            "expected": {
+              "after_paths": [
+                "articulation/robot/joint_position",
+                "articulation/robot/joint_velocity",
+                "articulation/robot/root_pose",
+                "articulation/robot/root_velocity",
+                "rigid_object/banana/root_pose",
+                "rigid_object/banana/root_velocity",
+                "rigid_object/bowl/root_pose",
+                "rigid_object/bowl/root_velocity",
+                "rigid_object/table/root_pose",
+                "rigid_object/table/root_velocity"
+              ],
+              "after_sha256": "e627541f55efc5781ab79d46548ed9c5db9b0889d323f3ab5470004e193c2d26",
+              "allowed_optional_empty_namespaces": [
+                "/deformable_object",
+                "/gripper"
+              ],
+              "before_paths": [
+                "articulation/robot/joint_position",
+                "articulation/robot/joint_velocity",
+                "articulation/robot/root_pose",
+                "articulation/robot/root_velocity",
+                "rigid_object/banana/root_pose",
+                "rigid_object/banana/root_velocity",
+                "rigid_object/bowl/root_pose",
+                "rigid_object/bowl/root_velocity",
+                "rigid_object/table/root_pose",
+                "rigid_object/table/root_velocity"
+              ],
+              "before_sha256": "e627541f55efc5781ab79d46548ed9c5db9b0889d323f3ab5470004e193c2d26",
+              "removed_empty_namespaces": []
+            },
+            "observed": {
+              "after_paths": [
+                "articulation/robot/joint_position",
+                "articulation/robot/joint_velocity",
+                "articulation/robot/root_pose",
+                "articulation/robot/root_velocity",
+                "rigid_object/banana/root_pose",
+                "rigid_object/banana/root_velocity",
+                "rigid_object/bowl/root_pose",
+                "rigid_object/bowl/root_velocity",
+                "rigid_object/table/root_pose",
+                "rigid_object/table/root_velocity"
+              ],
+              "after_sha256": "e627541f55efc5781ab79d46548ed9c5db9b0889d323f3ab5470004e193c2d26",
+              "allowed_optional_empty_namespaces": [
+                "/deformable_object",
+                "/gripper"
+              ],
+              "before_paths": [
+                "articulation/robot/joint_position",
+                "articulation/robot/joint_velocity",
+                "articulation/robot/root_pose",
+                "articulation/robot/root_velocity",
+                "deformable_object/<empty-mapping>",
+                "gripper/<empty-mapping>",
+                "rigid_object/banana/root_pose",
+                "rigid_object/banana/root_velocity",
+                "rigid_object/bowl/root_pose",
+                "rigid_object/bowl/root_velocity",
+                "rigid_object/table/root_pose",
+                "rigid_object/table/root_velocity"
+              ],
+              "before_sha256": "115e727521f859a14ca55c7c5aa710d38710b3411d4b8762f50ba85e2daf2496",
+              "removed_empty_namespaces": [
+                "/deformable_object",
+                "/gripper"
+              ]
+            }
+          },
+          "first_context": "BananaInBowlTask-seed-810004:repeat-0:initial"
+        }
+      ],
+      "schema_version": "lg_rb01_state_schema_canonicalization_v1",
+      "status": "fail",
+      "symmetric": true
+    },
+    {
+      "allowed_optional_empty_namespaces": [
+        "/deformable_object",
+        "/gripper"
+      ],
+      "comparison_count": 123,
+      "numeric_state_changed": false,
+      "observed_patterns": [
+        {
+          "count": 123,
+          "first_comparison": {
+            "expected": {
+              "after_paths": [
+                "articulation/robot/joint_position",
+                "articulation/robot/joint_velocity",
+                "articulation/robot/root_pose",
+                "articulation/robot/root_velocity",
+                "rigid_object/banana/root_pose",
+                "rigid_object/banana/root_velocity",
+                "rigid_object/bowl/root_pose",
+                "rigid_object/bowl/root_velocity",
+                "rigid_object/rubiks_cube/root_pose",
+                "rigid_object/rubiks_cube/root_velocity",
+                "rigid_object/table/root_pose",
+                "rigid_object/table/root_velocity"
+              ],
+              "after_sha256": "3615da8cf36b5e17afc0d55a02dc183c65754fe7f5fc519c4e3e3da7c7b0fa8b",
+              "allowed_optional_empty_namespaces": [
+                "/deformable_object",
+                "/gripper"
+              ],
+              "before_paths": [
+                "articulation/robot/joint_position",
+                "articulation/robot/joint_velocity",
+                "articulation/robot/root_pose",
+                "articulation/robot/root_velocity",
+                "rigid_object/banana/root_pose",
+                "rigid_object/banana/root_velocity",
+                "rigid_object/bowl/root_pose",
+                "rigid_object/bowl/root_velocity",
+                "rigid_object/rubiks_cube/root_pose",
+                "rigid_object/rubiks_cube/root_velocity",
+                "rigid_object/table/root_pose",
+                "rigid_object/table/root_velocity"
+              ],
+              "before_sha256": "3615da8cf36b5e17afc0d55a02dc183c65754fe7f5fc519c4e3e3da7c7b0fa8b",
+              "removed_empty_namespaces": []
+            },
+            "observed": {
+              "after_paths": [
+                "articulation/robot/joint_position",
+                "articulation/robot/joint_velocity",
+                "articulation/robot/root_pose",
+                "articulation/robot/root_velocity",
+                "rigid_object/banana/root_pose",
+                "rigid_object/banana/root_velocity",
+                "rigid_object/bowl/root_pose",
+                "rigid_object/bowl/root_velocity",
+                "rigid_object/rubiks_cube/root_pose",
+                "rigid_object/rubiks_cube/root_velocity",
+                "rigid_object/table/root_pose",
+                "rigid_object/table/root_velocity"
+              ],
+              "after_sha256": "3615da8cf36b5e17afc0d55a02dc183c65754fe7f5fc519c4e3e3da7c7b0fa8b",
+              "allowed_optional_empty_namespaces": [
+                "/deformable_object",
+                "/gripper"
+              ],
+              "before_paths": [
+                "articulation/robot/joint_position",
+                "articulation/robot/joint_velocity",
+                "articulation/robot/root_pose",
+                "articulation/robot/root_velocity",
+                "deformable_object/<empty-mapping>",
+                "gripper/<empty-mapping>",
+                "rigid_object/banana/root_pose",
+                "rigid_object/banana/root_velocity",
+                "rigid_object/bowl/root_pose",
+                "rigid_object/bowl/root_velocity",
+                "rigid_object/rubiks_cube/root_pose",
+                "rigid_object/rubiks_cube/root_velocity",
+                "rigid_object/table/root_pose",
+                "rigid_object/table/root_velocity"
+              ],
+              "before_sha256": "da676bcc794551594ec144ac455e62e1e4b447a611a2d4b616d26fdbd9d65fda",
+              "removed_empty_namespaces": [
+                "/deformable_object",
+                "/gripper"
+              ]
+            }
+          },
+          "first_context": "RubiksCubeAndBananaTask-seed-810000:repeat-0:initial"
+        }
+      ],
+      "schema_version": "lg_rb01_state_schema_canonicalization_v1",
+      "status": "fail",
+      "symmetric": true
+    },
+    {
+      "allowed_optional_empty_namespaces": [
+        "/deformable_object",
+        "/gripper"
+      ],
+      "comparison_count": 123,
+      "numeric_state_changed": false,
+      "observed_patterns": [
+        {
+          "count": 123,
+          "first_comparison": {
+            "expected": {
+              "after_paths": [
+                "articulation/robot/joint_position",
+                "articulation/robot/joint_velocity",
+                "articulation/robot/root_pose",
+                "articulation/robot/root_velocity",
+                "rigid_object/banana/root_pose",
+                "rigid_object/banana/root_velocity",
+                "rigid_object/bowl/root_pose",
+                "rigid_object/bowl/root_velocity",
+                "rigid_object/rubiks_cube/root_pose",
+                "rigid_object/rubiks_cube/root_velocity",
+                "rigid_object/table/root_pose",
+                "rigid_object/table/root_velocity"
+              ],
+              "after_sha256": "3615da8cf36b5e17afc0d55a02dc183c65754fe7f5fc519c4e3e3da7c7b0fa8b",
+              "allowed_optional_empty_namespaces": [
+                "/deformable_object",
+                "/gripper"
+              ],
+              "before_paths": [
+                "articulation/robot/joint_position",
+                "articulation/robot/joint_velocity",
+                "articulation/robot/root_pose",
+                "articulation/robot/root_velocity",
+                "rigid_object/banana/root_pose",
+                "rigid_object/banana/root_velocity",
+                "rigid_object/bowl/root_pose",
+                "rigid_object/bowl/root_velocity",
+                "rigid_object/rubiks_cube/root_pose",
+                "rigid_object/rubiks_cube/root_velocity",
+                "rigid_object/table/root_pose",
+                "rigid_object/table/root_velocity"
+              ],
+              "before_sha256": "3615da8cf36b5e17afc0d55a02dc183c65754fe7f5fc519c4e3e3da7c7b0fa8b",
+              "removed_empty_namespaces": []
+            },
+            "observed": {
+              "after_paths": [
+                "articulation/robot/joint_position",
+                "articulation/robot/joint_velocity",
+                "articulation/robot/root_pose",
+                "articulation/robot/root_velocity",
+                "rigid_object/banana/root_pose",
+                "rigid_object/banana/root_velocity",
+                "rigid_object/bowl/root_pose",
+                "rigid_object/bowl/root_velocity",
+                "rigid_object/rubiks_cube/root_pose",
+                "rigid_object/rubiks_cube/root_velocity",
+                "rigid_object/table/root_pose",
+                "rigid_object/table/root_velocity"
+              ],
+              "after_sha256": "3615da8cf36b5e17afc0d55a02dc183c65754fe7f5fc519c4e3e3da7c7b0fa8b",
+              "allowed_optional_empty_namespaces": [
+                "/deformable_object",
+                "/gripper"
+              ],
+              "before_paths": [
+                "articulation/robot/joint_position",
+                "articulation/robot/joint_velocity",
+                "articulation/robot/root_pose",
+                "articulation/robot/root_velocity",
+                "deformable_object/<empty-mapping>",
+                "gripper/<empty-mapping>",
+                "rigid_object/banana/root_pose",
+                "rigid_object/banana/root_velocity",
+                "rigid_object/bowl/root_pose",
+                "rigid_object/bowl/root_velocity",
+                "rigid_object/rubiks_cube/root_pose",
+                "rigid_object/rubiks_cube/root_velocity",
+                "rigid_object/table/root_pose",
+                "rigid_object/table/root_velocity"
+              ],
+              "before_sha256": "da676bcc794551594ec144ac455e62e1e4b447a611a2d4b616d26fdbd9d65fda",
+              "removed_empty_namespaces": [
+                "/deformable_object",
+                "/gripper"
+              ]
+            }
+          },
+          "first_context": "RubiksCubeAndBananaTask-seed-810001:repeat-0:initial"
+        }
+      ],
+      "schema_version": "lg_rb01_state_schema_canonicalization_v1",
+      "status": "fail",
+      "symmetric": true
+    },
+    {
+      "allowed_optional_empty_namespaces": [
+        "/deformable_object",
+        "/gripper"
+      ],
+      "comparison_count": 123,
+      "numeric_state_changed": false,
+      "observed_patterns": [
+        {
+          "count": 123,
+          "first_comparison": {
+            "expected": {
+              "after_paths": [
+                "articulation/robot/joint_position",
+                "articulation/robot/joint_velocity",
+                "articulation/robot/root_pose",
+                "articulation/robot/root_velocity",
+                "rigid_object/banana/root_pose",
+                "rigid_object/banana/root_velocity",
+                "rigid_object/bowl/root_pose",
+                "rigid_object/bowl/root_velocity",
+                "rigid_object/rubiks_cube/root_pose",
+                "rigid_object/rubiks_cube/root_velocity",
+                "rigid_object/table/root_pose",
+                "rigid_object/table/root_velocity"
+              ],
+              "after_sha256": "3615da8cf36b5e17afc0d55a02dc183c65754fe7f5fc519c4e3e3da7c7b0fa8b",
+              "allowed_optional_empty_namespaces": [
+                "/deformable_object",
+                "/gripper"
+              ],
+              "before_paths": [
+                "articulation/robot/joint_position",
+                "articulation/robot/joint_velocity",
+                "articulation/robot/root_pose",
+                "articulation/robot/root_velocity",
+                "rigid_object/banana/root_pose",
+                "rigid_object/banana/root_velocity",
+                "rigid_object/bowl/root_pose",
+                "rigid_object/bowl/root_velocity",
+                "rigid_object/rubiks_cube/root_pose",
+                "rigid_object/rubiks_cube/root_velocity",
+                "rigid_object/table/root_pose",
+                "rigid_object/table/root_velocity"
+              ],
+              "before_sha256": "3615da8cf36b5e17afc0d55a02dc183c65754fe7f5fc519c4e3e3da7c7b0fa8b",
+              "removed_empty_namespaces": []
+            },
+            "observed": {
+              "after_paths": [
+                "articulation/robot/joint_position",
+                "articulation/robot/joint_velocity",
+                "articulation/robot/root_pose",
+                "articulation/robot/root_velocity",
+                "rigid_object/banana/root_pose",
+                "rigid_object/banana/root_velocity",
+                "rigid_object/bowl/root_pose",
+                "rigid_object/bowl/root_velocity",
+                "rigid_object/rubiks_cube/root_pose",
+                "rigid_object/rubiks_cube/root_velocity",
+                "rigid_object/table/root_pose",
+                "rigid_object/table/root_velocity"
+              ],
+              "after_sha256": "3615da8cf36b5e17afc0d55a02dc183c65754fe7f5fc519c4e3e3da7c7b0fa8b",
+              "allowed_optional_empty_namespaces": [
+                "/deformable_object",
+                "/gripper"
+              ],
+              "before_paths": [
+                "articulation/robot/joint_position",
+                "articulation/robot/joint_velocity",
+                "articulation/robot/root_pose",
+                "articulation/robot/root_velocity",
+                "deformable_object/<empty-mapping>",
+                "gripper/<empty-mapping>",
+                "rigid_object/banana/root_pose",
+                "rigid_object/banana/root_velocity",
+                "rigid_object/bowl/root_pose",
+                "rigid_object/bowl/root_velocity",
+                "rigid_object/rubiks_cube/root_pose",
+                "rigid_object/rubiks_cube/root_velocity",
+                "rigid_object/table/root_pose",
+                "rigid_object/table/root_velocity"
+              ],
+              "before_sha256": "da676bcc794551594ec144ac455e62e1e4b447a611a2d4b616d26fdbd9d65fda",
+              "removed_empty_namespaces": [
+                "/deformable_object",
+                "/gripper"
+              ]
+            }
+          },
+          "first_context": "RubiksCubeAndBananaTask-seed-810002:repeat-0:initial"
+        }
+      ],
+      "schema_version": "lg_rb01_state_schema_canonicalization_v1",
+      "status": "fail",
+      "symmetric": true
+    },
+    {
+      "allowed_optional_empty_namespaces": [
+        "/deformable_object",
+        "/gripper"
+      ],
+      "comparison_count": 123,
+      "numeric_state_changed": false,
+      "observed_patterns": [
+        {
+          "count": 123,
+          "first_comparison": {
+            "expected": {
+              "after_paths": [
+                "articulation/robot/joint_position",
+                "articulation/robot/joint_velocity",
+                "articulation/robot/root_pose",
+                "articulation/robot/root_velocity",
+                "rigid_object/banana/root_pose",
+                "rigid_object/banana/root_velocity",
+                "rigid_object/bowl/root_pose",
+                "rigid_object/bowl/root_velocity",
+                "rigid_object/rubiks_cube/root_pose",
+                "rigid_object/rubiks_cube/root_velocity",
+                "rigid_object/table/root_pose",
+                "rigid_object/table/root_velocity"
+              ],
+              "after_sha256": "3615da8cf36b5e17afc0d55a02dc183c65754fe7f5fc519c4e3e3da7c7b0fa8b",
+              "allowed_optional_empty_namespaces": [
+                "/deformable_object",
+                "/gripper"
+              ],
+              "before_paths": [
+                "articulation/robot/joint_position",
+                "articulation/robot/joint_velocity",
+                "articulation/robot/root_pose",
+                "articulation/robot/root_velocity",
+                "rigid_object/banana/root_pose",
+                "rigid_object/banana/root_velocity",
+                "rigid_object/bowl/root_pose",
+                "rigid_object/bowl/root_velocity",
+                "rigid_object/rubiks_cube/root_pose",
+                "rigid_object/rubiks_cube/root_velocity",
+                "rigid_object/table/root_pose",
+                "rigid_object/table/root_velocity"
+              ],
+              "before_sha256": "3615da8cf36b5e17afc0d55a02dc183c65754fe7f5fc519c4e3e3da7c7b0fa8b",
+              "removed_empty_namespaces": []
+            },
+            "observed": {
+              "after_paths": [
+                "articulation/robot/joint_position",
+                "articulation/robot/joint_velocity",
+                "articulation/robot/root_pose",
+                "articulation/robot/root_velocity",
+                "rigid_object/banana/root_pose",
+                "rigid_object/banana/root_velocity",
+                "rigid_object/bowl/root_pose",
+                "rigid_object/bowl/root_velocity",
+                "rigid_object/rubiks_cube/root_pose",
+                "rigid_object/rubiks_cube/root_velocity",
+                "rigid_object/table/root_pose",
+                "rigid_object/table/root_velocity"
+              ],
+              "after_sha256": "3615da8cf36b5e17afc0d55a02dc183c65754fe7f5fc519c4e3e3da7c7b0fa8b",
+              "allowed_optional_empty_namespaces": [
+                "/deformable_object",
+                "/gripper"
+              ],
+              "before_paths": [
+                "articulation/robot/joint_position",
+                "articulation/robot/joint_velocity",
+                "articulation/robot/root_pose",
+                "articulation/robot/root_velocity",
+                "deformable_object/<empty-mapping>",
+                "gripper/<empty-mapping>",
+                "rigid_object/banana/root_pose",
+                "rigid_object/banana/root_velocity",
+                "rigid_object/bowl/root_pose",
+                "rigid_object/bowl/root_velocity",
+                "rigid_object/rubiks_cube/root_pose",
+                "rigid_object/rubiks_cube/root_velocity",
+                "rigid_object/table/root_pose",
+                "rigid_object/table/root_velocity"
+              ],
+              "before_sha256": "da676bcc794551594ec144ac455e62e1e4b447a611a2d4b616d26fdbd9d65fda",
+              "removed_empty_namespaces": [
+                "/deformable_object",
+                "/gripper"
+              ]
+            }
+          },
+          "first_context": "RubiksCubeAndBananaTask-seed-810003:repeat-0:initial"
+        }
+      ],
+      "schema_version": "lg_rb01_state_schema_canonicalization_v1",
+      "status": "fail",
+      "symmetric": true
+    },
+    {
+      "allowed_optional_empty_namespaces": [
+        "/deformable_object",
+        "/gripper"
+      ],
+      "comparison_count": 123,
+      "numeric_state_changed": false,
+      "observed_patterns": [
+        {
+          "count": 123,
+          "first_comparison": {
+            "expected": {
+              "after_paths": [
+                "articulation/robot/joint_position",
+                "articulation/robot/joint_velocity",
+                "articulation/robot/root_pose",
+                "articulation/robot/root_velocity",
+                "rigid_object/banana/root_pose",
+                "rigid_object/banana/root_velocity",
+                "rigid_object/bowl/root_pose",
+                "rigid_object/bowl/root_velocity",
+                "rigid_object/rubiks_cube/root_pose",
+                "rigid_object/rubiks_cube/root_velocity",
+                "rigid_object/table/root_pose",
+                "rigid_object/table/root_velocity"
+              ],
+              "after_sha256": "3615da8cf36b5e17afc0d55a02dc183c65754fe7f5fc519c4e3e3da7c7b0fa8b",
+              "allowed_optional_empty_namespaces": [
+                "/deformable_object",
+                "/gripper"
+              ],
+              "before_paths": [
+                "articulation/robot/joint_position",
+                "articulation/robot/joint_velocity",
+                "articulation/robot/root_pose",
+                "articulation/robot/root_velocity",
+                "rigid_object/banana/root_pose",
+                "rigid_object/banana/root_velocity",
+                "rigid_object/bowl/root_pose",
+                "rigid_object/bowl/root_velocity",
+                "rigid_object/rubiks_cube/root_pose",
+                "rigid_object/rubiks_cube/root_velocity",
+                "rigid_object/table/root_pose",
+                "rigid_object/table/root_velocity"
+              ],
+              "before_sha256": "3615da8cf36b5e17afc0d55a02dc183c65754fe7f5fc519c4e3e3da7c7b0fa8b",
+              "removed_empty_namespaces": []
+            },
+            "observed": {
+              "after_paths": [
+                "articulation/robot/joint_position",
+                "articulation/robot/joint_velocity",
+                "articulation/robot/root_pose",
+                "articulation/robot/root_velocity",
+                "rigid_object/banana/root_pose",
+                "rigid_object/banana/root_velocity",
+                "rigid_object/bowl/root_pose",
+                "rigid_object/bowl/root_velocity",
+                "rigid_object/rubiks_cube/root_pose",
+                "rigid_object/rubiks_cube/root_velocity",
+                "rigid_object/table/root_pose",
+                "rigid_object/table/root_velocity"
+              ],
+              "after_sha256": "3615da8cf36b5e17afc0d55a02dc183c65754fe7f5fc519c4e3e3da7c7b0fa8b",
+              "allowed_optional_empty_namespaces": [
+                "/deformable_object",
+                "/gripper"
+              ],
+              "before_paths": [
+                "articulation/robot/joint_position",
+                "articulation/robot/joint_velocity",
+                "articulation/robot/root_pose",
+                "articulation/robot/root_velocity",
+                "deformable_object/<empty-mapping>",
+                "gripper/<empty-mapping>",
+                "rigid_object/banana/root_pose",
+                "rigid_object/banana/root_velocity",
+                "rigid_object/bowl/root_pose",
+                "rigid_object/bowl/root_velocity",
+                "rigid_object/rubiks_cube/root_pose",
+                "rigid_object/rubiks_cube/root_velocity",
+                "rigid_object/table/root_pose",
+                "rigid_object/table/root_velocity"
+              ],
+              "before_sha256": "da676bcc794551594ec144ac455e62e1e4b447a611a2d4b616d26fdbd9d65fda",
+              "removed_empty_namespaces": [
+                "/deformable_object",
+                "/gripper"
+              ]
+            }
+          },
+          "first_context": "RubiksCubeAndBananaTask-seed-810004:repeat-0:initial"
+        }
+      ],
+      "schema_version": "lg_rb01_state_schema_canonicalization_v1",
+      "status": "fail",
+      "symmetric": true
+    }
+  ],
+  "status": "fail",
+  "symmetric": true
+}

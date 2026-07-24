@@ -3,6 +3,7 @@
     "/deformable_object",
     "/gripper"
   ],
+  "branch": "codex/lg-rb01-robolab-replay-compat",
   "contract": {
     "anchor_fractions": [
       0.25,
@@ -21,11 +22,14 @@
     "strict_state_tolerance": 1e-06,
     "takeover_state_tolerance": 1e-06
   },
+  "execution_commit": "fa31525a4edf42376d896a59017ecd771ab38c6d",
   "final_seeds_accessed": false,
+  "latentguard_baseline_commit": "b6c3a8c72733f7bbd75d12453259641bb36cada2",
   "patch_sha256": "5b72f598c8a7fb8c07f1c3c2a35e136a805cb5b87b77e1f3cfbc4398c4939310",
   "patched_tree_digest": "050397d38fb9e8ea4b9acb557b5b01f16ac64ca6",
   "recorded_episode_count": 10,
   "recording_reused": true,
+  "recording_manifest_sha256": "59f2980d9956559be8cb0f1e4da95d906eca22951eed901596e632fa4e8cfa10",
   "recording_seeds": [
     810000,
     810001,
@@ -35,5 +39,6 @@
   ],
   "robolab_commit": "0aef241fb088ca21bb4ebd24448940ed56620d17",
   "schema_version": "lg_rb01_source_validation_v1",
+  "tracked_remote_source_modified": false,
   "status": "pass"
 }

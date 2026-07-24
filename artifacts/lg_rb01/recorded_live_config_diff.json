@@ -1,0 +1,1164 @@
+{
+  "actual_callable_failure_branch": "plain_list_wholesale_assignment",
+  "actual_callable_target_dict_key_missing": false,
+  "call_site": {
+    "call_expression_line": 132,
+    "path": "robolab/core/task/conditionals_state_machine.py",
+    "start_line": 113
+  },
+  "eval_or_exec_used": false,
+  "instruction_variants_runtime_order": {
+    "create_env_creates_field_after_overlay": true,
+    "parse_env_cfg_creates_field": false,
+    "recorded_value_should_restore": false,
+    "recording_contains_field": true,
+    "resolved_instruction_should_restore": true
+  },
+  "missing_key_regression_scope": "separate unsafe old-overlay branch covered by the minimal fixture",
+  "recording_count": 10,
+  "recording_manifest_sha256": "59f2980d9956559be8cb0f1e4da95d906eca22951eed901596e632fa4e8cfa10",
+  "recordings": [
+    {
+      "env_cfg_sha256": "7b225a1643bed08bea9742c5e1de2bb674782084266078589178514909c33a13",
+      "live_instruction_before_overlay": {
+        "default": "Pick up the banana and place it in the bowl",
+        "specific": "Grasp the yellow banana and place it inside the red bowl on the table",
+        "vague": "Put the fruit in the bowl"
+      },
+      "live_instruction_before_overlay_type": "builtins.dict",
+      "live_instruction_variants_present_before_overlay": false,
+      "old_overlay_callable_assignments": [
+        {
+          "branch": "plain_list_wholesale_assignment",
+          "live_target_type": "builtins.list",
+          "lossy_callable_leaves": [
+            {
+              "live_callable": true,
+              "live_callable_identity": {
+                "args": [],
+                "function": {
+                  "kind": "callable",
+                  "module": "robolab.core.task.conditionals",
+                  "qualname": "object_grabbed"
+                },
+                "keywords": {
+                  "object": "'banana'"
+                },
+                "kind": "functools.partial"
+              },
+              "live_type": "functools.partial",
+              "path": "/subtasks[0]/conditions/banana[0][0]",
+              "recorded_type": "builtins.str",
+              "recorded_value": "functools.partial(<function object_grabbed at 0x7f39d43f3920>, object='banana')"
+            },
+            {
+              "live_callable": true,
+              "live_callable_identity": {
+                "args": [],
+                "function": {
+                  "kind": "callable",
+                  "module": "robolab.core.task.conditionals",
+                  "qualname": "object_in_container"
+                },
+                "keywords": {
+                  "container": "'bowl'",
+                  "object": "'banana'",
+                  "require_contact_with": "False",
+                  "require_gripper_detached": "True"
+                },
+                "kind": "functools.partial"
+              },
+              "live_type": "functools.partial",
+              "path": "/subtasks[0]/conditions/banana[1][0]",
+              "recorded_type": "builtins.str",
+              "recorded_value": "functools.partial(<function object_in_container at 0x7f39d43f3420>, object='banana', container='bowl', require_contact_with=False, require_gripper_detached=True)"
+            }
+          ],
+          "path": "/subtasks[0]/conditions/banana"
+        }
+      ],
+      "old_overlay_missing_targets": [
+        {
+          "path": "/_instruction_variants",
+          "recorded_type": "builtins.dict",
+          "target_container_type": "robolab.core.environments.config.generate_task_env_cfg.<locals>.GeneratedTaskEnvCfg"
+        },
+        {
+          "path": "/renderer",
+          "recorded_type": "builtins.str",
+          "target_container_type": "robolab.core.environments.config.generate_task_env_cfg.<locals>.GeneratedTaskEnvCfg"
+        }
+      ],
+      "recorded_instruction": "Pick up the banana and place it in the bowl",
+      "recorded_instruction_variants": {
+        "default": "Pick up the banana and place it in the bowl",
+        "specific": "Grasp the yellow banana and place it inside the red bowl on the table",
+        "vague": "Put the fruit in the bowl"
+      },
+      "recorded_instruction_variants_present": true,
+      "recording_id": "BananaInBowlTask-seed-810000",
+      "task_query": "BananaInBowlTask"
+    },
+    {
+      "env_cfg_sha256": "b0ba55819b3242786b910c27baf81565dcb3a43ffa07825f59b2dd1ee900b835",
+      "live_instruction_before_overlay": {
+        "default": "Pick up the banana and place it in the bowl",
+        "specific": "Grasp the yellow banana and place it inside the red bowl on the table",
+        "vague": "Put the fruit in the bowl"
+      },
+      "live_instruction_before_overlay_type": "builtins.dict",
+      "live_instruction_variants_present_before_overlay": false,
+      "old_overlay_callable_assignments": [
+        {
+          "branch": "plain_list_wholesale_assignment",
+          "live_target_type": "builtins.list",
+          "lossy_callable_leaves": [
+            {
+              "live_callable": true,
+              "live_callable_identity": {
+                "args": [],
+                "function": {
+                  "kind": "callable",
+                  "module": "robolab.core.task.conditionals",
+                  "qualname": "object_grabbed"
+                },
+                "keywords": {
+                  "object": "'banana'"
+                },
+                "kind": "functools.partial"
+              },
+              "live_type": "functools.partial",
+              "path": "/subtasks[0]/conditions/banana[0][0]",
+              "recorded_type": "builtins.str",
+              "recorded_value": "functools.partial(<function object_grabbed at 0x7f02a7a9f380>, object='banana')"
+            },
+            {
+              "live_callable": true,
+              "live_callable_identity": {
+                "args": [],
+                "function": {
+                  "kind": "callable",
+                  "module": "robolab.core.task.conditionals",
+                  "qualname": "object_in_container"
+                },
+                "keywords": {
+                  "container": "'bowl'",
+                  "object": "'banana'",
+                  "require_contact_with": "False",
+                  "require_gripper_detached": "True"
+                },
+                "kind": "functools.partial"
+              },
+              "live_type": "functools.partial",
+              "path": "/subtasks[0]/conditions/banana[1][0]",
+              "recorded_type": "builtins.str",
+              "recorded_value": "functools.partial(<function object_in_container at 0x7f02a7a749a0>, object='banana', container='bowl', require_contact_with=False, require_gripper_detached=True)"
+            }
+          ],
+          "path": "/subtasks[0]/conditions/banana"
+        }
+      ],
+      "old_overlay_missing_targets": [
+        {
+          "path": "/_instruction_variants",
+          "recorded_type": "builtins.dict",
+          "target_container_type": "robolab.core.environments.config.generate_task_env_cfg.<locals>.GeneratedTaskEnvCfg"
+        },
+        {
+          "path": "/renderer",
+          "recorded_type": "builtins.str",
+          "target_container_type": "robolab.core.environments.config.generate_task_env_cfg.<locals>.GeneratedTaskEnvCfg"
+        }
+      ],
+      "recorded_instruction": "Pick up the banana and place it in the bowl",
+      "recorded_instruction_variants": {
+        "default": "Pick up the banana and place it in the bowl",
+        "specific": "Grasp the yellow banana and place it inside the red bowl on the table",
+        "vague": "Put the fruit in the bowl"
+      },
+      "recorded_instruction_variants_present": true,
+      "recording_id": "BananaInBowlTask-seed-810001",
+      "task_query": "BananaInBowlTask"
+    },
+    {
+      "env_cfg_sha256": "32742ec91aad0bc45a7c156bd23bc667d398615ddc11876b68fc132786b4b5de",
+      "live_instruction_before_overlay": {
+        "default": "Pick up the banana and place it in the bowl",
+        "specific": "Grasp the yellow banana and place it inside the red bowl on the table",
+        "vague": "Put the fruit in the bowl"
+      },
+      "live_instruction_before_overlay_type": "builtins.dict",
+      "live_instruction_variants_present_before_overlay": false,
+      "old_overlay_callable_assignments": [
+        {
+          "branch": "plain_list_wholesale_assignment",
+          "live_target_type": "builtins.list",
+          "lossy_callable_leaves": [
+            {
+              "live_callable": true,
+              "live_callable_identity": {
+                "args": [],
+                "function": {
+                  "kind": "callable",
+                  "module": "robolab.core.task.conditionals",
+                  "qualname": "object_grabbed"
+                },
+                "keywords": {
+                  "object": "'banana'"
+                },
+                "kind": "functools.partial"
+              },
+              "live_type": "functools.partial",
+              "path": "/subtasks[0]/conditions/banana[0][0]",
+              "recorded_type": "builtins.str",
+              "recorded_value": "functools.partial(<function object_grabbed at 0x7f2fc5983100>, object='banana')"
+            },
+            {
+              "live_callable": true,
+              "live_callable_identity": {
+                "args": [],
+                "function": {
+                  "kind": "callable",
+                  "module": "robolab.core.task.conditionals",
+                  "qualname": "object_in_container"
+                },
+                "keywords": {
+                  "container": "'bowl'",
+                  "object": "'banana'",
+                  "require_contact_with": "False",
+                  "require_gripper_detached": "True"
+                },
+                "kind": "functools.partial"
+              },
+              "live_type": "functools.partial",
+              "path": "/subtasks[0]/conditions/banana[1][0]",
+              "recorded_type": "builtins.str",
+              "recorded_value": "functools.partial(<function object_in_container at 0x7f2fc595c720>, object='banana', container='bowl', require_contact_with=False, require_gripper_detached=True)"
+            }
+          ],
+          "path": "/subtasks[0]/conditions/banana"
+        }
+      ],
+      "old_overlay_missing_targets": [
+        {
+          "path": "/_instruction_variants",
+          "recorded_type": "builtins.dict",
+          "target_container_type": "robolab.core.environments.config.generate_task_env_cfg.<locals>.GeneratedTaskEnvCfg"
+        },
+        {
+          "path": "/renderer",
+          "recorded_type": "builtins.str",
+          "target_container_type": "robolab.core.environments.config.generate_task_env_cfg.<locals>.GeneratedTaskEnvCfg"
+        }
+      ],
+      "recorded_instruction": "Pick up the banana and place it in the bowl",
+      "recorded_instruction_variants": {
+        "default": "Pick up the banana and place it in the bowl",
+        "specific": "Grasp the yellow banana and place it inside the red bowl on the table",
+        "vague": "Put the fruit in the bowl"
+      },
+      "recorded_instruction_variants_present": true,
+      "recording_id": "BananaInBowlTask-seed-810002",
+      "task_query": "BananaInBowlTask"
+    },
+    {
+      "env_cfg_sha256": "099c8e80bbb9722e425f9cfe75444212e8b56dbfea0e38dde1c6a4ccb9db728b",
+      "live_instruction_before_overlay": {
+        "default": "Pick up the banana and place it in the bowl",
+        "specific": "Grasp the yellow banana and place it inside the red bowl on the table",
+        "vague": "Put the fruit in the bowl"
+      },
+      "live_instruction_before_overlay_type": "builtins.dict",
+      "live_instruction_variants_present_before_overlay": false,
+      "old_overlay_callable_assignments": [
+        {
+          "branch": "plain_list_wholesale_assignment",
+          "live_target_type": "builtins.list",
+          "lossy_callable_leaves": [
+            {
+              "live_callable": true,
+              "live_callable_identity": {
+                "args": [],
+                "function": {
+                  "kind": "callable",
+                  "module": "robolab.core.task.conditionals",
+                  "qualname": "object_grabbed"
+                },
+                "keywords": {
+                  "object": "'banana'"
+                },
+                "kind": "functools.partial"
+              },
+              "live_type": "functools.partial",
+              "path": "/subtasks[0]/conditions/banana[0][0]",
+              "recorded_type": "builtins.str",
+              "recorded_value": "functools.partial(<function object_grabbed at 0x7fa265083060>, object='banana')"
+            },
+            {
+              "live_callable": true,
+              "live_callable_identity": {
+                "args": [],
+                "function": {
+                  "kind": "callable",
+                  "module": "robolab.core.task.conditionals",
+                  "qualname": "object_in_container"
+                },
+                "keywords": {
+                  "container": "'bowl'",
+                  "object": "'banana'",
+                  "require_contact_with": "False",
+                  "require_gripper_detached": "True"
+                },
+                "kind": "functools.partial"
+              },
+              "live_type": "functools.partial",
+              "path": "/subtasks[0]/conditions/banana[1][0]",
+              "recorded_type": "builtins.str",
+              "recorded_value": "functools.partial(<function object_in_container at 0x7fa265082de0>, object='banana', container='bowl', require_contact_with=False, require_gripper_detached=True)"
+            }
+          ],
+          "path": "/subtasks[0]/conditions/banana"
+        }
+      ],
+      "old_overlay_missing_targets": [
+        {
+          "path": "/_instruction_variants",
+          "recorded_type": "builtins.dict",
+          "target_container_type": "robolab.core.environments.config.generate_task_env_cfg.<locals>.GeneratedTaskEnvCfg"
+        },
+        {
+          "path": "/renderer",
+          "recorded_type": "builtins.str",
+          "target_container_type": "robolab.core.environments.config.generate_task_env_cfg.<locals>.GeneratedTaskEnvCfg"
+        }
+      ],
+      "recorded_instruction": "Pick up the banana and place it in the bowl",
+      "recorded_instruction_variants": {
+        "default": "Pick up the banana and place it in the bowl",
+        "specific": "Grasp the yellow banana and place it inside the red bowl on the table",
+        "vague": "Put the fruit in the bowl"
+      },
+      "recorded_instruction_variants_present": true,
+      "recording_id": "BananaInBowlTask-seed-810003",
+      "task_query": "BananaInBowlTask"
+    },
+    {
+      "env_cfg_sha256": "af18dd5c6029a890f441f40d162407724a0f7f30a83f19782cc0349b904c721b",
+      "live_instruction_before_overlay": {
+        "default": "Pick up the banana and place it in the bowl",
+        "specific": "Grasp the yellow banana and place it inside the red bowl on the table",
+        "vague": "Put the fruit in the bowl"
+      },
+      "live_instruction_before_overlay_type": "builtins.dict",
+      "live_instruction_variants_present_before_overlay": false,
+      "old_overlay_callable_assignments": [
+        {
+          "branch": "plain_list_wholesale_assignment",
+          "live_target_type": "builtins.list",
+          "lossy_callable_leaves": [
+            {
+              "live_callable": true,
+              "live_callable_identity": {
+                "args": [],
+                "function": {
+                  "kind": "callable",
+                  "module": "robolab.core.task.conditionals",
+                  "qualname": "object_grabbed"
+                },
+                "keywords": {
+                  "object": "'banana'"
+                },
+                "kind": "functools.partial"
+              },
+              "live_type": "functools.partial",
+              "path": "/subtasks[0]/conditions/banana[0][0]",
+              "recorded_type": "builtins.str",
+              "recorded_value": "functools.partial(<function object_grabbed at 0x7f04c19a4540>, object='banana')"
+            },
+            {
+              "live_callable": true,
+              "live_callable_identity": {
+                "args": [],
+                "function": {
+                  "kind": "callable",
+                  "module": "robolab.core.task.conditionals",
+                  "qualname": "object_in_container"
+                },
+                "keywords": {
+                  "container": "'bowl'",
+                  "object": "'banana'",
+                  "require_contact_with": "False",
+                  "require_gripper_detached": "True"
+                },
+                "kind": "functools.partial"
+              },
+              "live_type": "functools.partial",
+              "path": "/subtasks[0]/conditions/banana[1][0]",
+              "recorded_type": "builtins.str",
+              "recorded_value": "functools.partial(<function object_in_container at 0x7f04c19a4860>, object='banana', container='bowl', require_contact_with=False, require_gripper_detached=True)"
+            }
+          ],
+          "path": "/subtasks[0]/conditions/banana"
+        }
+      ],
+      "old_overlay_missing_targets": [
+        {
+          "path": "/_instruction_variants",
+          "recorded_type": "builtins.dict",
+          "target_container_type": "robolab.core.environments.config.generate_task_env_cfg.<locals>.GeneratedTaskEnvCfg"
+        },
+        {
+          "path": "/renderer",
+          "recorded_type": "builtins.str",
+          "target_container_type": "robolab.core.environments.config.generate_task_env_cfg.<locals>.GeneratedTaskEnvCfg"
+        }
+      ],
+      "recorded_instruction": "Pick up the banana and place it in the bowl",
+      "recorded_instruction_variants": {
+        "default": "Pick up the banana and place it in the bowl",
+        "specific": "Grasp the yellow banana and place it inside the red bowl on the table",
+        "vague": "Put the fruit in the bowl"
+      },
+      "recorded_instruction_variants_present": true,
+      "recording_id": "BananaInBowlTask-seed-810004",
+      "task_query": "BananaInBowlTask"
+    },
+    {
+      "env_cfg_sha256": "fc0941cc32bf68564be7bb9f19ae546b977102a7bba1152b115b04aa7623d399",
+      "live_instruction_before_overlay": {
+        "default": "Put the cube and the banana in the bowl",
+        "specific": "Pick up the rubiks cube and the yellow banana and place both inside the bowl",
+        "vague": "Put everything in the bowl"
+      },
+      "live_instruction_before_overlay_type": "builtins.dict",
+      "live_instruction_variants_present_before_overlay": false,
+      "old_overlay_callable_assignments": [
+        {
+          "branch": "plain_list_wholesale_assignment",
+          "live_target_type": "builtins.list",
+          "lossy_callable_leaves": [
+            {
+              "live_callable": true,
+              "live_callable_identity": {
+                "args": [],
+                "function": {
+                  "kind": "callable",
+                  "module": "robolab.core.task.conditionals",
+                  "qualname": "object_grabbed"
+                },
+                "keywords": {
+                  "object": "'rubiks_cube'"
+                },
+                "kind": "functools.partial"
+              },
+              "live_type": "functools.partial",
+              "path": "/subtasks[0]/conditions/rubiks_cube[0][0]",
+              "recorded_type": "builtins.str",
+              "recorded_value": "functools.partial(<function object_grabbed at 0x7f8dd75bb380>, object='rubiks_cube')"
+            },
+            {
+              "live_callable": true,
+              "live_callable_identity": {
+                "args": [],
+                "function": {
+                  "kind": "callable",
+                  "module": "robolab.core.task.conditionals",
+                  "qualname": "object_in_container"
+                },
+                "keywords": {
+                  "container": "'bowl'",
+                  "object": "'rubiks_cube'",
+                  "require_contact_with": "False",
+                  "require_gripper_detached": "True"
+                },
+                "kind": "functools.partial"
+              },
+              "live_type": "functools.partial",
+              "path": "/subtasks[0]/conditions/rubiks_cube[1][0]",
+              "recorded_type": "builtins.str",
+              "recorded_value": "functools.partial(<function object_in_container at 0x7f8dd75bafc0>, object='rubiks_cube', container='bowl', require_contact_with=False, require_gripper_detached=True)"
+            }
+          ],
+          "path": "/subtasks[0]/conditions/rubiks_cube"
+        },
+        {
+          "branch": "plain_list_wholesale_assignment",
+          "live_target_type": "builtins.list",
+          "lossy_callable_leaves": [
+            {
+              "live_callable": true,
+              "live_callable_identity": {
+                "args": [],
+                "function": {
+                  "kind": "callable",
+                  "module": "robolab.core.task.conditionals",
+                  "qualname": "object_grabbed"
+                },
+                "keywords": {
+                  "object": "'banana'"
+                },
+                "kind": "functools.partial"
+              },
+              "live_type": "functools.partial",
+              "path": "/subtasks[0]/conditions/banana[0][0]",
+              "recorded_type": "builtins.str",
+              "recorded_value": "functools.partial(<function object_grabbed at 0x7f8dd75bb380>, object='banana')"
+            },
+            {
+              "live_callable": true,
+              "live_callable_identity": {
+                "args": [],
+                "function": {
+                  "kind": "callable",
+                  "module": "robolab.core.task.conditionals",
+                  "qualname": "object_in_container"
+                },
+                "keywords": {
+                  "container": "'bowl'",
+                  "object": "'banana'",
+                  "require_contact_with": "False",
+                  "require_gripper_detached": "True"
+                },
+                "kind": "functools.partial"
+              },
+              "live_type": "functools.partial",
+              "path": "/subtasks[0]/conditions/banana[1][0]",
+              "recorded_type": "builtins.str",
+              "recorded_value": "functools.partial(<function object_in_container at 0x7f8dd75bafc0>, object='banana', container='bowl', require_contact_with=False, require_gripper_detached=True)"
+            }
+          ],
+          "path": "/subtasks[0]/conditions/banana"
+        }
+      ],
+      "old_overlay_missing_targets": [
+        {
+          "path": "/_instruction_variants",
+          "recorded_type": "builtins.dict",
+          "target_container_type": "robolab.core.environments.config.generate_task_env_cfg.<locals>.GeneratedTaskEnvCfg"
+        },
+        {
+          "path": "/renderer",
+          "recorded_type": "builtins.str",
+          "target_container_type": "robolab.core.environments.config.generate_task_env_cfg.<locals>.GeneratedTaskEnvCfg"
+        }
+      ],
+      "recorded_instruction": "Put the cube and the banana in the bowl",
+      "recorded_instruction_variants": {
+        "default": "Put the cube and the banana in the bowl",
+        "specific": "Pick up the rubiks cube and the yellow banana and place both inside the bowl",
+        "vague": "Put everything in the bowl"
+      },
+      "recorded_instruction_variants_present": true,
+      "recording_id": "RubiksCubeAndBananaTask-seed-810000",
+      "task_query": "RubiksCubeAndBananaTask"
+    },
+    {
+      "env_cfg_sha256": "ff403aaa07bed539375e9a51a5908066696da9c42733870436632c8b76f5426f",
+      "live_instruction_before_overlay": {
+        "default": "Put the cube and the banana in the bowl",
+        "specific": "Pick up the rubiks cube and the yellow banana and place both inside the bowl",
+        "vague": "Put everything in the bowl"
+      },
+      "live_instruction_before_overlay_type": "builtins.dict",
+      "live_instruction_variants_present_before_overlay": false,
+      "old_overlay_callable_assignments": [
+        {
+          "branch": "plain_list_wholesale_assignment",
+          "live_target_type": "builtins.list",
+          "lossy_callable_leaves": [
+            {
+              "live_callable": true,
+              "live_callable_identity": {
+                "args": [],
+                "function": {
+                  "kind": "callable",
+                  "module": "robolab.core.task.conditionals",
+                  "qualname": "object_grabbed"
+                },
+                "keywords": {
+                  "object": "'rubiks_cube'"
+                },
+                "kind": "functools.partial"
+              },
+              "live_type": "functools.partial",
+              "path": "/subtasks[0]/conditions/rubiks_cube[0][0]",
+              "recorded_type": "builtins.str",
+              "recorded_value": "functools.partial(<function object_grabbed at 0x7ef6cf5a3ba0>, object='rubiks_cube')"
+            },
+            {
+              "live_callable": true,
+              "live_callable_identity": {
+                "args": [],
+                "function": {
+                  "kind": "callable",
+                  "module": "robolab.core.task.conditionals",
+                  "qualname": "object_in_container"
+                },
+                "keywords": {
+                  "container": "'bowl'",
+                  "object": "'rubiks_cube'",
+                  "require_contact_with": "False",
+                  "require_gripper_detached": "True"
+                },
+                "kind": "functools.partial"
+              },
+              "live_type": "functools.partial",
+              "path": "/subtasks[0]/conditions/rubiks_cube[1][0]",
+              "recorded_type": "builtins.str",
+              "recorded_value": "functools.partial(<function object_in_container at 0x7ef6cf5a3560>, object='rubiks_cube', container='bowl', require_contact_with=False, require_gripper_detached=True)"
+            }
+          ],
+          "path": "/subtasks[0]/conditions/rubiks_cube"
+        },
+        {
+          "branch": "plain_list_wholesale_assignment",
+          "live_target_type": "builtins.list",
+          "lossy_callable_leaves": [
+            {
+              "live_callable": true,
+              "live_callable_identity": {
+                "args": [],
+                "function": {
+                  "kind": "callable",
+                  "module": "robolab.core.task.conditionals",
+                  "qualname": "object_grabbed"
+                },
+                "keywords": {
+                  "object": "'banana'"
+                },
+                "kind": "functools.partial"
+              },
+              "live_type": "functools.partial",
+              "path": "/subtasks[0]/conditions/banana[0][0]",
+              "recorded_type": "builtins.str",
+              "recorded_value": "functools.partial(<function object_grabbed at 0x7ef6cf5a3ba0>, object='banana')"
+            },
+            {
+              "live_callable": true,
+              "live_callable_identity": {
+                "args": [],
+                "function": {
+                  "kind": "callable",
+                  "module": "robolab.core.task.conditionals",
+                  "qualname": "object_in_container"
+                },
+                "keywords": {
+                  "container": "'bowl'",
+                  "object": "'banana'",
+                  "require_contact_with": "False",
+                  "require_gripper_detached": "True"
+                },
+                "kind": "functools.partial"
+              },
+              "live_type": "functools.partial",
+              "path": "/subtasks[0]/conditions/banana[1][0]",
+              "recorded_type": "builtins.str",
+              "recorded_value": "functools.partial(<function object_in_container at 0x7ef6cf5a3560>, object='banana', container='bowl', require_contact_with=False, require_gripper_detached=True)"
+            }
+          ],
+          "path": "/subtasks[0]/conditions/banana"
+        }
+      ],
+      "old_overlay_missing_targets": [
+        {
+          "path": "/_instruction_variants",
+          "recorded_type": "builtins.dict",
+          "target_container_type": "robolab.core.environments.config.generate_task_env_cfg.<locals>.GeneratedTaskEnvCfg"
+        },
+        {
+          "path": "/renderer",
+          "recorded_type": "builtins.str",
+          "target_container_type": "robolab.core.environments.config.generate_task_env_cfg.<locals>.GeneratedTaskEnvCfg"
+        }
+      ],
+      "recorded_instruction": "Put the cube and the banana in the bowl",
+      "recorded_instruction_variants": {
+        "default": "Put the cube and the banana in the bowl",
+        "specific": "Pick up the rubiks cube and the yellow banana and place both inside the bowl",
+        "vague": "Put everything in the bowl"
+      },
+      "recorded_instruction_variants_present": true,
+      "recording_id": "RubiksCubeAndBananaTask-seed-810001",
+      "task_query": "RubiksCubeAndBananaTask"
+    },
+    {
+      "env_cfg_sha256": "c5029b7957565a69ad7f51eccaa73e7f3041bbff4f8506db76bcb324a7f37b50",
+      "live_instruction_before_overlay": {
+        "default": "Put the cube and the banana in the bowl",
+        "specific": "Pick up the rubiks cube and the yellow banana and place both inside the bowl",
+        "vague": "Put everything in the bowl"
+      },
+      "live_instruction_before_overlay_type": "builtins.dict",
+      "live_instruction_variants_present_before_overlay": false,
+      "old_overlay_callable_assignments": [
+        {
+          "branch": "plain_list_wholesale_assignment",
+          "live_target_type": "builtins.list",
+          "lossy_callable_leaves": [
+            {
+              "live_callable": true,
+              "live_callable_identity": {
+                "args": [],
+                "function": {
+                  "kind": "callable",
+                  "module": "robolab.core.task.conditionals",
+                  "qualname": "object_grabbed"
+                },
+                "keywords": {
+                  "object": "'rubiks_cube'"
+                },
+                "kind": "functools.partial"
+              },
+              "live_type": "functools.partial",
+              "path": "/subtasks[0]/conditions/rubiks_cube[0][0]",
+              "recorded_type": "builtins.str",
+              "recorded_value": "functools.partial(<function object_grabbed at 0x7fdd17ab72e0>, object='rubiks_cube')"
+            },
+            {
+              "live_callable": true,
+              "live_callable_identity": {
+                "args": [],
+                "function": {
+                  "kind": "callable",
+                  "module": "robolab.core.task.conditionals",
+                  "qualname": "object_in_container"
+                },
+                "keywords": {
+                  "container": "'bowl'",
+                  "object": "'rubiks_cube'",
+                  "require_contact_with": "False",
+                  "require_gripper_detached": "True"
+                },
+                "kind": "functools.partial"
+              },
+              "live_type": "functools.partial",
+              "path": "/subtasks[0]/conditions/rubiks_cube[1][0]",
+              "recorded_type": "builtins.str",
+              "recorded_value": "functools.partial(<function object_in_container at 0x7fdd17ab6f20>, object='rubiks_cube', container='bowl', require_contact_with=False, require_gripper_detached=True)"
+            }
+          ],
+          "path": "/subtasks[0]/conditions/rubiks_cube"
+        },
+        {
+          "branch": "plain_list_wholesale_assignment",
+          "live_target_type": "builtins.list",
+          "lossy_callable_leaves": [
+            {
+              "live_callable": true,
+              "live_callable_identity": {
+                "args": [],
+                "function": {
+                  "kind": "callable",
+                  "module": "robolab.core.task.conditionals",
+                  "qualname": "object_grabbed"
+                },
+                "keywords": {
+                  "object": "'banana'"
+                },
+                "kind": "functools.partial"
+              },
+              "live_type": "functools.partial",
+              "path": "/subtasks[0]/conditions/banana[0][0]",
+              "recorded_type": "builtins.str",
+              "recorded_value": "functools.partial(<function object_grabbed at 0x7fdd17ab72e0>, object='banana')"
+            },
+            {
+              "live_callable": true,
+              "live_callable_identity": {
+                "args": [],
+                "function": {
+                  "kind": "callable",
+                  "module": "robolab.core.task.conditionals",
+                  "qualname": "object_in_container"
+                },
+                "keywords": {
+                  "container": "'bowl'",
+                  "object": "'banana'",
+                  "require_contact_with": "False",
+                  "require_gripper_detached": "True"
+                },
+                "kind": "functools.partial"
+              },
+              "live_type": "functools.partial",
+              "path": "/subtasks[0]/conditions/banana[1][0]",
+              "recorded_type": "builtins.str",
+              "recorded_value": "functools.partial(<function object_in_container at 0x7fdd17ab6f20>, object='banana', container='bowl', require_contact_with=False, require_gripper_detached=True)"
+            }
+          ],
+          "path": "/subtasks[0]/conditions/banana"
+        }
+      ],
+      "old_overlay_missing_targets": [
+        {
+          "path": "/_instruction_variants",
+          "recorded_type": "builtins.dict",
+          "target_container_type": "robolab.core.environments.config.generate_task_env_cfg.<locals>.GeneratedTaskEnvCfg"
+        },
+        {
+          "path": "/renderer",
+          "recorded_type": "builtins.str",
+          "target_container_type": "robolab.core.environments.config.generate_task_env_cfg.<locals>.GeneratedTaskEnvCfg"
+        }
+      ],
+      "recorded_instruction": "Put the cube and the banana in the bowl",
+      "recorded_instruction_variants": {
+        "default": "Put the cube and the banana in the bowl",
+        "specific": "Pick up the rubiks cube and the yellow banana and place both inside the bowl",
+        "vague": "Put everything in the bowl"
+      },
+      "recorded_instruction_variants_present": true,
+      "recording_id": "RubiksCubeAndBananaTask-seed-810002",
+      "task_query": "RubiksCubeAndBananaTask"
+    },
+    {
+      "env_cfg_sha256": "0b3e1127a5248b3f80957becbb2eae44e8a32a07b65052d8504b6fb81db31665",
+      "live_instruction_before_overlay": {
+        "default": "Put the cube and the banana in the bowl",
+        "specific": "Pick up the rubiks cube and the yellow banana and place both inside the bowl",
+        "vague": "Put everything in the bowl"
+      },
+      "live_instruction_before_overlay_type": "builtins.dict",
+      "live_instruction_variants_present_before_overlay": false,
+      "old_overlay_callable_assignments": [
+        {
+          "branch": "plain_list_wholesale_assignment",
+          "live_target_type": "builtins.list",
+          "lossy_callable_leaves": [
+            {
+              "live_callable": true,
+              "live_callable_identity": {
+                "args": [],
+                "function": {
+                  "kind": "callable",
+                  "module": "robolab.core.task.conditionals",
+                  "qualname": "object_grabbed"
+                },
+                "keywords": {
+                  "object": "'rubiks_cube'"
+                },
+                "kind": "functools.partial"
+              },
+              "live_type": "functools.partial",
+              "path": "/subtasks[0]/conditions/rubiks_cube[0][0]",
+              "recorded_type": "builtins.str",
+              "recorded_value": "functools.partial(<function object_grabbed at 0x7fb0a1d6b240>, object='rubiks_cube')"
+            },
+            {
+              "live_callable": true,
+              "live_callable_identity": {
+                "args": [],
+                "function": {
+                  "kind": "callable",
+                  "module": "robolab.core.task.conditionals",
+                  "qualname": "object_in_container"
+                },
+                "keywords": {
+                  "container": "'bowl'",
+                  "object": "'rubiks_cube'",
+                  "require_contact_with": "False",
+                  "require_gripper_detached": "True"
+                },
+                "kind": "functools.partial"
+              },
+              "live_type": "functools.partial",
+              "path": "/subtasks[0]/conditions/rubiks_cube[1][0]",
+              "recorded_type": "builtins.str",
+              "recorded_value": "functools.partial(<function object_in_container at 0x7fb0a1d6afc0>, object='rubiks_cube', container='bowl', require_contact_with=False, require_gripper_detached=True)"
+            }
+          ],
+          "path": "/subtasks[0]/conditions/rubiks_cube"
+        },
+        {
+          "branch": "plain_list_wholesale_assignment",
+          "live_target_type": "builtins.list",
+          "lossy_callable_leaves": [
+            {
+              "live_callable": true,
+              "live_callable_identity": {
+                "args": [],
+                "function": {
+                  "kind": "callable",
+                  "module": "robolab.core.task.conditionals",
+                  "qualname": "object_grabbed"
+                },
+                "keywords": {
+                  "object": "'banana'"
+                },
+                "kind": "functools.partial"
+              },
+              "live_type": "functools.partial",
+              "path": "/subtasks[0]/conditions/banana[0][0]",
+              "recorded_type": "builtins.str",
+              "recorded_value": "functools.partial(<function object_grabbed at 0x7fb0a1d6b240>, object='banana')"
+            },
+            {
+              "live_callable": true,
+              "live_callable_identity": {
+                "args": [],
+                "function": {
+                  "kind": "callable",
+                  "module": "robolab.core.task.conditionals",
+                  "qualname": "object_in_container"
+                },
+                "keywords": {
+                  "container": "'bowl'",
+                  "object": "'banana'",
+                  "require_contact_with": "False",
+                  "require_gripper_detached": "True"
+                },
+                "kind": "functools.partial"
+              },
+              "live_type": "functools.partial",
+              "path": "/subtasks[0]/conditions/banana[1][0]",
+              "recorded_type": "builtins.str",
+              "recorded_value": "functools.partial(<function object_in_container at 0x7fb0a1d6afc0>, object='banana', container='bowl', require_contact_with=False, require_gripper_detached=True)"
+            }
+          ],
+          "path": "/subtasks[0]/conditions/banana"
+        }
+      ],
+      "old_overlay_missing_targets": [
+        {
+          "path": "/_instruction_variants",
+          "recorded_type": "builtins.dict",
+          "target_container_type": "robolab.core.environments.config.generate_task_env_cfg.<locals>.GeneratedTaskEnvCfg"
+        },
+        {
+          "path": "/renderer",
+          "recorded_type": "builtins.str",
+          "target_container_type": "robolab.core.environments.config.generate_task_env_cfg.<locals>.GeneratedTaskEnvCfg"
+        }
+      ],
+      "recorded_instruction": "Put the cube and the banana in the bowl",
+      "recorded_instruction_variants": {
+        "default": "Put the cube and the banana in the bowl",
+        "specific": "Pick up the rubiks cube and the yellow banana and place both inside the bowl",
+        "vague": "Put everything in the bowl"
+      },
+      "recorded_instruction_variants_present": true,
+      "recording_id": "RubiksCubeAndBananaTask-seed-810003",
+      "task_query": "RubiksCubeAndBananaTask"
+    },
+    {
+      "env_cfg_sha256": "554b453ebf9df3c27d7013f143b03e0947a8fe96316f3004a8b169f2d505aaa7",
+      "live_instruction_before_overlay": {
+        "default": "Put the cube and the banana in the bowl",
+        "specific": "Pick up the rubiks cube and the yellow banana and place both inside the bowl",
+        "vague": "Put everything in the bowl"
+      },
+      "live_instruction_before_overlay_type": "builtins.dict",
+      "live_instruction_variants_present_before_overlay": false,
+      "old_overlay_callable_assignments": [
+        {
+          "branch": "plain_list_wholesale_assignment",
+          "live_target_type": "builtins.list",
+          "lossy_callable_leaves": [
+            {
+              "live_callable": true,
+              "live_callable_identity": {
+                "args": [],
+                "function": {
+                  "kind": "callable",
+                  "module": "robolab.core.task.conditionals",
+                  "qualname": "object_grabbed"
+                },
+                "keywords": {
+                  "object": "'rubiks_cube'"
+                },
+                "kind": "functools.partial"
+              },
+              "live_type": "functools.partial",
+              "path": "/subtasks[0]/conditions/rubiks_cube[0][0]",
+              "recorded_type": "builtins.str",
+              "recorded_value": "functools.partial(<function object_grabbed at 0x7f418bfb4400>, object='rubiks_cube')"
+            },
+            {
+              "live_callable": true,
+              "live_callable_identity": {
+                "args": [],
+                "function": {
+                  "kind": "callable",
+                  "module": "robolab.core.task.conditionals",
+                  "qualname": "object_in_container"
+                },
+                "keywords": {
+                  "container": "'bowl'",
+                  "object": "'rubiks_cube'",
+                  "require_contact_with": "False",
+                  "require_gripper_detached": "True"
+                },
+                "kind": "functools.partial"
+              },
+              "live_type": "functools.partial",
+              "path": "/subtasks[0]/conditions/rubiks_cube[1][0]",
+              "recorded_type": "builtins.str",
+              "recorded_value": "functools.partial(<function object_in_container at 0x7f418bf94860>, object='rubiks_cube', container='bowl', require_contact_with=False, require_gripper_detached=True)"
+            }
+          ],
+          "path": "/subtasks[0]/conditions/rubiks_cube"
+        },
+        {
+          "branch": "plain_list_wholesale_assignment",
+          "live_target_type": "builtins.list",
+          "lossy_callable_leaves": [
+            {
+              "live_callable": true,
+              "live_callable_identity": {
+                "args": [],
+                "function": {
+                  "kind": "callable",
+                  "module": "robolab.core.task.conditionals",
+                  "qualname": "object_grabbed"
+                },
+                "keywords": {
+                  "object": "'banana'"
+                },
+                "kind": "functools.partial"
+              },
+              "live_type": "functools.partial",
+              "path": "/subtasks[0]/conditions/banana[0][0]",
+              "recorded_type": "builtins.str",
+              "recorded_value": "functools.partial(<function object_grabbed at 0x7f418bfb4400>, object='banana')"
+            },
+            {
+              "live_callable": true,
+              "live_callable_identity": {
+                "args": [],
+                "function": {
+                  "kind": "callable",
+                  "module": "robolab.core.task.conditionals",
+                  "qualname": "object_in_container"
+                },
+                "keywords": {
+                  "container": "'bowl'",
+                  "object": "'banana'",
+                  "require_contact_with": "False",
+                  "require_gripper_detached": "True"
+                },
+                "kind": "functools.partial"
+              },
+              "live_type": "functools.partial",
+              "path": "/subtasks[0]/conditions/banana[1][0]",
+              "recorded_type": "builtins.str",
+              "recorded_value": "functools.partial(<function object_in_container at 0x7f418bf94860>, object='banana', container='bowl', require_contact_with=False, require_gripper_detached=True)"
+            }
+          ],
+          "path": "/subtasks[0]/conditions/banana"
+        }
+      ],
+      "old_overlay_missing_targets": [
+        {
+          "path": "/_instruction_variants",
+          "recorded_type": "builtins.dict",
+          "target_container_type": "robolab.core.environments.config.generate_task_env_cfg.<locals>.GeneratedTaskEnvCfg"
+        },
+        {
+          "path": "/renderer",
+          "recorded_type": "builtins.str",
+          "target_container_type": "robolab.core.environments.config.generate_task_env_cfg.<locals>.GeneratedTaskEnvCfg"
+        }
+      ],
+      "recorded_instruction": "Put the cube and the banana in the bowl",
+      "recorded_instruction_variants": {
+        "default": "Put the cube and the banana in the bowl",
+        "specific": "Pick up the rubiks cube and the yellow banana and place both inside the bowl",
+        "vague": "Put everything in the bowl"
+      },
+      "recorded_instruction_variants_present": true,
+      "recording_id": "RubiksCubeAndBananaTask-seed-810004",
+      "task_query": "RubiksCubeAndBananaTask"
+    }
+  ],
+  "schema_version": "lg_rb01_recorded_live_config_diff_v1",
+  "source_files": {
+    "docs/replay.md": "52089bf4a134774701c2c687b2c255fe81a22509ccbb3b3f60ddc25997dedf28",
+    "env_config.py": "54f6f1659d6ac15d2a9bbed046f2f3fe371cf4c90116ad5b3309ababc1de71ed",
+    "runtime.py": "ffa43f43b3e3d1f3c87a8b1da34addbfc9279209fe17209a0eb187b0904e145b"
+  },
+  "status": "pass",
+  "unique_recorded_live_callable_paths": [
+    {
+      "live_callable": true,
+      "live_callable_identity": {
+        "args": [],
+        "function": {
+          "kind": "callable",
+          "module": "robolab.core.task.conditionals",
+          "qualname": "object_grabbed"
+        },
+        "keywords": {
+          "object": "'banana'"
+        },
+        "kind": "functools.partial"
+      },
+      "live_type": "functools.partial",
+      "path": "/subtasks[0]/conditions/banana[0][0]",
+      "recorded_type": "builtins.str",
+      "recorded_value": "functools.partial(<function object_grabbed at 0x7f39d43f3920>, object='banana')"
+    },
+    {
+      "live_callable": true,
+      "live_callable_identity": {
+        "args": [],
+        "function": {
+          "kind": "callable",
+          "module": "robolab.core.task.conditionals",
+          "qualname": "object_in_container"
+        },
+        "keywords": {
+          "container": "'bowl'",
+          "object": "'banana'",
+          "require_contact_with": "False",
+          "require_gripper_detached": "True"
+        },
+        "kind": "functools.partial"
+      },
+      "live_type": "functools.partial",
+      "path": "/subtasks[0]/conditions/banana[1][0]",
+      "recorded_type": "builtins.str",
+      "recorded_value": "functools.partial(<function object_in_container at 0x7f39d43f3420>, object='banana', container='bowl', require_contact_with=False, require_gripper_detached=True)"
+    },
+    {
+      "live_callable": true,
+      "live_callable_identity": {
+        "args": [],
+        "function": {
+          "kind": "callable",
+          "module": "robolab.core.task.conditionals",
+          "qualname": "object_grabbed"
+        },
+        "keywords": {
+          "object": "'rubiks_cube'"
+        },
+        "kind": "functools.partial"
+      },
+      "live_type": "functools.partial",
+      "path": "/subtasks[0]/conditions/rubiks_cube[0][0]",
+      "recorded_type": "builtins.str",
+      "recorded_value": "functools.partial(<function object_grabbed at 0x7f8dd75bb380>, object='rubiks_cube')"
+    },
+    {
+      "live_callable": true,
+      "live_callable_identity": {
+        "args": [],
+        "function": {
+          "kind": "callable",
+          "module": "robolab.core.task.conditionals",
+          "qualname": "object_in_container"
+        },
+        "keywords": {
+          "container": "'bowl'",
+          "object": "'rubiks_cube'",
+          "require_contact_with": "False",
+          "require_gripper_detached": "True"
+        },
+        "kind": "functools.partial"
+      },
+      "live_type": "functools.partial",
+      "path": "/subtasks[0]/conditions/rubiks_cube[1][0]",
+      "recorded_type": "builtins.str",
+      "recorded_value": "functools.partial(<function object_in_container at 0x7f8dd75bafc0>, object='rubiks_cube', container='bowl', require_contact_with=False, require_gripper_detached=True)"
+    }
+  ],
+  "upstream_commit": "0aef241fb088ca21bb4ebd24448940ed56620d17"
+}

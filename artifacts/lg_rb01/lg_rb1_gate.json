@@ -1,0 +1,26 @@
+{
+  "authorization": {
+    "lg_rb1_authorized": false,
+    "policy_or_takeover_execution_allowed": false
+  },
+  "decision": "Result C",
+  "evidence": {
+    "completed_replays": 30,
+    "execution_errors": 0,
+    "expected_replays": 30,
+    "faithful_replay_status": "fail",
+    "official_state_validator_failures": 20,
+    "per_step_state_failures": 800,
+    "prefix_replay_status": "not_run",
+    "branch_determinism_status": "not_run",
+    "branch_isolation_status": "not_run",
+    "terminal_mismatches": 0,
+    "unexpected_config_skips": 0,
+    "success_mismatches": 0
+  },
+  "reason": "The one allowed compatibility patch removed the callable overlay failure, but repeated faithful replay failed state validation. Downstream gates were blocked.",
+  "route_status": "formally_stopped",
+  "schema_version": "lg_rb01_lg_rb1_gate_v1",
+  "second_compatibility_patch_authorized": false,
+  "status": "pass"
+}

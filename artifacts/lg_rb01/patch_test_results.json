@@ -1,7 +1,20 @@
 {
   "eval_or_exec_used": false,
   "external_upstream_tests": {
-    "status": "pending_remote_exact_environment"
+    "cpu_safe_exact_test_file": {
+      "command_scope": "tests/test_replay_env_config.py with repository conftest disabled",
+      "duration_seconds": 0.01,
+      "failed": 0,
+      "passed": 7,
+      "status": "pass"
+    },
+    "isaac_app_wrapper_attempt": {
+      "evidence_counted": false,
+      "reason": "tests executed but the Isaac App plugin cleanup hung, so no pytest exit result was available",
+      "runtime_released": true,
+      "status": "no_result"
+    },
+    "status": "pass"
   },
   "integration_regressions": {
     "patched": {
@@ -23,9 +36,10 @@
     "exact_base_only": true,
     "patched_tree_digest": "050397d38fb9e8ea4b9acb557b5b01f16ac64ca6",
     "repeat_application_rejected": true,
+    "status": "pass",
     "unpatched_checkout_identified_as_unpatched": true
   },
   "patch_sha256": "5b72f598c8a7fb8c07f1c3c2a35e136a805cb5b87b77e1f3cfbc4398c4939310",
   "schema_version": "lg_rb01_patch_test_results_v1",
-  "status": "pending_remote_exact_environment"
+  "status": "pass"
 }

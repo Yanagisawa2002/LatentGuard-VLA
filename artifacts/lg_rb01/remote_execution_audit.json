@@ -1,0 +1,93 @@
+{
+  "artifacts": {
+    "faithful_replay_validation_sha256": "c5f35dd612385b06580cf8531dec4fe1e01bf2825d781c8438f94963693dd385",
+    "recorded_live_config_diff_sha256": "64e08014179eb14790eec53caed10fc9a48969019005e6b68de4e4cb4be6376a",
+    "state_schema_canonicalization_sha256": "37c6e45599a634a9030e8e0afd1fd6ec63c47b8b6265f979480bd75fbe37163e"
+  },
+  "audit_status": "pass",
+  "environment": {
+    "cuda_runtime": "12.8",
+    "gpu": "NVIDIA GeForce RTX 5090",
+    "gpu_memory_mib": 32607,
+    "host": "autodl-container-c47c48a71b-504676bc",
+    "isaac_lab": "2.3.2.post1",
+    "isaac_sim": "5.1.0.0",
+    "nvidia_driver": "580.76.05",
+    "python": "3.11.15",
+    "pytorch": "2.7.0+cu128",
+    "robolab": "0.2.1"
+  },
+  "execution": {
+    "branch": "codex/lg-rb01-robolab-replay-compat",
+    "config_sha256": "20b42d60b4b084d6a5da6d142c3ab4a20987d8c523b003cc1c53ef5268311955",
+    "device": "cuda:0",
+    "end_time": "2026-07-24T22:50:53+08:00",
+    "execution_commit": "fa31525a4edf42376d896a59017ecd771ab38c6d",
+    "exit_code": 0,
+    "final_seeds_accessed": false,
+    "launch_command": "python scripts/lg_rb0_orchestrate_remote.py --phase faithful --protocol configs/lg_rb01/protocol.yaml --run-root <external-run-root> --recording-root <reused-lg-rb0-recording-root> --artifact-dir <external-artifact-dir> --runner scripts/lg_rb0_run_remote.py --expected-commit fa31525a4edf42376d896a59017ecd771ab38c6d --device cuda:0",
+    "network_turbo_sourced": true,
+    "new_recordings_created": false,
+    "recording_manifest_sha256": "59f2980d9956559be8cb0f1e4da95d906eca22951eed901596e632fa4e8cfa10",
+    "run_id": "lg-rb01-46a43e9",
+    "start_time": "2026-07-24T22:38:22+08:00",
+    "training_performed": false
+  },
+  "git_sync": {
+    "local_origin_push_confirmed_before_execution": true,
+    "remote_checkout_clean_before_execution": true,
+    "remote_github_fetch": {
+      "reason": "private-origin authentication was unavailable in the execution environment",
+      "status": "failed"
+    },
+    "remote_revision_verified": true,
+    "sync_method": "verified incremental Git bundles from already-pushed local revisions",
+    "transfers": [
+      {
+        "bundle_sha256": "2721986bf40f90e15942b5d85cf92ee8e00200fdecfcb90210c083baea796756",
+        "commit": "46a43e94c70ceb104c35f6c7560a9b4f9c282698"
+      },
+      {
+        "bundle_sha256": "c9e77877d3affb474d31ae55172982edbe153be237d95338d389fef6d47735fc",
+        "commit": "fa31525a4edf42376d896a59017ecd771ab38c6d"
+      }
+    ]
+  },
+  "patch_checkout": {
+    "changed_files_staged": 3,
+    "patch_sha256": "5b72f598c8a7fb8c07f1c3c2a35e136a805cb5b87b77e1f3cfbc4398c4939310",
+    "patched_tree_digest": "050397d38fb9e8ea4b9acb557b5b01f16ac64ca6",
+    "repeat_application_rejected": true,
+    "uncommitted_unstaged_files": 0,
+    "untracked_files": 0,
+    "upstream_base_commit": "0aef241fb088ca21bb4ebd24448940ed56620d17"
+  },
+  "result": {
+    "decision": "Result C",
+    "faithful_replay_status": "fail",
+    "lg_rb1_authorized": false,
+    "route_status": "formally_stopped"
+  },
+  "schema_version": "lg_rb01_remote_execution_audit_v1",
+  "server_after_completion": {
+    "compute_process_count": 0,
+    "powered_on": true,
+    "ssh_ready": true
+  },
+  "setup_attempts_not_used_as_evidence": [
+    {
+      "outcome": "discarded",
+      "reason": "initial source-audit launches used an incorrect Vulkan ICD or lacked the noninteractive EULA setting; stale processes were terminated"
+    },
+    {
+      "outcome": "no_result",
+      "reason": "an Isaac App pytest wrapper completed test bodies but hung during plugin cleanup; it was force-terminated after graceful termination failed and its test result was not counted"
+    }
+  ],
+  "tracked_source_modified_remotely": false,
+  "upstream_submission": {
+    "issue_created": false,
+    "pr_created": false,
+    "upstream_branch_pushed": false
+  }
+}

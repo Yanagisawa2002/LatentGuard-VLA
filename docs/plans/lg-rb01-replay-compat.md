@@ -78,13 +78,24 @@ No second compatibility-patch stage is authorized.
 
 ## Remote cost and ETA
 
-The source audit and patch tests should take about 10–20 minutes of mostly
-CPU-bound remote time. The faithful gate should take about 25–45 GPU minutes
-on the existing RTX 5090. Prefix and branch gates run only after faithful
-promotion and are expected to require another 60–120 GPU minutes. Total
-wall-clock ETA, including environment verification and artifact review, is
-approximately 3–5 hours if every gate passes; a failed faithful gate stops
-earlier.
+The source audit and patch tests were budgeted for 10-30 minutes of mostly
+CPU-bound remote time. The faithful gate was budgeted for 25-45 GPU minutes on
+the existing RTX 5090. Prefix and branch gates would have required an estimated
+additional 60-120 GPU minutes only after faithful promotion.
+
+The actual faithful job ran from 2026-07-24 22:38:22 to 22:50:53
+(Asia/Singapore), about 12 minutes 31 seconds. It failed its promotion gate, so
+the estimated 60-120 GPU minutes for downstream gates were not consumed.
+Environment verification, patch tests, source audit, retrieval, and review
+added roughly 30-45 minutes of wall time. No training was performed.
 
 The server remains powered on and SSH-ready after completion unless the user
 explicitly authorizes shutdown.
+
+## Final disposition
+
+The callable compatibility issue is fixed within the one-patch scope, but
+faithful replay is not reproducible across the three required repeats. The
+milestone is therefore Result C. Prefix replay, same-suffix determinism, branch
+isolation, and policy takeover remain blocked, and
+`LG_RB1_AUTHORIZED=false`.

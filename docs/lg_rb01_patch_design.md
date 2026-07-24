@@ -55,3 +55,12 @@ Branch isolation binds simulation state and replay semantics plus action
 buffers, recorder state, task latches, Python/NumPy/Torch RNG state, resolved
 config, and known condition caches. Failure stops the counterfactual route; it
 does not authorize additional restore fields or a second patch layer.
+
+## Gate outcome
+
+The patch passed its bounded overlay and provenance tests and allowed 30/30
+replays to complete. The faithful gate nevertheless failed because repeats one
+and two drifted beyond both the strict and official state tolerances. Prefix,
+same-suffix, and isolation gates were therefore not run. This is Result C, and
+the design explicitly forbids extending the patch to chase the later replay
+state.
