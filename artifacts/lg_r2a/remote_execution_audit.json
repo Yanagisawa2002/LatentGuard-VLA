@@ -4,7 +4,7 @@
   "candidate_generation": false,
   "candidate_ranking": false,
   "checkpoints_outside_git": true,
-  "commit": "f867f97c09e8785b91c1c94c18cae1b316795f59",
+  "commit": "97fac1a6f65a13ce05e9ccf674184a9a1a8c69c8",
   "compact_files": {
     "action_ablation_results.json": {
       "bytes": 61404,
@@ -94,7 +94,16 @@
   },
   "counterfactual_rollout": false,
   "downloads_performed": false,
+  "execution_commands": [
+    "python scripts/lg_r2a_validate_inputs.py --config configs/lg_r2a/input.yaml",
+    "python scripts/lg_r2a_build_cv_splits.py --config configs/lg_r2a/cv.yaml",
+    "python scripts/lg_r2a_build_targets.py --config configs/lg_r2a/targets.yaml",
+    "python scripts/lg_r2a_train_probe.py --config configs/lg_r2a/<variant>.yaml --output-dir \"$LG_R2A_OUTPUT_ROOT\" --seed 0 --checkpoint-every 100 --eval-every 20",
+    "python scripts/lg_r2a_action_sensitivity.py --config configs/lg_r2a/sensitivity.yaml",
+    "python scripts/lg_r2a_evaluate.py --config configs/lg_r2a/evaluation.yaml"
+  ],
   "execution_commits": {
+    "audit": "97fac1a6f65a13ce05e9ccf674184a9a1a8c69c8",
     "evaluation": "f867f97c09e8785b91c1c94c18cae1b316795f59",
     "training": "1f03f484c9f29e0a3dbfee767b56dbfd34795e3d"
   },
@@ -103,34 +112,66 @@
   "intervention": false,
   "network_turbo_sourced_every_session": true,
   "new_rollouts": 0,
+  "pre_training_gate_stops": [
+    {
+      "formal_training_started": false,
+      "reason": "repeated compressed feature-cache decompression",
+      "resolution": "load frozen feature array exactly once"
+    },
+    {
+      "formal_training_started": false,
+      "reason": "secret-scanner rule matched its own source literal",
+      "resolution": "self-isolate scanner literals and validate locally"
+    }
+  ],
   "predictions_outside_git": true,
   "remote_commit_created": false,
   "run_id": "20260724T070334Z_lg-r2a-action-conditioning_1f03f48_seed0",
   "run_manifests": {
     "action_only": {
       "bytes": 8621,
+      "elapsed_seconds": 21.138363637030125,
+      "end_time_utc": "2026-07-24T07:08:27.612942+00:00",
+      "launch_command": "python scripts/lg_r2a_train_probe.py --config configs/lg_r2a/action_only.yaml --output-dir \"$LG_R2A_OUTPUT_ROOT\" --seed 0 --checkpoint-every 100 --eval-every 20",
       "locator": "runs/action_only/run_manifest.json",
-      "sha256": "35d58d0922fe5824f743a57a02dff020fdcd5edc314b5a76ca767eb37473b9d5"
+      "sha256": "35d58d0922fe5824f743a57a02dff020fdcd5edc314b5a76ca767eb37473b9d5",
+      "start_time_utc": "2026-07-24T07:08:06.474578+00:00",
+      "time_source": "derived from run-manifest mtime minus recorded elapsed_seconds"
     },
     "state_action": {
       "bytes": 8741,
+      "elapsed_seconds": 24.604579530656338,
+      "end_time_utc": "2026-07-24T07:08:54.517262+00:00",
+      "launch_command": "python scripts/lg_r2a_train_probe.py --config configs/lg_r2a/state_action.yaml --output-dir \"$LG_R2A_OUTPUT_ROOT\" --seed 0 --checkpoint-every 100 --eval-every 20",
       "locator": "runs/state_action/run_manifest.json",
-      "sha256": "fb543d940ec0a20fadebbb7c7c28e6ce7677b1da95e25540f64613f86cff39a2"
+      "sha256": "fb543d940ec0a20fadebbb7c7c28e6ce7677b1da95e25540f64613f86cff39a2",
+      "start_time_utc": "2026-07-24T07:08:29.912682+00:00",
+      "time_source": "derived from run-manifest mtime minus recorded elapsed_seconds"
     },
     "state_action_proprio": {
       "bytes": 8853,
+      "elapsed_seconds": 25.42325108125806,
+      "end_time_utc": "2026-07-24T07:09:22.217601+00:00",
+      "launch_command": "python scripts/lg_r2a_train_probe.py --config configs/lg_r2a/state_action_proprio.yaml --output-dir \"$LG_R2A_OUTPUT_ROOT\" --seed 0 --checkpoint-every 100 --eval-every 20",
       "locator": "runs/state_action_proprio/run_manifest.json",
-      "sha256": "804ba6092dfad7338232161686d5b4f96f2e2fd3e6872ebfaf77bdd0adddb374"
+      "sha256": "804ba6092dfad7338232161686d5b4f96f2e2fd3e6872ebfaf77bdd0adddb374",
+      "start_time_utc": "2026-07-24T07:08:56.794350+00:00",
+      "time_source": "derived from run-manifest mtime minus recorded elapsed_seconds"
     },
     "state_only": {
       "bytes": 8599,
+      "elapsed_seconds": 20.012675926089287,
+      "end_time_utc": "2026-07-24T07:08:04.116671+00:00",
+      "launch_command": "python scripts/lg_r2a_train_probe.py --config configs/lg_r2a/state_only.yaml --output-dir \"$LG_R2A_OUTPUT_ROOT\" --seed 0 --checkpoint-every 100 --eval-every 20",
       "locator": "runs/state_only/run_manifest.json",
-      "sha256": "6c2ae8d37bafcac8387784c903daa297447f59dcbc864e3c276f5bf4b7c66b0e"
+      "sha256": "6c2ae8d37bafcac8387784c903daa297447f59dcbc864e3c276f5bf4b7c66b0e",
+      "start_time_utc": "2026-07-24T07:07:44.103995+00:00",
+      "time_source": "derived from run-manifest mtime minus recorded elapsed_seconds"
     }
   },
   "runtime_identity": {
     "git_branch": "codex/lg-r2a-action-conditioning",
-    "git_commit": "f867f97c09e8785b91c1c94c18cae1b316795f59",
+    "git_commit": "97fac1a6f65a13ce05e9ccf674184a9a1a8c69c8",
     "hostname": "autodl-container-c47c48a71b-504676bc",
     "platform": "Linux-5.15.0-119-generic-x86_64-with-glibc2.35",
     "python": "3.12.3",
