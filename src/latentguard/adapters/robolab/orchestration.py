@@ -107,6 +107,11 @@ def merge_faithful_results(
     initial_failures = sum(
         int(result.get("initial_restore_failures", -1)) for result in results
     )
+    config_overlay_failures = sum(
+        int(result.get("recorded_config_overlay_failures", -1)) for result in results
+    )
+    if config_overlay_failures < 0:
+        raise ValueError("faithful shard config-overlay counters are invalid")
     state_failures = sum(
         int(result.get("per_step_state_failures", -1)) for result in results
     )
@@ -130,6 +135,7 @@ def merge_faithful_results(
     status = (
         "pass"
         if initial_failures
+        == config_overlay_failures
         == state_failures
         == terminal_mismatches
         == success_mismatches
@@ -146,6 +152,7 @@ def merge_faithful_results(
         "repeats_per_episode": repeats,
         "official_state_tolerance": tolerance,
         "initial_restore_failures": initial_failures,
+        "recorded_config_overlay_failures": config_overlay_failures,
         "per_step_state_failures": state_failures,
         "terminal_mismatches": terminal_mismatches,
         "success_mismatches": success_mismatches,

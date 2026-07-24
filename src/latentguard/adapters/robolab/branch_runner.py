@@ -12,6 +12,7 @@ class BranchGateInput:
 
     valid_recorded_episodes: int
     faithful_initial_restore_failures: int
+    faithful_config_overlay_failures: int
     faithful_per_step_failures: int
     faithful_terminal_mismatches: int
     faithful_success_mismatches: int
@@ -32,6 +33,7 @@ def evaluate_lg_rb1_gate(evidence: BranchGateInput) -> dict[str, Any]:
     faithful_pass = (
         evidence.valid_recorded_episodes >= 10
         and evidence.faithful_initial_restore_failures == 0
+        and evidence.faithful_config_overlay_failures == 0
         and evidence.faithful_per_step_failures == 0
         and evidence.faithful_terminal_mismatches == 0
         and evidence.faithful_success_mismatches == 0

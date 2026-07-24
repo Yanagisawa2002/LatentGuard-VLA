@@ -43,6 +43,9 @@ def main() -> None:
     input_evidence = BranchGateInput(
         valid_recorded_episodes=int(recordings["valid_episode_count"]),
         faithful_initial_restore_failures=int(faithful["initial_restore_failures"]),
+        faithful_config_overlay_failures=int(
+            faithful["recorded_config_overlay_failures"]
+        ),
         faithful_per_step_failures=int(faithful["per_step_state_failures"]),
         faithful_terminal_mismatches=int(faithful["terminal_mismatches"]),
         faithful_success_mismatches=int(faithful["success_mismatches"]),
@@ -72,6 +75,9 @@ def main() -> None:
         "valid_recorded_episodes": input_evidence.valid_recorded_episodes,
         "faithful_initial_restore_failures": (
             input_evidence.faithful_initial_restore_failures
+        ),
+        "faithful_config_overlay_failures": (
+            input_evidence.faithful_config_overlay_failures
         ),
         "faithful_per_step_failures": input_evidence.faithful_per_step_failures,
         "faithful_terminal_mismatches": input_evidence.faithful_terminal_mismatches,

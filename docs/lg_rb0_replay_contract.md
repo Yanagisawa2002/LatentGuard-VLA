@@ -45,6 +45,7 @@ fixed at `0.01`.
 The gate requires:
 
 - initial restore failures: zero;
+- recorded configuration overlay failures or skipped fields: zero;
 - missing or unexpected compared state paths: zero;
 - per-step state failures: zero;
 - terminal mismatches: zero;

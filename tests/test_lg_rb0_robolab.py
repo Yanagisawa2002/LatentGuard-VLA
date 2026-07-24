@@ -94,6 +94,7 @@ def _gate(**overrides: object) -> BranchGateInput:
     values: dict[str, object] = {
         "valid_recorded_episodes": 10,
         "faithful_initial_restore_failures": 0,
+        "faithful_config_overlay_failures": 0,
         "faithful_per_step_failures": 0,
         "faithful_terminal_mismatches": 0,
         "faithful_success_mismatches": 0,
@@ -116,6 +117,7 @@ def test_gate_distinguishes_result_a_b_and_c() -> None:
     accepted = evaluate_lg_rb1_gate(_gate())
     takeover_failed = evaluate_lg_rb1_gate(_gate(prefix_mismatches=1))
     replay_failed = evaluate_lg_rb1_gate(_gate(faithful_per_step_failures=1))
+    config_failed = evaluate_lg_rb1_gate(_gate(faithful_config_overlay_failures=30))
     replay_error = evaluate_lg_rb1_gate(
         _gate(
             faithful_completed_replays=0,
@@ -136,6 +138,10 @@ def test_gate_distinguishes_result_a_b_and_c() -> None:
         False,
     )
     assert (replay_error["result"], replay_error["LG_RB1_AUTHORIZED"]) == (
+        "C",
+        False,
+    )
+    assert (config_failed["result"], config_failed["LG_RB1_AUTHORIZED"]) == (
         "C",
         False,
     )
@@ -165,6 +171,7 @@ def test_process_isolated_recording_and_faithful_merges() -> None:
                 "repeats_per_episode": 3,
                 "official_state_tolerance": 0.01,
                 "initial_restore_failures": 0,
+                "recorded_config_overlay_failures": 0,
                 "per_step_state_failures": 0,
                 "terminal_mismatches": 0,
                 "success_mismatches": 0,

@@ -445,6 +445,7 @@ def _faithful(
     manifest = _read(artifact_dir / "recording_manifest.json")
     details: list[dict[str, Any]] = []
     initial_failures = 0
+    config_overlay_failures = 0
     state_failures = 0
     terminal_mismatches = 0
     success_mismatches = 0
@@ -470,6 +471,7 @@ def _faithful(
                     "initial_restore_pass": None,
                     "initial_restore_maximum_absolute_error": None,
                     "recorded_config_skipped_fields": skipped,
+                    "recorded_config_overlay_pass": not skipped,
                     "official_state_validator_pass": None,
                     "official_maximum_absolute_error": None,
                     "strict_per_step_failure_count": None,
@@ -485,8 +487,10 @@ def _faithful(
                         env.scene.get_state(is_relative=True),
                         tolerance=official_tolerance,
                     )
-                    initial_ok = initial.matches and not skipped
+                    initial_ok = initial.matches
                     initial_failures += int(not initial_ok)
+                    config_overlay_ok = not skipped
+                    config_overlay_failures += int(not config_overlay_ok)
                     detail["initial_restore_pass"] = initial_ok
                     detail["initial_restore_maximum_absolute_error"] = (
                         initial.maximum_absolute_error
@@ -531,6 +535,7 @@ def _faithful(
                             "status": (
                                 "pass"
                                 if initial_ok
+                                and config_overlay_ok
                                 and official_pass
                                 and repeat_state_failures == 0
                                 and terminal_match
@@ -562,6 +567,7 @@ def _faithful(
         "status": (
             "pass"
             if initial_failures
+            == config_overlay_failures
             == state_failures
             == terminal_mismatches
             == success_mismatches
@@ -575,6 +581,7 @@ def _faithful(
         "repeats_per_episode": int(protocol["faithful_replay"]["repeats"]),
         "official_state_tolerance": official_tolerance,
         "initial_restore_failures": initial_failures,
+        "recorded_config_overlay_failures": config_overlay_failures,
         "per_step_state_failures": state_failures,
         "terminal_mismatches": terminal_mismatches,
         "success_mismatches": success_mismatches,
