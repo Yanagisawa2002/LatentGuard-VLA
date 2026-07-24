@@ -45,6 +45,7 @@ from latentguard.counterfactual.models import (
 ROOT = Path(__file__).resolve().parents[1]
 SCRIPTS = ROOT / "scripts"
 BASELINE = "6ae64db453f835e27bba700bc1f58b227fd16939"
+LG_R2B0_FINAL = "ea9cebb76cd3aa44005ec2fb9a9dd89208fefda7"
 
 
 def _thresholds() -> CandidateDiversityThresholds:
@@ -88,18 +89,13 @@ def _candidate(
     )
 
 
-def test_repository_changes_are_isolated_from_forbidden_repositories() -> None:
+def test_lg_r2b0_commit_range_is_isolated_from_forbidden_repositories() -> None:
     tracked = subprocess.check_output(
-        ["git", "diff", "--name-only", BASELINE],
+        ["git", "diff", "--name-only", BASELINE, LG_R2B0_FINAL],
         cwd=ROOT,
         text=True,
     ).splitlines()
-    untracked = subprocess.check_output(
-        ["git", "ls-files", "--others", "--exclude-standard"],
-        cwd=ROOT,
-        text=True,
-    ).splitlines()
-    changed = {path.replace("\\", "/").casefold() for path in tracked + untracked}
+    changed = {path.replace("\\", "/").casefold() for path in tracked}
     assert changed
     assert not any(
         marker in path

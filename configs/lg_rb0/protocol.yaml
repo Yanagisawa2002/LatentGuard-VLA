@@ -1,0 +1,70 @@
+schema_version: lg_rb0_protocol_v1
+milestone: LG-RB0
+title: RoboLab Faithful Replay and Intermediate-Branch Feasibility Gate
+external_stack:
+  repository: https://github.com/NVLabs/RoboLab.git
+  release: v0.2.1
+  commit: 0aef241fb088ca21bb4ebd24448940ed56620d17
+  python: "3.11"
+  isaac_sim: 5.1.0
+  isaac_lab: 2.3.2.post1
+runtime:
+  num_envs: 1
+  device: cuda:0
+  headless: true
+  use_fabric: true
+  enable_cameras: true
+recording:
+  controller: fixed_joint_hold_gripper_toggle_v1
+  task_queries:
+    - BananaInBowlTask
+    - RubiksCubeAndBananaTask
+  seeds:
+    - 810000
+    - 810001
+    - 810002
+    - 810003
+    - 810004
+  steps: 40
+  gripper_toggle_interval: 10
+  expected_episode_count: 10
+faithful_replay:
+  repeats: 3
+  official_state_tolerance: 0.01
+  require_initial_restore: true
+  require_complete_state_paths: true
+  require_terminal_match: true
+  require_success_match: true
+takeover:
+  anchor_fractions:
+    - 0.25
+    - 0.50
+    - 0.75
+  anchor_labels:
+    - early
+    - middle
+    - late
+  repeats: 3
+  state_tolerance: 0.000001
+  branch_steps: 10
+  checkpoints:
+    - 1
+    - 5
+    - 10
+  branches:
+    A: hold_arm_open_gripper_v1
+    B: hold_arm_closed_gripper_v1
+  isolation_orders:
+    - A-B-A
+    - B-A-B
+sealed_final_seeds:
+  first: 900000
+  last: 900099
+prohibitions:
+  training: true
+  checkpoint_generation: true
+  policy_integration: true
+  candidate_ranking: true
+  online_intervention: true
+  langmani_access: true
+  final_seed_access: true

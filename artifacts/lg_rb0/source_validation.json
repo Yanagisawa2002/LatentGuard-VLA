@@ -1,0 +1,30 @@
+{
+  "contract": {
+    "anchor_fractions": [
+      0.25,
+      0.5,
+      0.75
+    ],
+    "branch_checkpoints": [
+      1,
+      5,
+      10
+    ],
+    "num_envs": 1,
+    "official_state_tolerance": 0.01,
+    "repeats": 3,
+    "takeover_state_tolerance": 1e-06
+  },
+  "final_seeds_accessed": false,
+  "recorded_episode_count": 10,
+  "recording_seeds": [
+    810000,
+    810001,
+    810002,
+    810003,
+    810004
+  ],
+  "robolab_commit": "0aef241fb088ca21bb4ebd24448940ed56620d17",
+  "schema_version": "lg_rb0_source_validation_v1",
+  "status": "pass"
+}

@@ -1,0 +1,5 @@
+# LG-RB0 source and binary identity. The remote `pip freeze` is captured in the
+# environment manifest after the supported stack has passed its import probe.
+robolab @ git+https://github.com/NVLabs/RoboLab.git@0aef241fb088ca21bb4ebd24448940ed56620d17
+isaacsim[all,extscache]==5.1.0
+isaaclab==2.3.2.post1

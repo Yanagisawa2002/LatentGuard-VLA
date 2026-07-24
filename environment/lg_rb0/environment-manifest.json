@@ -1,0 +1,22 @@
+{
+  "schema_version": "lg_rb0_environment_manifest_v1",
+  "status": "preregistered",
+  "external_stack": {
+    "robolab_repository": "https://github.com/NVLabs/RoboLab.git",
+    "robolab_release": "v0.2.1",
+    "robolab_commit": "0aef241fb088ca21bb4ebd24448940ed56620d17",
+    "python": "3.11",
+    "isaac_sim": "5.1.0",
+    "isaac_lab": "2.3.2.post1"
+  },
+  "runtime_requirements": {
+    "num_envs": 1,
+    "headless": true,
+    "gpu_required": true,
+    "minimum_free_data_disk_gib": 30,
+    "recommended_gpu_memory_gib": 48
+  },
+  "observed_remote": null,
+  "resolved_packages": null,
+  "note": "Runtime facts are populated only from the exact pushed revision after the remote stack probe."
+}
