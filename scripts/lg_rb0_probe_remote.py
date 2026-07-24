@@ -114,8 +114,6 @@ def _main() -> None:
             raise RuntimeError(f"frozen package identity mismatch: {versions}")
         if sys.version_info[:2] != (3, 11):
             raise RuntimeError("LG-RB0 requires Python 3.11")
-        if not torch.cuda.is_available():
-            raise RuntimeError("CUDA is unavailable")
         vulkan_icd_value = os.environ.get("VK_ICD_FILENAMES")
         if not vulkan_icd_value:
             raise RuntimeError("VK_ICD_FILENAMES must select one NVIDIA ICD")
@@ -127,15 +125,17 @@ def _main() -> None:
         robolab.constants.RECORD_IMAGE_DATA = False
         robolab.constants.VERBOSE = True
         auto_register_droid_envs()
-        device = torch.cuda.get_device_properties(0)
-        driver = subprocess.check_output(
+        gpu_line = subprocess.check_output(
             [
                 "nvidia-smi",
-                "--query-gpu=driver_version",
-                "--format=csv,noheader",
+                "--query-gpu=name,memory.total,driver_version",
+                "--format=csv,noheader,nounits",
             ],
             text=True,
         ).splitlines()[0]
+        gpu_name, memory_mib, driver = [
+            value.strip() for value in gpu_line.split(",", maxsplit=2)
+        ]
         stack_manifest = {
             "schema_version": "lg_rb0_robolab_stack_manifest_v1",
             "status": "pass",
@@ -147,10 +147,9 @@ def _main() -> None:
             },
             "versions": versions,
             "gpu": {
-                "name": device.name,
-                "total_memory_bytes": int(device.total_memory),
+                "name": gpu_name,
+                "total_memory_bytes": int(memory_mib) * 1024 * 1024,
                 "driver": driver,
-                "torch_architectures": torch.cuda.get_arch_list(),
             },
             "runtime": {
                 "num_envs": 1,
