@@ -8,6 +8,7 @@ import os
 import platform
 import subprocess
 import sys
+import traceback
 from importlib import metadata
 from pathlib import Path
 from typing import Any
@@ -276,6 +277,9 @@ def _main() -> None:
                 )
             finally:
                 env.close()
+    except BaseException:
+        traceback.print_exc()
+        raise
     finally:
         simulation_app.close()
 

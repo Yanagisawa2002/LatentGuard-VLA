@@ -9,6 +9,7 @@ import json
 import os
 import re
 import subprocess
+import traceback
 from collections.abc import Mapping, Sequence
 from pathlib import Path
 from typing import Any
@@ -819,6 +820,9 @@ def _main() -> None:
         else:
             _takeover(protocol, args.run_root, args.artifact_dir)
         print(json.dumps({"status": "complete", "phase": args.phase}, sort_keys=True))
+    except BaseException:
+        traceback.print_exc()
+        raise
     finally:
         simulation_app.close()
 
