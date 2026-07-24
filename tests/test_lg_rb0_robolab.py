@@ -9,6 +9,11 @@ from latentguard.adapters.robolab.branch_runner import (
     BranchGateInput,
     evaluate_lg_rb1_gate,
 )
+from latentguard.adapters.robolab.orchestration import (
+    merge_faithful_results,
+    merge_recording_manifests,
+    merge_takeover_results,
+)
 from latentguard.adapters.robolab.replay_adapter import ReplayContract
 from latentguard.adapters.robolab.state_schema import (
     compare_state_trees,
@@ -117,3 +122,86 @@ def test_gate_distinguishes_result_a_b_and_c() -> None:
         "C",
         False,
     )
+
+
+def test_process_isolated_recording_and_faithful_merges() -> None:
+    recording_shards = []
+    faithful_shards = []
+    for index in range(2):
+        recording_shards.append(
+            {
+                "status": "pass",
+                "controller_kind": "deterministic_fixed_mechanics_probe",
+                "policy_or_candidate_source": False,
+                "episode_count": 1,
+                "valid_episode_count": 1,
+                "recordings": [{"recording_id": f"episode-{index}", "valid": True}],
+                "raw_recordings_in_git": False,
+                "training_performed": False,
+                "final_seeds_accessed": False,
+            }
+        )
+        faithful_shards.append(
+            {
+                "status": "pass",
+                "episode_count": 1,
+                "repeats_per_episode": 3,
+                "official_state_tolerance": 0.01,
+                "initial_restore_failures": 0,
+                "per_step_state_failures": 0,
+                "terminal_mismatches": 0,
+                "success_mismatches": 0,
+                "details": [{"repeat": repeat} for repeat in range(3)],
+            }
+        )
+    recording = merge_recording_manifests(
+        recording_shards,
+        expected_episode_count=2,
+    )
+    faithful = merge_faithful_results(
+        faithful_shards,
+        expected_episode_count=2,
+    )
+    assert recording["status"] == faithful["status"] == "pass"
+    assert recording["episode_count"] == faithful["episode_count"] == 2
+    assert len(faithful["details"]) == 6
+
+
+def test_process_isolated_takeover_merge_preserves_failure() -> None:
+    prefix = [
+        {
+            "state_tolerance": 1e-6,
+            "anchors_per_episode": 3,
+            "repeats_per_anchor": 3,
+            "mismatch_count": 1,
+            "semantic_coverage_complete": True,
+            "details": [{"anchor": index} for index in range(3)],
+        }
+    ]
+    branch = [
+        {
+            "state_tolerance": 1e-6,
+            "branches": ["A", "B"],
+            "checkpoints": [1, 5, 10],
+            "mismatch_count": 0,
+            "semantic_coverage_complete": True,
+            "details": [{"branch": index} for index in range(6)],
+        }
+    ]
+    isolation = [
+        {
+            "orders": ["A-B-A", "B-A-B"],
+            "mismatch_count": 0,
+            "semantic_coverage_complete": True,
+            "details": [{"order": index} for index in range(6)],
+        }
+    ]
+    merged = merge_takeover_results(
+        prefix,
+        branch,
+        isolation,
+        expected_episode_count=1,
+    )
+    assert merged["prefix_replay_validation"]["status"] == "fail"
+    assert merged["branch_determinism_validation"]["status"] == "pass"
+    assert merged["branch_isolation_validation"]["status"] == "pass"
