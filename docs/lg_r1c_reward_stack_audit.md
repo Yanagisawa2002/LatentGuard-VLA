@@ -51,3 +51,9 @@ for both models; TOPReward receives a separately labeled 16-frame native
 diagnostic on long anchor windows. Model revision, processor revision,
 tokenizer revision, checkpoint hashes, prompt, sampling, and normalization
 all fail closed.
+
+An already populated remote snapshot may be reused offline only when every
+root file has Hugging Face local-directory metadata bound to the declared full
+revision. Weight files then pass the pre-registered size and SHA-256 checks
+again before model loading. This permits an identical official ModelScope
+weight mirror without weakening the HF revision or content gates.

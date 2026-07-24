@@ -247,6 +247,32 @@ def test_robometer_per_frame_and_topreward_prompt_contracts_are_frozen() -> None
     assert topreward["native_diagnostic_frames"] == 16
 
 
+def test_exact_local_snapshot_requires_every_file_bound_to_revision(
+    tmp_path: Path,
+) -> None:
+    module = _script("_lg_r1c_reward_runtime")
+    revision = "a" * 40
+    metadata = tmp_path / ".cache" / "huggingface" / "download"
+    metadata.mkdir(parents=True)
+    for name in (
+        "config.json",
+        "tokenizer.json",
+        "tokenizer_config.json",
+        "model.safetensors",
+    ):
+        (tmp_path / name).write_text("{}\n", encoding="utf-8")
+        (metadata / f"{name}.metadata").write_text(
+            f"{revision}\n{'b' * 64}\n0.0\n",
+            encoding="utf-8",
+        )
+    assert module._is_exact_local_snapshot(tmp_path, revision=revision)
+    (metadata / "model.safetensors.metadata").write_text(
+        f"{'c' * 40}\n{'b' * 64}\n0.0\n",
+        encoding="utf-8",
+    )
+    assert not module._is_exact_local_snapshot(tmp_path, revision=revision)
+
+
 def test_failure_taxonomy_leave_task6_and_prevalence_are_explicit() -> None:
     evaluation = _yaml("configs/lg_r1c/evaluation.yaml")
     assert evaluation["failure_taxonomy"] == ["FAILED_PLACEMENT", "OBJECT_DROP"]

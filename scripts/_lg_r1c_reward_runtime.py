@@ -30,6 +30,28 @@ def model_root() -> Path:
     return root
 
 
+def _is_exact_local_snapshot(destination: Path, *, revision: str) -> bool:
+    if not destination.is_dir():
+        return False
+    files = [
+        path
+        for path in sorted(destination.iterdir())
+        if path.is_file() and not path.name.startswith(".")
+    ]
+    required = {"config.json", "tokenizer.json", "tokenizer_config.json"}
+    if not required.issubset({path.name for path in files}):
+        return False
+    metadata_root = destination / ".cache" / "huggingface" / "download"
+    for path in files:
+        metadata = metadata_root / f"{path.name}.metadata"
+        if not metadata.is_file():
+            return False
+        lines = metadata.read_text(encoding="utf-8").splitlines()
+        if len(lines) < 2 or lines[0] != revision:
+            return False
+    return True
+
+
 def snapshot_exact(
     *,
     role: str,
@@ -46,6 +68,8 @@ def snapshot_exact(
     from huggingface_hub import snapshot_download
 
     destination = model_root() / f"{role}-{revision[:12]}"
+    if _is_exact_local_snapshot(destination, revision=revision):
+        return destination
     resolved = snapshot_download(
         repo_id=model_id,
         revision=revision,
@@ -55,6 +79,8 @@ def snapshot_exact(
     path = Path(resolved)
     if not path.is_dir():
         raise FileNotFoundError(f"snapshot download did not create {path}")
+    if not _is_exact_local_snapshot(path, revision=revision):
+        raise ValueError(f"{role} snapshot metadata is not bound to {revision}")
     return path
 
 
