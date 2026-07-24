@@ -93,12 +93,13 @@ def main() -> None:
         stage_by_episode[episode_id] = rows
     cache_path = reward / "vlajepa-probe" / "frozen_qwen_features.npz"
     cache = np.load(cache_path, allow_pickle=False)
-    sample_ids = [str(value) for value in cache["sample_id"].tolist()]
+    cache_features = np.asarray(cache["features"], dtype=np.float32)
+    cache_sample_ids = [str(value) for value in cache["sample_id"].tolist()]
+    sample_ids = cache_sample_ids
     if args.limit_samples is not None:
         sample_ids = sample_ids[: args.limit_samples]
     feature_index = {
-        str(sample_id): index
-        for index, sample_id in enumerate(cache["sample_id"].tolist())
+        str(sample_id): index for index, sample_id in enumerate(cache_sample_ids)
     }
     proprio_cache: dict[str, np.ndarray] = {}
     features: list[np.ndarray] = []
@@ -181,9 +182,7 @@ def main() -> None:
                 if distance < 21
                 else "distant"
             )
-        features.append(
-            np.asarray(cache["features"][feature_index[sample_id]], dtype=np.float32)
-        )
+        features.append(cache_features[feature_index[sample_id]])
         actions.append(chunk)
         masks.append(action_mask)
         proprio.append(proprio_cache[episode_id][frame])

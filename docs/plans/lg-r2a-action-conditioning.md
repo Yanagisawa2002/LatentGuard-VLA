@@ -155,3 +155,7 @@ The plan does not access sealed final seeds, change the frozen policy or
 processor, modify LangMani, use a LangMani worktree, run a simulator, or weaken
 the existing Result B. The remote server remains powered on and SSH-ready
 after completion unless the user separately authorizes shutdown.
+
+Target materialization must load each compressed frozen feature array once.
+Repeated per-sample decompression is a failed resource-safety gate and must be
+stopped before GPU work.
