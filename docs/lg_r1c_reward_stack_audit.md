@@ -6,6 +6,8 @@ to ROBOMETER commit `5b815254bf31ee1bea3753c3a2da9f9033736d9a`
 (Apache-2.0) and TOPReward commit
 `4877a0ee5098cbec18485125466631b1dcc4a573` (MIT). Exact model and file
 identities are in `artifacts/lg_r1c/reward_stack_manifest.json`.
+Integration source hashes use canonical LF bytes so Windows checkout line
+endings cannot create a false source-drift failure on Linux.
 
 ## ROBOMETER
 

@@ -11,18 +11,19 @@
     "topreward_per_frame_output_available": false
   },
   "lerobot_integration_file_sha256": {
-    "robometer/configuration_robometer.py": "0a3616fdb69da2e2dddd0c5d799509254a68e289cbb8c4b9744f14356bea3de8",
-    "robometer/modeling_robometer.py": "a2787de1529fa768cf503bbfd9f43ae0c6d98c5bd2e3adfc926ab5477e126845",
-    "robometer/processor_robometer.py": "671dc4179eadd894c43aa8dd0c1503f8b7a7bfd325c79143610e20e79222b497",
-    "topreward/configuration_topreward.py": "6b709fafdd3a335fd458c12da415ff944696c84039489d57d40e1aded0201539",
-    "topreward/modeling_topreward.py": "a4b9e09bf3c1e9fc769c9653824c634c7f74d3e8c761c14b1646e38d01f8b569",
-    "topreward/processor_topreward.py": "cc5ff518c8030e7629a667d3e7a15cf095c09ba79aaf80cd1a566a788b433f7d"
+    "robometer/configuration_robometer.py": "5e27a39cd85cac42c8513636e5fe0e1c50619640bae9cd3f7920ea1cabd2938f",
+    "robometer/modeling_robometer.py": "8b762141a0bebe7fc26c9bb4b392510702c33e3c7618fdc907c18c6d766a1185",
+    "robometer/processor_robometer.py": "f3de52df2110346578098129cad8d3ce8c260807a2eabe4e4aca69757e8e085e",
+    "topreward/configuration_topreward.py": "670dbeab412006eef296b63e1976a8fd67100764ab3f248c0423f54847b931a4",
+    "topreward/modeling_topreward.py": "9eb80053dd0e537a5f3f07b68934865232772ab2a66dfb7d618b0c1c1440af1c",
+    "topreward/processor_topreward.py": "d193598da329102e1b8a9e88d7bad766bd07c8ca3f8e1c0a6802d4fa42ead471"
   },
+  "lerobot_integration_hash_semantic": "canonical_lf_source_bytes",
   "repository": {
     "baseline_commit": "61e6ab8b5fb55eb93a7bd76c1c7bbd8957150fdd",
     "baseline_is_ancestor": true,
     "branch": "codex/lg-r1c-task-agnostic-reward",
-    "head_commit": "61e6ab8b5fb55eb93a7bd76c1c7bbd8957150fdd",
+    "head_commit": "044369cf9a4a52ece9f2843fee167a759459f25d",
     "origin_repository": "Yanagisawa2002/LatentGuard-VLA"
   },
   "robometer": {
