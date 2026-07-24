@@ -1,0 +1,7 @@
+schema_version: latentguard.lg_r2a.target_config.v1
+horizons: [7, 21, 49]
+stagnation_threshold: 0.02
+regression_threshold: 0.02
+failure_registry: artifacts/lg_r1b/failure_registry.json
+event_targets: [OBJECT_DROP, FAILED_PLACEMENT]
+time_to_failure_role: diagnostic_only

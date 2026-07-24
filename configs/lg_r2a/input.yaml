@@ -1,0 +1,22 @@
+schema_version: latentguard.lg_r2a.input_config.v1
+source_artifacts:
+  rollout_manifest: artifacts/lg_r1b/rollout_manifest.json
+  dataset_manifest: artifacts/lg_r1b/dataset_manifest.json
+  task_seed_registry: artifacts/lg_r1b/task_seed_registry.json
+  task_registry: configs/lg_r1b/task_registry.yaml
+  historical_split_manifest: artifacts/lg_r1/split_manifest.json
+  failure_registry: artifacts/lg_r1b/failure_registry.json
+  stage_annotation_report: artifacts/lg_r1b/stage_annotation_report.json
+  window_manifest: artifacts/lg_r1c/window_manifest.json
+  lg_r1c_input_manifest: artifacts/lg_r1c/input_dataset_manifest.json
+  lg_r0_action_contract: artifacts/lg_r0/libero_contract.json
+  processor_serialization: artifacts/lg_r1/processor_serialization_manifest.json
+expected_counts:
+  episodes: 320
+  tasks: 8
+  suites: 2
+  frames: 79326
+  successes: 293
+  failures: 27
+  evaluation_windows: 8470
+  failure_tasks: 4

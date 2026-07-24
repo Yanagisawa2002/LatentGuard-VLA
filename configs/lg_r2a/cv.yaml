@@ -1,0 +1,8 @@
+schema_version: latentguard.lg_r2a.cv_config.v1
+folds: 5
+assignment_seed: 22031
+failure_registry: artifacts/lg_r1b/failure_registry.json
+group_by: [episode_id, seed]
+balance_by: [task, success_failure, failure_taxonomy, progress_bin]
+test_once: true
+validation_fold_rule: next_cyclic_fold

@@ -1,0 +1,19 @@
+schema_version: latentguard.lg_r2a.probe_config.v1
+variant: action_only
+seed: 0
+batch_size: 128
+max_steps_per_fold: 400
+learning_rate: 0.0005
+weight_decay: 0.0001
+gradient_clip_norm: 1.0
+class_weight_cap: 50.0
+early_stopping_patience: 12
+minimum_improvement: 0.00001
+loss_weights:
+  progress: 1.0
+  stagnation: 0.5
+  regression: 0.5
+  events: 0.5
+  terminal: 0.5
+foundation_features_frozen: true
+test_once: true

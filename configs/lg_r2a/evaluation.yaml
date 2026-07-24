@@ -1,0 +1,9 @@
+schema_version: latentguard.lg_r2a.evaluation_config.v1
+bootstrap_repeats: 2000
+bootstrap_seed: 22047
+bootstrap_unit: episode
+task_macro: true
+leave_task6_out: true
+failure_task_macro: true
+original_split_compatibility: true
+test_consumption: exactly_once

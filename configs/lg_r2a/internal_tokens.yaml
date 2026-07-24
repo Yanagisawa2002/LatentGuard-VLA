@@ -1,0 +1,8 @@
+schema_version: latentguard.lg_r2a.internal_token_config.v1
+variant: internal_tokens
+optional: true
+gate_eligible: false
+self_generated_action_only: true
+general_external_candidate_deployable: false
+run_if_frozen_cache_already_exists: true
+recompute_foundation_features: false

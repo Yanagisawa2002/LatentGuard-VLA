@@ -1,0 +1,10 @@
+schema_version: latentguard.lg_r2a.sensitivity_config.v1
+model_variant: state_action
+permutation_seed: 22041
+swap_seed: 22043
+batch_size: 256
+attribution_per_fold: 128
+permutation_scope: [same_task, similar_progress_bin, same_effective_action_horizon]
+swap_scope: [same_task, similar_stage, similar_progress_bin, different_episode]
+real_actions_only: true
+training_use: false
