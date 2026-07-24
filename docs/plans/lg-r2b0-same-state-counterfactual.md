@@ -163,6 +163,10 @@ later ranking experiment.
 
 Result C was reached at execution commit
 `498a3153dfe7f1023510bf07e7f07ae415840280`.
+CPU-only hard-stop materialization, source validation, and remote audit ran
+from clean audit commit
+`181119b53a0a2b99819682b35e44b5f48285b1d7`; the evidence files preserve the
+simulation execution commit separately.
 
 The candidate-source hard gate passed: fixed-seed reproduction was exact and
 four registered seeds yielded four unique native chunks, with 100% real-policy

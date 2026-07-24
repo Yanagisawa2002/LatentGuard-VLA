@@ -1,0 +1,115 @@
+{
+  "LG_R2B1_AUTHORIZED": false,
+  "aliyun_default_for_downloads": true,
+  "backward_calls": 0,
+  "branch": "codex/lg-r2b0-same-state-counterfactual",
+  "candidate_ranker_trained": false,
+  "checkpoints_generated": 0,
+  "commit": "181119b53a0a2b99819682b35e44b5f48285b1d7",
+  "compact_file_set_sha256": "1b2428af7c6c63b720e4b2e8a0f7ce893f039328a6c20f3551088def874fba6a",
+  "compact_files": {
+    "anchor_registry.json": {
+      "bytes": 1209,
+      "locator": "anchor_registry.json",
+      "sha256": "a66e9715eea81427b575b71329a50cc37b5da1f9b016e98ba01a7154a819b552"
+    },
+    "candidate_diversity_report.json": {
+      "bytes": 1155,
+      "locator": "candidate_diversity_report.json",
+      "sha256": "c980f8347b964ef32104d4a5e6f5a36d00c3cbdcd41ce0e13e9356c784c6634b"
+    },
+    "candidate_manifest.json": {
+      "bytes": 1221,
+      "locator": "candidate_manifest.json",
+      "sha256": "fad4bf78555bee1569b26d84a352f2f3216263cdfdcb1e8818d5b5b42e547be9"
+    },
+    "candidate_source_manifest.json": {
+      "bytes": 20380,
+      "locator": "candidate_source_manifest.json",
+      "sha256": "c6dbcbf4858448f9fee1a9a2ddc2cb2bc599373ee936b52a6f8c2646bce9bd42"
+    },
+    "dataset_manifest.json": {
+      "bytes": 1213,
+      "locator": "dataset_manifest.json",
+      "sha256": "9209d68247c6af8688522ab49040c749122e61014428880323c4f21fcfc54d8e"
+    },
+    "dataset_validation.json": {
+      "bytes": 1147,
+      "locator": "dataset_validation.json",
+      "sha256": "8f583706809a4c2d182b9a3a56a607c2557b345685c36885f68ae80c3b4a3e9b"
+    },
+    "lg_r2b1_gate.json": {
+      "bytes": 1647,
+      "locator": "lg_r2b1_gate.json",
+      "sha256": "d0bf712f1730719d7311d97659f91cbc93ddbe9797705239ba3f2d7b43f0da72"
+    },
+    "outcome_diversity_report.json": {
+      "bytes": 1153,
+      "locator": "outcome_diversity_report.json",
+      "sha256": "339d9e91376e4c21d58af88c53553ec05736d21feb6988650dfae6a254fcb322"
+    },
+    "rank_stability_report.json": {
+      "bytes": 1150,
+      "locator": "rank_stability_report.json",
+      "sha256": "608385a2a87643416b263900a6e84855de0a845fb34c6afe2ef1bbc71d7a119d"
+    },
+    "source_validation.json": {
+      "bytes": 2938,
+      "locator": "source_validation.json",
+      "sha256": "ed627609717a57a2dac09769974a07dba03c596bf5edb9a239b520c3e04e5623"
+    },
+    "state_restore_validation.json": {
+      "bytes": 113231,
+      "locator": "state_restore_validation.json",
+      "sha256": "be967240294bcd8229d87f320180438dc4f2056884249d715f6e262be57a3c8f"
+    }
+  },
+  "downloads_performed": false,
+  "elapsed_seconds": 858.751961,
+  "end_time_utc": "2026-07-24T09:26:13.751961+00:00",
+  "execution_commands": [
+    "source /etc/network_turbo",
+    "candidate-source audit at 7746ef613f7b47f4819c512fe4ddce4e503c2123",
+    "state-restore compatibility attempt at 7746ef613f7b47f4819c512fe4ddce4e503c2123",
+    "render-error calibration at c58af034e5b7f9cd2503f90a0392c8bf244a5d98",
+    "canonical-render calibration at fbcadc36368a050b28d61c44c5bb85b2db0914bb",
+    "candidate-source audit at 498a3153dfe7f1023510bf07e7f07ae415840280",
+    "untouched 10-state by 5-repeat restoration gate at 498a3153dfe7f1023510bf07e7f07ae415840280",
+    "CPU-only hard-stop finalization at 181119b53a0a2b99819682b35e44b5f48285b1d7",
+    "CPU-only source and remote audit at 181119b53a0a2b99819682b35e44b5f48285b1d7"
+  ],
+  "final_seeds_accessed": false,
+  "intervention": false,
+  "network_turbo_sourced": true,
+  "online_selection": false,
+  "optimizer_steps": 0,
+  "remote_commit_created": false,
+  "run_id": "20260724T091155Z_lg-r2b0-same-state-counterfactual_498a315",
+  "runtime_identity": {
+    "git_branch": "codex/lg-r2b0-same-state-counterfactual",
+    "git_commit": "181119b53a0a2b99819682b35e44b5f48285b1d7",
+    "hostname": "autodl-container-c47c48a71b-504676bc",
+    "platform": "Linux-5.15.0-119-generic-x86_64-with-glibc2.35",
+    "python": "3.12.3",
+    "torch": {
+      "cuda_available": true,
+      "cuda_version": "12.8",
+      "gpu_name": "NVIDIA GeForce RTX 5090",
+      "version": "2.11.0+cu128"
+    }
+  },
+  "schema_version": "latentguard.lg_r2b0.remote_execution_audit.v1",
+  "scientific_gate_status": "blocked",
+  "scientific_result": "C",
+  "server_left_running": true,
+  "server_shutdown_requested": false,
+  "simulation_execution_commits": [
+    "498a3153dfe7f1023510bf07e7f07ae415840280"
+  ],
+  "source_checkout_clean_after_run": true,
+  "start_time_utc": "2026-07-24T09:11:55+00:00",
+  "status": "pass",
+  "synthetic_candidates": 0,
+  "tracked_source_modified_remotely": false,
+  "training_performed": false
+}

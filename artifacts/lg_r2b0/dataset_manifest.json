@@ -1,0 +1,34 @@
+{
+  "audit_runtime_identity": {
+    "git_branch": "codex/lg-r2b0-same-state-counterfactual",
+    "git_commit": "181119b53a0a2b99819682b35e44b5f48285b1d7",
+    "hostname": "autodl-container-c47c48a71b-504676bc",
+    "platform": "Linux-5.15.0-119-generic-x86_64-with-glibc2.35",
+    "python": "3.12.3",
+    "torch": {
+      "cuda_available": true,
+      "cuda_version": "12.8",
+      "gpu_name": "NVIDIA GeForce RTX 5090",
+      "version": "2.11.0+cu128"
+    }
+  },
+  "availability": "unavailable",
+  "backward_calls": 0,
+  "executed_branch_count": 0,
+  "failed_upstream_gate": "state_restore",
+  "final_seeds_accessed": false,
+  "input_sha256": {
+    "candidate_source_manifest": "c6dbcbf4858448f9fee1a9a2ddc2cb2bc599373ee936b52a6f8c2646bce9bd42",
+    "state_restore_validation": "be967240294bcd8229d87f320180438dc4f2056884249d715f6e262be57a3c8f"
+  },
+  "metric_values": null,
+  "metrics_available": false,
+  "not_run_reason": "UPSTREAM_STATE_RESTORE_DETERMINISM_GATE_FAILED",
+  "optimizer_steps": 0,
+  "registered_minimum_branches": 150,
+  "schema_version": "latentguard.lg_r2b0.dataset_manifest.v1",
+  "simulation_execution_commits": [
+    "498a3153dfe7f1023510bf07e7f07ae415840280"
+  ],
+  "status": "not_run"
+}

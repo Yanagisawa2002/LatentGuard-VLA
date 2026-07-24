@@ -1,0 +1,46 @@
+{
+  "LG_R2B1_AUTHORIZED": false,
+  "audit_runtime_identity": {
+    "git_branch": "codex/lg-r2b0-same-state-counterfactual",
+    "git_commit": "181119b53a0a2b99819682b35e44b5f48285b1d7",
+    "hostname": "autodl-container-c47c48a71b-504676bc",
+    "platform": "Linux-5.15.0-119-generic-x86_64-with-glibc2.35",
+    "python": "3.12.3",
+    "torch": {
+      "cuda_available": true,
+      "cuda_version": "12.8",
+      "gpu_name": "NVIDIA GeForce RTX 5090",
+      "version": "2.11.0+cu128"
+    }
+  },
+  "backward_calls": 0,
+  "candidate_source_gate_passed": true,
+  "downstream_collection_performed": false,
+  "downstream_metric_values": null,
+  "downstream_metrics_available": false,
+  "failed_gate": "state_restore",
+  "final_seeds_accessed": false,
+  "input_sha256": {
+    "candidate_source_manifest": "c6dbcbf4858448f9fee1a9a2ddc2cb2bc599373ee936b52a6f8c2646bce9bd42",
+    "state_restore_validation": "be967240294bcd8229d87f320180438dc4f2056884249d715f6e262be57a3c8f"
+  },
+  "no_online_selection_or_intervention": true,
+  "no_training": {
+    "candidate_ranker": true,
+    "failure_head": true,
+    "reward_model": true,
+    "uncertainty_model": true,
+    "world_model": true
+  },
+  "optimizer_steps": 0,
+  "result": "C",
+  "result_definition": "real native candidates exist but complete same-state restoration is not viable under the frozen contract",
+  "schema_version": "latentguard.lg_r2b0.lg_r2b1_gate.v1",
+  "simulation_execution_commits": [
+    "498a3153dfe7f1023510bf07e7f07ae415840280"
+  ],
+  "state_restore_gate_passed": false,
+  "status": "blocked",
+  "stop_reason": "STATE_RESTORE_DETERMINISM_GATE_FAILED",
+  "synthetic_candidates": 0
+}
