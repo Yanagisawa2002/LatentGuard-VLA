@@ -17,6 +17,13 @@ short-progress output provide a simple per-dimension attribution. All
 permutation, swap, ablation, and attribution operations are test-time
 diagnostics only and never alter training data.
 
+The action-magnitude diagnostic additionally reports no-fit correlations for
+translation, rotation, pose magnitude, and gripper switching. It repeats the
+correlations after subtracting same-task/current-progress-bin means. This
+cannot prove absence of an action-statistics shortcut; in particular,
+Action-only lower MAE with weaker rank correlation is treated as a shortcut
+concern rather than state-conditioned consequence evidence.
+
 The final evidence revision will report prediction change, performance
 degradation, event-specific AUPRC changes, and whether the frozen sensitivity
 gate passes.

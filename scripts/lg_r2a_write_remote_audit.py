@@ -32,6 +32,7 @@ COMPACT_FILES = (
     "lg_r2b_gate.json",
     "source_validation.json",
     "action_ablation_results.json",
+    "action_magnitude_diagnostic.json",
 )
 
 
@@ -43,6 +44,7 @@ def main() -> None:
     parser.add_argument("--run-id", required=True)
     parser.add_argument("--network-turbo-sourced", action="store_true")
     parser.add_argument("--aliyun-default", action="store_true")
+    parser.add_argument("--training-commit")
     parser.add_argument("--dry-run", action="store_true")
     args = parser.parse_args()
     if args.dry_run:
@@ -80,6 +82,10 @@ def main() -> None:
         "run_id": args.run_id,
         "branch": git_output("branch", "--show-current"),
         "commit": git_output("rev-parse", "HEAD"),
+        "execution_commits": {
+            "training": args.training_commit or git_output("rev-parse", "HEAD"),
+            "evaluation": git_output("rev-parse", "HEAD"),
+        },
         "source_checkout_clean_after_run": True,
         "remote_commit_created": False,
         "network_turbo_sourced_every_session": args.network_turbo_sourced,

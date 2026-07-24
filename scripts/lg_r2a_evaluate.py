@@ -299,6 +299,156 @@ def _subset_model(model: dict[str, Any], subset_name: str) -> dict[str, Any]:
     }
 
 
+def _within_stratum_residuals(
+    values: np.ndarray,
+    metadata: list[dict[str, Any]],
+) -> np.ndarray:
+    """Subtract same-task/current-progress-bin means."""
+
+    groups: dict[tuple[str, int], list[int]] = defaultdict(list)
+    for index, row in enumerate(metadata):
+        groups[(str(row["task"]), int(row["progress_bin"]))].append(index)
+    residuals = np.zeros_like(values, dtype=np.float64)
+    for indices in groups.values():
+        positions = np.asarray(indices, dtype=np.int64)
+        residuals[positions] = values[positions] - values[positions].mean()
+    return residuals
+
+
+def _action_magnitude_diagnostic(
+    data: dict[str, np.ndarray],
+    metadata: list[dict[str, Any]],
+    predictions: dict[str, dict[str, np.ndarray]],
+    metrics: dict[str, Any],
+) -> dict[str, Any]:
+    """Quantify action-statistics shortcuts without fitting test labels."""
+
+    actions = data["actions"].astype(np.float64)
+    translation = np.linalg.norm(actions[:, :, :3], axis=2).mean(axis=1)
+    rotation = np.linalg.norm(actions[:, :, 3:6], axis=2).mean(axis=1)
+    pose = np.linalg.norm(actions[:, :, :6], axis=2).mean(axis=1)
+    gripper_switches = np.sum(actions[:, 1:, -1] != actions[:, :-1, -1], axis=1).astype(
+        np.float64
+    )
+    target = data["progress"][:, 0].astype(np.float64)
+    combined_prediction = predictions["state_action"]["progress"][:, 0]
+    increment = combined_prediction - predictions["state_only"]["progress"][:, 0]
+    summaries = {
+        "translation_l2_mean": translation,
+        "rotation_l2_mean": rotation,
+        "pose_l2_mean": pose,
+        "gripper_switch_count": gripper_switches,
+    }
+    correlations = {}
+    target_residual = _within_stratum_residuals(target, metadata)
+    for name, values in summaries.items():
+        residual = _within_stratum_residuals(values, metadata)
+        correlations[name] = {
+            "target_short_delta_spearman": _spearman(values, target),
+            "absolute_target_short_delta_spearman": _spearman(values, np.abs(target)),
+            "within_task_progress_bin_target_spearman": _spearman(
+                residual, target_residual
+            ),
+            "state_action_prediction_spearman": _spearman(values, combined_prediction),
+            "state_action_minus_state_only_prediction_spearman": _spearman(
+                values, increment
+            ),
+        }
+    action_only = metrics["action_only"]["progress_delta"]["short"]
+    combined = metrics["state_action"]["progress_delta"]["short"]
+    shortcut_concern = (
+        action_only["mae"] < combined["mae"]
+        and action_only["spearman"] < combined["spearman"]
+    )
+    return {
+        "schema_version": "latentguard.lg_r2a.action_magnitude_diagnostic.v1",
+        "status": "pass",
+        "method": (
+            "no-fit correlations; within-stratum values subtract means for "
+            "same task and frozen current-progress bin"
+        ),
+        "correlations": correlations,
+        "action_only_short_progress": action_only,
+        "state_action_short_progress": combined,
+        "shortcut_concern_not_excluded": shortcut_concern,
+        "interpretation": (
+            "Action-only lower MAE with weaker rank correlation is consistent "
+            "with a near-zero-delta or action-statistics shortcut; it is not "
+            "evidence of state-conditioned consequence prediction."
+            if shortcut_concern
+            else "The registered shortcut diagnostic did not trigger."
+        ),
+        "used_for_training": False,
+        "used_for_selection": False,
+    }
+
+
+def _fold_metric_summary(
+    data: dict[str, np.ndarray],
+    metadata: list[dict[str, Any]],
+    predictions: dict[str, dict[str, np.ndarray]],
+    classification_name: str,
+) -> dict[str, Any]:
+    """Report fold mean/std and direction for primary incremental metrics."""
+
+    folds = np.asarray([int(row["fold"]) for row in metadata], dtype=np.int64)
+    state_labels, state_scores = _classification_arrays(
+        data, predictions["state_only"], classification_name
+    )
+    combined_labels, combined_scores = _classification_arrays(
+        data, predictions["state_action"], classification_name
+    )
+    rows = []
+    for fold in range(5):
+        mask = folds == fold
+        target = data["progress"][mask, 0]
+        state_mae = float(
+            np.mean(np.abs(target - predictions["state_only"]["progress"][mask, 0]))
+        )
+        combined_mae = float(
+            np.mean(np.abs(target - predictions["state_action"]["progress"][mask, 0]))
+        )
+        state_auprc = binary_metrics(
+            state_labels[mask].astype(int).tolist(),
+            state_scores[mask].tolist(),
+        ).auprc
+        combined_auprc = binary_metrics(
+            combined_labels[mask].astype(int).tolist(),
+            combined_scores[mask].tolist(),
+        ).auprc
+        rows.append(
+            {
+                "fold": fold,
+                "state_only_short_mae": state_mae,
+                "state_action_short_mae": combined_mae,
+                "short_mae_direction_positive": combined_mae < state_mae,
+                "classification_target": classification_name,
+                "state_only_classification_auprc": state_auprc,
+                "state_action_classification_auprc": combined_auprc,
+                "classification_direction_positive": (
+                    state_auprc is not None
+                    and combined_auprc is not None
+                    and combined_auprc > state_auprc
+                ),
+            }
+        )
+    state_values = [row["state_only_short_mae"] for row in rows]
+    combined_values = [row["state_action_short_mae"] for row in rows]
+    return {
+        "folds": rows,
+        "state_only_short_mae_mean": float(np.mean(state_values)),
+        "state_only_short_mae_std": float(np.std(state_values)),
+        "state_action_short_mae_mean": float(np.mean(combined_values)),
+        "state_action_short_mae_std": float(np.std(combined_values)),
+        "short_mae_positive_folds": sum(
+            row["short_mae_direction_positive"] for row in rows
+        ),
+        "classification_positive_folds": sum(
+            row["classification_direction_positive"] for row in rows
+        ),
+    }
+
+
 def main() -> None:
     """Produce all compact model, generalization, sensitivity, and gate artifacts."""
 
@@ -386,6 +536,9 @@ def main() -> None:
         ),
     )
     best_class_delta = float(class_deltas[best_class_name] or 0.0)
+    fold_metric_summary = _fold_metric_summary(
+        data, metadata, predictions, best_class_name
+    )
     repeats = int(config["bootstrap_repeats"])
     bootstrap_seed = int(config["bootstrap_seed"])
     progress_ci = _bootstrap_delta(
@@ -585,6 +738,7 @@ def main() -> None:
         "robustness": {
             **summary_for_gate["robustness"],
             "folds": fold_progress_deltas,
+            "fold_mean_std": fold_metric_summary,
         },
         "bootstrap": {
             "short_progress_mae_difference_state_action_minus_state_only": progress_ci,
@@ -593,6 +747,16 @@ def main() -> None:
         "model_metrics": metrics,
         "original_split_compatibility": original_split_metrics,
         "failure_task_macro": failure_task_macro,
+        "exploratory_held_out_failure_task": {
+            "status": "not_run_insufficient_balanced_support",
+            "failure_tasks": sorted(failure_tasks),
+            "reason": (
+                "Only 39 local-event-positive cached windows are available, "
+                "with strong taxonomy/task concentration; a task holdout would "
+                "not support a stable promotion claim."
+            ),
+            "used_for_gate": False,
+        },
         "gate": {**gate, "inputs": summary_for_gate},
         "claims": {
             "causal_action_consequence_proved": False,
@@ -720,6 +884,10 @@ def main() -> None:
             },
         },
     )
+    magnitude_diagnostic = _action_magnitude_diagnostic(
+        data, metadata, predictions, metrics
+    )
+    write_json(output / "action_magnitude_diagnostic.json", magnitude_diagnostic)
     print(
         {
             "status": "pass",
