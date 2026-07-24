@@ -1,0 +1,108 @@
+{
+  "LG_RB1_AUTHORIZED": false,
+  "artifacts": {
+    "branch_determinism_validation.json": {
+      "sha256": "5e4f5e7781b5bfb6502a91d22406147f4f5642fc976b0653aed781e27086590a",
+      "size_bytes": 217,
+      "status": "not_run"
+    },
+    "branch_isolation_validation.json": {
+      "sha256": "7f747b6f939f373b3569cbbb39e5ef1ca652286243957e94ee9288bb8ab006b3",
+      "size_bytes": 215,
+      "status": "not_run"
+    },
+    "environment_validation.json": {
+      "sha256": "866fedbe774c2f597203ca761c0aead294529c5cd6f5e02844edb7c52b024533",
+      "size_bytes": 2401,
+      "status": "pass"
+    },
+    "faithful_replay_validation.json": {
+      "sha256": "92695490db804e47dfe89a43b8692937d4daa947be9403f94b6890fb0dcc7e98",
+      "size_bytes": 165860,
+      "status": "fail"
+    },
+    "lg_rb1_gate.json": {
+      "sha256": "1ef20075d754040c1894c0ed6bf01e8c1a58093c7d15ab1ff0d5aab94d6496a0",
+      "size_bytes": 919,
+      "status": "pass"
+    },
+    "prefix_replay_validation.json": {
+      "sha256": "4c1d2e7487e5a1153201dfb494319c6b90e164be3494e9c13fd53254ee9253f5",
+      "size_bytes": 212,
+      "status": "not_run"
+    },
+    "recording_manifest.json": {
+      "sha256": "59f2980d9956559be8cb0f1e4da95d906eca22951eed901596e632fa4e8cfa10",
+      "size_bytes": 10361,
+      "status": "pass"
+    },
+    "robolab_stack_manifest.json": {
+      "sha256": "1f9dde367ee62d8ba4fcb64250f649d37957f3f3b712fae0bffb7da924a7d705",
+      "size_bytes": 722,
+      "status": "pass"
+    },
+    "source_validation.json": {
+      "sha256": "0178b5a39eba9162eff6b91d853981e4522b8521512252d851dcb92fb88b6be8",
+      "size_bytes": 553,
+      "status": "pass"
+    }
+  },
+  "audit_generation_commit": "9c00d8292cb44b24bbb8dcf4fa74c80e3ce5fb6a",
+  "branch": "codex/lg-rb0-robolab-replay",
+  "candidate_selection_or_intervention": false,
+  "checkpoint_generated": false,
+  "external_commit": "0aef241fb088ca21bb4ebd24448940ed56620d17",
+  "external_source_clean": true,
+  "faithful_completed_replays": 0,
+  "faithful_execution_errors": 30,
+  "faithful_expected_replays": 30,
+  "final_seeds_accessed": false,
+  "hostname": "autodl-container-c47c48a71b-504676bc",
+  "initial_probe_audit_sha256": "e424fe832e77abd5928d894593de407ba204a448218113561fcc23737c0dea25",
+  "network_turbo_sourced": true,
+  "phase_runs": [
+    {
+      "commit": "093b78c805cb4a408d9c18f94dbd8c914661af95",
+      "exit_code": 0,
+      "log_sha256": "00fae5a20dcce97370324a14a2c6fb4bb1d6837585723d758187df220a02b87b",
+      "log_size_bytes": 37798,
+      "name": "environment_probe_banana",
+      "run_id": "lg-rb0-probe-banana",
+      "simulator_used": true
+    },
+    {
+      "commit": "093b78c805cb4a408d9c18f94dbd8c914661af95",
+      "exit_code": 0,
+      "log_sha256": "0cd5eb15177f554f5d99c282536ca5bd0e10a7686ab1eb2dcd9bbdfbe1c4cfb9",
+      "log_size_bytes": 39863,
+      "name": "environment_probe_rubiks",
+      "run_id": "lg-rb0-probe-rubiks",
+      "simulator_used": true
+    },
+    {
+      "commit": "0cdfbeda3baa171015c7d170a57e58b46d6f344e",
+      "exit_code": 0,
+      "log_sha256": "6525c7276f7dcfaf64d6136f1c3ef9db788dcee3235146e73963c7c4fccc1819",
+      "log_size_bytes": 42,
+      "name": "recording",
+      "run_id": "lg-rb0-record-v2",
+      "simulator_used": true
+    },
+    {
+      "commit": "cbc940d89da0c8642492525840d6033df95591b3",
+      "exit_code": 0,
+      "log_sha256": "367faa0db86ea0455c7ef90a1b91f23818c2130622aa19390f6fa63cc9d596bc",
+      "log_size_bytes": 44,
+      "name": "faithful_replay",
+      "run_id": "lg-rb0-faithful-v4",
+      "simulator_used": true
+    }
+  ],
+  "policy_or_ranker_loaded": false,
+  "result": "C",
+  "schema_version": "lg_rb0_remote_execution_audit_v2",
+  "status": "pass",
+  "takeover_status": "not_run",
+  "tracked_checkout_clean": true,
+  "training_performed": false
+}

@@ -45,3 +45,22 @@ videos, or checkpoints.
 
 Any earlier failure stops the later gates. The server remains on and SSH-ready
 after completion unless the user explicitly requests shutdown.
+
+## Observed installation result
+
+The validated execution environment used Python `3.11.15`, RoboLab `0.2.1`,
+Isaac Sim distribution `5.1.0.0`, Isaac Lab `2.3.2.post1`, PyTorch
+`2.7.0+cu128`, and CUDA runtime `12.8`. Isaac Sim's four-component package
+version is PEP 440-equivalent to the preregistered `5.1.0` requirement.
+
+The Aliyun mirror remained the default. It did not provide `uv` or the pinned
+`gymnasium==1.2.0`, so those packages used the public Python index; the pinned
+NVIDIA and PyTorch CUDA indexes were also required by the official dependency
+set. RoboLab assets were fetched with Git LFS after the network accelerator was
+sourced. Runtime installation and assets remained under the data disk.
+
+Both registered one-step GPU task smokes passed with a single standard NVIDIA
+Vulkan ICD. The available RTX 5090 exposed `34190917632` bytes of GPU memory,
+below RoboLab's recommended 48 GiB, but no OOM occurred. These launch results
+validate the environment only; they do not imply faithful replay or policy
+success.

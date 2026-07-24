@@ -1,0 +1,5568 @@
+{
+  "completed_replay_count": 0,
+  "details": [
+    {
+      "execution_error": {
+        "message": "'str' object is not callable",
+        "type": "TypeError"
+      },
+      "initial_restore_comparison": {
+        "dtype_mismatches": [],
+        "expected_paths": [
+          "articulation/robot/joint_position",
+          "articulation/robot/joint_velocity",
+          "articulation/robot/root_pose",
+          "articulation/robot/root_velocity",
+          "rigid_object/banana/root_pose",
+          "rigid_object/banana/root_velocity",
+          "rigid_object/bowl/root_pose",
+          "rigid_object/bowl/root_velocity",
+          "rigid_object/table/root_pose",
+          "rigid_object/table/root_velocity"
+        ],
+        "leaves": [
+          {
+            "compared_values": 13,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "articulation/robot/joint_position",
+            "shape": [
+              1,
+              13
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 13,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "articulation/robot/joint_velocity",
+            "shape": [
+              1,
+              13
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 7,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "articulation/robot/root_pose",
+            "shape": [
+              1,
+              7
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 6,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "articulation/robot/root_velocity",
+            "shape": [
+              1,
+              6
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 7,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "rigid_object/banana/root_pose",
+            "shape": [
+              1,
+              7
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 6,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "rigid_object/banana/root_velocity",
+            "shape": [
+              1,
+              6
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 7,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "rigid_object/bowl/root_pose",
+            "shape": [
+              1,
+              7
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 6,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "rigid_object/bowl/root_velocity",
+            "shape": [
+              1,
+              6
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 7,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "rigid_object/table/root_pose",
+            "shape": [
+              1,
+              7
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 6,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "rigid_object/table/root_velocity",
+            "shape": [
+              1,
+              6
+            ],
+            "within_tolerance": true
+          }
+        ],
+        "maximum_absolute_error": 0.0,
+        "missing_paths": [],
+        "non_finite_paths": [],
+        "observed_paths": [
+          "articulation/robot/joint_position",
+          "articulation/robot/joint_velocity",
+          "articulation/robot/root_pose",
+          "articulation/robot/root_velocity",
+          "deformable_object/<empty-mapping>",
+          "gripper/<empty-mapping>",
+          "rigid_object/banana/root_pose",
+          "rigid_object/banana/root_velocity",
+          "rigid_object/bowl/root_pose",
+          "rigid_object/bowl/root_velocity",
+          "rigid_object/table/root_pose",
+          "rigid_object/table/root_velocity"
+        ],
+        "shape_mismatches": [],
+        "status": "fail",
+        "tolerance": 0.01,
+        "unexpected_paths": [
+          "deformable_object/<empty-mapping>",
+          "gripper/<empty-mapping>"
+        ]
+      },
+      "initial_restore_maximum_absolute_error": 0.0,
+      "initial_restore_pass": false,
+      "observation_available": null,
+      "official_maximum_absolute_error": null,
+      "official_state_validator_pass": null,
+      "recorded_config_overlay_pass": false,
+      "recorded_config_skipped_fields": [
+        "/_instruction_variants (not in current config)"
+      ],
+      "recording_id": "BananaInBowlTask-seed-810000",
+      "repeat": 0,
+      "status": "execution_error",
+      "strict_per_step_failure_count": null,
+      "success_match": null,
+      "terminal_match": null
+    },
+    {
+      "execution_error": {
+        "message": "'str' object is not callable",
+        "type": "TypeError"
+      },
+      "initial_restore_comparison": {
+        "dtype_mismatches": [],
+        "expected_paths": [
+          "articulation/robot/joint_position",
+          "articulation/robot/joint_velocity",
+          "articulation/robot/root_pose",
+          "articulation/robot/root_velocity",
+          "rigid_object/banana/root_pose",
+          "rigid_object/banana/root_velocity",
+          "rigid_object/bowl/root_pose",
+          "rigid_object/bowl/root_velocity",
+          "rigid_object/table/root_pose",
+          "rigid_object/table/root_velocity"
+        ],
+        "leaves": [
+          {
+            "compared_values": 13,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "articulation/robot/joint_position",
+            "shape": [
+              1,
+              13
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 13,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "articulation/robot/joint_velocity",
+            "shape": [
+              1,
+              13
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 7,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "articulation/robot/root_pose",
+            "shape": [
+              1,
+              7
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 6,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "articulation/robot/root_velocity",
+            "shape": [
+              1,
+              6
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 7,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "rigid_object/banana/root_pose",
+            "shape": [
+              1,
+              7
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 6,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "rigid_object/banana/root_velocity",
+            "shape": [
+              1,
+              6
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 7,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "rigid_object/bowl/root_pose",
+            "shape": [
+              1,
+              7
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 6,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "rigid_object/bowl/root_velocity",
+            "shape": [
+              1,
+              6
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 7,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "rigid_object/table/root_pose",
+            "shape": [
+              1,
+              7
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 6,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "rigid_object/table/root_velocity",
+            "shape": [
+              1,
+              6
+            ],
+            "within_tolerance": true
+          }
+        ],
+        "maximum_absolute_error": 0.0,
+        "missing_paths": [],
+        "non_finite_paths": [],
+        "observed_paths": [
+          "articulation/robot/joint_position",
+          "articulation/robot/joint_velocity",
+          "articulation/robot/root_pose",
+          "articulation/robot/root_velocity",
+          "deformable_object/<empty-mapping>",
+          "gripper/<empty-mapping>",
+          "rigid_object/banana/root_pose",
+          "rigid_object/banana/root_velocity",
+          "rigid_object/bowl/root_pose",
+          "rigid_object/bowl/root_velocity",
+          "rigid_object/table/root_pose",
+          "rigid_object/table/root_velocity"
+        ],
+        "shape_mismatches": [],
+        "status": "fail",
+        "tolerance": 0.01,
+        "unexpected_paths": [
+          "deformable_object/<empty-mapping>",
+          "gripper/<empty-mapping>"
+        ]
+      },
+      "initial_restore_maximum_absolute_error": 0.0,
+      "initial_restore_pass": false,
+      "observation_available": null,
+      "official_maximum_absolute_error": null,
+      "official_state_validator_pass": null,
+      "recorded_config_overlay_pass": false,
+      "recorded_config_skipped_fields": [
+        "/_instruction_variants (not in current config)"
+      ],
+      "recording_id": "BananaInBowlTask-seed-810000",
+      "repeat": 1,
+      "status": "execution_error",
+      "strict_per_step_failure_count": null,
+      "success_match": null,
+      "terminal_match": null
+    },
+    {
+      "execution_error": {
+        "message": "'str' object is not callable",
+        "type": "TypeError"
+      },
+      "initial_restore_comparison": {
+        "dtype_mismatches": [],
+        "expected_paths": [
+          "articulation/robot/joint_position",
+          "articulation/robot/joint_velocity",
+          "articulation/robot/root_pose",
+          "articulation/robot/root_velocity",
+          "rigid_object/banana/root_pose",
+          "rigid_object/banana/root_velocity",
+          "rigid_object/bowl/root_pose",
+          "rigid_object/bowl/root_velocity",
+          "rigid_object/table/root_pose",
+          "rigid_object/table/root_velocity"
+        ],
+        "leaves": [
+          {
+            "compared_values": 13,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "articulation/robot/joint_position",
+            "shape": [
+              1,
+              13
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 13,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "articulation/robot/joint_velocity",
+            "shape": [
+              1,
+              13
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 7,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "articulation/robot/root_pose",
+            "shape": [
+              1,
+              7
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 6,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "articulation/robot/root_velocity",
+            "shape": [
+              1,
+              6
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 7,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "rigid_object/banana/root_pose",
+            "shape": [
+              1,
+              7
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 6,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "rigid_object/banana/root_velocity",
+            "shape": [
+              1,
+              6
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 7,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "rigid_object/bowl/root_pose",
+            "shape": [
+              1,
+              7
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 6,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "rigid_object/bowl/root_velocity",
+            "shape": [
+              1,
+              6
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 7,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "rigid_object/table/root_pose",
+            "shape": [
+              1,
+              7
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 6,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "rigid_object/table/root_velocity",
+            "shape": [
+              1,
+              6
+            ],
+            "within_tolerance": true
+          }
+        ],
+        "maximum_absolute_error": 0.0,
+        "missing_paths": [],
+        "non_finite_paths": [],
+        "observed_paths": [
+          "articulation/robot/joint_position",
+          "articulation/robot/joint_velocity",
+          "articulation/robot/root_pose",
+          "articulation/robot/root_velocity",
+          "deformable_object/<empty-mapping>",
+          "gripper/<empty-mapping>",
+          "rigid_object/banana/root_pose",
+          "rigid_object/banana/root_velocity",
+          "rigid_object/bowl/root_pose",
+          "rigid_object/bowl/root_velocity",
+          "rigid_object/table/root_pose",
+          "rigid_object/table/root_velocity"
+        ],
+        "shape_mismatches": [],
+        "status": "fail",
+        "tolerance": 0.01,
+        "unexpected_paths": [
+          "deformable_object/<empty-mapping>",
+          "gripper/<empty-mapping>"
+        ]
+      },
+      "initial_restore_maximum_absolute_error": 0.0,
+      "initial_restore_pass": false,
+      "observation_available": null,
+      "official_maximum_absolute_error": null,
+      "official_state_validator_pass": null,
+      "recorded_config_overlay_pass": false,
+      "recorded_config_skipped_fields": [
+        "/_instruction_variants (not in current config)"
+      ],
+      "recording_id": "BananaInBowlTask-seed-810000",
+      "repeat": 2,
+      "status": "execution_error",
+      "strict_per_step_failure_count": null,
+      "success_match": null,
+      "terminal_match": null
+    },
+    {
+      "execution_error": {
+        "message": "'str' object is not callable",
+        "type": "TypeError"
+      },
+      "initial_restore_comparison": {
+        "dtype_mismatches": [],
+        "expected_paths": [
+          "articulation/robot/joint_position",
+          "articulation/robot/joint_velocity",
+          "articulation/robot/root_pose",
+          "articulation/robot/root_velocity",
+          "rigid_object/banana/root_pose",
+          "rigid_object/banana/root_velocity",
+          "rigid_object/bowl/root_pose",
+          "rigid_object/bowl/root_velocity",
+          "rigid_object/table/root_pose",
+          "rigid_object/table/root_velocity"
+        ],
+        "leaves": [
+          {
+            "compared_values": 13,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "articulation/robot/joint_position",
+            "shape": [
+              1,
+              13
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 13,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "articulation/robot/joint_velocity",
+            "shape": [
+              1,
+              13
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 7,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "articulation/robot/root_pose",
+            "shape": [
+              1,
+              7
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 6,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "articulation/robot/root_velocity",
+            "shape": [
+              1,
+              6
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 7,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "rigid_object/banana/root_pose",
+            "shape": [
+              1,
+              7
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 6,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "rigid_object/banana/root_velocity",
+            "shape": [
+              1,
+              6
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 7,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "rigid_object/bowl/root_pose",
+            "shape": [
+              1,
+              7
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 6,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "rigid_object/bowl/root_velocity",
+            "shape": [
+              1,
+              6
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 7,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "rigid_object/table/root_pose",
+            "shape": [
+              1,
+              7
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 6,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "rigid_object/table/root_velocity",
+            "shape": [
+              1,
+              6
+            ],
+            "within_tolerance": true
+          }
+        ],
+        "maximum_absolute_error": 0.0,
+        "missing_paths": [],
+        "non_finite_paths": [],
+        "observed_paths": [
+          "articulation/robot/joint_position",
+          "articulation/robot/joint_velocity",
+          "articulation/robot/root_pose",
+          "articulation/robot/root_velocity",
+          "deformable_object/<empty-mapping>",
+          "gripper/<empty-mapping>",
+          "rigid_object/banana/root_pose",
+          "rigid_object/banana/root_velocity",
+          "rigid_object/bowl/root_pose",
+          "rigid_object/bowl/root_velocity",
+          "rigid_object/table/root_pose",
+          "rigid_object/table/root_velocity"
+        ],
+        "shape_mismatches": [],
+        "status": "fail",
+        "tolerance": 0.01,
+        "unexpected_paths": [
+          "deformable_object/<empty-mapping>",
+          "gripper/<empty-mapping>"
+        ]
+      },
+      "initial_restore_maximum_absolute_error": 0.0,
+      "initial_restore_pass": false,
+      "observation_available": null,
+      "official_maximum_absolute_error": null,
+      "official_state_validator_pass": null,
+      "recorded_config_overlay_pass": false,
+      "recorded_config_skipped_fields": [
+        "/_instruction_variants (not in current config)"
+      ],
+      "recording_id": "BananaInBowlTask-seed-810001",
+      "repeat": 0,
+      "status": "execution_error",
+      "strict_per_step_failure_count": null,
+      "success_match": null,
+      "terminal_match": null
+    },
+    {
+      "execution_error": {
+        "message": "'str' object is not callable",
+        "type": "TypeError"
+      },
+      "initial_restore_comparison": {
+        "dtype_mismatches": [],
+        "expected_paths": [
+          "articulation/robot/joint_position",
+          "articulation/robot/joint_velocity",
+          "articulation/robot/root_pose",
+          "articulation/robot/root_velocity",
+          "rigid_object/banana/root_pose",
+          "rigid_object/banana/root_velocity",
+          "rigid_object/bowl/root_pose",
+          "rigid_object/bowl/root_velocity",
+          "rigid_object/table/root_pose",
+          "rigid_object/table/root_velocity"
+        ],
+        "leaves": [
+          {
+            "compared_values": 13,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "articulation/robot/joint_position",
+            "shape": [
+              1,
+              13
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 13,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "articulation/robot/joint_velocity",
+            "shape": [
+              1,
+              13
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 7,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "articulation/robot/root_pose",
+            "shape": [
+              1,
+              7
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 6,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "articulation/robot/root_velocity",
+            "shape": [
+              1,
+              6
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 7,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "rigid_object/banana/root_pose",
+            "shape": [
+              1,
+              7
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 6,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "rigid_object/banana/root_velocity",
+            "shape": [
+              1,
+              6
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 7,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "rigid_object/bowl/root_pose",
+            "shape": [
+              1,
+              7
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 6,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "rigid_object/bowl/root_velocity",
+            "shape": [
+              1,
+              6
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 7,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "rigid_object/table/root_pose",
+            "shape": [
+              1,
+              7
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 6,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "rigid_object/table/root_velocity",
+            "shape": [
+              1,
+              6
+            ],
+            "within_tolerance": true
+          }
+        ],
+        "maximum_absolute_error": 0.0,
+        "missing_paths": [],
+        "non_finite_paths": [],
+        "observed_paths": [
+          "articulation/robot/joint_position",
+          "articulation/robot/joint_velocity",
+          "articulation/robot/root_pose",
+          "articulation/robot/root_velocity",
+          "deformable_object/<empty-mapping>",
+          "gripper/<empty-mapping>",
+          "rigid_object/banana/root_pose",
+          "rigid_object/banana/root_velocity",
+          "rigid_object/bowl/root_pose",
+          "rigid_object/bowl/root_velocity",
+          "rigid_object/table/root_pose",
+          "rigid_object/table/root_velocity"
+        ],
+        "shape_mismatches": [],
+        "status": "fail",
+        "tolerance": 0.01,
+        "unexpected_paths": [
+          "deformable_object/<empty-mapping>",
+          "gripper/<empty-mapping>"
+        ]
+      },
+      "initial_restore_maximum_absolute_error": 0.0,
+      "initial_restore_pass": false,
+      "observation_available": null,
+      "official_maximum_absolute_error": null,
+      "official_state_validator_pass": null,
+      "recorded_config_overlay_pass": false,
+      "recorded_config_skipped_fields": [
+        "/_instruction_variants (not in current config)"
+      ],
+      "recording_id": "BananaInBowlTask-seed-810001",
+      "repeat": 1,
+      "status": "execution_error",
+      "strict_per_step_failure_count": null,
+      "success_match": null,
+      "terminal_match": null
+    },
+    {
+      "execution_error": {
+        "message": "'str' object is not callable",
+        "type": "TypeError"
+      },
+      "initial_restore_comparison": {
+        "dtype_mismatches": [],
+        "expected_paths": [
+          "articulation/robot/joint_position",
+          "articulation/robot/joint_velocity",
+          "articulation/robot/root_pose",
+          "articulation/robot/root_velocity",
+          "rigid_object/banana/root_pose",
+          "rigid_object/banana/root_velocity",
+          "rigid_object/bowl/root_pose",
+          "rigid_object/bowl/root_velocity",
+          "rigid_object/table/root_pose",
+          "rigid_object/table/root_velocity"
+        ],
+        "leaves": [
+          {
+            "compared_values": 13,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "articulation/robot/joint_position",
+            "shape": [
+              1,
+              13
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 13,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "articulation/robot/joint_velocity",
+            "shape": [
+              1,
+              13
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 7,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "articulation/robot/root_pose",
+            "shape": [
+              1,
+              7
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 6,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "articulation/robot/root_velocity",
+            "shape": [
+              1,
+              6
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 7,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "rigid_object/banana/root_pose",
+            "shape": [
+              1,
+              7
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 6,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "rigid_object/banana/root_velocity",
+            "shape": [
+              1,
+              6
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 7,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "rigid_object/bowl/root_pose",
+            "shape": [
+              1,
+              7
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 6,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "rigid_object/bowl/root_velocity",
+            "shape": [
+              1,
+              6
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 7,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "rigid_object/table/root_pose",
+            "shape": [
+              1,
+              7
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 6,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "rigid_object/table/root_velocity",
+            "shape": [
+              1,
+              6
+            ],
+            "within_tolerance": true
+          }
+        ],
+        "maximum_absolute_error": 0.0,
+        "missing_paths": [],
+        "non_finite_paths": [],
+        "observed_paths": [
+          "articulation/robot/joint_position",
+          "articulation/robot/joint_velocity",
+          "articulation/robot/root_pose",
+          "articulation/robot/root_velocity",
+          "deformable_object/<empty-mapping>",
+          "gripper/<empty-mapping>",
+          "rigid_object/banana/root_pose",
+          "rigid_object/banana/root_velocity",
+          "rigid_object/bowl/root_pose",
+          "rigid_object/bowl/root_velocity",
+          "rigid_object/table/root_pose",
+          "rigid_object/table/root_velocity"
+        ],
+        "shape_mismatches": [],
+        "status": "fail",
+        "tolerance": 0.01,
+        "unexpected_paths": [
+          "deformable_object/<empty-mapping>",
+          "gripper/<empty-mapping>"
+        ]
+      },
+      "initial_restore_maximum_absolute_error": 0.0,
+      "initial_restore_pass": false,
+      "observation_available": null,
+      "official_maximum_absolute_error": null,
+      "official_state_validator_pass": null,
+      "recorded_config_overlay_pass": false,
+      "recorded_config_skipped_fields": [
+        "/_instruction_variants (not in current config)"
+      ],
+      "recording_id": "BananaInBowlTask-seed-810001",
+      "repeat": 2,
+      "status": "execution_error",
+      "strict_per_step_failure_count": null,
+      "success_match": null,
+      "terminal_match": null
+    },
+    {
+      "execution_error": {
+        "message": "'str' object is not callable",
+        "type": "TypeError"
+      },
+      "initial_restore_comparison": {
+        "dtype_mismatches": [],
+        "expected_paths": [
+          "articulation/robot/joint_position",
+          "articulation/robot/joint_velocity",
+          "articulation/robot/root_pose",
+          "articulation/robot/root_velocity",
+          "rigid_object/banana/root_pose",
+          "rigid_object/banana/root_velocity",
+          "rigid_object/bowl/root_pose",
+          "rigid_object/bowl/root_velocity",
+          "rigid_object/table/root_pose",
+          "rigid_object/table/root_velocity"
+        ],
+        "leaves": [
+          {
+            "compared_values": 13,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "articulation/robot/joint_position",
+            "shape": [
+              1,
+              13
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 13,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "articulation/robot/joint_velocity",
+            "shape": [
+              1,
+              13
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 7,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "articulation/robot/root_pose",
+            "shape": [
+              1,
+              7
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 6,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "articulation/robot/root_velocity",
+            "shape": [
+              1,
+              6
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 7,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "rigid_object/banana/root_pose",
+            "shape": [
+              1,
+              7
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 6,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "rigid_object/banana/root_velocity",
+            "shape": [
+              1,
+              6
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 7,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "rigid_object/bowl/root_pose",
+            "shape": [
+              1,
+              7
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 6,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "rigid_object/bowl/root_velocity",
+            "shape": [
+              1,
+              6
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 7,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "rigid_object/table/root_pose",
+            "shape": [
+              1,
+              7
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 6,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "rigid_object/table/root_velocity",
+            "shape": [
+              1,
+              6
+            ],
+            "within_tolerance": true
+          }
+        ],
+        "maximum_absolute_error": 0.0,
+        "missing_paths": [],
+        "non_finite_paths": [],
+        "observed_paths": [
+          "articulation/robot/joint_position",
+          "articulation/robot/joint_velocity",
+          "articulation/robot/root_pose",
+          "articulation/robot/root_velocity",
+          "deformable_object/<empty-mapping>",
+          "gripper/<empty-mapping>",
+          "rigid_object/banana/root_pose",
+          "rigid_object/banana/root_velocity",
+          "rigid_object/bowl/root_pose",
+          "rigid_object/bowl/root_velocity",
+          "rigid_object/table/root_pose",
+          "rigid_object/table/root_velocity"
+        ],
+        "shape_mismatches": [],
+        "status": "fail",
+        "tolerance": 0.01,
+        "unexpected_paths": [
+          "deformable_object/<empty-mapping>",
+          "gripper/<empty-mapping>"
+        ]
+      },
+      "initial_restore_maximum_absolute_error": 0.0,
+      "initial_restore_pass": false,
+      "observation_available": null,
+      "official_maximum_absolute_error": null,
+      "official_state_validator_pass": null,
+      "recorded_config_overlay_pass": false,
+      "recorded_config_skipped_fields": [
+        "/_instruction_variants (not in current config)"
+      ],
+      "recording_id": "BananaInBowlTask-seed-810002",
+      "repeat": 0,
+      "status": "execution_error",
+      "strict_per_step_failure_count": null,
+      "success_match": null,
+      "terminal_match": null
+    },
+    {
+      "execution_error": {
+        "message": "'str' object is not callable",
+        "type": "TypeError"
+      },
+      "initial_restore_comparison": {
+        "dtype_mismatches": [],
+        "expected_paths": [
+          "articulation/robot/joint_position",
+          "articulation/robot/joint_velocity",
+          "articulation/robot/root_pose",
+          "articulation/robot/root_velocity",
+          "rigid_object/banana/root_pose",
+          "rigid_object/banana/root_velocity",
+          "rigid_object/bowl/root_pose",
+          "rigid_object/bowl/root_velocity",
+          "rigid_object/table/root_pose",
+          "rigid_object/table/root_velocity"
+        ],
+        "leaves": [
+          {
+            "compared_values": 13,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "articulation/robot/joint_position",
+            "shape": [
+              1,
+              13
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 13,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "articulation/robot/joint_velocity",
+            "shape": [
+              1,
+              13
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 7,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "articulation/robot/root_pose",
+            "shape": [
+              1,
+              7
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 6,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "articulation/robot/root_velocity",
+            "shape": [
+              1,
+              6
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 7,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "rigid_object/banana/root_pose",
+            "shape": [
+              1,
+              7
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 6,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "rigid_object/banana/root_velocity",
+            "shape": [
+              1,
+              6
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 7,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "rigid_object/bowl/root_pose",
+            "shape": [
+              1,
+              7
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 6,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "rigid_object/bowl/root_velocity",
+            "shape": [
+              1,
+              6
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 7,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "rigid_object/table/root_pose",
+            "shape": [
+              1,
+              7
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 6,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "rigid_object/table/root_velocity",
+            "shape": [
+              1,
+              6
+            ],
+            "within_tolerance": true
+          }
+        ],
+        "maximum_absolute_error": 0.0,
+        "missing_paths": [],
+        "non_finite_paths": [],
+        "observed_paths": [
+          "articulation/robot/joint_position",
+          "articulation/robot/joint_velocity",
+          "articulation/robot/root_pose",
+          "articulation/robot/root_velocity",
+          "deformable_object/<empty-mapping>",
+          "gripper/<empty-mapping>",
+          "rigid_object/banana/root_pose",
+          "rigid_object/banana/root_velocity",
+          "rigid_object/bowl/root_pose",
+          "rigid_object/bowl/root_velocity",
+          "rigid_object/table/root_pose",
+          "rigid_object/table/root_velocity"
+        ],
+        "shape_mismatches": [],
+        "status": "fail",
+        "tolerance": 0.01,
+        "unexpected_paths": [
+          "deformable_object/<empty-mapping>",
+          "gripper/<empty-mapping>"
+        ]
+      },
+      "initial_restore_maximum_absolute_error": 0.0,
+      "initial_restore_pass": false,
+      "observation_available": null,
+      "official_maximum_absolute_error": null,
+      "official_state_validator_pass": null,
+      "recorded_config_overlay_pass": false,
+      "recorded_config_skipped_fields": [
+        "/_instruction_variants (not in current config)"
+      ],
+      "recording_id": "BananaInBowlTask-seed-810002",
+      "repeat": 1,
+      "status": "execution_error",
+      "strict_per_step_failure_count": null,
+      "success_match": null,
+      "terminal_match": null
+    },
+    {
+      "execution_error": {
+        "message": "'str' object is not callable",
+        "type": "TypeError"
+      },
+      "initial_restore_comparison": {
+        "dtype_mismatches": [],
+        "expected_paths": [
+          "articulation/robot/joint_position",
+          "articulation/robot/joint_velocity",
+          "articulation/robot/root_pose",
+          "articulation/robot/root_velocity",
+          "rigid_object/banana/root_pose",
+          "rigid_object/banana/root_velocity",
+          "rigid_object/bowl/root_pose",
+          "rigid_object/bowl/root_velocity",
+          "rigid_object/table/root_pose",
+          "rigid_object/table/root_velocity"
+        ],
+        "leaves": [
+          {
+            "compared_values": 13,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "articulation/robot/joint_position",
+            "shape": [
+              1,
+              13
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 13,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "articulation/robot/joint_velocity",
+            "shape": [
+              1,
+              13
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 7,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "articulation/robot/root_pose",
+            "shape": [
+              1,
+              7
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 6,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "articulation/robot/root_velocity",
+            "shape": [
+              1,
+              6
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 7,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "rigid_object/banana/root_pose",
+            "shape": [
+              1,
+              7
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 6,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "rigid_object/banana/root_velocity",
+            "shape": [
+              1,
+              6
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 7,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "rigid_object/bowl/root_pose",
+            "shape": [
+              1,
+              7
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 6,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "rigid_object/bowl/root_velocity",
+            "shape": [
+              1,
+              6
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 7,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "rigid_object/table/root_pose",
+            "shape": [
+              1,
+              7
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 6,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "rigid_object/table/root_velocity",
+            "shape": [
+              1,
+              6
+            ],
+            "within_tolerance": true
+          }
+        ],
+        "maximum_absolute_error": 0.0,
+        "missing_paths": [],
+        "non_finite_paths": [],
+        "observed_paths": [
+          "articulation/robot/joint_position",
+          "articulation/robot/joint_velocity",
+          "articulation/robot/root_pose",
+          "articulation/robot/root_velocity",
+          "deformable_object/<empty-mapping>",
+          "gripper/<empty-mapping>",
+          "rigid_object/banana/root_pose",
+          "rigid_object/banana/root_velocity",
+          "rigid_object/bowl/root_pose",
+          "rigid_object/bowl/root_velocity",
+          "rigid_object/table/root_pose",
+          "rigid_object/table/root_velocity"
+        ],
+        "shape_mismatches": [],
+        "status": "fail",
+        "tolerance": 0.01,
+        "unexpected_paths": [
+          "deformable_object/<empty-mapping>",
+          "gripper/<empty-mapping>"
+        ]
+      },
+      "initial_restore_maximum_absolute_error": 0.0,
+      "initial_restore_pass": false,
+      "observation_available": null,
+      "official_maximum_absolute_error": null,
+      "official_state_validator_pass": null,
+      "recorded_config_overlay_pass": false,
+      "recorded_config_skipped_fields": [
+        "/_instruction_variants (not in current config)"
+      ],
+      "recording_id": "BananaInBowlTask-seed-810002",
+      "repeat": 2,
+      "status": "execution_error",
+      "strict_per_step_failure_count": null,
+      "success_match": null,
+      "terminal_match": null
+    },
+    {
+      "execution_error": {
+        "message": "'str' object is not callable",
+        "type": "TypeError"
+      },
+      "initial_restore_comparison": {
+        "dtype_mismatches": [],
+        "expected_paths": [
+          "articulation/robot/joint_position",
+          "articulation/robot/joint_velocity",
+          "articulation/robot/root_pose",
+          "articulation/robot/root_velocity",
+          "rigid_object/banana/root_pose",
+          "rigid_object/banana/root_velocity",
+          "rigid_object/bowl/root_pose",
+          "rigid_object/bowl/root_velocity",
+          "rigid_object/table/root_pose",
+          "rigid_object/table/root_velocity"
+        ],
+        "leaves": [
+          {
+            "compared_values": 13,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "articulation/robot/joint_position",
+            "shape": [
+              1,
+              13
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 13,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "articulation/robot/joint_velocity",
+            "shape": [
+              1,
+              13
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 7,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "articulation/robot/root_pose",
+            "shape": [
+              1,
+              7
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 6,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "articulation/robot/root_velocity",
+            "shape": [
+              1,
+              6
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 7,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "rigid_object/banana/root_pose",
+            "shape": [
+              1,
+              7
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 6,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "rigid_object/banana/root_velocity",
+            "shape": [
+              1,
+              6
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 7,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "rigid_object/bowl/root_pose",
+            "shape": [
+              1,
+              7
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 6,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "rigid_object/bowl/root_velocity",
+            "shape": [
+              1,
+              6
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 7,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "rigid_object/table/root_pose",
+            "shape": [
+              1,
+              7
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 6,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "rigid_object/table/root_velocity",
+            "shape": [
+              1,
+              6
+            ],
+            "within_tolerance": true
+          }
+        ],
+        "maximum_absolute_error": 0.0,
+        "missing_paths": [],
+        "non_finite_paths": [],
+        "observed_paths": [
+          "articulation/robot/joint_position",
+          "articulation/robot/joint_velocity",
+          "articulation/robot/root_pose",
+          "articulation/robot/root_velocity",
+          "deformable_object/<empty-mapping>",
+          "gripper/<empty-mapping>",
+          "rigid_object/banana/root_pose",
+          "rigid_object/banana/root_velocity",
+          "rigid_object/bowl/root_pose",
+          "rigid_object/bowl/root_velocity",
+          "rigid_object/table/root_pose",
+          "rigid_object/table/root_velocity"
+        ],
+        "shape_mismatches": [],
+        "status": "fail",
+        "tolerance": 0.01,
+        "unexpected_paths": [
+          "deformable_object/<empty-mapping>",
+          "gripper/<empty-mapping>"
+        ]
+      },
+      "initial_restore_maximum_absolute_error": 0.0,
+      "initial_restore_pass": false,
+      "observation_available": null,
+      "official_maximum_absolute_error": null,
+      "official_state_validator_pass": null,
+      "recorded_config_overlay_pass": false,
+      "recorded_config_skipped_fields": [
+        "/_instruction_variants (not in current config)"
+      ],
+      "recording_id": "BananaInBowlTask-seed-810003",
+      "repeat": 0,
+      "status": "execution_error",
+      "strict_per_step_failure_count": null,
+      "success_match": null,
+      "terminal_match": null
+    },
+    {
+      "execution_error": {
+        "message": "'str' object is not callable",
+        "type": "TypeError"
+      },
+      "initial_restore_comparison": {
+        "dtype_mismatches": [],
+        "expected_paths": [
+          "articulation/robot/joint_position",
+          "articulation/robot/joint_velocity",
+          "articulation/robot/root_pose",
+          "articulation/robot/root_velocity",
+          "rigid_object/banana/root_pose",
+          "rigid_object/banana/root_velocity",
+          "rigid_object/bowl/root_pose",
+          "rigid_object/bowl/root_velocity",
+          "rigid_object/table/root_pose",
+          "rigid_object/table/root_velocity"
+        ],
+        "leaves": [
+          {
+            "compared_values": 13,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "articulation/robot/joint_position",
+            "shape": [
+              1,
+              13
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 13,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "articulation/robot/joint_velocity",
+            "shape": [
+              1,
+              13
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 7,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "articulation/robot/root_pose",
+            "shape": [
+              1,
+              7
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 6,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "articulation/robot/root_velocity",
+            "shape": [
+              1,
+              6
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 7,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "rigid_object/banana/root_pose",
+            "shape": [
+              1,
+              7
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 6,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "rigid_object/banana/root_velocity",
+            "shape": [
+              1,
+              6
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 7,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "rigid_object/bowl/root_pose",
+            "shape": [
+              1,
+              7
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 6,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "rigid_object/bowl/root_velocity",
+            "shape": [
+              1,
+              6
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 7,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "rigid_object/table/root_pose",
+            "shape": [
+              1,
+              7
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 6,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "rigid_object/table/root_velocity",
+            "shape": [
+              1,
+              6
+            ],
+            "within_tolerance": true
+          }
+        ],
+        "maximum_absolute_error": 0.0,
+        "missing_paths": [],
+        "non_finite_paths": [],
+        "observed_paths": [
+          "articulation/robot/joint_position",
+          "articulation/robot/joint_velocity",
+          "articulation/robot/root_pose",
+          "articulation/robot/root_velocity",
+          "deformable_object/<empty-mapping>",
+          "gripper/<empty-mapping>",
+          "rigid_object/banana/root_pose",
+          "rigid_object/banana/root_velocity",
+          "rigid_object/bowl/root_pose",
+          "rigid_object/bowl/root_velocity",
+          "rigid_object/table/root_pose",
+          "rigid_object/table/root_velocity"
+        ],
+        "shape_mismatches": [],
+        "status": "fail",
+        "tolerance": 0.01,
+        "unexpected_paths": [
+          "deformable_object/<empty-mapping>",
+          "gripper/<empty-mapping>"
+        ]
+      },
+      "initial_restore_maximum_absolute_error": 0.0,
+      "initial_restore_pass": false,
+      "observation_available": null,
+      "official_maximum_absolute_error": null,
+      "official_state_validator_pass": null,
+      "recorded_config_overlay_pass": false,
+      "recorded_config_skipped_fields": [
+        "/_instruction_variants (not in current config)"
+      ],
+      "recording_id": "BananaInBowlTask-seed-810003",
+      "repeat": 1,
+      "status": "execution_error",
+      "strict_per_step_failure_count": null,
+      "success_match": null,
+      "terminal_match": null
+    },
+    {
+      "execution_error": {
+        "message": "'str' object is not callable",
+        "type": "TypeError"
+      },
+      "initial_restore_comparison": {
+        "dtype_mismatches": [],
+        "expected_paths": [
+          "articulation/robot/joint_position",
+          "articulation/robot/joint_velocity",
+          "articulation/robot/root_pose",
+          "articulation/robot/root_velocity",
+          "rigid_object/banana/root_pose",
+          "rigid_object/banana/root_velocity",
+          "rigid_object/bowl/root_pose",
+          "rigid_object/bowl/root_velocity",
+          "rigid_object/table/root_pose",
+          "rigid_object/table/root_velocity"
+        ],
+        "leaves": [
+          {
+            "compared_values": 13,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "articulation/robot/joint_position",
+            "shape": [
+              1,
+              13
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 13,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "articulation/robot/joint_velocity",
+            "shape": [
+              1,
+              13
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 7,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "articulation/robot/root_pose",
+            "shape": [
+              1,
+              7
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 6,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "articulation/robot/root_velocity",
+            "shape": [
+              1,
+              6
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 7,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "rigid_object/banana/root_pose",
+            "shape": [
+              1,
+              7
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 6,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "rigid_object/banana/root_velocity",
+            "shape": [
+              1,
+              6
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 7,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "rigid_object/bowl/root_pose",
+            "shape": [
+              1,
+              7
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 6,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "rigid_object/bowl/root_velocity",
+            "shape": [
+              1,
+              6
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 7,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "rigid_object/table/root_pose",
+            "shape": [
+              1,
+              7
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 6,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "rigid_object/table/root_velocity",
+            "shape": [
+              1,
+              6
+            ],
+            "within_tolerance": true
+          }
+        ],
+        "maximum_absolute_error": 0.0,
+        "missing_paths": [],
+        "non_finite_paths": [],
+        "observed_paths": [
+          "articulation/robot/joint_position",
+          "articulation/robot/joint_velocity",
+          "articulation/robot/root_pose",
+          "articulation/robot/root_velocity",
+          "deformable_object/<empty-mapping>",
+          "gripper/<empty-mapping>",
+          "rigid_object/banana/root_pose",
+          "rigid_object/banana/root_velocity",
+          "rigid_object/bowl/root_pose",
+          "rigid_object/bowl/root_velocity",
+          "rigid_object/table/root_pose",
+          "rigid_object/table/root_velocity"
+        ],
+        "shape_mismatches": [],
+        "status": "fail",
+        "tolerance": 0.01,
+        "unexpected_paths": [
+          "deformable_object/<empty-mapping>",
+          "gripper/<empty-mapping>"
+        ]
+      },
+      "initial_restore_maximum_absolute_error": 0.0,
+      "initial_restore_pass": false,
+      "observation_available": null,
+      "official_maximum_absolute_error": null,
+      "official_state_validator_pass": null,
+      "recorded_config_overlay_pass": false,
+      "recorded_config_skipped_fields": [
+        "/_instruction_variants (not in current config)"
+      ],
+      "recording_id": "BananaInBowlTask-seed-810003",
+      "repeat": 2,
+      "status": "execution_error",
+      "strict_per_step_failure_count": null,
+      "success_match": null,
+      "terminal_match": null
+    },
+    {
+      "execution_error": {
+        "message": "'str' object is not callable",
+        "type": "TypeError"
+      },
+      "initial_restore_comparison": {
+        "dtype_mismatches": [],
+        "expected_paths": [
+          "articulation/robot/joint_position",
+          "articulation/robot/joint_velocity",
+          "articulation/robot/root_pose",
+          "articulation/robot/root_velocity",
+          "rigid_object/banana/root_pose",
+          "rigid_object/banana/root_velocity",
+          "rigid_object/bowl/root_pose",
+          "rigid_object/bowl/root_velocity",
+          "rigid_object/table/root_pose",
+          "rigid_object/table/root_velocity"
+        ],
+        "leaves": [
+          {
+            "compared_values": 13,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "articulation/robot/joint_position",
+            "shape": [
+              1,
+              13
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 13,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "articulation/robot/joint_velocity",
+            "shape": [
+              1,
+              13
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 7,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "articulation/robot/root_pose",
+            "shape": [
+              1,
+              7
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 6,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "articulation/robot/root_velocity",
+            "shape": [
+              1,
+              6
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 7,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "rigid_object/banana/root_pose",
+            "shape": [
+              1,
+              7
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 6,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "rigid_object/banana/root_velocity",
+            "shape": [
+              1,
+              6
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 7,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "rigid_object/bowl/root_pose",
+            "shape": [
+              1,
+              7
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 6,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "rigid_object/bowl/root_velocity",
+            "shape": [
+              1,
+              6
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 7,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "rigid_object/table/root_pose",
+            "shape": [
+              1,
+              7
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 6,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "rigid_object/table/root_velocity",
+            "shape": [
+              1,
+              6
+            ],
+            "within_tolerance": true
+          }
+        ],
+        "maximum_absolute_error": 0.0,
+        "missing_paths": [],
+        "non_finite_paths": [],
+        "observed_paths": [
+          "articulation/robot/joint_position",
+          "articulation/robot/joint_velocity",
+          "articulation/robot/root_pose",
+          "articulation/robot/root_velocity",
+          "deformable_object/<empty-mapping>",
+          "gripper/<empty-mapping>",
+          "rigid_object/banana/root_pose",
+          "rigid_object/banana/root_velocity",
+          "rigid_object/bowl/root_pose",
+          "rigid_object/bowl/root_velocity",
+          "rigid_object/table/root_pose",
+          "rigid_object/table/root_velocity"
+        ],
+        "shape_mismatches": [],
+        "status": "fail",
+        "tolerance": 0.01,
+        "unexpected_paths": [
+          "deformable_object/<empty-mapping>",
+          "gripper/<empty-mapping>"
+        ]
+      },
+      "initial_restore_maximum_absolute_error": 0.0,
+      "initial_restore_pass": false,
+      "observation_available": null,
+      "official_maximum_absolute_error": null,
+      "official_state_validator_pass": null,
+      "recorded_config_overlay_pass": false,
+      "recorded_config_skipped_fields": [
+        "/_instruction_variants (not in current config)"
+      ],
+      "recording_id": "BananaInBowlTask-seed-810004",
+      "repeat": 0,
+      "status": "execution_error",
+      "strict_per_step_failure_count": null,
+      "success_match": null,
+      "terminal_match": null
+    },
+    {
+      "execution_error": {
+        "message": "'str' object is not callable",
+        "type": "TypeError"
+      },
+      "initial_restore_comparison": {
+        "dtype_mismatches": [],
+        "expected_paths": [
+          "articulation/robot/joint_position",
+          "articulation/robot/joint_velocity",
+          "articulation/robot/root_pose",
+          "articulation/robot/root_velocity",
+          "rigid_object/banana/root_pose",
+          "rigid_object/banana/root_velocity",
+          "rigid_object/bowl/root_pose",
+          "rigid_object/bowl/root_velocity",
+          "rigid_object/table/root_pose",
+          "rigid_object/table/root_velocity"
+        ],
+        "leaves": [
+          {
+            "compared_values": 13,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "articulation/robot/joint_position",
+            "shape": [
+              1,
+              13
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 13,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "articulation/robot/joint_velocity",
+            "shape": [
+              1,
+              13
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 7,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "articulation/robot/root_pose",
+            "shape": [
+              1,
+              7
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 6,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "articulation/robot/root_velocity",
+            "shape": [
+              1,
+              6
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 7,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "rigid_object/banana/root_pose",
+            "shape": [
+              1,
+              7
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 6,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "rigid_object/banana/root_velocity",
+            "shape": [
+              1,
+              6
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 7,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "rigid_object/bowl/root_pose",
+            "shape": [
+              1,
+              7
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 6,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "rigid_object/bowl/root_velocity",
+            "shape": [
+              1,
+              6
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 7,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "rigid_object/table/root_pose",
+            "shape": [
+              1,
+              7
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 6,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "rigid_object/table/root_velocity",
+            "shape": [
+              1,
+              6
+            ],
+            "within_tolerance": true
+          }
+        ],
+        "maximum_absolute_error": 0.0,
+        "missing_paths": [],
+        "non_finite_paths": [],
+        "observed_paths": [
+          "articulation/robot/joint_position",
+          "articulation/robot/joint_velocity",
+          "articulation/robot/root_pose",
+          "articulation/robot/root_velocity",
+          "deformable_object/<empty-mapping>",
+          "gripper/<empty-mapping>",
+          "rigid_object/banana/root_pose",
+          "rigid_object/banana/root_velocity",
+          "rigid_object/bowl/root_pose",
+          "rigid_object/bowl/root_velocity",
+          "rigid_object/table/root_pose",
+          "rigid_object/table/root_velocity"
+        ],
+        "shape_mismatches": [],
+        "status": "fail",
+        "tolerance": 0.01,
+        "unexpected_paths": [
+          "deformable_object/<empty-mapping>",
+          "gripper/<empty-mapping>"
+        ]
+      },
+      "initial_restore_maximum_absolute_error": 0.0,
+      "initial_restore_pass": false,
+      "observation_available": null,
+      "official_maximum_absolute_error": null,
+      "official_state_validator_pass": null,
+      "recorded_config_overlay_pass": false,
+      "recorded_config_skipped_fields": [
+        "/_instruction_variants (not in current config)"
+      ],
+      "recording_id": "BananaInBowlTask-seed-810004",
+      "repeat": 1,
+      "status": "execution_error",
+      "strict_per_step_failure_count": null,
+      "success_match": null,
+      "terminal_match": null
+    },
+    {
+      "execution_error": {
+        "message": "'str' object is not callable",
+        "type": "TypeError"
+      },
+      "initial_restore_comparison": {
+        "dtype_mismatches": [],
+        "expected_paths": [
+          "articulation/robot/joint_position",
+          "articulation/robot/joint_velocity",
+          "articulation/robot/root_pose",
+          "articulation/robot/root_velocity",
+          "rigid_object/banana/root_pose",
+          "rigid_object/banana/root_velocity",
+          "rigid_object/bowl/root_pose",
+          "rigid_object/bowl/root_velocity",
+          "rigid_object/table/root_pose",
+          "rigid_object/table/root_velocity"
+        ],
+        "leaves": [
+          {
+            "compared_values": 13,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "articulation/robot/joint_position",
+            "shape": [
+              1,
+              13
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 13,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "articulation/robot/joint_velocity",
+            "shape": [
+              1,
+              13
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 7,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "articulation/robot/root_pose",
+            "shape": [
+              1,
+              7
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 6,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "articulation/robot/root_velocity",
+            "shape": [
+              1,
+              6
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 7,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "rigid_object/banana/root_pose",
+            "shape": [
+              1,
+              7
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 6,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "rigid_object/banana/root_velocity",
+            "shape": [
+              1,
+              6
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 7,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "rigid_object/bowl/root_pose",
+            "shape": [
+              1,
+              7
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 6,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "rigid_object/bowl/root_velocity",
+            "shape": [
+              1,
+              6
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 7,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "rigid_object/table/root_pose",
+            "shape": [
+              1,
+              7
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 6,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "rigid_object/table/root_velocity",
+            "shape": [
+              1,
+              6
+            ],
+            "within_tolerance": true
+          }
+        ],
+        "maximum_absolute_error": 0.0,
+        "missing_paths": [],
+        "non_finite_paths": [],
+        "observed_paths": [
+          "articulation/robot/joint_position",
+          "articulation/robot/joint_velocity",
+          "articulation/robot/root_pose",
+          "articulation/robot/root_velocity",
+          "deformable_object/<empty-mapping>",
+          "gripper/<empty-mapping>",
+          "rigid_object/banana/root_pose",
+          "rigid_object/banana/root_velocity",
+          "rigid_object/bowl/root_pose",
+          "rigid_object/bowl/root_velocity",
+          "rigid_object/table/root_pose",
+          "rigid_object/table/root_velocity"
+        ],
+        "shape_mismatches": [],
+        "status": "fail",
+        "tolerance": 0.01,
+        "unexpected_paths": [
+          "deformable_object/<empty-mapping>",
+          "gripper/<empty-mapping>"
+        ]
+      },
+      "initial_restore_maximum_absolute_error": 0.0,
+      "initial_restore_pass": false,
+      "observation_available": null,
+      "official_maximum_absolute_error": null,
+      "official_state_validator_pass": null,
+      "recorded_config_overlay_pass": false,
+      "recorded_config_skipped_fields": [
+        "/_instruction_variants (not in current config)"
+      ],
+      "recording_id": "BananaInBowlTask-seed-810004",
+      "repeat": 2,
+      "status": "execution_error",
+      "strict_per_step_failure_count": null,
+      "success_match": null,
+      "terminal_match": null
+    },
+    {
+      "execution_error": {
+        "message": "'str' object is not callable",
+        "type": "TypeError"
+      },
+      "initial_restore_comparison": {
+        "dtype_mismatches": [],
+        "expected_paths": [
+          "articulation/robot/joint_position",
+          "articulation/robot/joint_velocity",
+          "articulation/robot/root_pose",
+          "articulation/robot/root_velocity",
+          "rigid_object/banana/root_pose",
+          "rigid_object/banana/root_velocity",
+          "rigid_object/bowl/root_pose",
+          "rigid_object/bowl/root_velocity",
+          "rigid_object/rubiks_cube/root_pose",
+          "rigid_object/rubiks_cube/root_velocity",
+          "rigid_object/table/root_pose",
+          "rigid_object/table/root_velocity"
+        ],
+        "leaves": [
+          {
+            "compared_values": 13,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "articulation/robot/joint_position",
+            "shape": [
+              1,
+              13
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 13,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "articulation/robot/joint_velocity",
+            "shape": [
+              1,
+              13
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 7,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "articulation/robot/root_pose",
+            "shape": [
+              1,
+              7
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 6,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "articulation/robot/root_velocity",
+            "shape": [
+              1,
+              6
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 7,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "rigid_object/banana/root_pose",
+            "shape": [
+              1,
+              7
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 6,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "rigid_object/banana/root_velocity",
+            "shape": [
+              1,
+              6
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 7,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "rigid_object/bowl/root_pose",
+            "shape": [
+              1,
+              7
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 6,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "rigid_object/bowl/root_velocity",
+            "shape": [
+              1,
+              6
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 7,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "rigid_object/rubiks_cube/root_pose",
+            "shape": [
+              1,
+              7
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 6,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "rigid_object/rubiks_cube/root_velocity",
+            "shape": [
+              1,
+              6
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 7,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "rigid_object/table/root_pose",
+            "shape": [
+              1,
+              7
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 6,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "rigid_object/table/root_velocity",
+            "shape": [
+              1,
+              6
+            ],
+            "within_tolerance": true
+          }
+        ],
+        "maximum_absolute_error": 0.0,
+        "missing_paths": [],
+        "non_finite_paths": [],
+        "observed_paths": [
+          "articulation/robot/joint_position",
+          "articulation/robot/joint_velocity",
+          "articulation/robot/root_pose",
+          "articulation/robot/root_velocity",
+          "deformable_object/<empty-mapping>",
+          "gripper/<empty-mapping>",
+          "rigid_object/banana/root_pose",
+          "rigid_object/banana/root_velocity",
+          "rigid_object/bowl/root_pose",
+          "rigid_object/bowl/root_velocity",
+          "rigid_object/rubiks_cube/root_pose",
+          "rigid_object/rubiks_cube/root_velocity",
+          "rigid_object/table/root_pose",
+          "rigid_object/table/root_velocity"
+        ],
+        "shape_mismatches": [],
+        "status": "fail",
+        "tolerance": 0.01,
+        "unexpected_paths": [
+          "deformable_object/<empty-mapping>",
+          "gripper/<empty-mapping>"
+        ]
+      },
+      "initial_restore_maximum_absolute_error": 0.0,
+      "initial_restore_pass": false,
+      "observation_available": null,
+      "official_maximum_absolute_error": null,
+      "official_state_validator_pass": null,
+      "recorded_config_overlay_pass": false,
+      "recorded_config_skipped_fields": [
+        "/_instruction_variants (not in current config)"
+      ],
+      "recording_id": "RubiksCubeAndBananaTask-seed-810000",
+      "repeat": 0,
+      "status": "execution_error",
+      "strict_per_step_failure_count": null,
+      "success_match": null,
+      "terminal_match": null
+    },
+    {
+      "execution_error": {
+        "message": "'str' object is not callable",
+        "type": "TypeError"
+      },
+      "initial_restore_comparison": {
+        "dtype_mismatches": [],
+        "expected_paths": [
+          "articulation/robot/joint_position",
+          "articulation/robot/joint_velocity",
+          "articulation/robot/root_pose",
+          "articulation/robot/root_velocity",
+          "rigid_object/banana/root_pose",
+          "rigid_object/banana/root_velocity",
+          "rigid_object/bowl/root_pose",
+          "rigid_object/bowl/root_velocity",
+          "rigid_object/rubiks_cube/root_pose",
+          "rigid_object/rubiks_cube/root_velocity",
+          "rigid_object/table/root_pose",
+          "rigid_object/table/root_velocity"
+        ],
+        "leaves": [
+          {
+            "compared_values": 13,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "articulation/robot/joint_position",
+            "shape": [
+              1,
+              13
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 13,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "articulation/robot/joint_velocity",
+            "shape": [
+              1,
+              13
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 7,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "articulation/robot/root_pose",
+            "shape": [
+              1,
+              7
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 6,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "articulation/robot/root_velocity",
+            "shape": [
+              1,
+              6
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 7,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "rigid_object/banana/root_pose",
+            "shape": [
+              1,
+              7
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 6,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "rigid_object/banana/root_velocity",
+            "shape": [
+              1,
+              6
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 7,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "rigid_object/bowl/root_pose",
+            "shape": [
+              1,
+              7
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 6,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "rigid_object/bowl/root_velocity",
+            "shape": [
+              1,
+              6
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 7,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "rigid_object/rubiks_cube/root_pose",
+            "shape": [
+              1,
+              7
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 6,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "rigid_object/rubiks_cube/root_velocity",
+            "shape": [
+              1,
+              6
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 7,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "rigid_object/table/root_pose",
+            "shape": [
+              1,
+              7
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 6,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "rigid_object/table/root_velocity",
+            "shape": [
+              1,
+              6
+            ],
+            "within_tolerance": true
+          }
+        ],
+        "maximum_absolute_error": 0.0,
+        "missing_paths": [],
+        "non_finite_paths": [],
+        "observed_paths": [
+          "articulation/robot/joint_position",
+          "articulation/robot/joint_velocity",
+          "articulation/robot/root_pose",
+          "articulation/robot/root_velocity",
+          "deformable_object/<empty-mapping>",
+          "gripper/<empty-mapping>",
+          "rigid_object/banana/root_pose",
+          "rigid_object/banana/root_velocity",
+          "rigid_object/bowl/root_pose",
+          "rigid_object/bowl/root_velocity",
+          "rigid_object/rubiks_cube/root_pose",
+          "rigid_object/rubiks_cube/root_velocity",
+          "rigid_object/table/root_pose",
+          "rigid_object/table/root_velocity"
+        ],
+        "shape_mismatches": [],
+        "status": "fail",
+        "tolerance": 0.01,
+        "unexpected_paths": [
+          "deformable_object/<empty-mapping>",
+          "gripper/<empty-mapping>"
+        ]
+      },
+      "initial_restore_maximum_absolute_error": 0.0,
+      "initial_restore_pass": false,
+      "observation_available": null,
+      "official_maximum_absolute_error": null,
+      "official_state_validator_pass": null,
+      "recorded_config_overlay_pass": false,
+      "recorded_config_skipped_fields": [
+        "/_instruction_variants (not in current config)"
+      ],
+      "recording_id": "RubiksCubeAndBananaTask-seed-810000",
+      "repeat": 1,
+      "status": "execution_error",
+      "strict_per_step_failure_count": null,
+      "success_match": null,
+      "terminal_match": null
+    },
+    {
+      "execution_error": {
+        "message": "'str' object is not callable",
+        "type": "TypeError"
+      },
+      "initial_restore_comparison": {
+        "dtype_mismatches": [],
+        "expected_paths": [
+          "articulation/robot/joint_position",
+          "articulation/robot/joint_velocity",
+          "articulation/robot/root_pose",
+          "articulation/robot/root_velocity",
+          "rigid_object/banana/root_pose",
+          "rigid_object/banana/root_velocity",
+          "rigid_object/bowl/root_pose",
+          "rigid_object/bowl/root_velocity",
+          "rigid_object/rubiks_cube/root_pose",
+          "rigid_object/rubiks_cube/root_velocity",
+          "rigid_object/table/root_pose",
+          "rigid_object/table/root_velocity"
+        ],
+        "leaves": [
+          {
+            "compared_values": 13,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "articulation/robot/joint_position",
+            "shape": [
+              1,
+              13
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 13,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "articulation/robot/joint_velocity",
+            "shape": [
+              1,
+              13
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 7,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "articulation/robot/root_pose",
+            "shape": [
+              1,
+              7
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 6,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "articulation/robot/root_velocity",
+            "shape": [
+              1,
+              6
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 7,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "rigid_object/banana/root_pose",
+            "shape": [
+              1,
+              7
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 6,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "rigid_object/banana/root_velocity",
+            "shape": [
+              1,
+              6
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 7,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "rigid_object/bowl/root_pose",
+            "shape": [
+              1,
+              7
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 6,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "rigid_object/bowl/root_velocity",
+            "shape": [
+              1,
+              6
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 7,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "rigid_object/rubiks_cube/root_pose",
+            "shape": [
+              1,
+              7
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 6,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "rigid_object/rubiks_cube/root_velocity",
+            "shape": [
+              1,
+              6
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 7,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "rigid_object/table/root_pose",
+            "shape": [
+              1,
+              7
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 6,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "rigid_object/table/root_velocity",
+            "shape": [
+              1,
+              6
+            ],
+            "within_tolerance": true
+          }
+        ],
+        "maximum_absolute_error": 0.0,
+        "missing_paths": [],
+        "non_finite_paths": [],
+        "observed_paths": [
+          "articulation/robot/joint_position",
+          "articulation/robot/joint_velocity",
+          "articulation/robot/root_pose",
+          "articulation/robot/root_velocity",
+          "deformable_object/<empty-mapping>",
+          "gripper/<empty-mapping>",
+          "rigid_object/banana/root_pose",
+          "rigid_object/banana/root_velocity",
+          "rigid_object/bowl/root_pose",
+          "rigid_object/bowl/root_velocity",
+          "rigid_object/rubiks_cube/root_pose",
+          "rigid_object/rubiks_cube/root_velocity",
+          "rigid_object/table/root_pose",
+          "rigid_object/table/root_velocity"
+        ],
+        "shape_mismatches": [],
+        "status": "fail",
+        "tolerance": 0.01,
+        "unexpected_paths": [
+          "deformable_object/<empty-mapping>",
+          "gripper/<empty-mapping>"
+        ]
+      },
+      "initial_restore_maximum_absolute_error": 0.0,
+      "initial_restore_pass": false,
+      "observation_available": null,
+      "official_maximum_absolute_error": null,
+      "official_state_validator_pass": null,
+      "recorded_config_overlay_pass": false,
+      "recorded_config_skipped_fields": [
+        "/_instruction_variants (not in current config)"
+      ],
+      "recording_id": "RubiksCubeAndBananaTask-seed-810000",
+      "repeat": 2,
+      "status": "execution_error",
+      "strict_per_step_failure_count": null,
+      "success_match": null,
+      "terminal_match": null
+    },
+    {
+      "execution_error": {
+        "message": "'str' object is not callable",
+        "type": "TypeError"
+      },
+      "initial_restore_comparison": {
+        "dtype_mismatches": [],
+        "expected_paths": [
+          "articulation/robot/joint_position",
+          "articulation/robot/joint_velocity",
+          "articulation/robot/root_pose",
+          "articulation/robot/root_velocity",
+          "rigid_object/banana/root_pose",
+          "rigid_object/banana/root_velocity",
+          "rigid_object/bowl/root_pose",
+          "rigid_object/bowl/root_velocity",
+          "rigid_object/rubiks_cube/root_pose",
+          "rigid_object/rubiks_cube/root_velocity",
+          "rigid_object/table/root_pose",
+          "rigid_object/table/root_velocity"
+        ],
+        "leaves": [
+          {
+            "compared_values": 13,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "articulation/robot/joint_position",
+            "shape": [
+              1,
+              13
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 13,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "articulation/robot/joint_velocity",
+            "shape": [
+              1,
+              13
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 7,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "articulation/robot/root_pose",
+            "shape": [
+              1,
+              7
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 6,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "articulation/robot/root_velocity",
+            "shape": [
+              1,
+              6
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 7,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "rigid_object/banana/root_pose",
+            "shape": [
+              1,
+              7
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 6,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "rigid_object/banana/root_velocity",
+            "shape": [
+              1,
+              6
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 7,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "rigid_object/bowl/root_pose",
+            "shape": [
+              1,
+              7
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 6,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "rigid_object/bowl/root_velocity",
+            "shape": [
+              1,
+              6
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 7,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "rigid_object/rubiks_cube/root_pose",
+            "shape": [
+              1,
+              7
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 6,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "rigid_object/rubiks_cube/root_velocity",
+            "shape": [
+              1,
+              6
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 7,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "rigid_object/table/root_pose",
+            "shape": [
+              1,
+              7
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 6,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "rigid_object/table/root_velocity",
+            "shape": [
+              1,
+              6
+            ],
+            "within_tolerance": true
+          }
+        ],
+        "maximum_absolute_error": 0.0,
+        "missing_paths": [],
+        "non_finite_paths": [],
+        "observed_paths": [
+          "articulation/robot/joint_position",
+          "articulation/robot/joint_velocity",
+          "articulation/robot/root_pose",
+          "articulation/robot/root_velocity",
+          "deformable_object/<empty-mapping>",
+          "gripper/<empty-mapping>",
+          "rigid_object/banana/root_pose",
+          "rigid_object/banana/root_velocity",
+          "rigid_object/bowl/root_pose",
+          "rigid_object/bowl/root_velocity",
+          "rigid_object/rubiks_cube/root_pose",
+          "rigid_object/rubiks_cube/root_velocity",
+          "rigid_object/table/root_pose",
+          "rigid_object/table/root_velocity"
+        ],
+        "shape_mismatches": [],
+        "status": "fail",
+        "tolerance": 0.01,
+        "unexpected_paths": [
+          "deformable_object/<empty-mapping>",
+          "gripper/<empty-mapping>"
+        ]
+      },
+      "initial_restore_maximum_absolute_error": 0.0,
+      "initial_restore_pass": false,
+      "observation_available": null,
+      "official_maximum_absolute_error": null,
+      "official_state_validator_pass": null,
+      "recorded_config_overlay_pass": false,
+      "recorded_config_skipped_fields": [
+        "/_instruction_variants (not in current config)"
+      ],
+      "recording_id": "RubiksCubeAndBananaTask-seed-810001",
+      "repeat": 0,
+      "status": "execution_error",
+      "strict_per_step_failure_count": null,
+      "success_match": null,
+      "terminal_match": null
+    },
+    {
+      "execution_error": {
+        "message": "'str' object is not callable",
+        "type": "TypeError"
+      },
+      "initial_restore_comparison": {
+        "dtype_mismatches": [],
+        "expected_paths": [
+          "articulation/robot/joint_position",
+          "articulation/robot/joint_velocity",
+          "articulation/robot/root_pose",
+          "articulation/robot/root_velocity",
+          "rigid_object/banana/root_pose",
+          "rigid_object/banana/root_velocity",
+          "rigid_object/bowl/root_pose",
+          "rigid_object/bowl/root_velocity",
+          "rigid_object/rubiks_cube/root_pose",
+          "rigid_object/rubiks_cube/root_velocity",
+          "rigid_object/table/root_pose",
+          "rigid_object/table/root_velocity"
+        ],
+        "leaves": [
+          {
+            "compared_values": 13,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "articulation/robot/joint_position",
+            "shape": [
+              1,
+              13
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 13,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "articulation/robot/joint_velocity",
+            "shape": [
+              1,
+              13
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 7,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "articulation/robot/root_pose",
+            "shape": [
+              1,
+              7
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 6,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "articulation/robot/root_velocity",
+            "shape": [
+              1,
+              6
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 7,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "rigid_object/banana/root_pose",
+            "shape": [
+              1,
+              7
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 6,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "rigid_object/banana/root_velocity",
+            "shape": [
+              1,
+              6
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 7,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "rigid_object/bowl/root_pose",
+            "shape": [
+              1,
+              7
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 6,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "rigid_object/bowl/root_velocity",
+            "shape": [
+              1,
+              6
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 7,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "rigid_object/rubiks_cube/root_pose",
+            "shape": [
+              1,
+              7
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 6,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "rigid_object/rubiks_cube/root_velocity",
+            "shape": [
+              1,
+              6
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 7,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "rigid_object/table/root_pose",
+            "shape": [
+              1,
+              7
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 6,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "rigid_object/table/root_velocity",
+            "shape": [
+              1,
+              6
+            ],
+            "within_tolerance": true
+          }
+        ],
+        "maximum_absolute_error": 0.0,
+        "missing_paths": [],
+        "non_finite_paths": [],
+        "observed_paths": [
+          "articulation/robot/joint_position",
+          "articulation/robot/joint_velocity",
+          "articulation/robot/root_pose",
+          "articulation/robot/root_velocity",
+          "deformable_object/<empty-mapping>",
+          "gripper/<empty-mapping>",
+          "rigid_object/banana/root_pose",
+          "rigid_object/banana/root_velocity",
+          "rigid_object/bowl/root_pose",
+          "rigid_object/bowl/root_velocity",
+          "rigid_object/rubiks_cube/root_pose",
+          "rigid_object/rubiks_cube/root_velocity",
+          "rigid_object/table/root_pose",
+          "rigid_object/table/root_velocity"
+        ],
+        "shape_mismatches": [],
+        "status": "fail",
+        "tolerance": 0.01,
+        "unexpected_paths": [
+          "deformable_object/<empty-mapping>",
+          "gripper/<empty-mapping>"
+        ]
+      },
+      "initial_restore_maximum_absolute_error": 0.0,
+      "initial_restore_pass": false,
+      "observation_available": null,
+      "official_maximum_absolute_error": null,
+      "official_state_validator_pass": null,
+      "recorded_config_overlay_pass": false,
+      "recorded_config_skipped_fields": [
+        "/_instruction_variants (not in current config)"
+      ],
+      "recording_id": "RubiksCubeAndBananaTask-seed-810001",
+      "repeat": 1,
+      "status": "execution_error",
+      "strict_per_step_failure_count": null,
+      "success_match": null,
+      "terminal_match": null
+    },
+    {
+      "execution_error": {
+        "message": "'str' object is not callable",
+        "type": "TypeError"
+      },
+      "initial_restore_comparison": {
+        "dtype_mismatches": [],
+        "expected_paths": [
+          "articulation/robot/joint_position",
+          "articulation/robot/joint_velocity",
+          "articulation/robot/root_pose",
+          "articulation/robot/root_velocity",
+          "rigid_object/banana/root_pose",
+          "rigid_object/banana/root_velocity",
+          "rigid_object/bowl/root_pose",
+          "rigid_object/bowl/root_velocity",
+          "rigid_object/rubiks_cube/root_pose",
+          "rigid_object/rubiks_cube/root_velocity",
+          "rigid_object/table/root_pose",
+          "rigid_object/table/root_velocity"
+        ],
+        "leaves": [
+          {
+            "compared_values": 13,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "articulation/robot/joint_position",
+            "shape": [
+              1,
+              13
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 13,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "articulation/robot/joint_velocity",
+            "shape": [
+              1,
+              13
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 7,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "articulation/robot/root_pose",
+            "shape": [
+              1,
+              7
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 6,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "articulation/robot/root_velocity",
+            "shape": [
+              1,
+              6
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 7,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "rigid_object/banana/root_pose",
+            "shape": [
+              1,
+              7
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 6,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "rigid_object/banana/root_velocity",
+            "shape": [
+              1,
+              6
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 7,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "rigid_object/bowl/root_pose",
+            "shape": [
+              1,
+              7
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 6,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "rigid_object/bowl/root_velocity",
+            "shape": [
+              1,
+              6
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 7,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "rigid_object/rubiks_cube/root_pose",
+            "shape": [
+              1,
+              7
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 6,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "rigid_object/rubiks_cube/root_velocity",
+            "shape": [
+              1,
+              6
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 7,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "rigid_object/table/root_pose",
+            "shape": [
+              1,
+              7
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 6,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "rigid_object/table/root_velocity",
+            "shape": [
+              1,
+              6
+            ],
+            "within_tolerance": true
+          }
+        ],
+        "maximum_absolute_error": 0.0,
+        "missing_paths": [],
+        "non_finite_paths": [],
+        "observed_paths": [
+          "articulation/robot/joint_position",
+          "articulation/robot/joint_velocity",
+          "articulation/robot/root_pose",
+          "articulation/robot/root_velocity",
+          "deformable_object/<empty-mapping>",
+          "gripper/<empty-mapping>",
+          "rigid_object/banana/root_pose",
+          "rigid_object/banana/root_velocity",
+          "rigid_object/bowl/root_pose",
+          "rigid_object/bowl/root_velocity",
+          "rigid_object/rubiks_cube/root_pose",
+          "rigid_object/rubiks_cube/root_velocity",
+          "rigid_object/table/root_pose",
+          "rigid_object/table/root_velocity"
+        ],
+        "shape_mismatches": [],
+        "status": "fail",
+        "tolerance": 0.01,
+        "unexpected_paths": [
+          "deformable_object/<empty-mapping>",
+          "gripper/<empty-mapping>"
+        ]
+      },
+      "initial_restore_maximum_absolute_error": 0.0,
+      "initial_restore_pass": false,
+      "observation_available": null,
+      "official_maximum_absolute_error": null,
+      "official_state_validator_pass": null,
+      "recorded_config_overlay_pass": false,
+      "recorded_config_skipped_fields": [
+        "/_instruction_variants (not in current config)"
+      ],
+      "recording_id": "RubiksCubeAndBananaTask-seed-810001",
+      "repeat": 2,
+      "status": "execution_error",
+      "strict_per_step_failure_count": null,
+      "success_match": null,
+      "terminal_match": null
+    },
+    {
+      "execution_error": {
+        "message": "'str' object is not callable",
+        "type": "TypeError"
+      },
+      "initial_restore_comparison": {
+        "dtype_mismatches": [],
+        "expected_paths": [
+          "articulation/robot/joint_position",
+          "articulation/robot/joint_velocity",
+          "articulation/robot/root_pose",
+          "articulation/robot/root_velocity",
+          "rigid_object/banana/root_pose",
+          "rigid_object/banana/root_velocity",
+          "rigid_object/bowl/root_pose",
+          "rigid_object/bowl/root_velocity",
+          "rigid_object/rubiks_cube/root_pose",
+          "rigid_object/rubiks_cube/root_velocity",
+          "rigid_object/table/root_pose",
+          "rigid_object/table/root_velocity"
+        ],
+        "leaves": [
+          {
+            "compared_values": 13,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "articulation/robot/joint_position",
+            "shape": [
+              1,
+              13
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 13,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "articulation/robot/joint_velocity",
+            "shape": [
+              1,
+              13
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 7,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "articulation/robot/root_pose",
+            "shape": [
+              1,
+              7
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 6,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "articulation/robot/root_velocity",
+            "shape": [
+              1,
+              6
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 7,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "rigid_object/banana/root_pose",
+            "shape": [
+              1,
+              7
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 6,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "rigid_object/banana/root_velocity",
+            "shape": [
+              1,
+              6
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 7,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "rigid_object/bowl/root_pose",
+            "shape": [
+              1,
+              7
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 6,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "rigid_object/bowl/root_velocity",
+            "shape": [
+              1,
+              6
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 7,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "rigid_object/rubiks_cube/root_pose",
+            "shape": [
+              1,
+              7
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 6,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "rigid_object/rubiks_cube/root_velocity",
+            "shape": [
+              1,
+              6
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 7,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "rigid_object/table/root_pose",
+            "shape": [
+              1,
+              7
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 6,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "rigid_object/table/root_velocity",
+            "shape": [
+              1,
+              6
+            ],
+            "within_tolerance": true
+          }
+        ],
+        "maximum_absolute_error": 0.0,
+        "missing_paths": [],
+        "non_finite_paths": [],
+        "observed_paths": [
+          "articulation/robot/joint_position",
+          "articulation/robot/joint_velocity",
+          "articulation/robot/root_pose",
+          "articulation/robot/root_velocity",
+          "deformable_object/<empty-mapping>",
+          "gripper/<empty-mapping>",
+          "rigid_object/banana/root_pose",
+          "rigid_object/banana/root_velocity",
+          "rigid_object/bowl/root_pose",
+          "rigid_object/bowl/root_velocity",
+          "rigid_object/rubiks_cube/root_pose",
+          "rigid_object/rubiks_cube/root_velocity",
+          "rigid_object/table/root_pose",
+          "rigid_object/table/root_velocity"
+        ],
+        "shape_mismatches": [],
+        "status": "fail",
+        "tolerance": 0.01,
+        "unexpected_paths": [
+          "deformable_object/<empty-mapping>",
+          "gripper/<empty-mapping>"
+        ]
+      },
+      "initial_restore_maximum_absolute_error": 0.0,
+      "initial_restore_pass": false,
+      "observation_available": null,
+      "official_maximum_absolute_error": null,
+      "official_state_validator_pass": null,
+      "recorded_config_overlay_pass": false,
+      "recorded_config_skipped_fields": [
+        "/_instruction_variants (not in current config)"
+      ],
+      "recording_id": "RubiksCubeAndBananaTask-seed-810002",
+      "repeat": 0,
+      "status": "execution_error",
+      "strict_per_step_failure_count": null,
+      "success_match": null,
+      "terminal_match": null
+    },
+    {
+      "execution_error": {
+        "message": "'str' object is not callable",
+        "type": "TypeError"
+      },
+      "initial_restore_comparison": {
+        "dtype_mismatches": [],
+        "expected_paths": [
+          "articulation/robot/joint_position",
+          "articulation/robot/joint_velocity",
+          "articulation/robot/root_pose",
+          "articulation/robot/root_velocity",
+          "rigid_object/banana/root_pose",
+          "rigid_object/banana/root_velocity",
+          "rigid_object/bowl/root_pose",
+          "rigid_object/bowl/root_velocity",
+          "rigid_object/rubiks_cube/root_pose",
+          "rigid_object/rubiks_cube/root_velocity",
+          "rigid_object/table/root_pose",
+          "rigid_object/table/root_velocity"
+        ],
+        "leaves": [
+          {
+            "compared_values": 13,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "articulation/robot/joint_position",
+            "shape": [
+              1,
+              13
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 13,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "articulation/robot/joint_velocity",
+            "shape": [
+              1,
+              13
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 7,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "articulation/robot/root_pose",
+            "shape": [
+              1,
+              7
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 6,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "articulation/robot/root_velocity",
+            "shape": [
+              1,
+              6
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 7,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "rigid_object/banana/root_pose",
+            "shape": [
+              1,
+              7
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 6,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "rigid_object/banana/root_velocity",
+            "shape": [
+              1,
+              6
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 7,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "rigid_object/bowl/root_pose",
+            "shape": [
+              1,
+              7
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 6,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "rigid_object/bowl/root_velocity",
+            "shape": [
+              1,
+              6
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 7,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "rigid_object/rubiks_cube/root_pose",
+            "shape": [
+              1,
+              7
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 6,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "rigid_object/rubiks_cube/root_velocity",
+            "shape": [
+              1,
+              6
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 7,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "rigid_object/table/root_pose",
+            "shape": [
+              1,
+              7
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 6,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "rigid_object/table/root_velocity",
+            "shape": [
+              1,
+              6
+            ],
+            "within_tolerance": true
+          }
+        ],
+        "maximum_absolute_error": 0.0,
+        "missing_paths": [],
+        "non_finite_paths": [],
+        "observed_paths": [
+          "articulation/robot/joint_position",
+          "articulation/robot/joint_velocity",
+          "articulation/robot/root_pose",
+          "articulation/robot/root_velocity",
+          "deformable_object/<empty-mapping>",
+          "gripper/<empty-mapping>",
+          "rigid_object/banana/root_pose",
+          "rigid_object/banana/root_velocity",
+          "rigid_object/bowl/root_pose",
+          "rigid_object/bowl/root_velocity",
+          "rigid_object/rubiks_cube/root_pose",
+          "rigid_object/rubiks_cube/root_velocity",
+          "rigid_object/table/root_pose",
+          "rigid_object/table/root_velocity"
+        ],
+        "shape_mismatches": [],
+        "status": "fail",
+        "tolerance": 0.01,
+        "unexpected_paths": [
+          "deformable_object/<empty-mapping>",
+          "gripper/<empty-mapping>"
+        ]
+      },
+      "initial_restore_maximum_absolute_error": 0.0,
+      "initial_restore_pass": false,
+      "observation_available": null,
+      "official_maximum_absolute_error": null,
+      "official_state_validator_pass": null,
+      "recorded_config_overlay_pass": false,
+      "recorded_config_skipped_fields": [
+        "/_instruction_variants (not in current config)"
+      ],
+      "recording_id": "RubiksCubeAndBananaTask-seed-810002",
+      "repeat": 1,
+      "status": "execution_error",
+      "strict_per_step_failure_count": null,
+      "success_match": null,
+      "terminal_match": null
+    },
+    {
+      "execution_error": {
+        "message": "'str' object is not callable",
+        "type": "TypeError"
+      },
+      "initial_restore_comparison": {
+        "dtype_mismatches": [],
+        "expected_paths": [
+          "articulation/robot/joint_position",
+          "articulation/robot/joint_velocity",
+          "articulation/robot/root_pose",
+          "articulation/robot/root_velocity",
+          "rigid_object/banana/root_pose",
+          "rigid_object/banana/root_velocity",
+          "rigid_object/bowl/root_pose",
+          "rigid_object/bowl/root_velocity",
+          "rigid_object/rubiks_cube/root_pose",
+          "rigid_object/rubiks_cube/root_velocity",
+          "rigid_object/table/root_pose",
+          "rigid_object/table/root_velocity"
+        ],
+        "leaves": [
+          {
+            "compared_values": 13,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "articulation/robot/joint_position",
+            "shape": [
+              1,
+              13
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 13,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "articulation/robot/joint_velocity",
+            "shape": [
+              1,
+              13
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 7,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "articulation/robot/root_pose",
+            "shape": [
+              1,
+              7
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 6,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "articulation/robot/root_velocity",
+            "shape": [
+              1,
+              6
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 7,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "rigid_object/banana/root_pose",
+            "shape": [
+              1,
+              7
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 6,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "rigid_object/banana/root_velocity",
+            "shape": [
+              1,
+              6
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 7,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "rigid_object/bowl/root_pose",
+            "shape": [
+              1,
+              7
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 6,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "rigid_object/bowl/root_velocity",
+            "shape": [
+              1,
+              6
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 7,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "rigid_object/rubiks_cube/root_pose",
+            "shape": [
+              1,
+              7
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 6,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "rigid_object/rubiks_cube/root_velocity",
+            "shape": [
+              1,
+              6
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 7,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "rigid_object/table/root_pose",
+            "shape": [
+              1,
+              7
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 6,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "rigid_object/table/root_velocity",
+            "shape": [
+              1,
+              6
+            ],
+            "within_tolerance": true
+          }
+        ],
+        "maximum_absolute_error": 0.0,
+        "missing_paths": [],
+        "non_finite_paths": [],
+        "observed_paths": [
+          "articulation/robot/joint_position",
+          "articulation/robot/joint_velocity",
+          "articulation/robot/root_pose",
+          "articulation/robot/root_velocity",
+          "deformable_object/<empty-mapping>",
+          "gripper/<empty-mapping>",
+          "rigid_object/banana/root_pose",
+          "rigid_object/banana/root_velocity",
+          "rigid_object/bowl/root_pose",
+          "rigid_object/bowl/root_velocity",
+          "rigid_object/rubiks_cube/root_pose",
+          "rigid_object/rubiks_cube/root_velocity",
+          "rigid_object/table/root_pose",
+          "rigid_object/table/root_velocity"
+        ],
+        "shape_mismatches": [],
+        "status": "fail",
+        "tolerance": 0.01,
+        "unexpected_paths": [
+          "deformable_object/<empty-mapping>",
+          "gripper/<empty-mapping>"
+        ]
+      },
+      "initial_restore_maximum_absolute_error": 0.0,
+      "initial_restore_pass": false,
+      "observation_available": null,
+      "official_maximum_absolute_error": null,
+      "official_state_validator_pass": null,
+      "recorded_config_overlay_pass": false,
+      "recorded_config_skipped_fields": [
+        "/_instruction_variants (not in current config)"
+      ],
+      "recording_id": "RubiksCubeAndBananaTask-seed-810002",
+      "repeat": 2,
+      "status": "execution_error",
+      "strict_per_step_failure_count": null,
+      "success_match": null,
+      "terminal_match": null
+    },
+    {
+      "execution_error": {
+        "message": "'str' object is not callable",
+        "type": "TypeError"
+      },
+      "initial_restore_comparison": {
+        "dtype_mismatches": [],
+        "expected_paths": [
+          "articulation/robot/joint_position",
+          "articulation/robot/joint_velocity",
+          "articulation/robot/root_pose",
+          "articulation/robot/root_velocity",
+          "rigid_object/banana/root_pose",
+          "rigid_object/banana/root_velocity",
+          "rigid_object/bowl/root_pose",
+          "rigid_object/bowl/root_velocity",
+          "rigid_object/rubiks_cube/root_pose",
+          "rigid_object/rubiks_cube/root_velocity",
+          "rigid_object/table/root_pose",
+          "rigid_object/table/root_velocity"
+        ],
+        "leaves": [
+          {
+            "compared_values": 13,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "articulation/robot/joint_position",
+            "shape": [
+              1,
+              13
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 13,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "articulation/robot/joint_velocity",
+            "shape": [
+              1,
+              13
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 7,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "articulation/robot/root_pose",
+            "shape": [
+              1,
+              7
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 6,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "articulation/robot/root_velocity",
+            "shape": [
+              1,
+              6
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 7,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "rigid_object/banana/root_pose",
+            "shape": [
+              1,
+              7
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 6,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "rigid_object/banana/root_velocity",
+            "shape": [
+              1,
+              6
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 7,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "rigid_object/bowl/root_pose",
+            "shape": [
+              1,
+              7
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 6,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "rigid_object/bowl/root_velocity",
+            "shape": [
+              1,
+              6
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 7,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "rigid_object/rubiks_cube/root_pose",
+            "shape": [
+              1,
+              7
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 6,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "rigid_object/rubiks_cube/root_velocity",
+            "shape": [
+              1,
+              6
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 7,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "rigid_object/table/root_pose",
+            "shape": [
+              1,
+              7
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 6,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "rigid_object/table/root_velocity",
+            "shape": [
+              1,
+              6
+            ],
+            "within_tolerance": true
+          }
+        ],
+        "maximum_absolute_error": 0.0,
+        "missing_paths": [],
+        "non_finite_paths": [],
+        "observed_paths": [
+          "articulation/robot/joint_position",
+          "articulation/robot/joint_velocity",
+          "articulation/robot/root_pose",
+          "articulation/robot/root_velocity",
+          "deformable_object/<empty-mapping>",
+          "gripper/<empty-mapping>",
+          "rigid_object/banana/root_pose",
+          "rigid_object/banana/root_velocity",
+          "rigid_object/bowl/root_pose",
+          "rigid_object/bowl/root_velocity",
+          "rigid_object/rubiks_cube/root_pose",
+          "rigid_object/rubiks_cube/root_velocity",
+          "rigid_object/table/root_pose",
+          "rigid_object/table/root_velocity"
+        ],
+        "shape_mismatches": [],
+        "status": "fail",
+        "tolerance": 0.01,
+        "unexpected_paths": [
+          "deformable_object/<empty-mapping>",
+          "gripper/<empty-mapping>"
+        ]
+      },
+      "initial_restore_maximum_absolute_error": 0.0,
+      "initial_restore_pass": false,
+      "observation_available": null,
+      "official_maximum_absolute_error": null,
+      "official_state_validator_pass": null,
+      "recorded_config_overlay_pass": false,
+      "recorded_config_skipped_fields": [
+        "/_instruction_variants (not in current config)"
+      ],
+      "recording_id": "RubiksCubeAndBananaTask-seed-810003",
+      "repeat": 0,
+      "status": "execution_error",
+      "strict_per_step_failure_count": null,
+      "success_match": null,
+      "terminal_match": null
+    },
+    {
+      "execution_error": {
+        "message": "'str' object is not callable",
+        "type": "TypeError"
+      },
+      "initial_restore_comparison": {
+        "dtype_mismatches": [],
+        "expected_paths": [
+          "articulation/robot/joint_position",
+          "articulation/robot/joint_velocity",
+          "articulation/robot/root_pose",
+          "articulation/robot/root_velocity",
+          "rigid_object/banana/root_pose",
+          "rigid_object/banana/root_velocity",
+          "rigid_object/bowl/root_pose",
+          "rigid_object/bowl/root_velocity",
+          "rigid_object/rubiks_cube/root_pose",
+          "rigid_object/rubiks_cube/root_velocity",
+          "rigid_object/table/root_pose",
+          "rigid_object/table/root_velocity"
+        ],
+        "leaves": [
+          {
+            "compared_values": 13,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "articulation/robot/joint_position",
+            "shape": [
+              1,
+              13
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 13,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "articulation/robot/joint_velocity",
+            "shape": [
+              1,
+              13
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 7,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "articulation/robot/root_pose",
+            "shape": [
+              1,
+              7
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 6,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "articulation/robot/root_velocity",
+            "shape": [
+              1,
+              6
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 7,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "rigid_object/banana/root_pose",
+            "shape": [
+              1,
+              7
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 6,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "rigid_object/banana/root_velocity",
+            "shape": [
+              1,
+              6
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 7,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "rigid_object/bowl/root_pose",
+            "shape": [
+              1,
+              7
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 6,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "rigid_object/bowl/root_velocity",
+            "shape": [
+              1,
+              6
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 7,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "rigid_object/rubiks_cube/root_pose",
+            "shape": [
+              1,
+              7
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 6,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "rigid_object/rubiks_cube/root_velocity",
+            "shape": [
+              1,
+              6
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 7,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "rigid_object/table/root_pose",
+            "shape": [
+              1,
+              7
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 6,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "rigid_object/table/root_velocity",
+            "shape": [
+              1,
+              6
+            ],
+            "within_tolerance": true
+          }
+        ],
+        "maximum_absolute_error": 0.0,
+        "missing_paths": [],
+        "non_finite_paths": [],
+        "observed_paths": [
+          "articulation/robot/joint_position",
+          "articulation/robot/joint_velocity",
+          "articulation/robot/root_pose",
+          "articulation/robot/root_velocity",
+          "deformable_object/<empty-mapping>",
+          "gripper/<empty-mapping>",
+          "rigid_object/banana/root_pose",
+          "rigid_object/banana/root_velocity",
+          "rigid_object/bowl/root_pose",
+          "rigid_object/bowl/root_velocity",
+          "rigid_object/rubiks_cube/root_pose",
+          "rigid_object/rubiks_cube/root_velocity",
+          "rigid_object/table/root_pose",
+          "rigid_object/table/root_velocity"
+        ],
+        "shape_mismatches": [],
+        "status": "fail",
+        "tolerance": 0.01,
+        "unexpected_paths": [
+          "deformable_object/<empty-mapping>",
+          "gripper/<empty-mapping>"
+        ]
+      },
+      "initial_restore_maximum_absolute_error": 0.0,
+      "initial_restore_pass": false,
+      "observation_available": null,
+      "official_maximum_absolute_error": null,
+      "official_state_validator_pass": null,
+      "recorded_config_overlay_pass": false,
+      "recorded_config_skipped_fields": [
+        "/_instruction_variants (not in current config)"
+      ],
+      "recording_id": "RubiksCubeAndBananaTask-seed-810003",
+      "repeat": 1,
+      "status": "execution_error",
+      "strict_per_step_failure_count": null,
+      "success_match": null,
+      "terminal_match": null
+    },
+    {
+      "execution_error": {
+        "message": "'str' object is not callable",
+        "type": "TypeError"
+      },
+      "initial_restore_comparison": {
+        "dtype_mismatches": [],
+        "expected_paths": [
+          "articulation/robot/joint_position",
+          "articulation/robot/joint_velocity",
+          "articulation/robot/root_pose",
+          "articulation/robot/root_velocity",
+          "rigid_object/banana/root_pose",
+          "rigid_object/banana/root_velocity",
+          "rigid_object/bowl/root_pose",
+          "rigid_object/bowl/root_velocity",
+          "rigid_object/rubiks_cube/root_pose",
+          "rigid_object/rubiks_cube/root_velocity",
+          "rigid_object/table/root_pose",
+          "rigid_object/table/root_velocity"
+        ],
+        "leaves": [
+          {
+            "compared_values": 13,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "articulation/robot/joint_position",
+            "shape": [
+              1,
+              13
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 13,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "articulation/robot/joint_velocity",
+            "shape": [
+              1,
+              13
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 7,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "articulation/robot/root_pose",
+            "shape": [
+              1,
+              7
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 6,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "articulation/robot/root_velocity",
+            "shape": [
+              1,
+              6
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 7,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "rigid_object/banana/root_pose",
+            "shape": [
+              1,
+              7
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 6,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "rigid_object/banana/root_velocity",
+            "shape": [
+              1,
+              6
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 7,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "rigid_object/bowl/root_pose",
+            "shape": [
+              1,
+              7
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 6,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "rigid_object/bowl/root_velocity",
+            "shape": [
+              1,
+              6
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 7,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "rigid_object/rubiks_cube/root_pose",
+            "shape": [
+              1,
+              7
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 6,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "rigid_object/rubiks_cube/root_velocity",
+            "shape": [
+              1,
+              6
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 7,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "rigid_object/table/root_pose",
+            "shape": [
+              1,
+              7
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 6,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "rigid_object/table/root_velocity",
+            "shape": [
+              1,
+              6
+            ],
+            "within_tolerance": true
+          }
+        ],
+        "maximum_absolute_error": 0.0,
+        "missing_paths": [],
+        "non_finite_paths": [],
+        "observed_paths": [
+          "articulation/robot/joint_position",
+          "articulation/robot/joint_velocity",
+          "articulation/robot/root_pose",
+          "articulation/robot/root_velocity",
+          "deformable_object/<empty-mapping>",
+          "gripper/<empty-mapping>",
+          "rigid_object/banana/root_pose",
+          "rigid_object/banana/root_velocity",
+          "rigid_object/bowl/root_pose",
+          "rigid_object/bowl/root_velocity",
+          "rigid_object/rubiks_cube/root_pose",
+          "rigid_object/rubiks_cube/root_velocity",
+          "rigid_object/table/root_pose",
+          "rigid_object/table/root_velocity"
+        ],
+        "shape_mismatches": [],
+        "status": "fail",
+        "tolerance": 0.01,
+        "unexpected_paths": [
+          "deformable_object/<empty-mapping>",
+          "gripper/<empty-mapping>"
+        ]
+      },
+      "initial_restore_maximum_absolute_error": 0.0,
+      "initial_restore_pass": false,
+      "observation_available": null,
+      "official_maximum_absolute_error": null,
+      "official_state_validator_pass": null,
+      "recorded_config_overlay_pass": false,
+      "recorded_config_skipped_fields": [
+        "/_instruction_variants (not in current config)"
+      ],
+      "recording_id": "RubiksCubeAndBananaTask-seed-810003",
+      "repeat": 2,
+      "status": "execution_error",
+      "strict_per_step_failure_count": null,
+      "success_match": null,
+      "terminal_match": null
+    },
+    {
+      "execution_error": {
+        "message": "'str' object is not callable",
+        "type": "TypeError"
+      },
+      "initial_restore_comparison": {
+        "dtype_mismatches": [],
+        "expected_paths": [
+          "articulation/robot/joint_position",
+          "articulation/robot/joint_velocity",
+          "articulation/robot/root_pose",
+          "articulation/robot/root_velocity",
+          "rigid_object/banana/root_pose",
+          "rigid_object/banana/root_velocity",
+          "rigid_object/bowl/root_pose",
+          "rigid_object/bowl/root_velocity",
+          "rigid_object/rubiks_cube/root_pose",
+          "rigid_object/rubiks_cube/root_velocity",
+          "rigid_object/table/root_pose",
+          "rigid_object/table/root_velocity"
+        ],
+        "leaves": [
+          {
+            "compared_values": 13,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "articulation/robot/joint_position",
+            "shape": [
+              1,
+              13
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 13,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "articulation/robot/joint_velocity",
+            "shape": [
+              1,
+              13
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 7,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "articulation/robot/root_pose",
+            "shape": [
+              1,
+              7
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 6,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "articulation/robot/root_velocity",
+            "shape": [
+              1,
+              6
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 7,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "rigid_object/banana/root_pose",
+            "shape": [
+              1,
+              7
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 6,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "rigid_object/banana/root_velocity",
+            "shape": [
+              1,
+              6
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 7,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "rigid_object/bowl/root_pose",
+            "shape": [
+              1,
+              7
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 6,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "rigid_object/bowl/root_velocity",
+            "shape": [
+              1,
+              6
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 7,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "rigid_object/rubiks_cube/root_pose",
+            "shape": [
+              1,
+              7
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 6,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "rigid_object/rubiks_cube/root_velocity",
+            "shape": [
+              1,
+              6
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 7,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "rigid_object/table/root_pose",
+            "shape": [
+              1,
+              7
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 6,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "rigid_object/table/root_velocity",
+            "shape": [
+              1,
+              6
+            ],
+            "within_tolerance": true
+          }
+        ],
+        "maximum_absolute_error": 0.0,
+        "missing_paths": [],
+        "non_finite_paths": [],
+        "observed_paths": [
+          "articulation/robot/joint_position",
+          "articulation/robot/joint_velocity",
+          "articulation/robot/root_pose",
+          "articulation/robot/root_velocity",
+          "deformable_object/<empty-mapping>",
+          "gripper/<empty-mapping>",
+          "rigid_object/banana/root_pose",
+          "rigid_object/banana/root_velocity",
+          "rigid_object/bowl/root_pose",
+          "rigid_object/bowl/root_velocity",
+          "rigid_object/rubiks_cube/root_pose",
+          "rigid_object/rubiks_cube/root_velocity",
+          "rigid_object/table/root_pose",
+          "rigid_object/table/root_velocity"
+        ],
+        "shape_mismatches": [],
+        "status": "fail",
+        "tolerance": 0.01,
+        "unexpected_paths": [
+          "deformable_object/<empty-mapping>",
+          "gripper/<empty-mapping>"
+        ]
+      },
+      "initial_restore_maximum_absolute_error": 0.0,
+      "initial_restore_pass": false,
+      "observation_available": null,
+      "official_maximum_absolute_error": null,
+      "official_state_validator_pass": null,
+      "recorded_config_overlay_pass": false,
+      "recorded_config_skipped_fields": [
+        "/_instruction_variants (not in current config)"
+      ],
+      "recording_id": "RubiksCubeAndBananaTask-seed-810004",
+      "repeat": 0,
+      "status": "execution_error",
+      "strict_per_step_failure_count": null,
+      "success_match": null,
+      "terminal_match": null
+    },
+    {
+      "execution_error": {
+        "message": "'str' object is not callable",
+        "type": "TypeError"
+      },
+      "initial_restore_comparison": {
+        "dtype_mismatches": [],
+        "expected_paths": [
+          "articulation/robot/joint_position",
+          "articulation/robot/joint_velocity",
+          "articulation/robot/root_pose",
+          "articulation/robot/root_velocity",
+          "rigid_object/banana/root_pose",
+          "rigid_object/banana/root_velocity",
+          "rigid_object/bowl/root_pose",
+          "rigid_object/bowl/root_velocity",
+          "rigid_object/rubiks_cube/root_pose",
+          "rigid_object/rubiks_cube/root_velocity",
+          "rigid_object/table/root_pose",
+          "rigid_object/table/root_velocity"
+        ],
+        "leaves": [
+          {
+            "compared_values": 13,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "articulation/robot/joint_position",
+            "shape": [
+              1,
+              13
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 13,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "articulation/robot/joint_velocity",
+            "shape": [
+              1,
+              13
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 7,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "articulation/robot/root_pose",
+            "shape": [
+              1,
+              7
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 6,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "articulation/robot/root_velocity",
+            "shape": [
+              1,
+              6
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 7,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "rigid_object/banana/root_pose",
+            "shape": [
+              1,
+              7
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 6,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "rigid_object/banana/root_velocity",
+            "shape": [
+              1,
+              6
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 7,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "rigid_object/bowl/root_pose",
+            "shape": [
+              1,
+              7
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 6,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "rigid_object/bowl/root_velocity",
+            "shape": [
+              1,
+              6
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 7,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "rigid_object/rubiks_cube/root_pose",
+            "shape": [
+              1,
+              7
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 6,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "rigid_object/rubiks_cube/root_velocity",
+            "shape": [
+              1,
+              6
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 7,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "rigid_object/table/root_pose",
+            "shape": [
+              1,
+              7
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 6,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "rigid_object/table/root_velocity",
+            "shape": [
+              1,
+              6
+            ],
+            "within_tolerance": true
+          }
+        ],
+        "maximum_absolute_error": 0.0,
+        "missing_paths": [],
+        "non_finite_paths": [],
+        "observed_paths": [
+          "articulation/robot/joint_position",
+          "articulation/robot/joint_velocity",
+          "articulation/robot/root_pose",
+          "articulation/robot/root_velocity",
+          "deformable_object/<empty-mapping>",
+          "gripper/<empty-mapping>",
+          "rigid_object/banana/root_pose",
+          "rigid_object/banana/root_velocity",
+          "rigid_object/bowl/root_pose",
+          "rigid_object/bowl/root_velocity",
+          "rigid_object/rubiks_cube/root_pose",
+          "rigid_object/rubiks_cube/root_velocity",
+          "rigid_object/table/root_pose",
+          "rigid_object/table/root_velocity"
+        ],
+        "shape_mismatches": [],
+        "status": "fail",
+        "tolerance": 0.01,
+        "unexpected_paths": [
+          "deformable_object/<empty-mapping>",
+          "gripper/<empty-mapping>"
+        ]
+      },
+      "initial_restore_maximum_absolute_error": 0.0,
+      "initial_restore_pass": false,
+      "observation_available": null,
+      "official_maximum_absolute_error": null,
+      "official_state_validator_pass": null,
+      "recorded_config_overlay_pass": false,
+      "recorded_config_skipped_fields": [
+        "/_instruction_variants (not in current config)"
+      ],
+      "recording_id": "RubiksCubeAndBananaTask-seed-810004",
+      "repeat": 1,
+      "status": "execution_error",
+      "strict_per_step_failure_count": null,
+      "success_match": null,
+      "terminal_match": null
+    },
+    {
+      "execution_error": {
+        "message": "'str' object is not callable",
+        "type": "TypeError"
+      },
+      "initial_restore_comparison": {
+        "dtype_mismatches": [],
+        "expected_paths": [
+          "articulation/robot/joint_position",
+          "articulation/robot/joint_velocity",
+          "articulation/robot/root_pose",
+          "articulation/robot/root_velocity",
+          "rigid_object/banana/root_pose",
+          "rigid_object/banana/root_velocity",
+          "rigid_object/bowl/root_pose",
+          "rigid_object/bowl/root_velocity",
+          "rigid_object/rubiks_cube/root_pose",
+          "rigid_object/rubiks_cube/root_velocity",
+          "rigid_object/table/root_pose",
+          "rigid_object/table/root_velocity"
+        ],
+        "leaves": [
+          {
+            "compared_values": 13,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "articulation/robot/joint_position",
+            "shape": [
+              1,
+              13
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 13,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "articulation/robot/joint_velocity",
+            "shape": [
+              1,
+              13
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 7,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "articulation/robot/root_pose",
+            "shape": [
+              1,
+              7
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 6,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "articulation/robot/root_velocity",
+            "shape": [
+              1,
+              6
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 7,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "rigid_object/banana/root_pose",
+            "shape": [
+              1,
+              7
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 6,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "rigid_object/banana/root_velocity",
+            "shape": [
+              1,
+              6
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 7,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "rigid_object/bowl/root_pose",
+            "shape": [
+              1,
+              7
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 6,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "rigid_object/bowl/root_velocity",
+            "shape": [
+              1,
+              6
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 7,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "rigid_object/rubiks_cube/root_pose",
+            "shape": [
+              1,
+              7
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 6,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "rigid_object/rubiks_cube/root_velocity",
+            "shape": [
+              1,
+              6
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 7,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "rigid_object/table/root_pose",
+            "shape": [
+              1,
+              7
+            ],
+            "within_tolerance": true
+          },
+          {
+            "compared_values": 6,
+            "dtype": "<f4",
+            "maximum_absolute_error": 0.0,
+            "path": "rigid_object/table/root_velocity",
+            "shape": [
+              1,
+              6
+            ],
+            "within_tolerance": true
+          }
+        ],
+        "maximum_absolute_error": 0.0,
+        "missing_paths": [],
+        "non_finite_paths": [],
+        "observed_paths": [
+          "articulation/robot/joint_position",
+          "articulation/robot/joint_velocity",
+          "articulation/robot/root_pose",
+          "articulation/robot/root_velocity",
+          "deformable_object/<empty-mapping>",
+          "gripper/<empty-mapping>",
+          "rigid_object/banana/root_pose",
+          "rigid_object/banana/root_velocity",
+          "rigid_object/bowl/root_pose",
+          "rigid_object/bowl/root_velocity",
+          "rigid_object/rubiks_cube/root_pose",
+          "rigid_object/rubiks_cube/root_velocity",
+          "rigid_object/table/root_pose",
+          "rigid_object/table/root_velocity"
+        ],
+        "shape_mismatches": [],
+        "status": "fail",
+        "tolerance": 0.01,
+        "unexpected_paths": [
+          "deformable_object/<empty-mapping>",
+          "gripper/<empty-mapping>"
+        ]
+      },
+      "initial_restore_maximum_absolute_error": 0.0,
+      "initial_restore_pass": false,
+      "observation_available": null,
+      "official_maximum_absolute_error": null,
+      "official_state_validator_pass": null,
+      "recorded_config_overlay_pass": false,
+      "recorded_config_skipped_fields": [
+        "/_instruction_variants (not in current config)"
+      ],
+      "recording_id": "RubiksCubeAndBananaTask-seed-810004",
+      "repeat": 2,
+      "status": "execution_error",
+      "strict_per_step_failure_count": null,
+      "success_match": null,
+      "terminal_match": null
+    }
+  ],
+  "episode_count": 10,
+  "execution_error_count": 30,
+  "expected_replay_count": 30,
+  "initial_restore_failures": 30,
+  "official_state_tolerance": 0.01,
+  "per_step_state_failures": 0,
+  "recorded_config_overlay_failures": 30,
+  "repeats_per_episode": 3,
+  "runtime_process_isolation": "one_recording_per_isaac_sim_process",
+  "schema_version": "lg_rb0_faithful_replay_validation_v1",
+  "status": "fail",
+  "success_mismatches": 0,
+  "terminal_mismatches": 0
+}

@@ -1,6 +1,6 @@
 {
   "schema_version": "lg_rb0_environment_manifest_v1",
-  "status": "preregistered",
+  "status": "validated",
   "external_stack": {
     "robolab_repository": "https://github.com/NVLabs/RoboLab.git",
     "robolab_release": "v0.2.1",
@@ -16,7 +16,30 @@
     "minimum_free_data_disk_gib": 30,
     "recommended_gpu_memory_gib": 48
   },
-  "observed_remote": null,
-  "resolved_packages": null,
-  "note": "Runtime facts are populated only from the exact pushed revision after the remote stack probe."
+  "observed_remote": {
+    "os": "Ubuntu 22.04.5 LTS",
+    "cpu_core_quota": 16,
+    "memory_gib": 90,
+    "gpu": "NVIDIA GeForce RTX 5090",
+    "gpu_memory_bytes": 34190917632,
+    "driver": "580.76.05",
+    "device": "cuda:0",
+    "headless": true,
+    "num_envs": 1,
+    "vulkan_icd_manifest": "nvidia_icd.json",
+    "data_disk_total_gib": 250,
+    "data_disk_free_gib_after_run": 45,
+    "task_smoke_count": 2,
+    "one_step_gpu_smoke": true,
+    "network_turbo_sourced": true
+  },
+  "resolved_packages": {
+    "python": "3.11.15",
+    "robolab": "0.2.1",
+    "isaacsim": "5.1.0.0",
+    "isaaclab": "2.3.2.post1",
+    "torch": "2.7.0+cu128",
+    "cuda_runtime": "12.8"
+  },
+  "note": "Isaac Sim reports distribution version 5.1.0.0, which is PEP 440-equivalent to the frozen 5.1.0 requirement. The 32 GiB-class GPU is below RoboLab's recommended 48 GiB, but both registered single-environment task smokes and the fixed recording gate completed without OOM."
 }

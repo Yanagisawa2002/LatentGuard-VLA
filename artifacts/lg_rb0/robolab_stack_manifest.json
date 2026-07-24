@@ -1,0 +1,29 @@
+{
+  "gpu": {
+    "driver": "580.76.05",
+    "name": "NVIDIA GeForce RTX 5090",
+    "total_memory_bytes": 34190917632
+  },
+  "robolab": {
+    "commit": "0aef241fb088ca21bb4ebd24448940ed56620d17",
+    "import_module": "__init__.py",
+    "release": "v0.2.1",
+    "repository": "https://github.com/NVLabs/RoboLab.git"
+  },
+  "runtime": {
+    "device": "cuda:0",
+    "headless": true,
+    "num_envs": 1,
+    "vulkan_icd_manifest": "nvidia_icd.json"
+  },
+  "schema_version": "lg_rb0_robolab_stack_manifest_v1",
+  "status": "pass",
+  "versions": {
+    "cuda_runtime": "12.8",
+    "isaaclab": "2.3.2.post1",
+    "isaacsim": "5.1.0.0",
+    "python": "3.11.15",
+    "robolab_distribution": "0.2.1",
+    "torch": "2.7.0+cu128"
+  }
+}

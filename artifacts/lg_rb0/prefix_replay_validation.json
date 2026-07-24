@@ -1,0 +1,8 @@
+{
+  "details": [],
+  "mismatch_count": null,
+  "reason": "blocked_by_faithful_replay_gate",
+  "schema_version": "lg_rb0_prefix_replay_validation_v1",
+  "semantic_coverage_complete": null,
+  "status": "not_run"
+}

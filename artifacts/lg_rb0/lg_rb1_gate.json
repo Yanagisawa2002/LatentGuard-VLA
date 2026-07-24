@@ -1,0 +1,28 @@
+{
+  "LG_RB1_AUTHORIZED": false,
+  "faithful_replay_gate": false,
+  "final_seeds_accessed": false,
+  "inputs": {
+    "branch_mismatches": null,
+    "faithful_completed_replays": 0,
+    "faithful_config_overlay_failures": 30,
+    "faithful_execution_errors": 30,
+    "faithful_expected_replays": 30,
+    "faithful_initial_restore_failures": 30,
+    "faithful_per_step_failures": 0,
+    "faithful_success_mismatches": 0,
+    "faithful_terminal_mismatches": 0,
+    "isolation_mismatches": null,
+    "prefix_mismatches": null,
+    "semantic_coverage_complete": null,
+    "valid_recorded_episodes": 10
+  },
+  "no_candidate_selection_or_intervention": true,
+  "no_policy_or_ranker_training": true,
+  "provenance_gate": true,
+  "result": "C",
+  "result_definition": "official faithful replay did not complete or pass under the frozen stack",
+  "schema_version": "lg_rb0_gate_v1",
+  "status": "pass",
+  "takeover_gate": false
+}

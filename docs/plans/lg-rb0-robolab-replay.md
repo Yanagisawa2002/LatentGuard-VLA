@@ -74,3 +74,16 @@ authorized, plus probes and setup. Total wall time is expected to be roughly
 2--3 hours after the environment is available. These are operational
 estimates, not research results; actual run durations are recorded in the
 remote logs.
+
+## Completion update
+
+The environment and 10-recording gate passed. Formal process-isolated recording
+took about 10 minutes. The final 30-attempt faithful evidence run took about
+12 minutes; environment probes and diagnostic attempts added roughly 20
+minutes of GPU-active engineering time. Takeover was blocked, avoiding the
+estimated additional 60--120 minutes.
+
+The result is C: 0/30 faithful replays completed, with 30 strict initial-tree
+failures, 30 recorded-config overlay failures, and 30 execution errors. Prefix,
+branch, and isolation metrics are unavailable. See
+`docs/lg_rb0_results.md` and the compact artifacts for the reviewed evidence.

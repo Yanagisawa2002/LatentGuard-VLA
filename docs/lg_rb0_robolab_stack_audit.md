@@ -37,6 +37,39 @@ The release includes one small example recording for
 gate, so LG-RB0 preregisters ten new mechanics-only recordings: five fixed
 seeds for `BananaInBowlTask` and five for `RubiksCubeAndBananaTask`.
 
+## Registered task contracts
+
+Both tasks use the RoboLab DROID registration with a Franka Panda arm and
+Robotiq 2F-85 gripper. The action contract is seven Panda joint-position
+commands plus the legal binary gripper joint command. Physics runs at
+`1/120 s` with decimation 8, for a `1/15 s` control interval, on CUDA with
+Fabric.
+
+`BananaInBowlTask`:
+
+- instruction: pick up the banana and place it in the bowl;
+- observations: over-shoulder and wrist RGB groups, proprioception
+  (arm/gripper joints and end-effector poses), and egocentric viewport RGB;
+- cameras: `over_shoulder_left_camera`, `wrist_cam`, and
+  `egocentric_mirrored_camera`;
+- registered horizon: 50 seconds;
+- subtask: banana grabbed, then banana in bowl with gripper detached;
+- success: banana in bowl with required contact and detached gripper.
+
+`RubiksCubeAndBananaTask`:
+
+- instruction: put the cube and the banana in the bowl;
+- robot, observations, action, cameras, and simulation settings match the
+  simple task;
+- registered horizon: 60 seconds;
+- subtask: both Rubik's cube and banana must each progress from grabbed to
+  in-bowl with detached gripper;
+- success: both objects in the bowl with required contact and detached gripper.
+
+LG-RB0 records only the first 40 registered control actions from its fixed
+mechanics probe. It does not shorten the official task horizon to manufacture
+task failure or use success rate to select tasks.
+
 ## Resource audit
 
 The available server has an NVIDIA GeForce RTX 5090 with about 32 GiB of GPU

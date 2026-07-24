@@ -1,0 +1,75 @@
+{
+  "expected_task_smoke_count": 2,
+  "one_step_gpu_smoke": true,
+  "schema_version": "lg_rb0_environment_validation_v1",
+  "simulator_rollout_kind": "one_step_environment_mechanics_smoke",
+  "status": "pass",
+  "task_smoke_count": 2,
+  "tasks": [
+    {
+      "instruction": "Pick up the banana and place it in the bowl",
+      "matching_envs": [
+        "BananaInBowlTask"
+      ],
+      "observation_groups": [
+        "image_obs",
+        "proprio_obs",
+        "viewport_cam"
+      ],
+      "selected_env": "BananaInBowlTask",
+      "smoke_seed": 0,
+      "state_leaf_count": 12,
+      "state_paths": [
+        "articulation/robot/joint_position",
+        "articulation/robot/joint_velocity",
+        "articulation/robot/root_pose",
+        "articulation/robot/root_velocity",
+        "deformable_object/<empty-mapping>",
+        "gripper/<empty-mapping>",
+        "rigid_object/banana/root_pose",
+        "rigid_object/banana/root_velocity",
+        "rigid_object/bowl/root_pose",
+        "rigid_object/bowl/root_velocity",
+        "rigid_object/table/root_pose",
+        "rigid_object/table/root_velocity"
+      ],
+      "task_query": "BananaInBowlTask",
+      "terminated_after_one_step": false,
+      "truncated_after_one_step": false
+    },
+    {
+      "instruction": "Put the cube and the banana in the bowl",
+      "matching_envs": [
+        "RubiksCubeAndBananaTask"
+      ],
+      "observation_groups": [
+        "image_obs",
+        "proprio_obs",
+        "viewport_cam"
+      ],
+      "selected_env": "RubiksCubeAndBananaTask",
+      "smoke_seed": 0,
+      "state_leaf_count": 14,
+      "state_paths": [
+        "articulation/robot/joint_position",
+        "articulation/robot/joint_velocity",
+        "articulation/robot/root_pose",
+        "articulation/robot/root_velocity",
+        "deformable_object/<empty-mapping>",
+        "gripper/<empty-mapping>",
+        "rigid_object/banana/root_pose",
+        "rigid_object/banana/root_velocity",
+        "rigid_object/bowl/root_pose",
+        "rigid_object/bowl/root_velocity",
+        "rigid_object/rubiks_cube/root_pose",
+        "rigid_object/rubiks_cube/root_velocity",
+        "rigid_object/table/root_pose",
+        "rigid_object/table/root_velocity"
+      ],
+      "task_query": "RubiksCubeAndBananaTask",
+      "terminated_after_one_step": false,
+      "truncated_after_one_step": false
+    }
+  ],
+  "training_performed": false
+}
