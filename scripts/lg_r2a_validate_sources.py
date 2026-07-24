@@ -21,7 +21,7 @@ FORBIDDEN_PATH_PREFIXES = (
 )
 SECRET_MARKERS = (
     "BEGIN " + "OPENSSH PRIVATE KEY",
-    "ssh-rsa ",
+    "ssh-" + "rsa ",
     "pass" + "word=",
     "api_" + "token=",
 )
