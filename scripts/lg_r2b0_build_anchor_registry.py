@@ -5,6 +5,7 @@ from __future__ import annotations
 import argparse
 import json
 from copy import deepcopy
+from dataclasses import asdict
 from pathlib import Path
 from typing import Any
 
@@ -12,6 +13,7 @@ import numpy as np
 from _lg_r2b0_common import (
     batch_observation,
     canonical_sha256,
+    current_observation,
     load_runtime_stack,
     make_libero_environment,
     observation_sha256,
@@ -34,6 +36,7 @@ from latentguard.counterfactual.gates import validate_anchor_registry
 from latentguard.counterfactual.libero_state import (
     LiberoStateSnapshot,
     capture_libero_state,
+    compare_libero_states,
     save_libero_state,
 )
 from latentguard.counterfactual.models import AnchorRecord
@@ -184,6 +187,7 @@ def main() -> None:
                     Any,
                     LiberoStateSnapshot,
                     dict[str, Any],
+                    Any,
                 ],
             ] = {}
             success = False
@@ -211,11 +215,23 @@ def main() -> None:
                     and enough_history
                     and enough_future
                 ):
+                    snapshot = capture_libero_state(single_env)
+                    canonical_raw = current_observation(single_env)
+                    render_state = compare_libero_states(
+                        snapshot,
+                        capture_libero_state(single_env),
+                        atol=float(config["state_restore_tolerance"]),
+                    )
+                    if not render_state.within_tolerance:
+                        raise RuntimeError(
+                            "canonical anchor rendering changed complete state"
+                        )
                     captured[label.stage_id] = (
                         step_index,
                         label,
-                        capture_libero_state(single_env),
-                        deepcopy(raw),
+                        snapshot,
+                        deepcopy(canonical_raw),
+                        render_state,
                     )
                 _, action = select_primary_action(
                     stack=stack,
@@ -240,7 +256,7 @@ def main() -> None:
                     f"no registered target stage observed for {anchor_id}: "
                     f"{target_stage_ids}"
                 )
-            step_index, label, snapshot, raw = captured[selected_stage]
+            step_index, label, snapshot, raw, render_state = captured[selected_stage]
             anchor_dir = anchor_root / anchor_id
             if anchor_dir.exists():
                 raise FileExistsError(f"partial anchor exists: {anchor_dir}")
@@ -289,6 +305,7 @@ def main() -> None:
                     "selection_used_branch_outcomes": False,
                     "observation_archive_sha256": observation_archive_sha256,
                     "initial_privileged_state": initial_state,
+                    "canonical_render_state_comparison": asdict(render_state),
                 },
                 snapshot_locator=(f"LG_R2B0_OUTPUT_ROOT/anchors/{anchor_id}/state"),
             )

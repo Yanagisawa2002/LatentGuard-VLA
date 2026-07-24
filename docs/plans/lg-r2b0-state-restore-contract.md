@@ -30,3 +30,11 @@ The pre-pilot audit uses 10 registered states and 5 repeated 49-step executions
 per state. Zero restoration failures, zero predicate mismatches, and zero
 terminal mismatches are permitted. This gate is infrastructure evidence only;
 it is not task performance evidence.
+
+An initial compatibility run established that comparing a step-returned image
+to a freshly regenerated boundary image is not a valid identity check: all
+captured state components restored exactly, but the two rendering paths
+differed. This is calibration evidence, not an accepted gate. The corrected
+contract canonicalizes the observation from the archived state, verifies that
+canonical rendering preserves complete state, keeps zero pixel tolerance, and
+uses ten disjoint source seeds for validation.

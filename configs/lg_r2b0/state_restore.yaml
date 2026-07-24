@@ -8,22 +8,22 @@ pixel_comparison: complete_array_error_statistics_v1
 pixel_maximum_absolute_tolerance: 0.0
 pixel_mean_absolute_tolerance: 0.0
 pixel_different_value_ratio_tolerance: 0.0
-probe_role: pixel_compatibility_calibration_and_exact_gate
+probe_role: untouched_validation_after_canonical_observation_fix
 repeats: 5
 probe_horizon: 49
 source_policy_seed_base: 700000
 continuation_seed_base: 710000
 probes:
-  - {suite: libero_10, task_id: 2, seed: 3000, step_index: 42, episode_horizon: 520, candidate_inference_seed: 700200, instruction: turn on the stove and put the moka pot on it}
-  - {suite: libero_10, task_id: 2, seed: 3001, step_index: 98, episode_horizon: 520, candidate_inference_seed: 700201, instruction: turn on the stove and put the moka pot on it}
-  - {suite: libero_10, task_id: 6, seed: 3050, step_index: 70, episode_horizon: 520, candidate_inference_seed: 700202, instruction: put the white mug on the plate and put the chocolate pudding to the right of the plate}
-  - {suite: libero_10, task_id: 6, seed: 3051, step_index: 140, episode_horizon: 520, candidate_inference_seed: 700203, instruction: put the white mug on the plate and put the chocolate pudding to the right of the plate}
-  - {suite: libero_10, task_id: 8, seed: 3020, step_index: 100, episode_horizon: 520, candidate_inference_seed: 700204, instruction: put both moka pots on the stove}
-  - {suite: libero_10, task_id: 9, seed: 3010, step_index: 80, episode_horizon: 520, candidate_inference_seed: 700205, instruction: put the yellow and white mug in the microwave and close it}
-  - {suite: libero_goal, task_id: 6, seed: 3060, step_index: 25, episode_horizon: 300, candidate_inference_seed: 700206, instruction: put the cream cheese on the bowl}
-  - {suite: libero_goal, task_id: 6, seed: 3061, step_index: 45, episode_horizon: 300, candidate_inference_seed: 700207, instruction: put the cream cheese on the bowl}
-  - {suite: libero_goal, task_id: 9, seed: 3070, step_index: 35, episode_horizon: 300, candidate_inference_seed: 700208, instruction: put the wine bottle on the rack}
-  - {suite: libero_goal, task_id: 9, seed: 3071, step_index: 70, episode_horizon: 300, candidate_inference_seed: 700209, instruction: put the wine bottle on the rack}
+  - {suite: libero_10, task_id: 2, seed: 3002, step_index: 50, episode_horizon: 520, candidate_inference_seed: 700210, instruction: turn on the stove and put the moka pot on it}
+  - {suite: libero_10, task_id: 2, seed: 3003, step_index: 110, episode_horizon: 520, candidate_inference_seed: 700211, instruction: turn on the stove and put the moka pot on it}
+  - {suite: libero_10, task_id: 6, seed: 3052, step_index: 75, episode_horizon: 520, candidate_inference_seed: 700212, instruction: put the white mug on the plate and put the chocolate pudding to the right of the plate}
+  - {suite: libero_10, task_id: 6, seed: 3053, step_index: 150, episode_horizon: 520, candidate_inference_seed: 700213, instruction: put the white mug on the plate and put the chocolate pudding to the right of the plate}
+  - {suite: libero_10, task_id: 8, seed: 3021, step_index: 105, episode_horizon: 520, candidate_inference_seed: 700214, instruction: put both moka pots on the stove}
+  - {suite: libero_10, task_id: 9, seed: 3011, step_index: 85, episode_horizon: 520, candidate_inference_seed: 700215, instruction: put the yellow and white mug in the microwave and close it}
+  - {suite: libero_goal, task_id: 6, seed: 3062, step_index: 30, episode_horizon: 300, candidate_inference_seed: 700216, instruction: put the cream cheese on the bowl}
+  - {suite: libero_goal, task_id: 6, seed: 3063, step_index: 50, episode_horizon: 300, candidate_inference_seed: 700217, instruction: put the cream cheese on the bowl}
+  - {suite: libero_goal, task_id: 9, seed: 3072, step_index: 40, episode_horizon: 300, candidate_inference_seed: 700218, instruction: put the wine bottle on the rack}
+  - {suite: libero_goal, task_id: 9, seed: 3073, step_index: 75, episode_horizon: 300, candidate_inference_seed: 700219, instruction: put the wine bottle on the rack}
 hard_stop:
   restore_failures: 0
   render_mismatches: 0

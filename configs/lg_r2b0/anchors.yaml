@@ -9,6 +9,7 @@ minimum_per_task: 8
 maximum_task6_ratio: 0.35
 minimum_anchor_step: 7
 minimum_remaining_horizon: 49
+state_restore_tolerance: 0.000001
 source_policy_seed_base: 700000
 selection_semantic: pre_registered_stage_priority_first_occurrence_v1
 selection_inputs:

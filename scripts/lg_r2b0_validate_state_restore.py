@@ -233,8 +233,37 @@ def main() -> None:
                 if terminated:
                     raise RuntimeError("restore probe source terminated before anchor")
                 raw_batched = batch_observation(raw)
-            anchor_raw = unbatch_observation(raw_batched)
             snapshot = capture_libero_state(single_env)
+            anchor_raw = current_observation(single_env)
+            canonical_render_state = compare_libero_states(
+                snapshot,
+                capture_libero_state(single_env),
+                atol=tolerance,
+            )
+            if not canonical_render_state.within_tolerance:
+                restore_failures += 1
+                probe_results.append(
+                    {
+                        "probe_id": f"restore-probe-{probe_index}",
+                        "suite": suite,
+                        "task_id": task_id,
+                        "seed": seed,
+                        "step_index": step_index,
+                        "snapshot_content_sha256": snapshot.content_sha256,
+                        "snapshot_structure_sha256": snapshot.structure_sha256,
+                        "canonical_render_state_comparison": asdict(
+                            canonical_render_state
+                        ),
+                        "candidate_content_sha256": None,
+                        "restorations": [],
+                        "render_comparisons": [],
+                        "post_render_state_comparisons": [],
+                        "trace_comparisons": [],
+                        "terminal_results": [],
+                    }
+                )
+                continue
+            raw_batched = batch_observation(anchor_raw)
             candidate = generate_policy_candidate(
                 stack=stack,
                 raw_observation=raw_batched,
@@ -385,6 +414,7 @@ def main() -> None:
                     "snapshot_content_sha256": snapshot.content_sha256,
                     "snapshot_structure_sha256": snapshot.structure_sha256,
                     "candidate_content_sha256": candidate.content_sha256,
+                    "canonical_render_state_comparison": asdict(canonical_render_state),
                     "restorations": restoration_records,
                     "render_comparisons": render_records,
                     "post_render_state_comparisons": post_render_state_records,

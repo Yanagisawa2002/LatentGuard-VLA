@@ -1,0 +1,31 @@
+{
+  "calibration_only": true,
+  "comparison": "step_returned_observation_vs_canonical_state_render",
+  "execution_commit": "c58af034e5b7f9cd2503f90a0392c8bf244a5d98",
+  "final_seed_accessed": false,
+  "maximum_observed_pixel_absolute_error": 116.0,
+  "maximum_observed_pixel_different_value_ratio": 0.2147706738945578,
+  "maximum_observed_pixel_mean_absolute_error": 0.9091331845238095,
+  "numeric_tolerance": 1e-06,
+  "optimizer_steps": 0,
+  "post_render_state_mismatches": 0,
+  "probe_states": 10,
+  "render_mismatches": 10,
+  "repeats_reached": 0,
+  "result": "CALIBRATION_FAILED_EXACT_PIXEL_IDENTITY",
+  "restore_failures": 0,
+  "run_id": "20260724T085303Z_lg-r2b0-render-calibration_c58af03",
+  "schema_version": "latentguard.lg_r2b0.state_restore_calibration_summary.v1",
+  "source_artifact_bytes": 17164,
+  "source_artifact_sha256": "e400b741dffad5ee607888b6f722332b1ec3042c5081c16104346343daac0f88",
+  "status": "fail",
+  "stop_reason": "STEP_RETURNED_OBSERVATION_IS_NOT_CANONICAL_BOUNDARY_RENDER",
+  "task_predicate_mismatches": 0,
+  "terminal_result_mismatches": 0,
+  "training_performed": false,
+  "untouched_validation_replacement": {
+    "canonical_observation_from_archived_state": true,
+    "pixel_tolerances_relaxed": false,
+    "source_seeds_reused": false
+  }
+}
