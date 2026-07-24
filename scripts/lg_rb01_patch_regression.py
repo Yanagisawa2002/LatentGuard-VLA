@@ -3,7 +3,11 @@
 from __future__ import annotations
 
 import argparse
+import hashlib
+import importlib.util
 import json
+import sys
+import types
 from functools import partial
 from pathlib import Path
 from typing import Any
@@ -31,9 +35,58 @@ def _category_present(skips: list[str], category: str, namespace: str) -> bool:
     )
 
 
-def run_regressions(expect: str) -> dict[str, Any]:
+def _sha256(path: Path) -> str:
+    digest = hashlib.sha256()
+    with path.open("rb") as handle:
+        for block in iter(lambda: handle.read(1024 * 1024), b""):
+            digest.update(block)
+    return digest.hexdigest()
+
+
+def _load_env_config(robolab_root: Path) -> tuple[Any, Path]:
+    """Load only the overlay module with a CPU-safe Isaac string shim."""
+    source = robolab_root / "robolab/core/replay/env_config.py"
+    constants_source = robolab_root / "robolab/constants.py"
+    if not source.is_file() or not constants_source.is_file():
+        raise ValueError("RoboLab root does not contain the expected source files")
+
+    isaaclab = types.ModuleType("isaaclab")
+    isaaclab.__path__ = []  # type: ignore[attr-defined]
+    isaac_utils = types.ModuleType("isaaclab.utils")
+    isaac_utils.__path__ = []  # type: ignore[attr-defined]
+    isaac_string = types.ModuleType("isaaclab.utils.string")
+
+    def unavailable_resolver(value: str) -> Any:
+        raise ImportError(f"CPU regression resolver unavailable: {value}")
+
+    isaac_string.string_to_callable = unavailable_resolver  # type: ignore[attr-defined]
+    robolab = types.ModuleType("robolab")
+    robolab.__path__ = [str(robolab_root / "robolab")]  # type: ignore[attr-defined]
+    constants = types.ModuleType("robolab.constants")
+    constants.ASSET_DIR = str(robolab_root / "assets")  # type: ignore[attr-defined]
+    sys.modules.update(
+        {
+            "isaaclab": isaaclab,
+            "isaaclab.utils": isaac_utils,
+            "isaaclab.utils.string": isaac_string,
+            "robolab": robolab,
+            "robolab.constants": constants,
+        }
+    )
+    specification = importlib.util.spec_from_file_location(
+        "lg_rb01_env_config",
+        source,
+    )
+    if specification is None or specification.loader is None:
+        raise RuntimeError("could not construct the overlay module specification")
+    module = importlib.util.module_from_spec(specification)
+    specification.loader.exec_module(module)
+    return module, source
+
+
+def run_regressions(expect: str, robolab_root: Path) -> dict[str, Any]:
     """Run the same cases against an unpatched or patched RoboLab import."""
-    from robolab.core.replay import env_config
+    env_config, source = _load_env_config(robolab_root)
 
     cases: dict[str, dict[str, Any]] = {}
 
@@ -240,6 +293,7 @@ def run_regressions(expect: str) -> dict[str, Any]:
         "schema_version": "lg_rb01_patch_regression_v1",
         "status": "pass" if all(expectations.values()) else "fail",
         "expected_source_state": expect,
+        "env_config_sha256": _sha256(source),
         "cases": cases,
         "expectations": expectations,
         "eval_or_exec_used": False,
@@ -254,9 +308,10 @@ def main() -> None:
         choices=["unpatched", "patched"],
         required=True,
     )
+    parser.add_argument("--robolab-root", type=Path, required=True)
     parser.add_argument("--output", type=Path)
     args = parser.parse_args()
-    result = run_regressions(args.expect)
+    result = run_regressions(args.expect, args.robolab_root.resolve())
     if args.output is not None:
         args.output.parent.mkdir(parents=True, exist_ok=True)
         args.output.write_text(
