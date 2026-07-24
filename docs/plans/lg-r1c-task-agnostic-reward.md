@@ -41,9 +41,10 @@ most 32. No model output can add, remove, or reweight a window.
 3. Run the online time baseline and frozen SARM on the common endpoints.
 4. Run the frozen VLA-JEPA representation probe; only its linear head trains.
 5. Run ROBOMETER and TOPReward strict zero-shot inference and freeze prediction
-   file hashes before any calibration.
-6. Fit scalar calibration and the pre-declared linear/logistic ensemble on
-   validation only. Test labels are read once after selection is fixed.
+   file hashes before loading or computing any test metric.
+6. Fit scalar calibration and the pre-declared linear/logistic ensemble from
+   the content-bound validation-only label projection. The full labeled window
+   file is read once after selection is fixed.
 7. Report original split, equal task macro, leave-LIBERO-10-task-6-out,
    failure-task macro, taxonomy, stage-balanced, matched, and strictly matched
    results.

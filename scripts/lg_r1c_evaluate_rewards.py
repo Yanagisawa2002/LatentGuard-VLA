@@ -15,6 +15,7 @@ from _lg_r1c_common import (
     read_jsonl,
     read_yaml,
     resolve_repo_path,
+    runtime_identity,
     sha256_path,
     write_json,
 )
@@ -59,19 +60,13 @@ def _progress_summary(
         )
         return result
 
-    by_split = {
-        split: summarize([row for row in rows if row["split"] == split])
-        for split in ("train", "validation", "test")
-    }
-    per_task = {
-        task: summarize([row for row in rows if row["task_key"] == task])
-        for task in sorted({str(row["task_key"]) for row in rows})
-    }
-    task_records = list(per_task.values())
-    return {
-        "all": summarize(rows),
-        "by_split": by_split,
-        "task_macro": {
+    def macro(subset: list[dict[str, Any]]) -> dict[str, Any]:
+        per_task = {
+            task: summarize([row for row in subset if row["task_key"] == task])
+            for task in sorted({str(row["task_key"]) for row in subset})
+        }
+        task_records = list(per_task.values())
+        return {
             "eligible_tasks": len(task_records),
             "mae": _mean_metric(task_records, "mae"),
             "rmse": _mean_metric(task_records, "rmse"),
@@ -81,8 +76,21 @@ def _progress_summary(
                 task_records,
                 "pairwise_accuracy",
             ),
+            "per_task": per_task,
+        }
+
+    by_split = {
+        split: summarize([row for row in rows if row["split"] == split])
+        for split in ("train", "validation", "test")
+    }
+    return {
+        "all": summarize(rows),
+        "by_split": by_split,
+        "task_macro": macro(rows),
+        "task_macro_by_split": {
+            split: macro([row for row in rows if row["split"] == split])
+            for split in ("train", "validation", "test")
         },
-        "per_task": per_task,
     }
 
 
@@ -105,6 +113,22 @@ def _success_summary(
             for split in ("train", "validation", "test")
         },
         "task_macro": task_macro_binary_metrics(labels, values, tasks),
+        "task_macro_by_split": {
+            split: task_macro_binary_metrics(
+                [
+                    bool(row["terminal_success"])
+                    for row in rows
+                    if row["split"] == split
+                ],
+                [
+                    scores[str(row["window_id"])]
+                    for row in rows
+                    if row["split"] == split
+                ],
+                [str(row["task_key"]) for row in rows if row["split"] == split],
+            )
+            for split in ("train", "validation", "test")
+        },
     }
 
 
@@ -112,6 +136,17 @@ def _binary_failure_scope(
     rows: list[dict[str, Any]],
     scores: dict[str, float],
 ) -> dict[str, Any]:
+    if not rows:
+        return {
+            "samples": 0,
+            "positives": 0,
+            "prevalence": None,
+            "auroc": None,
+            "auprc": None,
+            "brier": None,
+            "operating_points": {},
+            "status": "unavailable_empty_scope",
+        }
     labels = [bool(row["failure_label"]) for row in rows]
     values = [scores[str(row["window_id"])] for row in rows]
     result = binary_metrics(labels, values).to_dict()
@@ -147,6 +182,15 @@ def _matched_failure_summary(
     for name in ("FAILED_PLACEMENT", "OBJECT_DROP"):
         subset = [row for row in rows if name in row["failure_taxonomy"]]
         taxonomy[name] = _binary_failure_scope(subset, scores) if subset else None
+    progress_strata = {}
+    for lower, upper in (
+        (0.0, 0.25),
+        (0.25, 0.5),
+        (0.5, 0.75),
+        (0.75, 1.000001),
+    ):
+        subset = [row for row in rows if lower <= float(row["progress_target"]) < upper]
+        progress_strata[f"[{lower},{upper})"] = _binary_failure_scope(subset, scores)
     return {
         "all_matched": all_result,
         "strictly_matched": _binary_failure_scope(strict_rows, scores),
@@ -159,7 +203,15 @@ def _matched_failure_summary(
         },
         "task_macro": task_macro_binary_metrics(labels, values, tasks),
         "leave_task6_out": _binary_failure_scope(leave_rows, scores),
+        "leave_task6_out_by_split": {
+            split: _binary_failure_scope(
+                [row for row in leave_rows if row["split"] == split],
+                scores,
+            )
+            for split in ("train", "validation", "test")
+        },
         "taxonomy": taxonomy,
+        "progress_balanced_strata": progress_strata,
     }
 
 
@@ -199,10 +251,37 @@ def _episode_failure_summary(
             for split in ("train", "validation", "test")
         },
         "task_macro": task_macro_binary_metrics(labels, values, tasks),
+        "task_macro_by_split": {
+            split: task_macro_binary_metrics(
+                [
+                    not bool(row["terminal_success"])
+                    for row in rows
+                    if row["split"] == split
+                ],
+                [
+                    scores[str(row["window_id"])]
+                    for row in rows
+                    if row["split"] == split
+                ],
+                [str(row["task_key"]) for row in rows if row["split"] == split],
+            )
+            for split in ("train", "validation", "test")
+        },
         "leave_task6_out": _binary_failure_scope(
             [{**row, "failure_label": not row["terminal_success"]} for row in leave],
             scores,
         ),
+        "leave_task6_out_by_split": {
+            split: _binary_failure_scope(
+                [
+                    {**row, "failure_label": not row["terminal_success"]}
+                    for row in leave
+                    if row["split"] == split
+                ],
+                scores,
+            )
+            for split in ("train", "validation", "test")
+        },
     }
 
 
@@ -428,17 +507,25 @@ def _candidate_gate(
 ) -> dict[str, Any]:
     scope = "test" if fitted else "all"
     progress = (
-        summary["progress"]["by_split"]["test"]
+        summary["progress"]["task_macro_by_split"]["test"]
         if fitted
         else summary["progress"]["task_macro"]
     )
     success_auroc = (
-        summary["success"]["by_split"]["test"]["auroc"]
+        summary["success"]["task_macro_by_split"]["test"]["auroc"]
         if fitted
         else summary["success"]["task_macro"]["auroc"]
     )
-    failure = summary["episode_failure"][scope]
-    leave = summary["episode_failure"]["leave_task6_out"]
+    failure = (
+        summary["episode_failure"]["by_split"]["test"]
+        if fitted
+        else summary["episode_failure"]["all"]
+    )
+    leave = (
+        summary["episode_failure"]["leave_task6_out_by_split"]["test"]
+        if fitted
+        else summary["episode_failure"]["leave_task6_out"]
+    )
     operating = failure.get("operating_points", {}).get("0.6")
     candidate = {
         "progress_spearman": progress.get("spearman"),
@@ -461,6 +548,38 @@ def _candidate_gate(
     return gate
 
 
+def _freeze_zero_shot_predictions(destination: Path) -> dict[str, Any]:
+    prediction_files = (
+        "time_predictions.jsonl",
+        "sarm_predictions.jsonl",
+        "robometer_predictions.jsonl",
+        "topreward_predictions.jsonl",
+    )
+    predictions = {
+        name: _prediction_map(destination / name) for name in prediction_files
+    }
+    identities = [set(values) for values in predictions.values()]
+    if not identities or any(values != identities[0] for values in identities[1:]):
+        raise ValueError("zero-shot models did not score identical frozen windows")
+    manifest = read_json(destination / "window_manifest.json")
+    if len(identities[0]) != int(manifest["window_count"]):
+        raise ValueError("zero-shot prediction count differs from frozen windows")
+    freeze = {
+        "schema_version": "latentguard.lg_r1c.zero_shot_freeze.v2",
+        "status": "frozen_before_calibration",
+        "prediction_sha256": {
+            name: sha256_path(destination / name) for name in prediction_files
+        },
+        "prediction_windows": len(identities[0]),
+        "test_labels_read": False,
+        "test_metrics_computed": False,
+        "foundation_model_training": False,
+        "optimizer_steps": 0,
+    }
+    write_json(destination / "zero_shot_freeze.json", freeze)
+    return freeze
+
+
 def main() -> None:
     """Write zero-shot or final calibrated reward evaluation artifacts."""
 
@@ -479,6 +598,10 @@ def main() -> None:
     args = parser.parse_args()
     destination = output_root(args.output_root)
     config = read_yaml(resolve_repo_path(args.config))
+    if args.phase == "zero-shot":
+        freeze = _freeze_zero_shot_predictions(destination)
+        print(json.dumps(freeze, sort_keys=True))
+        return
     windows = load_windows(destination)
     anchor_rows = [
         row
@@ -487,10 +610,9 @@ def main() -> None:
         and row["context"] == config["primary_progress_context"]
     ]
     matched_rows = [row for row in windows if row["purpose"] == "failure_matched"]
-    include_calibrated = args.phase == "final"
     scores, raw = _build_score_sets(
         destination,
-        include_calibrated=include_calibrated,
+        include_calibrated=True,
     )
     fitted_models = {
         "robometer_calibrated",
@@ -531,29 +653,6 @@ def main() -> None:
                 "evaluation": summaries[model],
             },
         )
-    if args.phase == "zero-shot":
-        prediction_files = (
-            "time_predictions.jsonl",
-            "sarm_predictions.jsonl",
-            "robometer_predictions.jsonl",
-            "topreward_predictions.jsonl",
-        )
-        result_files = tuple(zero_shot_outputs.values())
-        freeze = {
-            "schema_version": "latentguard.lg_r1c.zero_shot_freeze.v1",
-            "status": "frozen_before_calibration",
-            "prediction_sha256": {
-                name: sha256_path(destination / name) for name in prediction_files
-            },
-            "result_sha256": {
-                name: sha256_path(destination / name) for name in result_files
-            },
-            "foundation_model_training": False,
-            "optimizer_steps": 0,
-        }
-        write_json(destination / "zero_shot_freeze.json", freeze)
-        print(json.dumps(freeze, sort_keys=True))
-        return
     calibrated_path = destination / "calibrated_reward_results.json"
     calibrated = read_json(calibrated_path)
     calibrated["evaluation"] = {
@@ -588,18 +687,21 @@ def main() -> None:
         task_agnostic,
         key=lambda name: sum(bool(value) for value in gates[name]["checks"].values()),
     )
-    sarm_progress = float(
-        summaries["frozen_sarm"]["progress"]["task_macro"]["spearman"]
+    sarm_progress = gates["frozen_sarm"]["candidate_metrics"]["progress_spearman"]
+    sarm_failure = gates["frozen_sarm"]["candidate_metrics"]["failure_auprc"]
+    nearest_progress = gates[nearest]["candidate_metrics"]["progress_spearman"]
+    nearest_failure = gates[nearest]["candidate_metrics"]["failure_auprc"]
+    improves_sarm = (
+        nearest_progress is not None
+        and sarm_progress is not None
+        and float(nearest_progress) > float(sarm_progress)
+    ) or (
+        nearest_failure is not None
+        and sarm_failure is not None
+        and float(nearest_failure) > float(sarm_failure)
     )
-    sarm_failure = float(summaries["frozen_sarm"]["episode_failure"]["all"]["auprc"])
-    nearest_progress = float(summaries[nearest]["progress"]["task_macro"]["spearman"])
-    nearest_failure = float(summaries[nearest]["episode_failure"]["all"]["auprc"])
     result_class = (
-        "Result A"
-        if authorized
-        else "Result B"
-        if nearest_progress > sarm_progress or nearest_failure > sarm_failure
-        else "Result C"
+        "Result A" if authorized else "Result B" if improves_sarm else "Result C"
     )
     gate_payload = {
         "schema_version": "latentguard.lg_r1c.lg_r2_gate.v1",
@@ -620,6 +722,13 @@ def main() -> None:
                 "progress": summary["progress"]["task_macro"],
                 "success": summary["success"]["task_macro"],
                 "failure": summary["matched_failure"]["task_macro"],
+                "by_split": {
+                    split: {
+                        "progress": summary["progress"]["task_macro_by_split"][split],
+                        "success": summary["success"]["task_macro_by_split"][split],
+                    }
+                    for split in ("train", "validation", "test")
+                },
             }
             for name, summary in summaries.items()
         },
@@ -664,6 +773,7 @@ def main() -> None:
         "intervention_executed": False,
         "new_rollouts": 0,
         "task_success_claim": False,
+        "runtime_identity": runtime_identity(),
     }
     for name, payload in (
         ("task_macro_results.json", task_macro),

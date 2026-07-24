@@ -20,7 +20,6 @@ from _lg_r1c_common import (
     write_json,
     write_jsonl,
 )
-from _lg_r1c_reward_runtime import load_windows
 
 
 def _prediction_map(path: Path) -> dict[str, dict[str, Any]]:
@@ -103,6 +102,29 @@ def _require_zero_shot_freeze(destination: Path) -> dict[str, Any]:
     return freeze
 
 
+def _load_validation_windows(destination: Path) -> list[dict[str, Any]]:
+    manifest = read_json(destination / "window_manifest.json")
+    projection = manifest.get("calibration_validation_windows")
+    if not isinstance(projection, dict):
+        raise ValueError("validation-only calibration projection is missing")
+    if projection.get("selection_split") != "validation":
+        raise ValueError("calibration projection split drift")
+    if projection.get("test_labels_included") is not False:
+        raise ValueError("calibration projection exposes test labels")
+    identity = projection.get("file")
+    if not isinstance(identity, dict):
+        raise ValueError("calibration projection identity is missing")
+    path = destination / str(identity["locator"])
+    if sha256_path(path) != identity["sha256"]:
+        raise ValueError("calibration validation projection hash drift")
+    rows = read_jsonl(path)
+    if len(rows) != int(projection["rows"]):
+        raise ValueError("calibration validation projection count drift")
+    if any(row.get("split") != "validation" for row in rows):
+        raise ValueError("calibration projection contains a non-validation row")
+    return rows
+
+
 def main() -> None:
     """Fit pre-declared scalar models on validation labels only."""
 
@@ -117,14 +139,14 @@ def main() -> None:
     args = parser.parse_args()
     destination = output_root(args.output_root)
     config = read_yaml(resolve_repo_path(args.config))
-    windows = load_windows(destination)
+    manifest = read_json(destination / "window_manifest.json")
     if args.dry_run:
         print(
             json.dumps(
                 {
                     "status": "dry_run",
                     "selection_split": config["selection_split"],
-                    "windows": len(windows),
+                    "windows": int(manifest["window_count"]),
                     "foundation_model_training": False,
                 },
                 sort_keys=True,
@@ -132,17 +154,17 @@ def main() -> None:
         )
         return
     freeze = _require_zero_shot_freeze(destination)
+    validation_windows = _load_validation_windows(destination)
     robometer = _prediction_map(destination / "robometer_predictions.jsonl")
     topreward = _prediction_map(destination / "topreward_predictions.jsonl")
     if set(robometer) != set(topreward):
         raise ValueError("zero-shot model endpoints differ")
     primary = [
         row
-        for row in windows
+        for row in validation_windows
         if row["purpose"] == "anchor_grid" and row["context"] == "medium"
     ]
-    validation = [row for row in primary if row["split"] == "validation"]
-    if not validation:
+    if not primary:
         raise ValueError("validation anchor windows are empty")
     progress_features = np.asarray(
         [
@@ -150,12 +172,12 @@ def main() -> None:
                 float(robometer[str(row["window_id"])]["last_frame_progress"]),
                 float(topreward[str(row["window_id"])]["normalized_window_reward"]),
             ]
-            for row in validation
+            for row in primary
         ],
         dtype=np.float64,
     )
     progress_targets = np.asarray(
-        [float(row["progress_target"]) for row in validation],
+        [float(row["progress_target"]) for row in primary],
         dtype=np.float64,
     )
     success_features = np.asarray(
@@ -167,18 +189,16 @@ def main() -> None:
                 ),
                 float(topreward[str(row["window_id"])]["normalized_window_reward"]),
             ]
-            for row in validation
+            for row in primary
         ],
         dtype=np.float64,
     )
     success_targets = np.asarray(
-        [bool(row["terminal_success"]) for row in validation],
+        [bool(row["terminal_success"]) for row in primary],
         dtype=np.float64,
     )
     matched_validation = [
-        row
-        for row in windows
-        if row["purpose"] == "failure_matched" and row["split"] == "validation"
+        row for row in validation_windows if row["purpose"] == "failure_matched"
     ]
     failure_features = np.asarray(
         [
@@ -238,8 +258,7 @@ def main() -> None:
         ),
     }
     output_rows = []
-    for row in windows:
-        window_id = str(row["window_id"])
+    for window_id in robometer:
         rbm_progress = float(robometer[window_id]["last_frame_progress"])
         rbm_success = float(robometer[window_id]["last_frame_success_probability"])
         top_score = float(topreward[window_id]["normalized_window_reward"])
@@ -306,8 +325,13 @@ def main() -> None:
         "zero_shot_freeze": freeze,
         "calibrators": models,
         "fit_samples": {
-            "progress_and_success": len(validation),
+            "progress_and_success": len(primary),
             "failure": len(matched_validation),
+        },
+        "label_projection": {
+            "selection_split": "validation",
+            "test_labels_loaded": False,
+            "file": manifest["calibration_validation_windows"]["file"],
         },
         "task_id_input": False,
         "stage_id_input": False,

@@ -19,10 +19,19 @@ split, equal task macro, failure-task macro, FAILED_PLACEMENT, OBJECT_DROP,
 stage-balanced strata, and leave-LIBERO-10-task-6-out.
 
 Zero-shot ROBOMETER and TOPReward predictions are content-hashed before any
-calibration. Only validation labels fit clipped affine progress calibration,
+calibration, without loading or computing test metrics. Window construction
+also emits a content-bound validation-only calibration projection that contains
+no test rows. Only that projection may fit clipped affine progress calibration,
 scalar logistic outcome calibration, and the three-scalar task-agnostic
 ensemble. Task ID, stage ID, privileged state, and future terminal outcome are
-not calibrator inputs. Test labels are read once after the method is fixed.
+not calibrator inputs. The full labeled window file is loaded once after the
+method and zero-shot prediction hashes are fixed.
+
+For validation-fitted methods, promotion metrics are equal-task macro metrics
+on the original test split. Natural-failure AUPRC, its recall operating point,
+and the leave-task-6 diagnostic use that same test scope. Strict zero-shot
+methods remain identified separately and are reported over the full frozen
+task registry because no label-informed fitting or selection occurs.
 
 The promotion gate is pre-registered in
 `configs/lg_r1c/evaluation.yaml`. Accuracy alone is never a failure metric.

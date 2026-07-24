@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import importlib
+import json
 import sys
 from pathlib import Path
 
@@ -160,8 +161,73 @@ def test_calibration_is_validation_only_and_zero_shot_freeze_precedes_it() -> No
     assert config["privileged_input"] is False
     text = (SCRIPTS / "lg_r1c_calibrate_rewards.py").read_text(encoding="utf-8")
     assert "_require_zero_shot_freeze(destination)" in text
+    assert "_load_validation_windows(destination)" in text
+    assert "from _lg_r1c_reward_runtime import load_windows" not in text
     assert '"fit_splits": ["validation"]' in text
     assert '"test_labels_used_for_fit": False' in text
+    builder = (SCRIPTS / "lg_r1c_build_reward_windows.py").read_text(encoding="utf-8")
+    assert "calibration_validation_windows.jsonl" in builder
+    assert '"test_labels_included": False' in builder
+
+
+def test_zero_shot_freeze_does_not_compute_or_load_test_metrics(
+    tmp_path: Path,
+) -> None:
+    module = _script("lg_r1c_evaluate_rewards")
+    for name in (
+        "time_predictions.jsonl",
+        "sarm_predictions.jsonl",
+        "robometer_predictions.jsonl",
+        "topreward_predictions.jsonl",
+    ):
+        (tmp_path / name).write_text(
+            json.dumps({"window_id": "window-1"}) + "\n",
+            encoding="utf-8",
+        )
+    (tmp_path / "window_manifest.json").write_text(
+        json.dumps({"window_count": 1}) + "\n",
+        encoding="utf-8",
+    )
+    result = module._freeze_zero_shot_predictions(tmp_path)
+    assert result["test_labels_read"] is False
+    assert result["test_metrics_computed"] is False
+    assert result["prediction_windows"] == 1
+
+
+def test_fitted_gate_uses_test_task_macro_and_test_failure_scope() -> None:
+    module = _script("lg_r1c_evaluate_rewards")
+    passing_failure = {
+        "prevalence": 0.1,
+        "auprc": 0.3,
+        "operating_points": {
+            "0.6": {
+                "precision": 0.3,
+                "recall": 0.6,
+                "false_positive_rate": 0.2,
+            }
+        },
+    }
+    summary = {
+        "progress": {
+            "task_macro": {"spearman": 0.0, "pairwise_accuracy": 0.0},
+            "task_macro_by_split": {
+                "test": {"spearman": 0.6, "pairwise_accuracy": 0.7}
+            },
+        },
+        "success": {
+            "task_macro": {"auroc": 0.0},
+            "task_macro_by_split": {"test": {"auroc": 0.8}},
+        },
+        "episode_failure": {
+            "all": {"prevalence": 0.1, "auprc": 0.0, "operating_points": {}},
+            "by_split": {"test": passing_failure},
+            "leave_task6_out": {"auprc": 0.0},
+            "leave_task6_out_by_split": {"test": {"auprc": 0.25}},
+        },
+    }
+    gate = module._candidate_gate(summary, fitted=True)
+    assert gate["evaluation_scope"] == "test"
+    assert gate["LG_R2_REWARD_BASELINE_AUTHORIZED"] is True
 
 
 def test_robometer_per_frame_and_topreward_prompt_contracts_are_frozen() -> None:

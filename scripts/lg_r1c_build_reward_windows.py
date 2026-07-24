@@ -264,6 +264,9 @@ def build_windows(
     destination.mkdir(parents=True, exist_ok=True)
     windows_path = destination / "reward_windows.jsonl"
     write_jsonl(windows_path, rows)
+    calibration_rows = [row for row in rows if row["split"] == "validation"]
+    calibration_path = destination / "calibration_validation_windows.jsonl"
+    write_jsonl(calibration_path, calibration_rows)
     endpoints = hashlib.sha256()
     for row in rows:
         endpoints.update(
@@ -305,6 +308,15 @@ def build_windows(
             windows_path,
             locator="reward_windows.jsonl",
         ),
+        "calibration_validation_windows": {
+            "selection_split": "validation",
+            "test_labels_included": False,
+            "rows": len(calibration_rows),
+            "file": file_identity(
+                calibration_path,
+                locator="calibration_validation_windows.jsonl",
+            ),
+        },
         "configuration": config,
     }
     write_json(destination / "window_manifest.json", payload)
