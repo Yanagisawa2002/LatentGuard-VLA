@@ -469,6 +469,7 @@ def _faithful(
                     "repeat": repeat,
                     "status": "execution_error",
                     "initial_restore_pass": None,
+                    "initial_restore_comparison": None,
                     "initial_restore_maximum_absolute_error": None,
                     "recorded_config_skipped_fields": skipped,
                     "recorded_config_overlay_pass": not skipped,
@@ -492,6 +493,7 @@ def _faithful(
                     config_overlay_ok = not skipped
                     config_overlay_failures += int(not config_overlay_ok)
                     detail["initial_restore_pass"] = initial_ok
+                    detail["initial_restore_comparison"] = initial.to_dict()
                     detail["initial_restore_maximum_absolute_error"] = (
                         initial.maximum_absolute_error
                     )
