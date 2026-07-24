@@ -58,6 +58,14 @@ def test_state_tree_comparison_rejects_missing_dtype_and_nonfinite() -> None:
     assert comparison.non_finite_paths == ("c",)
 
 
+def test_empty_state_categories_remain_structurally_bound() -> None:
+    expected = {"articulation": {}, "rigid_object": {"a": np.asarray([1.0])}}
+    observed = {"rigid_object": {"a": np.asarray([1.0])}}
+    comparison = compare_state_trees(expected, observed, tolerance=0.0)
+    assert not comparison.matches
+    assert comparison.missing_paths == ("articulation/<empty-mapping>",)
+
+
 def test_replay_contract_is_frozen() -> None:
     contract = ReplayContract(
         official_state_tolerance=0.01,

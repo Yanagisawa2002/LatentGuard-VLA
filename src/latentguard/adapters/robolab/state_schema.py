@@ -11,6 +11,8 @@ from typing import Any
 import numpy as np
 from numpy.typing import NDArray
 
+EMPTY_MAPPING_COMPONENT = "<empty-mapping>"
+
 
 @dataclass(frozen=True)
 class LeafComparison:
@@ -96,10 +98,18 @@ def flatten_state_tree(tree: Mapping[str, Any]) -> dict[str, NDArray[Any]]:
     def visit(prefix: str, value: Any) -> None:
         if isinstance(value, Mapping):
             if not value:
-                raise ValueError(f"state mapping is empty at {prefix or '<root>'}")
+                if not prefix:
+                    raise ValueError("state root mapping is empty")
+                flattened[f"{prefix}/{EMPTY_MAPPING_COMPONENT}"] = np.empty(
+                    0,
+                    dtype=np.uint8,
+                )
+                return
             for key in sorted(value):
                 if not isinstance(key, str) or not key:
                     raise TypeError("state-tree keys must be non-empty strings")
+                if key == EMPTY_MAPPING_COMPONENT:
+                    raise ValueError("state-tree key collides with empty-map marker")
                 path = f"{prefix}/{key}" if prefix else key
                 visit(path, value[key])
             return
