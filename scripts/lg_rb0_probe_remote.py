@@ -199,7 +199,7 @@ def _main() -> None:
             env, env_cfg = create_env(
                 selected,
                 device=str(protocol["runtime"]["device"]),
-                seed=int(protocol["recording"]["seeds"][0]),
+                seed=0,
                 num_envs=1,
                 use_fabric=True,
             )
@@ -216,6 +216,7 @@ def _main() -> None:
                     "matching_envs": matches,
                     "selected_env": selected,
                     "instruction": str(env_cfg.instruction),
+                    "smoke_seed": 0,
                     "observation_groups": sorted(observation),
                     "state_leaf_count": len(state),
                     "state_paths": sorted(state),
