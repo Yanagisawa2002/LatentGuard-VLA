@@ -8,6 +8,7 @@ The snapshot includes:
 
 - the control environment's flattened simulator state;
 - complete exposed MuJoCo runtime arrays used by execution;
+- MuJoCo body, geometry, camera, and site transforms used by rendering;
 - numeric controller runtime attributes;
 - wrapper, control-environment, and task termination/success/timestep latches;
 - Python, NumPy, CPU Torch, CUDA Torch, and exposed environment RNG states;
@@ -36,5 +37,7 @@ to a freshly regenerated boundary image is not a valid identity check: all
 captured state components restored exactly, but the two rendering paths
 differed. This is calibration evidence, not an accepted gate. The corrected
 contract canonicalizes the observation from the archived state, verifies that
-canonical rendering preserves complete state, keeps zero pixel tolerance, and
-uses ten disjoint source seeds for validation.
+canonical rendering preserves complete state, captures and restores the
+render-relevant MuJoCo body/geometry/camera/site transforms exposed by a second
+disjoint calibration, keeps zero pixel tolerance, and uses a third disjoint set
+of ten source seeds for validation.

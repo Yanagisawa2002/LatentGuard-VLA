@@ -31,6 +31,25 @@ _SIM_DATA_ARRAYS = (
     "userdata",
     "xfrc_applied",
 )
+_SIM_DATA_RENDER_ARRAYS = (
+    "body_xmat",
+    "body_xpos",
+    "body_xquat",
+    "cam_xmat",
+    "cam_xpos",
+    "geom_xmat",
+    "geom_xpos",
+    "site_xmat",
+    "site_xpos",
+    "subtree_com",
+    "xanchor",
+    "xaxis",
+    "ximat",
+    "xipos",
+    "xmat",
+    "xpos",
+    "xquat",
+)
 _SCALAR_RUNTIME_ATTRIBUTES = (
     "_elapsed_steps",
     "_episode_started",
@@ -323,7 +342,7 @@ def capture_libero_state(single_env: Any) -> LiberoStateSnapshot:
     sim_data = getattr(sim, "data", None)
     if sim_data is None:
         raise LiberoStateError("MuJoCo simulation data is unavailable")
-    for name in _SIM_DATA_ARRAYS:
+    for name in (*_SIM_DATA_ARRAYS, *_SIM_DATA_RENDER_ARRAYS):
         if hasattr(sim_data, name):
             arrays[f"sim/data/{name}"] = np.asarray(getattr(sim_data, name))
     arrays.update(_controller_arrays(task_env))
@@ -492,6 +511,14 @@ def restore_libero_state(
         snapshot.runtime_state,
     )
     _restore_rng(single_env, control_env, task_env, snapshot)
+    for name in _SIM_DATA_RENDER_ARRAYS:
+        key = f"sim/data/{name}"
+        if key in snapshot.arrays:
+            if not hasattr(sim_data, name):
+                raise LiberoStateError(
+                    f"MuJoCo render-state target disappeared: {name}"
+                )
+            _restore_array(getattr(sim_data, name), snapshot.arrays[key], key)
     observed = capture_libero_state(single_env)
     return compare_libero_states(snapshot, observed, atol=atol)
 

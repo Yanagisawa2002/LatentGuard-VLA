@@ -483,6 +483,7 @@ __all__ = [
     "array_sha256",
     "batch_observation",
     "canonical_sha256",
+    "compare_rendered_observations",
     "current_observation",
     "frozen_policy_identity",
     "generate_policy_candidate",

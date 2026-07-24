@@ -1,0 +1,31 @@
+{
+  "calibration_only": true,
+  "canonical_observation_from_archived_state": true,
+  "execution_commit": "fbcadc36368a050b28d61c44c5bb85b2db0914bb",
+  "final_seed_accessed": false,
+  "maximum_observed_pixel_absolute_error": 121.0,
+  "maximum_observed_pixel_different_value_ratio": 0.18002298575680273,
+  "maximum_observed_pixel_mean_absolute_error": 0.5947033110119048,
+  "numeric_tolerance": 1e-06,
+  "optimizer_steps": 0,
+  "post_render_state_mismatches": 0,
+  "probe_states": 10,
+  "render_mismatches": 10,
+  "repeats_reached": 0,
+  "result": "CALIBRATION_EXPOSED_MISSING_RENDER_STATE",
+  "restore_failures": 0,
+  "run_id": "20260724T090013Z_lg-r2b0-same-state-counterfactual_fbcadc3",
+  "schema_version": "latentguard.lg_r2b0.state_restore_canonical_calibration_summary.v1",
+  "source_artifact_bytes": 23968,
+  "source_artifact_sha256": "bce7b521987b99074e1c30264d1c09edaca80b73f5d8a9ab033a4abfa28f06ab",
+  "status": "fail",
+  "stop_reason": "MUJOCO_RENDER_TRANSFORMS_MISSING_FROM_SNAPSHOT",
+  "task_predicate_mismatches": 0,
+  "terminal_result_mismatches": 0,
+  "training_performed": false,
+  "untouched_validation_replacement": {
+    "body_geometry_camera_site_transforms_captured": true,
+    "pixel_tolerances_relaxed": false,
+    "source_seeds_reused": false
+  }
+}

@@ -259,6 +259,8 @@ class _MockData:
         self.act = np.asarray([0.25], dtype=np.float64)
         self.mocap_pos = np.asarray([[0.0, 0.0, 1.0]], dtype=np.float64)
         self.mocap_quat = np.asarray([[1.0, 0.0, 0.0, 0.0]], dtype=np.float64)
+        self.cam_xpos = np.asarray([[0.0, 0.0, 2.0]], dtype=np.float64)
+        self.geom_xpos = np.asarray([[0.1, 0.2, 0.3]], dtype=np.float64)
 
 
 class _MockSim:
@@ -314,6 +316,8 @@ def test_state_snapshot_roundtrip_restores_controller_rng_and_latches(
     assert reloaded.content_sha256 == snapshot.content_sha256
     single._env.env.sim.data.qpos[:] = 99.0
     single._env.env.sim.data.qvel[:] = -99.0
+    single._env.env.sim.data.cam_xpos[:] = 77.0
+    single._env.env.sim.data.geom_xpos[:] = 66.0
     single._env.env.robots[0].controller.goal[:] = 55.0
     single._elapsed_steps = 999
     single._env._elapsed_steps = 999
@@ -331,6 +335,14 @@ def test_state_snapshot_roundtrip_restores_controller_rng_and_latches(
     assert np.array_equal(
         single._env.env.robots[0].controller.goal,
         np.asarray([0.1, 0.2]),
+    )
+    assert np.array_equal(
+        single._env.env.sim.data.cam_xpos,
+        np.asarray([[0.0, 0.0, 2.0]]),
+    )
+    assert np.array_equal(
+        single._env.env.sim.data.geom_xpos,
+        np.asarray([[0.1, 0.2, 0.3]]),
     )
 
 
