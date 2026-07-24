@@ -1,0 +1,409 @@
+From b63726842a157afa19d1b80b4899d3cb0af692d8 Mon Sep 17 00:00:00 2001
+From: Yanagisawa <cgliusjtu@gmail.com>
+Date: Fri, 24 Jul 2026 21:57:46 +0800
+Subject: [PATCH] Fix recorded config callable overlay
+
+---
+ docs/replay.md                    |   6 +-
+ robolab/core/replay/env_config.py | 181 +++++++++++++++++++++++++++---
+ tests/test_replay_env_config.py   | 125 +++++++++++++++++++++
+ 3 files changed, 298 insertions(+), 14 deletions(-)
+ create mode 100644 tests/test_replay_env_config.py
+
+diff --git a/docs/replay.md b/docs/replay.md
+index 19c2dfd..4fa81af 100644
+--- a/docs/replay.md
++++ b/docs/replay.md
+@@ -52,7 +52,11 @@ By default (`--env-config recorded`), playback overlays the `env_cfg.json` saved
+ 
+ Pass `--env-config current` to rebuild the config from the current repo instead — useful to ask "how does this recorded trajectory behave under my *new* task definition?". A yellow warning is printed whenever the recorded config is not fully in effect (sidecar missing, `current` requested, or fields skipped), since the env config then differs from recording time and behavior may diverge.
+ 
+-The overlay restores config **values**, not code or assets. It cannot protect against:
++The overlay restores config **values**, not code or assets. Live callable
++objects and runtime-owned metadata are preserved rather than reconstructed
++from their lossy JSON string representations. Recorded-only keys are accepted
++only in explicit declarative-data namespaces; missing code/schema fields are
++reported and skipped. It cannot protect against:
+ 
+ - changed predicate/conditional *implementations* (the config stores only the callable's import path),
+ - changed USD file *contents* on disk (the config stores only asset paths),
+diff --git a/robolab/core/replay/env_config.py b/robolab/core/replay/env_config.py
+index e77bed6..531c57e 100644
+--- a/robolab/core/replay/env_config.py
++++ b/robolab/core/replay/env_config.py
+@@ -20,6 +20,8 @@ file contents on disk are out of scope.
+ import json
+ import os
+ import re
++from collections.abc import Mapping
++from functools import partial
+ 
+ from isaaclab.utils.string import string_to_callable
+ 
+@@ -42,6 +44,31 @@ _RUNTIME_KEY_NAMESPACES = {
+     "/scene/env_spacing",
+ }
+ 
++_EXPECTED_RUNTIME_PRESERVATION = "EXPECTED_RUNTIME_PRESERVATION"
++_SCHEMA_DRIFT = "SCHEMA_DRIFT"
++_INVALID_RECORDED_VALUE = "INVALID_RECORDED_VALUE"
++
++# These values are created or owned by the live task/runtime. JSON is only a
++# lossy record of them, so replay reports and preserves them instead of using
++# the recording as code.
++_RUNTIME_METADATA_NAMESPACES = {
++    "/_instruction_variants",
++}
++
++# Missing keys are accepted only in explicit declarative-data namespaces.
++# Runtime code containers are never reconstructed from JSON strings.
++_RUNTIME_CODE_NAMESPACE_PATTERNS = (
++    re.compile(r"^/subtasks\[\d+\]/conditions(?:/.*)?$"),
++    re.compile(r"^/(?:actions|events|observations|rewards|terminations)(?:/.*)?/func$"),
++)
++_RECORDED_ONLY_DATA_NAMESPACE_PATTERNS = (
++    re.compile(r"^/sim/render/carb_settings(?:/.*)?$"),
++    re.compile(
++        r"^/(?:actions|events|observations|rewards|terminations)"
++        r"(?:/.*)?/params(?:/.*)?$"
++    ),
++)
++
+ 
+ def load_recorded_env_cfg(hdf5_path: str) -> tuple[dict, str] | None:
+     """Load the ``env_cfg.json`` sidecar recorded next to an HDF5 episode file.
+@@ -106,21 +133,123 @@ def _assign(obj, key: str, value) -> None:
+         setattr(obj, key, value)
+ 
+ 
++def _classified_skip(skipped: list[str], category: str, key_ns: str, reason: str) -> None:
++    skipped.append(f"[{category}] {key_ns} ({reason})")
++
++
++def _matches_namespace(key_ns: str, patterns: tuple[re.Pattern, ...]) -> bool:
++    return any(pattern.fullmatch(key_ns) is not None for pattern in patterns)
++
++
++def _contains_callable(value, seen: set[int] | None = None) -> bool:
++    """Return whether a live container contains runtime callable code."""
++    if callable(value):
++        return True
++    if not isinstance(value, (Mapping, list, tuple)):
++        return False
++    if seen is None:
++        seen = set()
++    identity = id(value)
++    if identity in seen:
++        return False
++    seen.add(identity)
++    if isinstance(value, Mapping):
++        return any(_contains_callable(item, seen) for item in value.values())
++    return any(_contains_callable(item, seen) for item in value)
++
++
++def _callable_identity(value) -> tuple:
++    """Build a stable identity for an importable function or partial."""
++    if isinstance(value, partial):
++        return (
++            "partial",
++            _callable_identity(value.func),
++            value.args,
++            tuple(sorted((value.keywords or {}).items())),
++        )
++    return (
++        "callable",
++        getattr(value, "__module__", None),
++        getattr(value, "__qualname__", getattr(value, "__name__", None)),
++    )
++
++
++def _preserve_callable_target(
++    target,
++    recorded,
++    key_ns: str,
++    skipped: list[str],
++) -> None:
++    if not isinstance(recorded, str):
++        _classified_skip(
++            skipped,
++            _INVALID_RECORDED_VALUE,
++            key_ns,
++            f"live value is callable but recorded value is {type(recorded).__name__}",
++        )
++        return
++    try:
++        resolved = string_to_callable(recorded)
++    except Exception:
++        _classified_skip(
++            skipped,
++            _INVALID_RECORDED_VALUE,
++            key_ns,
++            f"callable '{recorded}' not safely importable",
++        )
++        return
++    if _callable_identity(resolved) != _callable_identity(target):
++        _classified_skip(
++            skipped,
++            _SCHEMA_DRIFT,
++            key_ns,
++            "recorded callable identity differs from live callable",
++        )
++    # Identity matches: keep the live object. Recorded config restores data,
++    # while the current source tree supplies executable code.
++
++
+ def _overlay(obj, data: dict, ns: str, skipped: list[str]) -> None:
+     """Recursively write recorded values onto ``obj``, collecting mismatches in ``skipped``."""
+     for key, value in data.items():
+         key_ns = f"{ns}/{key}"
+         if key_ns in _RUNTIME_KEY_NAMESPACES:
+             continue
++        if key_ns in _RUNTIME_METADATA_NAMESPACES:
++            _classified_skip(
++                skipped,
++                _EXPECTED_RUNTIME_PRESERVATION,
++                key_ns,
++                "live runtime metadata is not restored from JSON",
++            )
++            continue
+         if isinstance(obj, dict):
+             if key not in obj:
+-                # Plain dicts (event params, carb settings) accept recorded-only keys.
+-                obj[key] = value
++                if _matches_namespace(
++                    key_ns,
++                    _RECORDED_ONLY_DATA_NAMESPACE_PATTERNS,
++                ):
++                    obj[key] = value
++                else:
++                    reason = (
++                        "recorded-only runtime code key was not injected"
++                        if _matches_namespace(
++                            key_ns,
++                            _RUNTIME_CODE_NAMESPACE_PATTERNS,
++                        )
++                        else "recorded-only key is outside declarative-data allowlist"
++                    )
++                    _classified_skip(skipped, _SCHEMA_DRIFT, key_ns, reason)
+                 continue
+             target = obj[key]
+         else:
+             if not hasattr(obj, key):
+-                skipped.append(f"{key_ns} (not in current config)")
++                _classified_skip(
++                    skipped,
++                    _SCHEMA_DRIFT,
++                    key_ns,
++                    "not in current config",
++                )
+                 continue
+             target = getattr(obj, key)
+ 
+@@ -131,21 +260,43 @@ def _overlay(obj, data: dict, ns: str, skipped: list[str]) -> None:
+             _assign(obj, key, value)
+             continue
+ 
++        if callable(target):
++            _preserve_callable_target(target, value, key_ns, skipped)
++            continue
++
+         if isinstance(value, dict):
+             if isinstance(target, dict) or hasattr(target, "__dict__"):
+                 _overlay(target, value, key_ns, skipped)
+             else:
+-                skipped.append(f"{key_ns} (recorded a config group, current value is {type(target).__name__})")
++                _classified_skip(
++                    skipped,
++                    _SCHEMA_DRIFT,
++                    key_ns,
++                    f"recorded a config group, current value is {type(target).__name__}",
++                )
+             continue
+ 
+         if isinstance(value, list):
++            if isinstance(target, (list, tuple)) and _contains_callable(target):
++                _classified_skip(
++                    skipped,
++                    _EXPECTED_RUNTIME_PRESERVATION,
++                    key_ns,
++                    "live container includes callable runtime code",
++                )
++                continue
+             if any(isinstance(element, dict) for element in value):
+                 if isinstance(target, (list, tuple)) and len(target) == len(value):
+                     for i, element in enumerate(value):
+                         if isinstance(element, dict):
+                             _overlay(target[i], element, f"{key_ns}[{i}]", skipped)
+                 else:
+-                    skipped.append(f"{key_ns} (nested list shape changed)")
++                    _classified_skip(
++                        skipped,
++                        _SCHEMA_DRIFT,
++                        key_ns,
++                        "nested list shape changed",
++                    )
+                 continue
+             _assign(obj, key, tuple(value) if isinstance(target, tuple) else value)
+             continue
+@@ -155,13 +306,12 @@ def _overlay(obj, data: dict, ns: str, skipped: list[str]) -> None:
+                 try:
+                     _assign(obj, key, _string_to_slice(value))
+                 except ValueError:
+-                    skipped.append(f"{key_ns} (unparsable slice string)")
+-                continue
+-            if target is not None and callable(target):
+-                try:
+-                    _assign(obj, key, string_to_callable(value))
+-                except Exception:
+-                    skipped.append(f"{key_ns} (callable '{value}' not importable)")
++                    _classified_skip(
++                        skipped,
++                        _INVALID_RECORDED_VALUE,
++                        key_ns,
++                        "unparsable slice string",
++                    )
+                 continue
+             _assign_scalar(obj, key, _reroot_asset_path(value), target, key_ns, skipped)
+             continue
+@@ -179,4 +329,9 @@ def _assign_scalar(obj, key: str, value, target, key_ns: str, skipped: list[str]
+     if is_compatible:
+         _assign(obj, key, value)
+     else:
+-        skipped.append(f"{key_ns} (type mismatch: current {type(target).__name__}, recorded {type(value).__name__})")
++        _classified_skip(
++            skipped,
++            _SCHEMA_DRIFT,
++            key_ns,
++            f"type mismatch: current {type(target).__name__}, recorded {type(value).__name__}",
++        )
+diff --git a/tests/test_replay_env_config.py b/tests/test_replay_env_config.py
+new file mode 100644
+index 0000000..4670115
+--- /dev/null
++++ b/tests/test_replay_env_config.py
+@@ -0,0 +1,125 @@
++from functools import partial
++
++import pytest
++
++from robolab.core.replay import env_config
++
++
++def _predicate(*, env=None, object=None):
++    return env is not None and object is not None
++
++
++class _Subtask:
++    def __init__(self):
++        self.conditions = {"banana": [(partial(_predicate, object="banana"), 1.0)]}
++
++
++class _EnvCfg:
++    def __init__(self):
++        self.instruction = {"default": "Live instruction"}
++        self._instruction_variants = {"default": "Live instruction"}
++
++
++def test_callable_container_is_preserved() -> None:
++    live = {"subtasks": [_Subtask()]}
++    recorded = {
++        "subtasks": [
++            {
++                "conditions": {
++                    "banana": [
++                        [
++                            "functools.partial(<function _predicate at 0x1>, object='banana')",
++                            1.0,
++                        ]
++                    ]
++                }
++            }
++        ]
++    }
++
++    skipped = env_config.apply_recorded_env_cfg(live, recorded)
++
++    assert callable(live["subtasks"][0].conditions["banana"][0][0])
++    assert any(
++        item.startswith("[EXPECTED_RUNTIME_PRESERVATION]") and "/subtasks[0]/conditions/banana" in item
++        for item in skipped
++    )
++
++
++def test_missing_condition_key_does_not_inject_recorded_code() -> None:
++    live = {"subtasks": [_Subtask()]}
++    recorded = {
++        "subtasks": [
++            {
++                "conditions": {
++                    "orange": [["example.module.predicate", 1.0]],
++                }
++            }
++        ]
++    }
++
++    skipped = env_config.apply_recorded_env_cfg(live, recorded)
++
++    assert "orange" not in live["subtasks"][0].conditions
++    assert any(item.startswith("[SCHEMA_DRIFT]") and "/subtasks[0]/conditions/orange" in item for item in skipped)
++
++
++def test_existing_callable_identity_is_preserved(monkeypatch) -> None:
++    live = {"terminations": {"success": {"func": _predicate}}}
++    recorded = {"terminations": {"success": {"func": "tests.predicate"}}}
++    monkeypatch.setattr(env_config, "string_to_callable", lambda _: _predicate)
++
++    skipped = env_config.apply_recorded_env_cfg(live, recorded)
++
++    assert live["terminations"]["success"]["func"] is _predicate
++    assert skipped == []
++
++
++def test_unimportable_callable_fails_closed(monkeypatch) -> None:
++    live = {"terminations": {"success": {"func": _predicate}}}
++    recorded = {"terminations": {"success": {"func": "missing.predicate"}}}
++
++    def _raise(_):
++        raise ImportError("not importable")
++
++    monkeypatch.setattr(env_config, "string_to_callable", _raise)
++    skipped = env_config.apply_recorded_env_cfg(live, recorded)
++
++    assert live["terminations"]["success"]["func"] is _predicate
++    assert len(skipped) == 1
++    assert skipped[0].startswith("[INVALID_RECORDED_VALUE]")
++
++
++def test_recorded_only_plain_data_requires_explicit_namespace() -> None:
++    live = {"events": {"probe": {"params": {}}}, "other": {}}
++    recorded = {
++        "events": {"probe": {"params": {"threshold": 3}}},
++        "other": {"new_key": 3},
++    }
++
++    skipped = env_config.apply_recorded_env_cfg(live, recorded)
++
++    assert live["events"]["probe"]["params"]["threshold"] == 3
++    assert "new_key" not in live["other"]
++    assert any(item.startswith("[SCHEMA_DRIFT] /other/new_key") for item in skipped)
++
++
++@pytest.mark.parametrize("has_live_metadata", [False, True])
++def test_instruction_variants_are_runtime_owned(has_live_metadata: bool) -> None:
++    live = _EnvCfg()
++    if not has_live_metadata:
++        del live._instruction_variants
++    recorded = {
++        "_instruction_variants": {"default": "Recorded lossy metadata"},
++        "instruction": "Recorded resolved instruction",
++    }
++
++    skipped = env_config.apply_recorded_env_cfg(live, recorded)
++
++    assert live.instruction == "Recorded resolved instruction"
++    if has_live_metadata:
++        assert live._instruction_variants == {"default": "Live instruction"}
++    else:
++        assert not hasattr(live, "_instruction_variants")
++    assert len(skipped) == 1
++    assert skipped[0].startswith("[EXPECTED_RUNTIME_PRESERVATION] /_instruction_variants")

@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import hashlib
 import json
-from collections.abc import Mapping
+from collections.abc import Mapping, Sequence
 from dataclasses import dataclass
 from typing import Any
 
@@ -27,6 +27,31 @@ class LeafComparison:
 
 
 @dataclass(frozen=True)
+class StateCanonicalization:
+    """Audit for exact, allowlisted optional-empty state namespaces."""
+
+    allowed_optional_empty_namespaces: tuple[str, ...]
+    removed_empty_namespaces: tuple[str, ...]
+    before_paths: tuple[str, ...]
+    after_paths: tuple[str, ...]
+    before_sha256: str
+    after_sha256: str
+
+    def to_dict(self) -> dict[str, Any]:
+        """Serialize the canonicalization audit."""
+        return {
+            "allowed_optional_empty_namespaces": list(
+                self.allowed_optional_empty_namespaces
+            ),
+            "removed_empty_namespaces": list(self.removed_empty_namespaces),
+            "before_paths": list(self.before_paths),
+            "after_paths": list(self.after_paths),
+            "before_sha256": self.before_sha256,
+            "after_sha256": self.after_sha256,
+        }
+
+
+@dataclass(frozen=True)
 class StateComparison:
     """Complete comparison result without missing-leaf repair or coercion."""
 
@@ -41,6 +66,8 @@ class StateComparison:
     non_finite_paths: tuple[str, ...]
     leaves: tuple[LeafComparison, ...]
     maximum_absolute_error: float
+    expected_canonicalization: StateCanonicalization
+    observed_canonicalization: StateCanonicalization
 
     @property
     def matches(self) -> bool:
@@ -60,6 +87,10 @@ class StateComparison:
             "shape_mismatches": list(self.shape_mismatches),
             "non_finite_paths": list(self.non_finite_paths),
             "maximum_absolute_error": self.maximum_absolute_error,
+            "canonicalization": {
+                "expected": self.expected_canonicalization.to_dict(),
+                "observed": self.observed_canonicalization.to_dict(),
+            },
             "leaves": [
                 {
                     "path": leaf.path,
@@ -142,17 +173,81 @@ def state_tree_sha256(tree: Mapping[str, Any]) -> str:
     return digest.hexdigest()
 
 
+def canonicalize_optional_empty_mappings(
+    tree: Mapping[str, Any],
+    *,
+    allowed_optional_empty_namespaces: Sequence[str],
+) -> tuple[dict[str, Any], StateCanonicalization]:
+    """Remove only exact allowlisted empty mappings and preserve all other state."""
+    allowed = tuple(sorted(set(allowed_optional_empty_namespaces)))
+    for namespace in allowed:
+        if (
+            not namespace.startswith("/")
+            or namespace == "/"
+            or namespace.endswith("/")
+            or f"/{EMPTY_MAPPING_COMPONENT}" in namespace
+        ):
+            raise ValueError(
+                "optional empty namespaces must be exact absolute mapping paths"
+            )
+    removed: list[str] = []
+    absent = object()
+
+    def visit(value: Any, namespace: str) -> Any:
+        if not isinstance(value, Mapping):
+            return value
+        if namespace in allowed:
+            if value:
+                raise ValueError(
+                    f"allowlisted optional namespace is non-empty: {namespace}"
+                )
+            removed.append(namespace)
+            return absent
+        result: dict[str, Any] = {}
+        for key in sorted(value):
+            if not isinstance(key, str) or not key:
+                raise TypeError("state-tree keys must be non-empty strings")
+            child_namespace = f"{namespace}/{key}" if namespace else f"/{key}"
+            child = visit(value[key], child_namespace)
+            if child is not absent:
+                result[key] = child
+        return result
+
+    canonical = visit(tree, "")
+    if canonical is absent or not isinstance(canonical, dict):
+        raise ValueError("state root cannot be removed by canonicalization")
+    before_paths = tuple(flatten_state_tree(tree))
+    after_paths = tuple(flatten_state_tree(canonical))
+    return canonical, StateCanonicalization(
+        allowed_optional_empty_namespaces=allowed,
+        removed_empty_namespaces=tuple(removed),
+        before_paths=before_paths,
+        after_paths=after_paths,
+        before_sha256=state_tree_sha256(tree),
+        after_sha256=state_tree_sha256(canonical),
+    )
+
+
 def compare_state_trees(
     expected: Mapping[str, Any],
     observed: Mapping[str, Any],
     *,
     tolerance: float,
+    allowed_optional_empty_namespaces: Sequence[str] = (),
 ) -> StateComparison:
-    """Compare complete state trees without skipping, reshaping, or repair."""
+    """Compare complete trees after exact allowlisted empty-map canonicalization."""
     if not np.isfinite(tolerance) or tolerance < 0:
         raise ValueError("tolerance must be finite and non-negative")
-    expected_flat = flatten_state_tree(expected)
-    observed_flat = flatten_state_tree(observed)
+    expected_tree, expected_canonicalization = canonicalize_optional_empty_mappings(
+        expected,
+        allowed_optional_empty_namespaces=allowed_optional_empty_namespaces,
+    )
+    observed_tree, observed_canonicalization = canonicalize_optional_empty_mappings(
+        observed,
+        allowed_optional_empty_namespaces=allowed_optional_empty_namespaces,
+    )
+    expected_flat = flatten_state_tree(expected_tree)
+    observed_flat = flatten_state_tree(observed_tree)
     expected_paths = tuple(expected_flat)
     observed_paths = tuple(observed_flat)
     missing = tuple(sorted(set(expected_flat) - set(observed_flat)))
@@ -215,4 +310,6 @@ def compare_state_trees(
         non_finite_paths=tuple(non_finite_paths),
         leaves=tuple(leaves),
         maximum_absolute_error=maximum,
+        expected_canonicalization=expected_canonicalization,
+        observed_canonicalization=observed_canonicalization,
     )

@@ -1,0 +1,31 @@
+{
+  "eval_or_exec_used": false,
+  "external_upstream_tests": {
+    "status": "pending_remote_exact_environment"
+  },
+  "integration_regressions": {
+    "patched": {
+      "cases": 7,
+      "status": "pass"
+    },
+    "unpatched": {
+      "cases": 7,
+      "demonstrated_old_behavior": true,
+      "status": "pass"
+    }
+  },
+  "patch_application": {
+    "changed_files": [
+      "docs/replay.md",
+      "robolab/core/replay/env_config.py",
+      "tests/test_replay_env_config.py"
+    ],
+    "exact_base_only": true,
+    "patched_tree_digest": "050397d38fb9e8ea4b9acb557b5b01f16ac64ca6",
+    "repeat_application_rejected": true,
+    "unpatched_checkout_identified_as_unpatched": true
+  },
+  "patch_sha256": "5b72f598c8a7fb8c07f1c3c2a35e136a805cb5b87b77e1f3cfbc4398c4939310",
+  "schema_version": "lg_rb01_patch_test_results_v1",
+  "status": "pending_remote_exact_environment"
+}

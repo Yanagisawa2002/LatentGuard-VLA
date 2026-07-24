@@ -96,6 +96,18 @@ def merge_faithful_results(
             field="official_state_tolerance",
         )
     )
+    strict_tolerance = float(
+        _require_equal(
+            [result.get("strict_state_tolerance") for result in results],
+            field="strict_state_tolerance",
+        )
+    )
+    pixel_tolerance = int(
+        _require_equal(
+            [result.get("pixel_tolerance") for result in results],
+            field="pixel_tolerance",
+        )
+    )
     details: list[dict[str, Any]] = []
     for result in results:
         shard_details = result.get("details")
@@ -130,7 +142,18 @@ def merge_faithful_results(
     execution_errors = sum(
         int(result.get("execution_error_count", -1)) for result in results
     )
-    if min(expected_replays, completed_replays, execution_errors) < 0:
+    official_validator_failures = sum(
+        int(result.get("official_state_validator_failures", -1)) for result in results
+    )
+    if (
+        min(
+            expected_replays,
+            completed_replays,
+            execution_errors,
+            official_validator_failures,
+        )
+        < 0
+    ):
         raise ValueError("faithful shard completion counters are invalid")
     status = (
         "pass"
@@ -142,23 +165,40 @@ def merge_faithful_results(
         == 0
         and completed_replays == expected_replays
         and execution_errors == 0
+        and official_validator_failures == 0
         and all(result.get("status") == "pass" for result in results)
         else "fail"
     )
     return {
-        "schema_version": "lg_rb0_faithful_replay_validation_v1",
+        "schema_version": "lg_rb01_faithful_replay_validation_v1",
         "status": status,
         "episode_count": episode_count,
         "repeats_per_episode": repeats,
         "official_state_tolerance": tolerance,
+        "strict_state_tolerance": strict_tolerance,
+        "pixel_tolerance": pixel_tolerance,
         "initial_restore_failures": initial_failures,
         "recorded_config_overlay_failures": config_overlay_failures,
         "per_step_state_failures": state_failures,
+        "official_state_validator_failures": official_validator_failures,
         "terminal_mismatches": terminal_mismatches,
         "success_mismatches": success_mismatches,
         "expected_replay_count": expected_replays,
         "completed_replay_count": completed_replays,
         "execution_error_count": execution_errors,
+        **{
+            field: sum(detail.get(field) is True for detail in details)
+            for field in (
+                "attempted",
+                "env_config_overlay_completed",
+                "environment_created",
+                "replay_started",
+                "replay_completed",
+                "per_step_validation_completed",
+                "terminal_validation_completed",
+                "success_validation_completed",
+            )
+        },
         "details": details,
         "runtime_process_isolation": "one_recording_per_isaac_sim_process",
     }
@@ -254,6 +294,118 @@ def merge_takeover_results(
         "prefix_replay_validation": prefix,
         "branch_determinism_validation": branch,
         "branch_isolation_validation": isolation,
+    }
+
+
+def merge_prefix_results(
+    results: Sequence[Mapping[str, Any]],
+    *,
+    expected_episode_count: int,
+) -> dict[str, Any]:
+    """Merge prefix-only shards before any suffix branch is executed."""
+    if len(results) != expected_episode_count:
+        raise ValueError("prefix shard count differs from frozen protocol")
+    details = _merge_details(results, expected_per_shard=3)
+    mismatches = _sum_nonnegative(results, "mismatch_count")
+    coverage = all(
+        result.get("semantic_coverage_complete") is True for result in results
+    )
+    return {
+        "schema_version": "lg_rb01_prefix_replay_validation_v1",
+        "status": "pass" if mismatches == 0 and coverage else "fail",
+        "state_tolerance": _require_equal(
+            [result.get("state_tolerance") for result in results],
+            field="prefix.state_tolerance",
+        ),
+        "pixel_tolerance": _require_equal(
+            [result.get("pixel_tolerance") for result in results],
+            field="prefix.pixel_tolerance",
+        ),
+        "anchors_per_episode": _require_equal(
+            [result.get("anchors_per_episode") for result in results],
+            field="prefix.anchors_per_episode",
+        ),
+        "repeats_per_anchor": _require_equal(
+            [result.get("repeats_per_anchor") for result in results],
+            field="prefix.repeats_per_anchor",
+        ),
+        "episode_count": expected_episode_count,
+        "mismatch_count": mismatches,
+        "semantic_coverage_complete": coverage,
+        "details": details,
+        "runtime_process_isolation": "one_recording_per_isaac_sim_process",
+    }
+
+
+def merge_branch_results(
+    results: Sequence[Mapping[str, Any]],
+    *,
+    expected_episode_count: int,
+) -> dict[str, Any]:
+    """Merge same-suffix shards only after the complete prefix gate passes."""
+    if len(results) != expected_episode_count:
+        raise ValueError("branch shard count differs from frozen protocol")
+    details = _merge_details(results, expected_per_shard=6)
+    mismatches = _sum_nonnegative(results, "mismatch_count")
+    coverage = all(
+        result.get("semantic_coverage_complete") is True for result in results
+    )
+    return {
+        "schema_version": "lg_rb01_branch_determinism_validation_v1",
+        "status": "pass" if mismatches == 0 and coverage else "fail",
+        "state_tolerance": _require_equal(
+            [result.get("state_tolerance") for result in results],
+            field="branch.state_tolerance",
+        ),
+        "pixel_tolerance": _require_equal(
+            [result.get("pixel_tolerance") for result in results],
+            field="branch.pixel_tolerance",
+        ),
+        "branches": _require_equal(
+            [result.get("branches") for result in results],
+            field="branch.branches",
+        ),
+        "checkpoints": _require_equal(
+            [result.get("checkpoints") for result in results],
+            field="branch.checkpoints",
+        ),
+        "episode_count": expected_episode_count,
+        "mismatch_count": mismatches,
+        "semantic_coverage_complete": coverage,
+        "details": details,
+        "runtime_process_isolation": "one_recording_per_isaac_sim_process",
+    }
+
+
+def merge_isolation_results(
+    results: Sequence[Mapping[str, Any]],
+    *,
+    expected_episode_count: int,
+) -> dict[str, Any]:
+    """Merge order-isolation shards only after same-suffix determinism passes."""
+    if len(results) != expected_episode_count:
+        raise ValueError("isolation shard count differs from frozen protocol")
+    details = _merge_details(results, expected_per_shard=6)
+    mismatches = _sum_nonnegative(results, "mismatch_count")
+    coverage = all(
+        result.get("semantic_coverage_complete") is True for result in results
+    )
+    return {
+        "schema_version": "lg_rb01_branch_isolation_validation_v1",
+        "status": "pass" if mismatches == 0 and coverage else "fail",
+        "orders": _require_equal(
+            [result.get("orders") for result in results],
+            field="isolation.orders",
+        ),
+        "runtime_isolation_fields": _require_equal(
+            [result.get("runtime_isolation_fields") for result in results],
+            field="isolation.runtime_isolation_fields",
+        ),
+        "episode_count": expected_episode_count,
+        "mismatch_count": mismatches,
+        "semantic_coverage_complete": coverage,
+        "details": details,
+        "runtime_process_isolation": "one_recording_per_isaac_sim_process",
     }
 
 

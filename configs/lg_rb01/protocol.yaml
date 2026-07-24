@@ -1,0 +1,84 @@
+schema_version: lg_rb01_protocol_v1
+milestone: LG-RB0.1
+title: RoboLab Recorded-Config Replay Compatibility Patch
+external_stack:
+  repository: https://github.com/NVLabs/RoboLab.git
+  release: v0.2.1
+  commit: 0aef241fb088ca21bb4ebd24448940ed56620d17
+  python: "3.11"
+  isaac_sim: 5.1.0
+  isaac_lab: 2.3.2.post1
+upstream_patch:
+  sha256: 5b72f598c8a7fb8c07f1c3c2a35e136a805cb5b87b77e1f3cfbc4398c4939310
+  patched_tree_digest: 050397d38fb9e8ea4b9acb557b5b01f16ac64ca6
+runtime:
+  num_envs: 1
+  device: cuda:0
+  headless: true
+  use_fabric: true
+  enable_cameras: true
+recording:
+  reuse_milestone: LG-RB0
+  controller: fixed_joint_hold_gripper_toggle_v1
+  task_queries:
+    - BananaInBowlTask
+    - RubiksCubeAndBananaTask
+  seeds:
+    - 810000
+    - 810001
+    - 810002
+    - 810003
+    - 810004
+  steps: 40
+  gripper_toggle_interval: 10
+  expected_episode_count: 10
+  rerecording_allowed: false
+state_schema:
+  allowed_optional_empty_namespaces:
+    - /deformable_object
+    - /gripper
+faithful_replay:
+  repeats: 3
+  official_state_tolerance: 0.01
+  strict_state_tolerance: 0.000001
+  pixel_tolerance: 0
+  require_initial_restore: true
+  require_complete_state_paths: true
+  require_terminal_match: true
+  require_success_match: true
+  allowed_skip_categories:
+    - EXPECTED_RUNTIME_PRESERVATION
+takeover:
+  anchor_fractions:
+    - 0.25
+    - 0.50
+    - 0.75
+  anchor_labels:
+    - early
+    - middle
+    - late
+  repeats: 3
+  state_tolerance: 0.000001
+  pixel_tolerance: 0
+  branch_steps: 10
+  checkpoints:
+    - 1
+    - 5
+    - 10
+  branches:
+    A: hold_arm_open_gripper_v1
+    B: hold_arm_closed_gripper_v1
+  isolation_orders:
+    - A-B-A
+    - B-A-B
+sealed_final_seeds:
+  first: 900000
+  last: 900099
+prohibitions:
+  training: true
+  checkpoint_generation: true
+  policy_integration: true
+  candidate_ranking: true
+  online_intervention: true
+  langmani_access: true
+  final_seed_access: true

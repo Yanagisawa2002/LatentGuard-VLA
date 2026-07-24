@@ -1,0 +1,36 @@
+{
+  "behavioral_scope": {
+    "changes_actions": false,
+    "changes_physics": false,
+    "changes_recordings": false,
+    "changes_tasks": false,
+    "declarative_recorded_only_namespaces_are_explicitly_allowlisted": true,
+    "eval_or_exec_used": false,
+    "preserves_live_callable_containers": true,
+    "preserves_runtime_instruction_variants": true
+  },
+  "changed_files": [
+    "docs/replay.md",
+    "robolab/core/replay/env_config.py",
+    "tests/test_replay_env_config.py"
+  ],
+  "changed_lines": {
+    "deletions": 14,
+    "insertions": 298
+  },
+  "external_local_branch": "codex/lg-rb01-overlay-compat",
+  "external_local_commit": "b63726842a157afa19d1b80b4899d3cb0af692d8",
+  "patch_sha256": "5b72f598c8a7fb8c07f1c3c2a35e136a805cb5b87b77e1f3cfbc4398c4939310",
+  "patched_tree_digest": "050397d38fb9e8ea4b9acb557b5b01f16ac64ca6",
+  "schema_version": "lg_rb01_upstream_patch_manifest_v1",
+  "tests_added": [
+    "callable container preservation",
+    "missing condition key fail-closed",
+    "existing callable identity preservation",
+    "unimportable callable fail-closed",
+    "explicit recorded-only data namespace",
+    "runtime-owned instruction variants with and without a live attribute"
+  ],
+  "upstream_base_commit": "0aef241fb088ca21bb4ebd24448940ed56620d17",
+  "upstream_repository": "https://github.com/NVLabs/RoboLab.git"
+}

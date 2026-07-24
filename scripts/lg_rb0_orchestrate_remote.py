@@ -16,9 +16,11 @@ from typing import Any
 import yaml
 
 from latentguard.adapters.robolab.orchestration import (
+    merge_branch_results,
     merge_faithful_results,
+    merge_isolation_results,
+    merge_prefix_results,
     merge_recording_manifests,
-    merge_takeover_results,
 )
 
 
@@ -74,6 +76,7 @@ def _run_child(
     phase: str,
     protocol_path: Path,
     run_root: Path,
+    recording_root: Path,
     artifact_dir: Path,
     expected_commit: str,
     device: str,
@@ -88,10 +91,24 @@ def _run_child(
         str(protocol_path),
         "--run-root",
         str(run_root),
+        "--recording-root",
+        str(recording_root),
         "--artifact-dir",
         str(artifact_dir),
         "--expected-commit",
         expected_commit,
+        "--expected-robolab-base",
+        str(
+            yaml.safe_load(protocol_path.read_text(encoding="utf-8"))["external_stack"][
+                "commit"
+            ]
+        ),
+        "--expected-robolab-tree",
+        str(
+            yaml.safe_load(protocol_path.read_text(encoding="utf-8"))["upstream_patch"][
+                "patched_tree_digest"
+            ]
+        ),
         "--device",
         device,
         "--headless",
@@ -143,6 +160,7 @@ def _record(
     protocol: Mapping[str, Any],
     runner: Path,
     run_root: Path,
+    recording_root: Path,
     artifact_dir: Path,
     expected_commit: str,
     device: str,
@@ -163,6 +181,7 @@ def _record(
             phase="record",
             protocol_path=child_protocol,
             run_root=run_root,
+            recording_root=recording_root,
             artifact_dir=child_artifacts,
             expected_commit=expected_commit,
             device=device,
@@ -204,6 +223,7 @@ def _faithful(
     protocol: Mapping[str, Any],
     runner: Path,
     run_root: Path,
+    recording_root: Path,
     artifact_dir: Path,
     expected_commit: str,
     device: str,
@@ -234,6 +254,7 @@ def _faithful(
             phase="faithful",
             protocol_path=child_protocol,
             run_root=run_root,
+            recording_root=recording_root,
             artifact_dir=child_artifacts,
             expected_commit=expected_commit,
             device=device,
@@ -245,36 +266,78 @@ def _faithful(
         expected_episode_count=len(by_id),
     )
     _write(artifact_dir / "faithful_replay_validation.json", merged)
+    canonicalization_shards = [
+        _read(
+            run_root
+            / "orchestration"
+            / "artifacts"
+            / "faithful"
+            / recording_id
+            / "state_schema_canonicalization.json"
+        )
+        for _, _, recording_id in _recording_specs(protocol)
+    ]
+    _write(
+        artifact_dir / "state_schema_canonicalization.json",
+        {
+            "schema_version": "lg_rb01_state_schema_canonicalization_v1",
+            "status": (
+                "pass"
+                if all(
+                    value.get("status") == "pass" for value in canonicalization_shards
+                )
+                else "fail"
+            ),
+            "symmetric": True,
+            "numeric_state_changed": False,
+            "allowed_optional_empty_namespaces": list(
+                protocol["state_schema"]["allowed_optional_empty_namespaces"]
+            ),
+            "comparison_count": sum(
+                int(value.get("comparison_count", 0))
+                for value in canonicalization_shards
+            ),
+            "shards": canonicalization_shards,
+        },
+    )
     if merged["status"] != "pass":
-        reason = "blocked_by_faithful_replay_gate"
-        common = {
-            "status": "not_run",
-            "reason": reason,
-            "mismatch_count": None,
-            "semantic_coverage_complete": None,
-            "details": [],
-        }
+        _write_not_run_takeover_outputs(
+            artifact_dir,
+            reason="blocked_by_faithful_replay_gate",
+            include_prefix=True,
+        )
+
+
+def _not_run_result(schema_version: str, reason: str) -> dict[str, Any]:
+    return {
+        "schema_version": schema_version,
+        "status": "not_run",
+        "reason": reason,
+        "mismatch_count": None,
+        "semantic_coverage_complete": None,
+        "details": [],
+    }
+
+
+def _write_not_run_takeover_outputs(
+    artifact_dir: Path,
+    *,
+    reason: str,
+    include_prefix: bool,
+) -> None:
+    if include_prefix:
         _write(
             artifact_dir / "prefix_replay_validation.json",
-            {
-                "schema_version": "lg_rb0_prefix_replay_validation_v1",
-                **common,
-            },
+            _not_run_result("lg_rb01_prefix_replay_validation_v1", reason),
         )
-        _write(
-            artifact_dir / "branch_determinism_validation.json",
-            {
-                "schema_version": "lg_rb0_branch_determinism_validation_v1",
-                **common,
-            },
-        )
-        _write(
-            artifact_dir / "branch_isolation_validation.json",
-            {
-                "schema_version": "lg_rb0_branch_isolation_validation_v1",
-                **common,
-            },
-        )
+    _write(
+        artifact_dir / "branch_determinism_validation.json",
+        _not_run_result("lg_rb01_branch_determinism_validation_v1", reason),
+    )
+    _write(
+        artifact_dir / "branch_isolation_validation.json",
+        _not_run_result("lg_rb01_branch_isolation_validation_v1", reason),
+    )
 
 
 def _takeover(
@@ -282,6 +345,7 @@ def _takeover(
     protocol: Mapping[str, Any],
     runner: Path,
     run_root: Path,
+    recording_root: Path,
     artifact_dir: Path,
     expected_commit: str,
     device: str,
@@ -291,46 +355,85 @@ def _takeover(
         raise RuntimeError("takeover is prohibited after faithful replay failure")
     manifest = _read(artifact_dir / "recording_manifest.json")
     by_id = {str(item["recording_id"]): item for item in manifest.get("recordings", [])}
-    prefix: list[dict[str, Any]] = []
-    branch: list[dict[str, Any]] = []
-    isolation: list[dict[str, Any]] = []
-    for query, seed, recording_id in _recording_specs(protocol):
-        item = by_id.get(recording_id)
-        if item is None:
-            raise RuntimeError(f"recording manifest missing {recording_id}")
-        child_protocol, child_artifacts, log_path = _prepare_shard(
-            protocol=protocol,
-            query=query,
-            seed=seed,
-            recording_id=recording_id,
-            run_root=run_root,
-            phase="takeover",
-        )
-        _write(
-            child_artifacts / "recording_manifest.json",
-            _single_recording_manifest(item),
-        )
-        _run_child(
-            runner=runner,
-            phase="takeover",
-            protocol_path=child_protocol,
-            run_root=run_root,
-            artifact_dir=child_artifacts,
-            expected_commit=expected_commit,
-            device=device,
-            log_path=log_path,
-        )
-        prefix.append(_read(child_artifacts / "prefix_replay_validation.json"))
-        branch.append(_read(child_artifacts / "branch_determinism_validation.json"))
-        isolation.append(_read(child_artifacts / "branch_isolation_validation.json"))
-    merged = merge_takeover_results(
-        prefix,
-        branch,
-        isolation,
+
+    def run_gate(
+        *,
+        phase: str,
+        output_name: str,
+    ) -> list[dict[str, Any]]:
+        results: list[dict[str, Any]] = []
+        for query, seed, recording_id in _recording_specs(protocol):
+            item = by_id.get(recording_id)
+            if item is None:
+                raise RuntimeError(f"recording manifest missing {recording_id}")
+            child_protocol, child_artifacts, log_path = _prepare_shard(
+                protocol=protocol,
+                query=query,
+                seed=seed,
+                recording_id=recording_id,
+                run_root=run_root,
+                phase=phase,
+            )
+            _write(
+                child_artifacts / "recording_manifest.json",
+                _single_recording_manifest(item),
+            )
+            _run_child(
+                runner=runner,
+                phase=phase,
+                protocol_path=child_protocol,
+                run_root=run_root,
+                recording_root=recording_root,
+                artifact_dir=child_artifacts,
+                expected_commit=expected_commit,
+                device=device,
+                log_path=log_path,
+            )
+            results.append(_read(child_artifacts / f"{output_name}.json"))
+        return results
+
+    prefix = merge_prefix_results(
+        run_gate(
+            phase="takeover-prefix",
+            output_name="prefix_replay_validation",
+        ),
         expected_episode_count=len(by_id),
     )
-    for name, value in merged.items():
-        _write(artifact_dir / f"{name}.json", value)
+    _write(artifact_dir / "prefix_replay_validation.json", prefix)
+    if prefix["status"] != "pass":
+        _write_not_run_takeover_outputs(
+            artifact_dir,
+            reason="blocked_by_prefix_replay_gate",
+            include_prefix=False,
+        )
+        return
+
+    branch = merge_branch_results(
+        run_gate(
+            phase="takeover-branch",
+            output_name="branch_determinism_validation",
+        ),
+        expected_episode_count=len(by_id),
+    )
+    _write(artifact_dir / "branch_determinism_validation.json", branch)
+    if branch["status"] != "pass":
+        _write(
+            artifact_dir / "branch_isolation_validation.json",
+            _not_run_result(
+                "lg_rb01_branch_isolation_validation_v1",
+                "blocked_by_branch_determinism_gate",
+            ),
+        )
+        return
+
+    isolation = merge_isolation_results(
+        run_gate(
+            phase="takeover-isolation",
+            output_name="branch_isolation_validation",
+        ),
+        expected_episode_count=len(by_id),
+    )
+    _write(artifact_dir / "branch_isolation_validation.json", isolation)
 
 
 def _main() -> None:
@@ -342,6 +445,7 @@ def _main() -> None:
     )
     parser.add_argument("--protocol", type=Path, required=True)
     parser.add_argument("--run-root", type=Path, required=True)
+    parser.add_argument("--recording-root", type=Path)
     parser.add_argument("--artifact-dir", type=Path, required=True)
     parser.add_argument("--runner", type=Path, required=True)
     parser.add_argument("--expected-commit", required=True)
@@ -361,6 +465,7 @@ def _main() -> None:
         protocol=protocol,
         runner=args.runner,
         run_root=args.run_root,
+        recording_root=args.recording_root or args.run_root,
         artifact_dir=args.artifact_dir,
         expected_commit=args.expected_commit,
         device=args.device,

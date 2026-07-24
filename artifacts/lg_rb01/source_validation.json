@@ -1,0 +1,39 @@
+{
+  "allowed_optional_empty_namespaces": [
+    "/deformable_object",
+    "/gripper"
+  ],
+  "contract": {
+    "anchor_fractions": [
+      0.25,
+      0.5,
+      0.75
+    ],
+    "branch_checkpoints": [
+      1,
+      5,
+      10
+    ],
+    "num_envs": 1,
+    "official_state_tolerance": 0.01,
+    "pixel_tolerance": 0,
+    "repeats": 3,
+    "strict_state_tolerance": 1e-06,
+    "takeover_state_tolerance": 1e-06
+  },
+  "final_seeds_accessed": false,
+  "patch_sha256": "5b72f598c8a7fb8c07f1c3c2a35e136a805cb5b87b77e1f3cfbc4398c4939310",
+  "patched_tree_digest": "050397d38fb9e8ea4b9acb557b5b01f16ac64ca6",
+  "recorded_episode_count": 10,
+  "recording_reused": true,
+  "recording_seeds": [
+    810000,
+    810001,
+    810002,
+    810003,
+    810004
+  ],
+  "robolab_commit": "0aef241fb088ca21bb4ebd24448940ed56620d17",
+  "schema_version": "lg_rb01_source_validation_v1",
+  "status": "pass"
+}
