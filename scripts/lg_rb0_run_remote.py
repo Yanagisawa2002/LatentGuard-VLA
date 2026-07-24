@@ -448,6 +448,8 @@ def _faithful(
     state_failures = 0
     terminal_mismatches = 0
     success_mismatches = 0
+    completed_replays = 0
+    execution_errors = 0
     official_tolerance = float(protocol["faithful_replay"]["official_state_tolerance"])
     for item in manifest["recordings"]:
         hdf5_path, actions, outcome = _load_recording(run_root, item)
@@ -461,63 +463,96 @@ def _faithful(
         )
         try:
             for repeat in range(int(protocol["faithful_replay"]["repeats"])):
-                observation = _reset_for_replay(env, hdf5_path, [])
-                initial = compare_state_trees(
-                    recorded_initial,
-                    env.scene.get_state(is_relative=True),
-                    tolerance=official_tolerance,
-                )
-                initial_ok = initial.matches and not skipped
-                initial_failures += int(not initial_ok)
-                validator = StateValidator(
-                    str(hdf5_path),
-                    0,
-                    tolerance=official_tolerance,
-                )
-                repeat_state_failures = 0
-                for step, action in enumerate(actions):
-                    tensor = torch.as_tensor(
-                        action,
-                        dtype=torch.float32,
-                        device=env.device,
-                    ).unsqueeze(0)
-                    observation, _, _, _, _ = env.step(tensor)
-                    validator.check_step(env, step)
-                    strict = compare_state_trees(
-                        _row_tree(recorded_states, step),
+                detail: dict[str, Any] = {
+                    "recording_id": item["recording_id"],
+                    "repeat": repeat,
+                    "status": "execution_error",
+                    "initial_restore_pass": None,
+                    "initial_restore_maximum_absolute_error": None,
+                    "recorded_config_skipped_fields": skipped,
+                    "official_state_validator_pass": None,
+                    "official_maximum_absolute_error": None,
+                    "strict_per_step_failure_count": None,
+                    "terminal_match": None,
+                    "success_match": None,
+                    "observation_available": None,
+                    "execution_error": None,
+                }
+                try:
+                    observation = _reset_for_replay(env, hdf5_path, [])
+                    initial = compare_state_trees(
+                        recorded_initial,
                         env.scene.get_state(is_relative=True),
                         tolerance=official_tolerance,
                     )
-                    if not strict.matches:
-                        repeat_state_failures += 1
-                terminal = bool(env.all_terminated)
-                result = env.get_env_results()[0]["success"]
-                success = bool(result) if result is not None else False
-                terminal_match = terminal == bool(
-                    outcome["terminal_at_recorded_horizon"]
-                )
-                success_match = success == bool(outcome["success_at_recorded_horizon"])
-                official_pass = validator.first_exceed_step is None
-                state_failures += repeat_state_failures + int(not official_pass)
-                terminal_mismatches += int(not terminal_match)
-                success_mismatches += int(not success_match)
-                details.append(
-                    {
-                        "recording_id": item["recording_id"],
-                        "repeat": repeat,
-                        "initial_restore_pass": initial_ok,
-                        "initial_restore_maximum_absolute_error": (
-                            initial.maximum_absolute_error
-                        ),
-                        "recorded_config_skipped_fields": skipped,
-                        "official_state_validator_pass": official_pass,
-                        "official_maximum_absolute_error": validator.max_drift,
-                        "strict_per_step_failure_count": repeat_state_failures,
-                        "terminal_match": terminal_match,
-                        "success_match": success_match,
-                        "observation_available": observation is not None,
+                    initial_ok = initial.matches and not skipped
+                    initial_failures += int(not initial_ok)
+                    detail["initial_restore_pass"] = initial_ok
+                    detail["initial_restore_maximum_absolute_error"] = (
+                        initial.maximum_absolute_error
+                    )
+                    validator = StateValidator(
+                        str(hdf5_path),
+                        0,
+                        tolerance=official_tolerance,
+                    )
+                    repeat_state_failures = 0
+                    for step, action in enumerate(actions):
+                        tensor = torch.as_tensor(
+                            action,
+                            dtype=torch.float32,
+                            device=env.device,
+                        ).unsqueeze(0)
+                        observation, _, _, _, _ = env.step(tensor)
+                        validator.check_step(env, step)
+                        strict = compare_state_trees(
+                            _row_tree(recorded_states, step),
+                            env.scene.get_state(is_relative=True),
+                            tolerance=official_tolerance,
+                        )
+                        if not strict.matches:
+                            repeat_state_failures += 1
+                    terminal = bool(env.all_terminated)
+                    result = env.get_env_results()[0]["success"]
+                    success = bool(result) if result is not None else False
+                    terminal_match = terminal == bool(
+                        outcome["terminal_at_recorded_horizon"]
+                    )
+                    success_match = success == bool(
+                        outcome["success_at_recorded_horizon"]
+                    )
+                    official_pass = validator.first_exceed_step is None
+                    state_failures += repeat_state_failures + int(not official_pass)
+                    terminal_mismatches += int(not terminal_match)
+                    success_mismatches += int(not success_match)
+                    completed_replays += 1
+                    detail.update(
+                        {
+                            "status": (
+                                "pass"
+                                if initial_ok
+                                and official_pass
+                                and repeat_state_failures == 0
+                                and terminal_match
+                                and success_match
+                                else "fail"
+                            ),
+                            "official_state_validator_pass": official_pass,
+                            "official_maximum_absolute_error": validator.max_drift,
+                            "strict_per_step_failure_count": repeat_state_failures,
+                            "terminal_match": terminal_match,
+                            "success_match": success_match,
+                            "observation_available": observation is not None,
+                        }
+                    )
+                except Exception as error:
+                    execution_errors += 1
+                    detail["execution_error"] = {
+                        "type": type(error).__name__,
+                        "message": str(error),
                     }
-                )
+                    traceback.print_exc()
+                details.append(detail)
         finally:
             env.close()
             gc.collect()
@@ -531,6 +566,9 @@ def _faithful(
             == terminal_mismatches
             == success_mismatches
             == 0
+            and execution_errors == 0
+            and completed_replays
+            == len(manifest["recordings"]) * int(protocol["faithful_replay"]["repeats"])
             else "fail"
         ),
         "episode_count": len(manifest["recordings"]),
@@ -540,6 +578,11 @@ def _faithful(
         "per_step_state_failures": state_failures,
         "terminal_mismatches": terminal_mismatches,
         "success_mismatches": success_mismatches,
+        "expected_replay_count": (
+            len(manifest["recordings"]) * int(protocol["faithful_replay"]["repeats"])
+        ),
+        "completed_replay_count": completed_replays,
+        "execution_error_count": execution_errors,
         "details": details,
     }
     _write(artifact_dir / "faithful_replay_validation.json", result)

@@ -9,6 +9,13 @@ Every run uses one headless CUDA environment. The LatentGuard checkout must be
 clean and exactly match the pushed milestone commit; the RoboLab checkout must
 be clean and exactly match the frozen external commit.
 
+Every recording is executed in a separate Isaac Sim process. The same
+one-recording-per-process boundary is used for faithful replay and takeover
+shards, while the three registered repeats for one recording share only that
+recording's process. A CPU-only orchestrator validates and merges the ten
+shards. This prevents renderer and annotator teardown from one episode from
+becoming hidden mutable state for the next episode.
+
 No policy, checkpoint, learned scorer, candidate generator, or ranker is loaded.
 The A/B suffixes are registered mechanics probes, not deployable policy
 candidates. No outcome is used to change an action, anchor, tolerance, task,

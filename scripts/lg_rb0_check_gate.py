@@ -35,18 +35,33 @@ def main() -> None:
     prefix = _read(root / "prefix_replay_validation.json")
     branch = _read(root / "branch_determinism_validation.json")
     isolation = _read(root / "branch_isolation_validation.json")
+    takeover_ran = (
+        prefix.get("status") in {"pass", "fail"}
+        and branch.get("status") in {"pass", "fail"}
+        and isolation.get("status") in {"pass", "fail"}
+    )
     input_evidence = BranchGateInput(
         valid_recorded_episodes=int(recordings["valid_episode_count"]),
         faithful_initial_restore_failures=int(faithful["initial_restore_failures"]),
         faithful_per_step_failures=int(faithful["per_step_state_failures"]),
         faithful_terminal_mismatches=int(faithful["terminal_mismatches"]),
         faithful_success_mismatches=int(faithful["success_mismatches"]),
-        prefix_mismatches=int(prefix["mismatch_count"]),
-        branch_mismatches=int(branch["mismatch_count"]),
-        isolation_mismatches=int(isolation["mismatch_count"]),
-        semantic_coverage_complete=bool(
-            prefix["semantic_coverage_complete"]
-            and branch["semantic_coverage_complete"]
+        faithful_expected_replays=int(faithful["expected_replay_count"]),
+        faithful_completed_replays=int(faithful["completed_replay_count"]),
+        faithful_execution_errors=int(faithful["execution_error_count"]),
+        prefix_mismatches=(int(prefix["mismatch_count"]) if takeover_ran else None),
+        branch_mismatches=(int(branch["mismatch_count"]) if takeover_ran else None),
+        isolation_mismatches=(
+            int(isolation["mismatch_count"]) if takeover_ran else None
+        ),
+        semantic_coverage_complete=(
+            bool(
+                prefix["semantic_coverage_complete"]
+                and branch["semantic_coverage_complete"]
+                and isolation["semantic_coverage_complete"]
+            )
+            if takeover_ran
+            else None
         ),
         official_stack_valid=stack["status"] == "pass",
         source_validation_passed=source["status"] == "pass",
@@ -61,6 +76,9 @@ def main() -> None:
         "faithful_per_step_failures": input_evidence.faithful_per_step_failures,
         "faithful_terminal_mismatches": input_evidence.faithful_terminal_mismatches,
         "faithful_success_mismatches": input_evidence.faithful_success_mismatches,
+        "faithful_expected_replays": input_evidence.faithful_expected_replays,
+        "faithful_completed_replays": input_evidence.faithful_completed_replays,
+        "faithful_execution_errors": input_evidence.faithful_execution_errors,
         "prefix_mismatches": input_evidence.prefix_mismatches,
         "branch_mismatches": input_evidence.branch_mismatches,
         "isolation_mismatches": input_evidence.isolation_mismatches,

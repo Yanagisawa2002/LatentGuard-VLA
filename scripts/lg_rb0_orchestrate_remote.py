@@ -245,6 +245,36 @@ def _faithful(
         expected_episode_count=len(by_id),
     )
     _write(artifact_dir / "faithful_replay_validation.json", merged)
+    if merged["status"] != "pass":
+        reason = "blocked_by_faithful_replay_gate"
+        common = {
+            "status": "not_run",
+            "reason": reason,
+            "mismatch_count": None,
+            "semantic_coverage_complete": None,
+            "details": [],
+        }
+        _write(
+            artifact_dir / "prefix_replay_validation.json",
+            {
+                "schema_version": "lg_rb0_prefix_replay_validation_v1",
+                **common,
+            },
+        )
+        _write(
+            artifact_dir / "branch_determinism_validation.json",
+            {
+                "schema_version": "lg_rb0_branch_determinism_validation_v1",
+                **common,
+            },
+        )
+        _write(
+            artifact_dir / "branch_isolation_validation.json",
+            {
+                "schema_version": "lg_rb0_branch_isolation_validation_v1",
+                **common,
+            },
+        )
 
 
 def _takeover(

@@ -97,6 +97,9 @@ def _gate(**overrides: object) -> BranchGateInput:
         "faithful_per_step_failures": 0,
         "faithful_terminal_mismatches": 0,
         "faithful_success_mismatches": 0,
+        "faithful_expected_replays": 30,
+        "faithful_completed_replays": 30,
+        "faithful_execution_errors": 0,
         "prefix_mismatches": 0,
         "branch_mismatches": 0,
         "isolation_mismatches": 0,
@@ -113,12 +116,26 @@ def test_gate_distinguishes_result_a_b_and_c() -> None:
     accepted = evaluate_lg_rb1_gate(_gate())
     takeover_failed = evaluate_lg_rb1_gate(_gate(prefix_mismatches=1))
     replay_failed = evaluate_lg_rb1_gate(_gate(faithful_per_step_failures=1))
+    replay_error = evaluate_lg_rb1_gate(
+        _gate(
+            faithful_completed_replays=0,
+            faithful_execution_errors=30,
+            prefix_mismatches=None,
+            branch_mismatches=None,
+            isolation_mismatches=None,
+            semantic_coverage_complete=None,
+        )
+    )
     assert (accepted["result"], accepted["LG_RB1_AUTHORIZED"]) == ("A", True)
     assert (takeover_failed["result"], takeover_failed["LG_RB1_AUTHORIZED"]) == (
         "B",
         False,
     )
     assert (replay_failed["result"], replay_failed["LG_RB1_AUTHORIZED"]) == (
+        "C",
+        False,
+    )
+    assert (replay_error["result"], replay_error["LG_RB1_AUTHORIZED"]) == (
         "C",
         False,
     )
@@ -151,6 +168,9 @@ def test_process_isolated_recording_and_faithful_merges() -> None:
                 "per_step_state_failures": 0,
                 "terminal_mismatches": 0,
                 "success_mismatches": 0,
+                "expected_replay_count": 3,
+                "completed_replay_count": 3,
+                "execution_error_count": 0,
                 "details": [{"repeat": repeat} for repeat in range(3)],
             }
         )
@@ -165,6 +185,16 @@ def test_process_isolated_recording_and_faithful_merges() -> None:
     assert recording["status"] == faithful["status"] == "pass"
     assert recording["episode_count"] == faithful["episode_count"] == 2
     assert len(faithful["details"]) == 6
+    faithful_shards[0]["status"] = "fail"
+    faithful_shards[0]["completed_replay_count"] = 0
+    faithful_shards[0]["execution_error_count"] = 3
+    failed = merge_faithful_results(
+        faithful_shards,
+        expected_episode_count=2,
+    )
+    assert failed["status"] == "fail"
+    assert failed["completed_replay_count"] == 3
+    assert failed["execution_error_count"] == 3
 
 
 def test_process_isolated_takeover_merge_preserves_failure() -> None:

@@ -15,10 +15,13 @@ class BranchGateInput:
     faithful_per_step_failures: int
     faithful_terminal_mismatches: int
     faithful_success_mismatches: int
-    prefix_mismatches: int
-    branch_mismatches: int
-    isolation_mismatches: int
-    semantic_coverage_complete: bool
+    faithful_expected_replays: int
+    faithful_completed_replays: int
+    faithful_execution_errors: int
+    prefix_mismatches: int | None
+    branch_mismatches: int | None
+    isolation_mismatches: int | None
+    semantic_coverage_complete: bool | None
     official_stack_valid: bool
     source_validation_passed: bool
     remote_audit_passed: bool
@@ -32,9 +35,16 @@ def evaluate_lg_rb1_gate(evidence: BranchGateInput) -> dict[str, Any]:
         and evidence.faithful_per_step_failures == 0
         and evidence.faithful_terminal_mismatches == 0
         and evidence.faithful_success_mismatches == 0
+        and evidence.faithful_expected_replays >= 30
+        and evidence.faithful_completed_replays == evidence.faithful_expected_replays
+        and evidence.faithful_execution_errors == 0
     )
     takeover_pass = (
-        evidence.prefix_mismatches == 0
+        evidence.prefix_mismatches is not None
+        and evidence.branch_mismatches is not None
+        and evidence.isolation_mismatches is not None
+        and evidence.semantic_coverage_complete is not None
+        and evidence.prefix_mismatches == 0
         and evidence.branch_mismatches == 0
         and evidence.isolation_mismatches == 0
         and evidence.semantic_coverage_complete
@@ -59,7 +69,7 @@ def evaluate_lg_rb1_gate(evidence: BranchGateInput) -> dict[str, Any]:
     else:
         result = "C"
         definition = (
-            "official faithful replay was not deterministic under the frozen stack"
+            "official faithful replay did not complete or pass under the frozen stack"
         )
     return {
         "schema_version": "lg_rb0_gate_v1",

@@ -116,6 +116,17 @@ def merge_faithful_results(
     success_mismatches = sum(
         int(result.get("success_mismatches", -1)) for result in results
     )
+    expected_replays = sum(
+        int(result.get("expected_replay_count", -1)) for result in results
+    )
+    completed_replays = sum(
+        int(result.get("completed_replay_count", -1)) for result in results
+    )
+    execution_errors = sum(
+        int(result.get("execution_error_count", -1)) for result in results
+    )
+    if min(expected_replays, completed_replays, execution_errors) < 0:
+        raise ValueError("faithful shard completion counters are invalid")
     status = (
         "pass"
         if initial_failures
@@ -123,6 +134,8 @@ def merge_faithful_results(
         == terminal_mismatches
         == success_mismatches
         == 0
+        and completed_replays == expected_replays
+        and execution_errors == 0
         and all(result.get("status") == "pass" for result in results)
         else "fail"
     )
@@ -136,6 +149,9 @@ def merge_faithful_results(
         "per_step_state_failures": state_failures,
         "terminal_mismatches": terminal_mismatches,
         "success_mismatches": success_mismatches,
+        "expected_replay_count": expected_replays,
+        "completed_replay_count": completed_replays,
+        "execution_error_count": execution_errors,
         "details": details,
         "runtime_process_isolation": "one_recording_per_isaac_sim_process",
     }
