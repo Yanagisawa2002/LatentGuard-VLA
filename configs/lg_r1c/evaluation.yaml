@@ -1,0 +1,32 @@
+schema_version: latentguard.lg_r1c.evaluation.v1
+primary_split: test
+selection_split: validation
+primary_progress_context: medium
+progress_pair_epsilon: 0.02
+failure_recall_operating_points:
+  - 0.5
+  - 0.6
+  - 0.8
+task_macro_equal_weight: true
+leave_task6_out:
+  suite: libero_10
+  task_id: 6
+  diagnostic_only: true
+failure_taxonomy:
+  - FAILED_PLACEMENT
+  - OBJECT_DROP
+stage_balanced_bins:
+  - [0.0, 0.25]
+  - [0.25, 0.5]
+  - [0.5, 0.75]
+  - [0.75, 1.000001]
+gate:
+  progress_spearman_min: 0.60
+  pairwise_accuracy_min: 0.70
+  task_macro_success_auroc_min: 0.75
+  failure_auprc_floor: 0.20
+  failure_prevalence_multiplier: 2.0
+  failure_precision_min: 0.25
+  failure_recall_min: 0.60
+  failure_fpr_max: 0.35
+  leave_task6_auprc_drop_max: 0.15

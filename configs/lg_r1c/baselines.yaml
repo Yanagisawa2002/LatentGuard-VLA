@@ -1,0 +1,12 @@
+schema_version: latentguard.lg_r1c.baselines.v1
+time:
+  definition: frame_index / max(episode_horizon - 1, 1)
+  observed_terminal_length_allowed: false
+sarm:
+  base_config: configs/lg_r1/sarm.yaml
+  frozen_eval_config: configs/lg_r1b/eval_zero_shot.yaml
+  checkpoint_locator: sarm-style-small/best.pt
+  optimizer_steps: 0
+  backward_calls: 0
+  adaptation_allowed: false
+primary_context: medium

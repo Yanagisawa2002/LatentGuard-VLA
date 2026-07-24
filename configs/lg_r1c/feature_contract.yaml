@@ -1,0 +1,29 @@
+schema_version: latentguard.lg_r1c.feature_contract_config.v1
+feature_sets:
+  A:
+    role: minimal_direct_baseline
+    features:
+      - current_vla_representation
+      - numeric_action_chunk
+  B:
+    role: task_agnostic_reward_baseline
+    features:
+      - robometer_progress
+      - robometer_success_probability
+      - topreward_score
+      - numeric_action_chunk
+  C:
+    role: vla_jepa_extension
+    features:
+      - current_vla_representation
+      - predicted_temporal_tokens
+      - qwen_action_token_hidden_states
+      - numeric_action_chunk
+  D:
+    role: fused_candidate
+    features:
+      - current_vla_representation
+      - predicted_temporal_tokens
+      - numeric_action_chunk
+      - task_agnostic_reward_outputs
+lg_r2_training_authorized: false

@@ -1,0 +1,272 @@
+{
+  "candidate_time_conclusion": "ROBOMETER and TOPReward score executed observation windows and cannot directly score an unexecuted numeric action candidate.",
+  "feature_sets": [
+    {
+      "features": [
+        {
+          "candidate_time_availability": "CURRENT_STATE_ONLY",
+          "candidate_time_usable": true,
+          "depends_on_future_observation": false,
+          "dtype": "float32",
+          "measured_latency_ms": null,
+          "measured_peak_gpu_bytes": null,
+          "online_computable": true,
+          "pooling": "mean_over_current_qwen_tokens",
+          "shape": [
+            "B",
+            2048
+          ],
+          "tensor_name": "current_vla_representation",
+          "time_horizon": "current_observation"
+        },
+        {
+          "candidate_time_availability": "CANDIDATE_ACTION_CONDITIONED",
+          "candidate_time_usable": true,
+          "depends_on_future_observation": false,
+          "dtype": "float32",
+          "measured_latency_ms": null,
+          "measured_peak_gpu_bytes": null,
+          "online_computable": true,
+          "pooling": "none",
+          "shape": [
+            "B",
+            "H_action",
+            "D_action"
+          ],
+          "tensor_name": "numeric_action_chunk",
+          "time_horizon": "candidate_action_horizon"
+        }
+      ],
+      "lg_r2_training_authorized": false,
+      "name": "A",
+      "role": "minimal_direct_baseline"
+    },
+    {
+      "features": [
+        {
+          "candidate_time_availability": "EXECUTED_TRAJECTORY_REQUIRED",
+          "candidate_time_usable": false,
+          "depends_on_future_observation": true,
+          "dtype": "float32",
+          "measured_latency_ms": null,
+          "measured_peak_gpu_bytes": null,
+          "online_computable": false,
+          "pooling": "last_frame_from_eight_frame_window",
+          "shape": [
+            "B"
+          ],
+          "tensor_name": "robometer_progress",
+          "time_horizon": "executed_video_window"
+        },
+        {
+          "candidate_time_availability": "EXECUTED_TRAJECTORY_REQUIRED",
+          "candidate_time_usable": false,
+          "depends_on_future_observation": true,
+          "dtype": "float32",
+          "measured_latency_ms": null,
+          "measured_peak_gpu_bytes": null,
+          "online_computable": false,
+          "pooling": "last_frame_from_eight_frame_window",
+          "shape": [
+            "B"
+          ],
+          "tensor_name": "robometer_success_probability",
+          "time_horizon": "executed_video_window"
+        },
+        {
+          "candidate_time_availability": "EXECUTED_TRAJECTORY_REQUIRED",
+          "candidate_time_usable": false,
+          "depends_on_future_observation": true,
+          "dtype": "float32",
+          "measured_latency_ms": null,
+          "measured_peak_gpu_bytes": null,
+          "online_computable": false,
+          "pooling": "terminal_true_token_log_probability",
+          "shape": [
+            "B"
+          ],
+          "tensor_name": "topreward_score",
+          "time_horizon": "executed_video_window"
+        },
+        {
+          "candidate_time_availability": "CANDIDATE_ACTION_CONDITIONED",
+          "candidate_time_usable": true,
+          "depends_on_future_observation": false,
+          "dtype": "float32",
+          "measured_latency_ms": null,
+          "measured_peak_gpu_bytes": null,
+          "online_computable": true,
+          "pooling": "none",
+          "shape": [
+            "B",
+            "H_action",
+            "D_action"
+          ],
+          "tensor_name": "numeric_action_chunk",
+          "time_horizon": "candidate_action_horizon"
+        }
+      ],
+      "lg_r2_training_authorized": false,
+      "name": "B",
+      "role": "task_agnostic_reward_baseline"
+    },
+    {
+      "features": [
+        {
+          "candidate_time_availability": "CURRENT_STATE_ONLY",
+          "candidate_time_usable": true,
+          "depends_on_future_observation": false,
+          "dtype": "float32",
+          "measured_latency_ms": null,
+          "measured_peak_gpu_bytes": null,
+          "online_computable": true,
+          "pooling": "mean_over_current_qwen_tokens",
+          "shape": [
+            "B",
+            2048
+          ],
+          "tensor_name": "current_vla_representation",
+          "time_horizon": "current_observation"
+        },
+        {
+          "candidate_time_availability": "NOT_USABLE_FOR_PRE_EXECUTION_SELECTION",
+          "candidate_time_usable": false,
+          "depends_on_future_observation": false,
+          "dtype": "float32",
+          "measured_latency_ms": null,
+          "measured_peak_gpu_bytes": null,
+          "online_computable": true,
+          "pooling": "none",
+          "shape": [
+            "B",
+            "T_pred",
+            "N_patch",
+            "D_jepa"
+          ],
+          "tensor_name": "predicted_temporal_tokens",
+          "time_horizon": "predicted_latent_horizon"
+        },
+        {
+          "candidate_time_availability": "NOT_USABLE_FOR_PRE_EXECUTION_SELECTION",
+          "candidate_time_usable": false,
+          "depends_on_future_observation": false,
+          "dtype": "float32",
+          "measured_latency_ms": null,
+          "measured_peak_gpu_bytes": null,
+          "online_computable": true,
+          "pooling": "none",
+          "shape": [
+            "B",
+            "T_action_token",
+            2048
+          ],
+          "tensor_name": "qwen_action_token_hidden_states",
+          "time_horizon": "policy_action_token_context"
+        },
+        {
+          "candidate_time_availability": "CANDIDATE_ACTION_CONDITIONED",
+          "candidate_time_usable": true,
+          "depends_on_future_observation": false,
+          "dtype": "float32",
+          "measured_latency_ms": null,
+          "measured_peak_gpu_bytes": null,
+          "online_computable": true,
+          "pooling": "none",
+          "shape": [
+            "B",
+            "H_action",
+            "D_action"
+          ],
+          "tensor_name": "numeric_action_chunk",
+          "time_horizon": "candidate_action_horizon"
+        }
+      ],
+      "lg_r2_training_authorized": false,
+      "name": "C",
+      "role": "vla_jepa_extension"
+    },
+    {
+      "features": [
+        {
+          "candidate_time_availability": "CURRENT_STATE_ONLY",
+          "candidate_time_usable": true,
+          "depends_on_future_observation": false,
+          "dtype": "float32",
+          "measured_latency_ms": null,
+          "measured_peak_gpu_bytes": null,
+          "online_computable": true,
+          "pooling": "mean_over_current_qwen_tokens",
+          "shape": [
+            "B",
+            2048
+          ],
+          "tensor_name": "current_vla_representation",
+          "time_horizon": "current_observation"
+        },
+        {
+          "candidate_time_availability": "NOT_USABLE_FOR_PRE_EXECUTION_SELECTION",
+          "candidate_time_usable": false,
+          "depends_on_future_observation": false,
+          "dtype": "float32",
+          "measured_latency_ms": null,
+          "measured_peak_gpu_bytes": null,
+          "online_computable": true,
+          "pooling": "none",
+          "shape": [
+            "B",
+            "T_pred",
+            "N_patch",
+            "D_jepa"
+          ],
+          "tensor_name": "predicted_temporal_tokens",
+          "time_horizon": "predicted_latent_horizon"
+        },
+        {
+          "candidate_time_availability": "CANDIDATE_ACTION_CONDITIONED",
+          "candidate_time_usable": true,
+          "depends_on_future_observation": false,
+          "dtype": "float32",
+          "measured_latency_ms": null,
+          "measured_peak_gpu_bytes": null,
+          "online_computable": true,
+          "pooling": "none",
+          "shape": [
+            "B",
+            "H_action",
+            "D_action"
+          ],
+          "tensor_name": "numeric_action_chunk",
+          "time_horizon": "candidate_action_horizon"
+        },
+        {
+          "candidate_time_availability": "EXECUTED_TRAJECTORY_REQUIRED",
+          "candidate_time_usable": false,
+          "depends_on_future_observation": true,
+          "dtype": "float32",
+          "measured_latency_ms": null,
+          "measured_peak_gpu_bytes": null,
+          "online_computable": false,
+          "pooling": "robometer_progress_success_and_topreward_score",
+          "shape": [
+            "B",
+            3
+          ],
+          "tensor_name": "task_agnostic_reward_outputs",
+          "time_horizon": "executed_video_window"
+        }
+      ],
+      "lg_r2_training_authorized": false,
+      "name": "D",
+      "role": "fused_candidate"
+    }
+  ],
+  "lg_r2_training_authorized": false,
+  "reward_role_online_selector": false,
+  "reward_roles": [
+    "post_hoc_evaluator",
+    "auxiliary_target",
+    "calibration_baseline"
+  ],
+  "schema_version": "latentguard.lg_r1c.lg_r2_features.v1",
+  "status": "pass"
+}

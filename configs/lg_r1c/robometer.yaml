@@ -1,0 +1,17 @@
+schema_version: latentguard.lg_r1c.robometer_eval.v1
+stack_config: configs/lg_r1c/reward_stack.yaml
+windows_config: configs/lg_r1c/windows.yaml
+checkpoint_id: lerobot/Robometer-4B
+checkpoint_revision: db167a7c369a3ee59cda801fe33ca9da560b1662
+base_model_id: Qwen/Qwen3-VL-4B-Instruct
+base_model_revision: ebb281ec70b05090aa6165b016eac8ec08e71b17
+image_key: observation.images.image
+maximum_frames: 8
+batch_size: 2
+torch_dtype: bfloat16
+device: cuda
+strict_checkpoint_load: true
+per_frame_private_read_only_adapter: true
+optimizer_steps: 0
+backward_calls: 0
+foundation_model_training: false

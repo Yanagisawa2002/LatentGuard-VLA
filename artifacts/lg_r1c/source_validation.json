@@ -1,0 +1,23 @@
+{
+  "candidate_ranking": false,
+  "failure_head_training": false,
+  "files_scanned": 27,
+  "final_seeds_accessed": false,
+  "foundation_model_training": false,
+  "intervention": false,
+  "langmani_imported": false,
+  "langmani_modified": false,
+  "new_rollouts": 0,
+  "pointworld_used": false,
+  "repository": {
+    "baseline_commit": "61e6ab8b5fb55eb93a7bd76c1c7bbd8957150fdd",
+    "baseline_is_ancestor": true,
+    "branch": "codex/lg-r1c-task-agnostic-reward",
+    "head_commit": "61e6ab8b5fb55eb93a7bd76c1c7bbd8957150fdd",
+    "origin_repository": "Yanagisawa2002/LatentGuard-VLA"
+  },
+  "robolab_used": false,
+  "schema_version": "latentguard.lg_r1c.source_validation.v1",
+  "status": "pass",
+  "synthetic_failures": 0
+}

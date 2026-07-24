@@ -1,0 +1,18 @@
+schema_version: latentguard.lg_r1c.calibration.v1
+selection_split: validation
+test_labels_available_during_fit: false
+zero_shot_freeze_required: true
+progress_method: clipped_affine_least_squares
+success_method: scalar_logistic_regression
+failure_method: scalar_logistic_regression
+ensemble_method: logistic_or_linear_scalar_ensemble
+ensemble_features:
+  - robometer_progress
+  - robometer_success_probability
+  - topreward_normalized_score
+task_id_input: false
+stage_id_input: false
+privileged_input: false
+future_terminal_input: false
+maximum_optimizer_steps: 2000
+learning_rate: 0.05

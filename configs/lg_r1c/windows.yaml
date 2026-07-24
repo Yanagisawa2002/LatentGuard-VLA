@@ -1,0 +1,34 @@
+schema_version: latentguard.lg_r1c.windows.v1
+frozen_before_model_inference: true
+camera_key: observation.images.image
+anchor_fractions:
+  - 0.25
+  - 0.5
+  - 0.75
+  - 1.0
+contexts:
+  short:
+    span_steps: 8
+    common_sampled_frames: 8
+  medium:
+    span_steps: 32
+    common_sampled_frames: 8
+  long:
+    span_steps: 64
+    common_sampled_frames: 8
+    topreward_native_diagnostic_frames: 16
+sampling: inclusive_uniform_integer_linspace
+early_boundary: repeat_nearest_available_frame
+primary_progress_context: medium
+matched_failure_protocol:
+  include_every_existing_matched_success_window: true
+  include_only_referenced_failure_windows: true
+  common_sampled_frames: 8
+  strict_match:
+    maximum_progress_distance: 0.025
+    maximum_stage_distance: 0
+    maximum_remaining_horizon_distance: 32
+same_endpoint_across_models: true
+same_instruction_across_models: true
+same_camera_across_models: true
+model_result_dependent_sampling: false

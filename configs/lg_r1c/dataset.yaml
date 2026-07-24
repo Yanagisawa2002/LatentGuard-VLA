@@ -1,0 +1,25 @@
+schema_version: latentguard.lg_r1c.dataset.v1
+baseline_commit: 61e6ab8b5fb55eb93a7bd76c1c7bbd8957150fdd
+source_artifacts:
+  rollout_manifest: artifacts/lg_r1b/rollout_manifest.json
+  dataset_manifest: artifacts/lg_r1b/dataset_manifest.json
+  task_seed_registry: artifacts/lg_r1b/task_seed_registry.json
+  failure_registry: artifacts/lg_r1b/failure_registry.json
+  failure_window_manifest: artifacts/lg_r1b/failure_window_manifest.json
+  stage_annotation_report: artifacts/lg_r1b/stage_annotation_report.json
+expected:
+  episodes: 320
+  tasks: 8
+  suites: 2
+  successes: 293
+  failures: 27
+  failure_producing_tasks: 4
+  frames: 79326
+  failure_windows: 7025
+  matched_success_windows: 2315
+  episode_leakage: 0
+  seed_leakage: 0
+sealed_final_seed_start: 900000
+sealed_final_seed_end: 900099
+new_rollout_allowed: false
+synthetic_failure_allowed: false

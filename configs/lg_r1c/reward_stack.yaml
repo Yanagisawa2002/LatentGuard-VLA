@@ -1,0 +1,70 @@
+schema_version: latentguard.lg_r1c.reward_stack.v1
+baseline_commit: 61e6ab8b5fb55eb93a7bd76c1c7bbd8957150fdd
+lerobot:
+  repository: https://github.com/huggingface/lerobot
+  release: v0.6.0
+  commit: 30da8e687a6dfc617fcd94afc367ac7071c376ce
+  license: apache-2.0
+robometer:
+  upstream_repository: https://github.com/robometer/robometer
+  upstream_commit: 5b815254bf31ee1bea3753c3a2da9f9033736d9a
+  upstream_license: apache-2.0
+  checkpoint_id: lerobot/Robometer-4B
+  checkpoint_revision: db167a7c369a3ee59cda801fe33ca9da560b1662
+  checkpoint_license: apache-2.0
+  checkpoint_files:
+    model.safetensors:
+      bytes: 8894103800
+      sha256: 013709f2ea0b67aa50385b5c5ae61843cf7f2932b8aab7f5e45e0747560d0c14
+  upstream_checkpoint_id: robometer/Robometer-4B
+  upstream_checkpoint_revision: beef63bc914c5c189329d49c6d712d96d632aa34
+  base_model_id: Qwen/Qwen3-VL-4B-Instruct
+  base_model_revision: ebb281ec70b05090aa6165b016eac8ec08e71b17
+  processor_revision: ebb281ec70b05090aa6165b016eac8ec08e71b17
+  tokenizer_revision: ebb281ec70b05090aa6165b016eac8ec08e71b17
+  maximum_frames: 8
+  progress_bins: 10
+  outputs:
+    - per_frame_progress
+    - last_frame_progress
+    - per_frame_success_probability
+    - last_frame_success_probability
+  preference_head_loaded_but_not_queried: true
+  foundation_model_training_allowed: false
+topreward:
+  upstream_repository: https://github.com/TOPReward/TOPReward
+  upstream_commit: 4877a0ee5098cbec18485125466631b1dcc4a573
+  upstream_license: mit
+  model_id: Qwen/Qwen3-VL-8B-Instruct
+  model_revision: 0c351dd01ed87e9c1b53cbc748cba10e6187ff3b
+  processor_revision: 0c351dd01ed87e9c1b53cbc748cba10e6187ff3b
+  tokenizer_revision: 0c351dd01ed87e9c1b53cbc748cba10e6187ff3b
+  weight_files:
+    model-00001-of-00004.safetensors:
+      bytes: 4902275944
+      sha256: d5d0aef0eb170fc7453a296c43c0849a56f510555d3588e4fd662bb35490aefa
+    model-00002-of-00004.safetensors:
+      bytes: 4915962496
+      sha256: 8be88fb5501e4d5719a6d4cc212e6a13480330e74f3e8c77daa1a68f199106b5
+    model-00003-of-00004.safetensors:
+      bytes: 4999831048
+      sha256: 83de00eafe6e0d57ccd009dbcf71c9974d74df2f016c27afb7e95aafd16b2192
+    model-00004-of-00004.safetensors:
+      bytes: 2716270024
+      sha256: 0a88b98e9f96270973f567e6a2c103ede6ccdf915ca3075e21c755604d0377a5
+  prompt_prefix: "The above video shows a robot manipulation trajectory that completes the following task: "
+  prompt_suffix_template: "{instruction} Decide whether the above statement is True or not. The answer is: True"
+  scored_token: "True"
+  score_definition: terminal_true_token_log_probability
+  normalized_score: exp_raw_log_probability
+  common_frames: 8
+  native_diagnostic_frames: 16
+  fps: 2.0
+  add_chat_template: false
+  foundation_model_training_allowed: false
+sarm:
+  status: frozen_historical_baseline
+  checkpoint_mutation_allowed: false
+vla_jepa:
+  status: frozen_representation_provider
+  backbone_mutation_allowed: false

@@ -1,0 +1,13 @@
+# Critical remote execution stack. The LG-R1c overlay must not upgrade LG-R0/LG-R1.
+av==15.1.0
+huggingface-hub==1.22.0
+lerobot==0.6.0
+numpy==2.2.6
+pillow==12.3.0
+PyYAML==6.0.3
+qwen-vl-utils==0.0.14
+safetensors==0.8.0
+scipy==1.18.0
+torch==2.11.0+cu128
+torchvision==0.26.0+cu128
+transformers==5.5.4

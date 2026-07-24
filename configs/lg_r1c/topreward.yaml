@@ -1,0 +1,20 @@
+schema_version: latentguard.lg_r1c.topreward_eval.v1
+stack_config: configs/lg_r1c/reward_stack.yaml
+windows_config: configs/lg_r1c/windows.yaml
+model_id: Qwen/Qwen3-VL-8B-Instruct
+model_revision: 0c351dd01ed87e9c1b53cbc748cba10e6187ff3b
+image_key: observation.images.image
+common_frames: 8
+native_diagnostic_frames: 16
+batch_size: 1
+torch_dtype: bfloat16
+device: cuda
+fps: 2.0
+prompt_prefix: "The above video shows a robot manipulation trajectory that completes the following task: "
+prompt_suffix_template: "{instruction} Decide whether the above statement is True or not. The answer is: True"
+scored_token: "True"
+add_chat_template: false
+normalization: exp_raw_log_probability
+optimizer_steps: 0
+backward_calls: 0
+foundation_model_training: false
