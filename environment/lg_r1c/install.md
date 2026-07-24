@@ -20,10 +20,21 @@ The execution environment is created outside the checkout:
 
 ```bash
 python -m venv --system-site-packages "$LG_R1C_ENV_ROOT/.venv-lg-r1c"
+base_site="$("$LATENTGUARD_REMOTE_PYTHON" -c \
+  'import site; print(site.getsitepackages()[0])')"
+overlay_site="$("$LG_R1C_ENV_ROOT/.venv-lg-r1c/bin/python" -c \
+  'import site; print(site.getsitepackages()[0])')"
+printf '%s\n' "$base_site" > \
+  "$overlay_site/latentguard_lg_r1c_frozen_base.pth"
 "$LG_R1C_ENV_ROOT/.venv-lg-r1c/bin/python" -m pip install \
   --index-url https://mirrors.aliyun.com/pypi/simple \
   --no-build-isolation --no-deps -e "$LATENTGUARD_REMOTE_REPO"
 ```
+
+The `.pth` exposes the already frozen base environment read-only because one
+virtual environment does not inherit another virtual environment's
+site-packages through `--system-site-packages`. It does not install into or
+upgrade the base environment.
 
 The overlay must report LeRobot `0.6.0` and the integration commit
 `30da8e687a6dfc617fcd94afc367ac7071c376ce`. Model snapshots are stored
