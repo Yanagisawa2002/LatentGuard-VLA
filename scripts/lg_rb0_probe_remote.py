@@ -148,6 +148,14 @@ def _main() -> None:
             finally:
                 env.close()
         device = torch.cuda.get_device_properties(0)
+        driver = subprocess.check_output(
+            [
+                "nvidia-smi",
+                "--query-gpu=driver_version",
+                "--format=csv,noheader",
+            ],
+            text=True,
+        ).splitlines()[0]
         stack_manifest = {
             "schema_version": "lg_rb0_robolab_stack_manifest_v1",
             "status": "pass",
@@ -161,7 +169,8 @@ def _main() -> None:
             "gpu": {
                 "name": device.name,
                 "total_memory_bytes": int(device.total_memory),
-                "driver": torch.cuda.get_arch_list(),
+                "driver": driver,
+                "torch_architectures": torch.cuda.get_arch_list(),
             },
             "runtime": {
                 "num_envs": 1,
