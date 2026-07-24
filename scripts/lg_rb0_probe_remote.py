@@ -43,11 +43,22 @@ def _package_version(name: str) -> str:
         return "not-installed"
 
 
+def _load_task_records(path: Path) -> list[dict[str, Any]]:
+    if not path.is_file():
+        return []
+    value = json.loads(path.read_text(encoding="utf-8"))
+    tasks = value.get("tasks", [])
+    if not isinstance(tasks, list):
+        raise ValueError("existing environment validation has invalid tasks")
+    return [task for task in tasks if isinstance(task, dict)]
+
+
 def _main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--protocol", type=Path, required=True)
     parser.add_argument("--output-dir", type=Path, required=True)
     parser.add_argument("--expected-commit", required=True)
+    parser.add_argument("--task-query")
     AppLauncher.add_app_launcher_args(parser)
     args, _ = parser.parse_known_args()
     args.enable_cameras = True
@@ -110,47 +121,6 @@ def _main() -> None:
         robolab.constants.RECORD_IMAGE_DATA = False
         robolab.constants.VERBOSE = True
         auto_register_droid_envs()
-        task_records: list[dict[str, Any]] = []
-        for query in protocol["recording"]["task_queries"]:
-            matches = sorted(get_envs(task=query))
-            if not matches:
-                raise RuntimeError(
-                    f"RoboLab task query resolved no environments: {query}"
-                )
-            selected = matches[0]
-            task_output = output / "probe_runtime" / str(query)
-            task_output.mkdir(parents=True, exist_ok=True)
-            set_output_dir(str(task_output))
-            env, env_cfg = create_env(
-                selected,
-                device=str(protocol["runtime"]["device"]),
-                seed=int(protocol["recording"]["seeds"][0]),
-                num_envs=1,
-                use_fabric=True,
-            )
-            try:
-                observation, _ = env.reset()
-                robot = env.scene["robot"]
-                arm = robot.data.joint_pos[0, :7]
-                gripper = torch.tensor([0.0], device=env.device)
-                action = torch.cat([arm, gripper]).unsqueeze(0)
-                _, _, terminated, truncated, _ = env.step(action)
-                state = flatten_state_tree(env.scene.get_state(is_relative=True))
-                task_records.append(
-                    {
-                        "task_query": query,
-                        "matching_envs": matches,
-                        "selected_env": selected,
-                        "instruction": str(env_cfg.instruction),
-                        "observation_groups": sorted(observation),
-                        "state_leaf_count": len(state),
-                        "state_paths": sorted(state),
-                        "terminated_after_one_step": bool(terminated[0].item()),
-                        "truncated_after_one_step": bool(truncated[0].item()),
-                    }
-                )
-            finally:
-                env.close()
         device = torch.cuda.get_device_properties(0)
         driver = subprocess.check_output(
             [
@@ -182,15 +152,6 @@ def _main() -> None:
                 "device": str(protocol["runtime"]["device"]),
             },
         }
-        environment_validation = {
-            "schema_version": "lg_rb0_environment_validation_v1",
-            "status": "pass",
-            "task_smoke_count": len(task_records),
-            "tasks": task_records,
-            "one_step_gpu_smoke": True,
-            "training_performed": False,
-            "simulator_rollout_kind": "one_step_environment_mechanics_smoke",
-        }
         remote_audit = {
             "schema_version": "lg_rb0_remote_execution_audit_v1",
             "status": "pass",
@@ -206,18 +167,85 @@ def _main() -> None:
             "final_seeds_accessed": False,
         }
         _write(output / "robolab_stack_manifest.json", stack_manifest)
-        _write(output / "environment_validation.json", environment_validation)
         _write(output / "remote_execution_audit.json", remote_audit)
-        print(
-            json.dumps(
-                {
-                    "status": "pass",
-                    "tasks": [item["selected_env"] for item in task_records],
-                    "output": str(output),
-                },
-                sort_keys=True,
+        validation_path = output / "environment_validation.json"
+        task_records = _load_task_records(validation_path)
+        expected_queries = [
+            str(query) for query in protocol["recording"]["task_queries"]
+        ]
+        if args.task_query is not None:
+            if args.task_query not in expected_queries:
+                raise ValueError("task query is outside the frozen protocol")
+            task_queries = [args.task_query]
+        else:
+            task_queries = expected_queries
+        for query in task_queries:
+            matches = sorted(get_envs(task=query))
+            if not matches:
+                raise RuntimeError(
+                    f"RoboLab task query resolved no environments: {query}"
+                )
+            selected = matches[0]
+            task_output = output / "probe_runtime" / str(query)
+            task_output.mkdir(parents=True, exist_ok=True)
+            set_output_dir(str(task_output))
+            env, env_cfg = create_env(
+                selected,
+                device=str(protocol["runtime"]["device"]),
+                seed=int(protocol["recording"]["seeds"][0]),
+                num_envs=1,
+                use_fabric=True,
             )
-        )
+            try:
+                observation, _ = env.reset()
+                robot = env.scene["robot"]
+                arm = robot.data.joint_pos[0, :7]
+                gripper = torch.tensor([0.0], device=env.device)
+                action = torch.cat([arm, gripper]).unsqueeze(0)
+                _, _, terminated, truncated, _ = env.step(action)
+                state = flatten_state_tree(env.scene.get_state(is_relative=True))
+                record = {
+                    "task_query": query,
+                    "matching_envs": matches,
+                    "selected_env": selected,
+                    "instruction": str(env_cfg.instruction),
+                    "observation_groups": sorted(observation),
+                    "state_leaf_count": len(state),
+                    "state_paths": sorted(state),
+                    "terminated_after_one_step": bool(terminated[0].item()),
+                    "truncated_after_one_step": bool(truncated[0].item()),
+                }
+                task_records = [
+                    task for task in task_records if task.get("task_query") != query
+                ]
+                task_records.append(record)
+                task_records.sort(key=lambda task: str(task["task_query"]))
+                completed_queries = {str(task["task_query"]) for task in task_records}
+                complete = set(expected_queries) <= completed_queries
+                environment_validation = {
+                    "schema_version": "lg_rb0_environment_validation_v1",
+                    "status": "pass" if complete else "partial",
+                    "task_smoke_count": len(task_records),
+                    "expected_task_smoke_count": len(expected_queries),
+                    "tasks": task_records,
+                    "one_step_gpu_smoke": complete,
+                    "training_performed": False,
+                    "simulator_rollout_kind": ("one_step_environment_mechanics_smoke"),
+                }
+                _write(validation_path, environment_validation)
+                print(
+                    json.dumps(
+                        {
+                            "status": environment_validation["status"],
+                            "task": selected,
+                            "output": str(output),
+                        },
+                        sort_keys=True,
+                    ),
+                    flush=True,
+                )
+            finally:
+                env.close()
     finally:
         simulation_app.close()
 
