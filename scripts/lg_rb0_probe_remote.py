@@ -116,6 +116,12 @@ def _main() -> None:
             raise RuntimeError("LG-RB0 requires Python 3.11")
         if not torch.cuda.is_available():
             raise RuntimeError("CUDA is unavailable")
+        vulkan_icd_value = os.environ.get("VK_ICD_FILENAMES")
+        if not vulkan_icd_value:
+            raise RuntimeError("VK_ICD_FILENAMES must select one NVIDIA ICD")
+        vulkan_icd_name = Path(vulkan_icd_value).name
+        if vulkan_icd_name != "nvidia_icd.json":
+            raise RuntimeError("LG-RB0 requires the standard NVIDIA Vulkan ICD")
 
         robolab.constants.ENABLE_SUBTASK_PROGRESS_CHECKING = True
         robolab.constants.RECORD_IMAGE_DATA = False
@@ -150,6 +156,7 @@ def _main() -> None:
                 "num_envs": 1,
                 "headless": bool(args.headless),
                 "device": str(protocol["runtime"]["device"]),
+                "vulkan_icd_manifest": vulkan_icd_name,
             },
         }
         remote_audit = {
@@ -161,6 +168,7 @@ def _main() -> None:
             "external_source_clean": True,
             "network_turbo_sourced": os.environ.get("LG_RB0_NETWORK_TURBO") == "1",
             "num_envs": 1,
+            "vulkan_icd_manifest": vulkan_icd_name,
             "training_performed": False,
             "checkpoint_generated": False,
             "policy_or_ranker_loaded": False,

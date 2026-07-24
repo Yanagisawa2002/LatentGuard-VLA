@@ -6,6 +6,7 @@ import argparse
 import gc
 import hashlib
 import json
+import os
 import re
 import subprocess
 from collections.abc import Mapping, Sequence
@@ -790,6 +791,9 @@ def _main() -> None:
     parser.add_argument("--expected-commit", required=True)
     AppLauncher.add_app_launcher_args(parser)
     args, _ = parser.parse_known_args()
+    vulkan_icd = os.environ.get("VK_ICD_FILENAMES")
+    if not vulkan_icd or Path(vulkan_icd).name != "nvidia_icd.json":
+        raise RuntimeError("LG-RB0 requires one standard NVIDIA Vulkan ICD")
     args.enable_cameras = True
     app_launcher = AppLauncher(args)
     simulation_app = app_launcher.app
