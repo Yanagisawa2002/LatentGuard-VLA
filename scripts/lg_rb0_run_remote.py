@@ -794,6 +794,7 @@ def _main() -> None:
     vulkan_icd = os.environ.get("VK_ICD_FILENAMES")
     if not vulkan_icd or Path(vulkan_icd).name != "nvidia_icd.json":
         raise RuntimeError("LG-RB0 requires one standard NVIDIA Vulkan ICD")
+    _validate_checkout(args.expected_commit)
     args.enable_cameras = True
     app_launcher = AppLauncher(args)
     simulation_app = app_launcher.app
@@ -803,7 +804,6 @@ def _main() -> None:
             auto_register_droid_envs,
         )
 
-        _validate_checkout(args.expected_commit)
         protocol = yaml.safe_load(args.protocol.read_text(encoding="utf-8"))
         if not isinstance(protocol, dict):
             raise ValueError("protocol must be a mapping")

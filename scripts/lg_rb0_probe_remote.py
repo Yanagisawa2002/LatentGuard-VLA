@@ -53,6 +53,77 @@ def _load_task_records(path: Path) -> list[dict[str, Any]]:
     return [task for task in tasks if isinstance(task, dict)]
 
 
+def _preflight(args: argparse.Namespace) -> dict[str, Any]:
+    """Collect identities before Kit starts; never fork after AppLauncher."""
+    repo = Path(__file__).resolve().parents[1]
+    output = args.output_dir.resolve()
+    protocol = yaml.safe_load(args.protocol.read_text(encoding="utf-8"))
+    if not isinstance(protocol, dict):
+        raise ValueError("protocol must be a mapping")
+    commit = _git(repo, "rev-parse", "HEAD")
+    if commit != args.expected_commit:
+        raise RuntimeError("remote LatentGuard checkout is not at expected commit")
+    if _git(repo, "status", "--porcelain"):
+        raise RuntimeError("remote LatentGuard checkout is not clean")
+    external_root_value = os.environ.get("LG_RB0_ROBOLAB_ROOT")
+    if not external_root_value:
+        raise RuntimeError("LG_RB0_ROBOLAB_ROOT must identify the frozen source")
+    external_root = Path(external_root_value).resolve()
+    actual_robolab_commit = _git(external_root, "rev-parse", "HEAD")
+    if actual_robolab_commit != str(protocol["external_stack"]["commit"]):
+        raise RuntimeError("RoboLab checkout does not match frozen commit")
+    if _git(external_root, "status", "--porcelain"):
+        raise RuntimeError("RoboLab source checkout is not clean")
+    versions = {
+        "python": platform.python_version(),
+        "robolab_distribution": _package_version("robolab"),
+        "isaacsim": _package_version("isaacsim"),
+        "isaaclab": _package_version("isaaclab"),
+        "torch": _package_version("torch"),
+    }
+    expected_versions = {
+        "robolab_distribution": "0.2.1",
+        "isaacsim": "5.1.0",
+        "isaaclab": "2.3.2.post1",
+    }
+    if any(
+        Version(versions[key]) != Version(value)
+        for key, value in expected_versions.items()
+    ):
+        raise RuntimeError(f"frozen package identity mismatch: {versions}")
+    if sys.version_info[:2] != (3, 11):
+        raise RuntimeError("LG-RB0 requires Python 3.11")
+    vulkan_icd_value = os.environ.get("VK_ICD_FILENAMES")
+    if not vulkan_icd_value:
+        raise RuntimeError("VK_ICD_FILENAMES must select one NVIDIA ICD")
+    vulkan_icd_name = Path(vulkan_icd_value).name
+    if vulkan_icd_name != "nvidia_icd.json":
+        raise RuntimeError("LG-RB0 requires the standard NVIDIA Vulkan ICD")
+    gpu_line = subprocess.check_output(
+        [
+            "nvidia-smi",
+            "--query-gpu=name,memory.total,driver_version",
+            "--format=csv,noheader,nounits",
+        ],
+        text=True,
+    ).splitlines()[0]
+    gpu_name, memory_mib, driver = [
+        value.strip() for value in gpu_line.split(",", maxsplit=2)
+    ]
+    return {
+        "repo": repo,
+        "output": output,
+        "protocol": protocol,
+        "actual_robolab_commit": actual_robolab_commit,
+        "versions": versions,
+        "vulkan_icd_name": vulkan_icd_name,
+        "gpu_name": gpu_name,
+        "memory_mib": int(memory_mib),
+        "driver": driver,
+        "branch": _git(repo, "branch", "--show-current"),
+    }
+
+
 def _main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--protocol", type=Path, required=True)
@@ -62,6 +133,7 @@ def _main() -> None:
     AppLauncher.add_app_launcher_args(parser)
     args, _ = parser.parse_known_args()
     args.enable_cameras = True
+    preflight = _preflight(args)
     app_launcher = AppLauncher(args)
     simulation_app = app_launcher.app
     try:
@@ -75,67 +147,17 @@ def _main() -> None:
             auto_register_droid_envs,
         )
 
-        repo = Path(__file__).resolve().parents[1]
-        output = args.output_dir.resolve()
-        protocol = yaml.safe_load(args.protocol.read_text(encoding="utf-8"))
-        if not isinstance(protocol, dict):
-            raise ValueError("protocol must be a mapping")
-        if _git(repo, "rev-parse", "HEAD") != args.expected_commit:
-            raise RuntimeError("remote LatentGuard checkout is not at expected commit")
-        if _git(repo, "status", "--porcelain"):
-            raise RuntimeError("remote LatentGuard checkout is not clean")
-        external_root_value = os.environ.get("LG_RB0_ROBOLAB_ROOT")
-        if not external_root_value:
-            raise RuntimeError("LG_RB0_ROBOLAB_ROOT must identify the frozen source")
-        external_root = Path(external_root_value).resolve()
-        actual_robolab_commit = _git(external_root, "rev-parse", "HEAD")
-        expected_robolab_commit = str(protocol["external_stack"]["commit"])
-        if actual_robolab_commit != expected_robolab_commit:
-            raise RuntimeError("RoboLab checkout does not match frozen commit")
-        if _git(external_root, "status", "--porcelain"):
-            raise RuntimeError("RoboLab source checkout is not clean")
-        versions = {
-            "python": platform.python_version(),
-            "robolab_distribution": _package_version("robolab"),
-            "isaacsim": _package_version("isaacsim"),
-            "isaaclab": _package_version("isaaclab"),
-            "torch": torch.__version__,
-            "cuda_runtime": torch.version.cuda,
-        }
-        expected_versions = {
-            "robolab_distribution": "0.2.1",
-            "isaacsim": "5.1.0",
-            "isaaclab": "2.3.2.post1",
-        }
-        if any(
-            Version(versions[key]) != Version(value)
-            for key, value in expected_versions.items()
-        ):
-            raise RuntimeError(f"frozen package identity mismatch: {versions}")
-        if sys.version_info[:2] != (3, 11):
-            raise RuntimeError("LG-RB0 requires Python 3.11")
-        vulkan_icd_value = os.environ.get("VK_ICD_FILENAMES")
-        if not vulkan_icd_value:
-            raise RuntimeError("VK_ICD_FILENAMES must select one NVIDIA ICD")
-        vulkan_icd_name = Path(vulkan_icd_value).name
-        if vulkan_icd_name != "nvidia_icd.json":
-            raise RuntimeError("LG-RB0 requires the standard NVIDIA Vulkan ICD")
+        output = preflight["output"]
+        protocol = preflight["protocol"]
+        actual_robolab_commit = preflight["actual_robolab_commit"]
+        versions = dict(preflight["versions"])
+        versions["cuda_runtime"] = torch.version.cuda
+        vulkan_icd_name = preflight["vulkan_icd_name"]
 
         robolab.constants.ENABLE_SUBTASK_PROGRESS_CHECKING = True
         robolab.constants.RECORD_IMAGE_DATA = False
         robolab.constants.VERBOSE = True
         auto_register_droid_envs()
-        gpu_line = subprocess.check_output(
-            [
-                "nvidia-smi",
-                "--query-gpu=name,memory.total,driver_version",
-                "--format=csv,noheader,nounits",
-            ],
-            text=True,
-        ).splitlines()[0]
-        gpu_name, memory_mib, driver = [
-            value.strip() for value in gpu_line.split(",", maxsplit=2)
-        ]
         stack_manifest = {
             "schema_version": "lg_rb0_robolab_stack_manifest_v1",
             "status": "pass",
@@ -147,9 +169,9 @@ def _main() -> None:
             },
             "versions": versions,
             "gpu": {
-                "name": gpu_name,
-                "total_memory_bytes": int(memory_mib) * 1024 * 1024,
-                "driver": driver,
+                "name": preflight["gpu_name"],
+                "total_memory_bytes": preflight["memory_mib"] * 1024 * 1024,
+                "driver": preflight["driver"],
             },
             "runtime": {
                 "num_envs": 1,
@@ -161,7 +183,7 @@ def _main() -> None:
         remote_audit = {
             "schema_version": "lg_rb0_remote_execution_audit_v1",
             "status": "pass",
-            "branch": _git(repo, "branch", "--show-current"),
+            "branch": preflight["branch"],
             "commit": args.expected_commit,
             "tracked_checkout_clean": True,
             "external_source_clean": True,
