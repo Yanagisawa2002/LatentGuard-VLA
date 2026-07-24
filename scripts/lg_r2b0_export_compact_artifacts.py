@@ -37,9 +37,16 @@ def export_compact(source: Path, destination: Path) -> dict[str, Any]:
     """Copy the required JSON set, rejecting extra binary or oversized content."""
     source = source.resolve()
     destination = destination.resolve()
-    if destination.exists() and any(destination.iterdir()):
-        raise FileExistsError("compact artifact destination is not empty")
     destination.mkdir(parents=True, exist_ok=True)
+    collisions = [
+        name
+        for name in (*REQUIRED, "artifact_hashes.json")
+        if (destination / name).exists()
+    ]
+    if collisions:
+        raise FileExistsError(
+            f"compact artifact destination contains target files: {collisions}"
+        )
     files: dict[str, Any] = {}
     for name in REQUIRED:
         origin = source / name

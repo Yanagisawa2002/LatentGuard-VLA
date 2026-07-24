@@ -161,5 +161,25 @@ later ranking experiment.
 
 ## Completion record
 
-Pending exact-revision remote execution. This section will be updated only
-with retrieved, content-bound compact evidence.
+Result C was reached at execution commit
+`498a3153dfe7f1023510bf07e7f07ae415840280`.
+
+The candidate-source hard gate passed: fixed-seed reproduction was exact and
+four registered seeds yielded four unique native chunks, with 100% real-policy
+and 0% synthetic candidates. The complete state-restoration gate then failed:
+the untouched 10-state by 5-repeat audit recorded 36 stepped-trace failures,
+one render mismatch, three terminal-result mismatches, and zero predicate
+mismatches. No anchor registry, candidate-per-anchor set, branch smoke, full
+collection, dataset analysis, or ranking analysis was run.
+
+Four recorded source/restoration runs (including two explicitly retained
+failed calibrations) occupied about 10 minutes 14 seconds of remote wall time.
+One bounded diagnostic was also performed between the calibrations. Total GPU
+use remained below the planned 0.25-0.75 GPU-hour source/restore budget; no
+training, backward pass, checkpoint generation, final-seed access, or remote
+tracked-source edit occurred. The planned 4.5-11 GPU-hour full pilot was
+cancelled at the mandatory hard stop, so downstream ETA is not applicable.
+
+The exact failure evidence, explicit unavailable downstream artifacts, Result C
+gate, source audit, and remote audit are committed under
+`artifacts/lg_r2b0/`. The server is intentionally left running and SSH-ready.

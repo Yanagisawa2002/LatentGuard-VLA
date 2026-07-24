@@ -37,3 +37,13 @@ If reset does not clear the queue, fixed-seed candidate generation is not
 reproducible, the current observation changes during inference, or repeated
 restored execution differs, the corresponding hard gate fails. The protocol
 does not repair or approximate hidden policy state.
+
+## Observed disposition
+
+The candidate-source portion of this contract passed: four registered native
+sampling seeds produced four unique chunks and fixed-seed reproduction was
+exact. The simulator side did not pass. Although immediate captured state was
+restored exactly in the final attempt, repeated execution diverged immediately
+after the next action and produced terminal disagreement in control probes.
+Therefore no candidate was executed as a counterfactual branch and the
+continuation-isolation claim remains untested rather than failed or passed.

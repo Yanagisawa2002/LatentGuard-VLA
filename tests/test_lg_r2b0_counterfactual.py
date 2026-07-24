@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import importlib
+import json
 import random
 import subprocess
 import sys
@@ -589,6 +590,62 @@ def test_compact_export_rejects_missing_artifacts(tmp_path: Path) -> None:
             exporter.export_compact(source, destination)
     finally:
         sys.path.remove(monkeypatch_path)
+
+
+def test_compact_export_preserves_unrelated_calibration_artifacts(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    monkeypatch.syspath_prepend(str(SCRIPTS))
+    exporter = importlib.import_module("lg_r2b0_export_compact_artifacts")
+    source = tmp_path / "source"
+    source.mkdir()
+    for name in exporter.REQUIRED:
+        (source / name).write_text('{"status": "test"}\n', encoding="utf-8")
+    destination = tmp_path / "destination"
+    destination.mkdir()
+    calibration = destination / "state_restore_calibration_summary.json"
+    calibration.write_text('{"status": "fail"}\n', encoding="utf-8")
+    report = exporter.export_compact(source, destination)
+    assert calibration.read_text(encoding="utf-8") == '{"status": "fail"}\n'
+    assert len(report["files"]) == len(exporter.REQUIRED)
+
+
+def test_hard_stop_finalizer_marks_downstream_metrics_unavailable(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    monkeypatch.syspath_prepend(str(SCRIPTS))
+    finalizer = importlib.import_module("lg_r2b0_finalize_hard_stop")
+    source = {
+        "status": "pass",
+        "runtime_identity": {"git_commit": "a" * 40},
+    }
+    restore = {
+        "status": "fail",
+        "stop_reason": "STATE_RESTORE_DETERMINISM_GATE_FAILED",
+        "runtime_identity": {"git_commit": "a" * 40},
+    }
+    (tmp_path / "candidate_source_manifest.json").write_text(
+        json.dumps(source),
+        encoding="utf-8",
+    )
+    (tmp_path / "state_restore_validation.json").write_text(
+        json.dumps(restore),
+        encoding="utf-8",
+    )
+    gate = finalizer.finalize_hard_stop(
+        tmp_path,
+        audit_runtime_identity={"git_commit": "b" * 40},
+    )
+    assert gate["result"] == "C"
+    assert gate["LG_R2B1_AUTHORIZED"] is False
+    assert gate["failed_gate"] == "state_restore"
+    for name in finalizer.NOT_RUN_ARTIFACTS:
+        payload = json.loads((tmp_path / name).read_text(encoding="utf-8"))
+        assert payload["status"] == "not_run"
+        assert payload["metric_values"] is None
+        assert payload["metrics_available"] is False
 
 
 def test_all_pre_registered_configs_parse_as_mappings() -> None:

@@ -70,6 +70,22 @@ def main() -> None:
         if not path.is_file():
             raise ValueError(f"required compact output is missing: {name}")
         files[name] = _file_identity(path)
+    scientific_gate = json.loads(
+        (runtime / "lg_r2b1_gate.json").read_text(encoding="utf-8")
+    )
+    source = json.loads(
+        (runtime / "candidate_source_manifest.json").read_text(encoding="utf-8")
+    )
+    restore = json.loads(
+        (runtime / "state_restore_validation.json").read_text(encoding="utf-8")
+    )
+    simulation_execution_commits = sorted(
+        {
+            str(payload.get("runtime_identity", {}).get("git_commit"))
+            for payload in (source, restore)
+            if payload.get("runtime_identity", {}).get("git_commit")
+        }
+    )
     commands_path = runtime / "execution_commands.json"
     commands: list[str] = []
     if commands_path.is_file():
@@ -98,6 +114,10 @@ def main() -> None:
         "compact_file_set_sha256": hashlib.sha256(
             json.dumps(files, sort_keys=True, separators=(",", ":")).encode("utf-8")
         ).hexdigest(),
+        "scientific_result": scientific_gate.get("result"),
+        "scientific_gate_status": scientific_gate.get("status"),
+        "LG_R2B1_AUTHORIZED": scientific_gate.get("LG_R2B1_AUTHORIZED"),
+        "simulation_execution_commits": simulation_execution_commits,
         "execution_commands": commands,
         "training_performed": False,
         "optimizer_steps": 0,
