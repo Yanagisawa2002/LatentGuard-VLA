@@ -1,0 +1,561 @@
+{
+  "schema_version": "latentguard.lg_f0.final_summary.v1",
+  "status": "research_closeout",
+  "positioning": {
+    "en": "LatentGuard-VLA is a preregistered empirical study of whether VLA actions can be verified before execution using progress models, task-agnostic reward models, numeric action conditioning, and simulator counterfactual replay.",
+    "zh": "LatentGuard-VLA 系统研究了任务进度模型、通用视频奖励模型、数值动作条件化和模拟器反事实重放，能否支持VLA动作执行前验证。"
+  },
+  "closeout_labels": [
+    "Research closeout",
+    "Counterfactual VLA verifier not validated",
+    "No online intervention claim"
+  ],
+  "one_sentence_conclusion": {
+    "en": "Across 320 multi-task LIBERO episodes, task-specific progress modeling collapsed from 0.977 to 0.378 Spearman correlation on held-out tasks; the best standalone zero-shot task-agnostic reward model reached only 0.164 failure AUPRC; numeric action conditioning improved short-horizon prediction MAE by just 0.98%; and 20 of 30 repeated RoboLab replays violated the official 0.01 state tolerance despite a successful compatibility patch.",
+    "zh": "在320条多任务LIBERO轨迹上，任务特定进度模型的Spearman相关性从域内0.977降至未见任务0.378；最佳独立零样本任务无关奖励模型的失败AUPRC仅为0.164；加入数值动作后短期预测MAE只改善0.98%；修复RoboLab配置重放问题后，30次重复回放中仍有20次违反官方0.01状态容差。"
+  },
+  "core_metrics": {
+    "libero_multi_task_episodes": 320,
+    "progress_in_domain_spearman": 0.9774001503647151,
+    "progress_held_out_task_spearman": 0.3775481906890227,
+    "best_standalone_zero_shot_reward_failure_auprc": 0.16378921536308816,
+    "short_horizon_mae_relative_reduction": 0.009772038175491242,
+    "robolab_official_tolerance_failures": 20,
+    "robolab_replay_attempts": 30
+  },
+  "progress_generalization": {
+    "in_domain": {
+      "mae": 0.020546011640564837,
+      "spearman": 0.9774001503647151,
+      "pairwise_accuracy": 0.8653610771113831
+    },
+    "held_out_task": {
+      "mae": 0.2112068338945637,
+      "spearman": 0.3775481906890227,
+      "pairwise_accuracy": 0.5244791666666667
+    }
+  },
+  "reward_model_failure_metrics": {
+    "frozen_sarm": {
+      "label": "Frozen SARM",
+      "all_episode_metrics": {
+        "auprc": 0.06202597145001191,
+        "precision_at_recall": 0.0735930735930736,
+        "recall": 0.6296296296296297,
+        "false_positive_rate": 0.7303754266211604,
+        "samples": 320,
+        "positives": 27
+      },
+      "formal_gate_scope": "all",
+      "formal_gate_failure_auprc": 0.06202597145001191,
+      "promoted": false
+    },
+    "robometer_zero_shot": {
+      "label": "ROBOMETER zero-shot",
+      "all_episode_metrics": {
+        "auprc": 0.16378921536308816,
+        "precision_at_recall": 0.16037735849056603,
+        "recall": 0.6296296296296297,
+        "false_positive_rate": 0.3037542662116041,
+        "samples": 320,
+        "positives": 27
+      },
+      "formal_gate_scope": "all",
+      "formal_gate_failure_auprc": 0.16378921536308816,
+      "promoted": false
+    },
+    "topreward_zero_shot": {
+      "label": "TOPReward zero-shot",
+      "all_episode_metrics": {
+        "auprc": 0.08381135253202254,
+        "precision_at_recall": 0.1092896174863388,
+        "recall": 0.7407407407407407,
+        "false_positive_rate": 0.5563139931740614,
+        "samples": 320,
+        "positives": 27
+      },
+      "formal_gate_scope": "all",
+      "formal_gate_failure_auprc": 0.08381135253202254,
+      "promoted": false
+    },
+    "task_agnostic_ensemble": {
+      "label": "Task-agnostic ensemble",
+      "all_episode_metrics": {
+        "auprc": 0.1669495744246516,
+        "precision_at_recall": 0.1619047619047619,
+        "recall": 0.6296296296296297,
+        "false_positive_rate": 0.3003412969283277,
+        "samples": 320,
+        "positives": 27
+      },
+      "formal_gate_scope": "test",
+      "formal_gate_failure_auprc": 0.06666666666666667,
+      "promoted": false
+    }
+  },
+  "action_conditioning": {
+    "all_tasks": {
+      "state_only": {
+        "short_mae": 0.040997475385665894,
+        "short_spearman": 0.4299586843664994,
+        "terminal_failure_auprc": 0.14864955833048918
+      },
+      "state_action": {
+        "short_mae": 0.040596846491098404,
+        "short_spearman": 0.46998036542899524,
+        "terminal_failure_auprc": 0.20285591811209028
+      },
+      "short_mae_relative_reduction": 0.009772038175491242
+    },
+    "leave_task6_out": {
+      "state_only": {
+        "short_mae": 0.04037994518876076,
+        "short_spearman": 0.4461943796047577,
+        "terminal_failure_auprc": 0.0023662474907387176
+      },
+      "state_action": {
+        "short_mae": 0.04061683267354965,
+        "short_spearman": 0.48659971809734376,
+        "terminal_failure_auprc": 0.003623778202858991
+      },
+      "short_mae_relative_reduction": -0.005866463752774713
+    }
+  },
+  "robolab_replay_reproducibility": {
+    "official_state_tolerance": 0.01,
+    "strict_state_tolerance": 1e-06,
+    "repeat_rows": [
+      {
+        "repeat": 0,
+        "attempted": 10,
+        "completed": 10,
+        "strict_passes": 10,
+        "strict_failures": 0,
+        "strict_failed_steps": 0,
+        "official_failed_replays": 0,
+        "maximum_official_state_error": 0.0
+      },
+      {
+        "repeat": 1,
+        "attempted": 10,
+        "completed": 10,
+        "strict_passes": 0,
+        "strict_failures": 10,
+        "strict_failed_steps": 400,
+        "official_failed_replays": 10,
+        "maximum_official_state_error": 0.14900782704353333
+      },
+      {
+        "repeat": 2,
+        "attempted": 10,
+        "completed": 10,
+        "strict_passes": 0,
+        "strict_failures": 10,
+        "strict_failed_steps": 400,
+        "official_failed_replays": 10,
+        "maximum_official_state_error": 0.09731712192296982
+      }
+    ]
+  },
+  "phases": [
+    {
+      "phase": "LG-R0",
+      "research_question": "Can a pinned VLA-JEPA policy and temporal predictor execute on LIBERO data?",
+      "dataset_task_scale": {
+        "episodes": 40,
+        "scope": "remote_40_episode_smoke",
+        "official_400_episode_benchmark": false
+      },
+      "main_baseline": "Pinned LeRobot VLA-JEPA LIBERO checkpoint",
+      "primary_metric": {
+        "name": "development smoke success rate",
+        "value": 0.975,
+        "numerator": 39,
+        "denominator": 40
+      },
+      "result": {
+        "policy_execution_and_temporal_prediction_ran": true,
+        "external_numeric_candidate_actions_supported": false,
+        "numeric_action_chunk_consumed_by_predictor": false,
+        "native_scalar_scores": {
+          "progress": false,
+          "reconstruction": false,
+          "risk": false,
+          "success": false,
+          "training_l1_loss": true
+        }
+      },
+      "gate_decision": "Result B: interface mismatch for pre-execution candidate verification",
+      "status_label": "partial",
+      "status_score": 1,
+      "what_was_learned": "A strong task-0 development smoke does not establish a candidate-verification interface.",
+      "next_action": "Study progress and failure signals on collected multi-task trajectories."
+    },
+    {
+      "phase": "LG-R1",
+      "research_question": "Can task-specific stage supervision provide a strong in-domain progress signal?",
+      "dataset_task_scale": {
+        "episodes": 160,
+        "successful_episodes": 159,
+        "natural_failed_episodes": 1,
+        "tasks": 8,
+        "suites": 4
+      },
+      "main_baseline": "SARM-style task-specific progress model",
+      "primary_metric": {
+        "name": "in-domain progress Spearman",
+        "value": 0.9774001503647151
+      },
+      "result": {
+        "progress_mae": 0.020546011640564837,
+        "pairwise_accuracy": 0.8653610771113831,
+        "stagnation_recall": 0.8980028530670471
+      },
+      "gate_decision": "FAILURE_DATA_GATE_NOT_MET",
+      "status_label": "partial",
+      "status_score": 1,
+      "what_was_learned": "The in-domain signal was strong, but one natural failure was insufficient for a failure-verification claim.",
+      "next_action": "Collect natural failures and run held-out-task evaluation."
+    },
+    {
+      "phase": "LG-R1b",
+      "research_question": "Does the task-specific progress ontology generalize to held-out tasks?",
+      "dataset_task_scale": {
+        "episodes": 320,
+        "successful_episodes": 293,
+        "natural_failed_episodes": 27,
+        "tasks": 8,
+        "suites": 2,
+        "frames": 79326
+      },
+      "main_baseline": "Frozen LG-R1 SARM model",
+      "primary_metric": {
+        "name": "held-out-task progress Spearman",
+        "value": 0.3775481906890227
+      },
+      "result": {
+        "progress_mae": 0.2112068338945637,
+        "pairwise_accuracy": 0.5244791666666667,
+        "stage_accuracy": 0.372875,
+        "stage_regression_recall": 0.0
+      },
+      "gate_decision": "failure-data gate pass",
+      "status_label": "failure-data gate passed",
+      "status_score": 2,
+      "what_was_learned": "The expanded dataset enabled failure study, while task-structured progress collapsed on unseen tasks.",
+      "next_action": "Compare task-agnostic post-execution reward signals."
+    },
+    {
+      "phase": "LG-R1c",
+      "research_question": "Can task-agnostic video reward models provide a transferable failure signal?",
+      "dataset_task_scale": {
+        "episodes": 320,
+        "natural_failed_episodes": 27,
+        "frames": 79326
+      },
+      "main_baseline": "ROBOMETER zero-shot",
+      "primary_metric": {
+        "name": "episode failure AUPRC",
+        "value": 0.16378921536308816
+      },
+      "result": {
+        "auprc": 0.16378921536308816,
+        "precision_at_recall": 0.16037735849056603,
+        "recall": 0.6296296296296297,
+        "false_positive_rate": 0.3037542662116041,
+        "samples": 320,
+        "positives": 27
+      },
+      "gate_decision": "Result B",
+      "status_label": "blocked",
+      "status_score": 0,
+      "what_was_learned": "Post-execution video reward signals remained weak and do not score unexecuted numeric action candidates.",
+      "next_action": "Test numeric action conditioning directly without promoting a reward baseline."
+    },
+    {
+      "phase": "LG-R2a",
+      "research_question": "Does numeric action conditioning add stable predictive value beyond state?",
+      "dataset_task_scale": {
+        "episodes": 320,
+        "frames": 79326,
+        "grouped_cross_validation_folds": 5
+      },
+      "main_baseline": "State-only versus state-plus-action predictors",
+      "primary_metric": {
+        "name": "short-horizon progress MAE relative reduction",
+        "value": 0.009772038175491242
+      },
+      "result": {
+        "state_only_short_mae": 0.040997475385665894,
+        "state_action_short_mae": 0.040596846491098404,
+        "state_only_short_spearman": 0.4299586843664994,
+        "state_action_short_spearman": 0.46998036542899524,
+        "state_only_terminal_failure_auprc": 0.14864955833048918,
+        "state_action_terminal_failure_auprc": 0.20285591811209028,
+        "leave_task6_short_mae_relative_reduction": -0.005866463752774713
+      },
+      "gate_decision": "Result B",
+      "status_label": "blocked",
+      "status_score": 0,
+      "what_was_learned": "Actions carried local classification signal, but progress gain was small and did not remain stable under held-out-task evaluation.",
+      "next_action": "Audit same-state replay before any candidate outcome experiment."
+    },
+    {
+      "phase": "LG-R2b0",
+      "research_question": "Can LIBERO support strict same-state counterfactual branching?",
+      "dataset_task_scale": {
+        "probe_states": 10,
+        "repeats_per_state": 5,
+        "generated_candidates": 4,
+        "unique_candidates": 4
+      },
+      "main_baseline": "Frozen VLA-JEPA candidates with LIBERO state restoration",
+      "primary_metric": {
+        "name": "stepped-trace restore failures",
+        "value": 36
+      },
+      "result": {
+        "terminal_mismatches": 3,
+        "maximum_numeric_error": 0.46778299760434916
+      },
+      "gate_decision": "Result C",
+      "status_label": "blocked",
+      "status_score": 0,
+      "what_was_learned": "Real action diversity existed, but the frozen restoration contract could not support branching.",
+      "next_action": "Evaluate one alternative replay platform without changing the verification claim."
+    },
+    {
+      "phase": "LG-RB0/RB0.1",
+      "research_question": "Can RoboLab provide repeated faithful replay after one bounded compatibility patch?",
+      "dataset_task_scale": {
+        "tasks": 2,
+        "recordings": 10,
+        "repeats_per_recording": 3,
+        "attempts": 30
+      },
+      "main_baseline": "Recorded RoboLab actions with schema-aware config overlay",
+      "primary_metric": {
+        "name": "official state-validator failures",
+        "value": 20,
+        "denominator": 30,
+        "tolerance": 0.01
+      },
+      "result": {
+        "completed_replays": 30,
+        "strict_per_step_failures": 800,
+        "terminal_mismatches": 0,
+        "success_mismatches": 0,
+        "maximum_official_state_error": 0.14900782704353333
+      },
+      "gate_decision": "Result C",
+      "status_label": "blocked",
+      "status_score": 0,
+      "what_was_learned": "Mechanical completion and terminal agreement do not establish stepwise replay fidelity.",
+      "next_action": "Close the exact same-state counterfactual route."
+    }
+  ],
+  "contributions": {
+    "completed_research_engineering": [
+      "LeRobot, VLA-JEPA, and LIBERO integration",
+      "Multi-task on-policy rollout and natural-failure datasets",
+      "Stage/progress labeling and held-out-task evaluation",
+      "Unified reward-model comparison",
+      "Action-conditioning negative controls and episode-grouped cross-validation",
+      "Simulator replay determinism gates and artifact identity",
+      "A bounded upstream-quality RoboLab compatibility patch"
+    ],
+    "empirical_findings": [
+      "Strong in-domain progress does not imply held-out-task generalization.",
+      "Post-execution reward does not automatically become a pre-execution candidate verifier.",
+      "Single-policy on-policy data provides weak identification of incremental action value.",
+      "Common replay APIs did not satisfy strict repeated same-state branching requirements.",
+      "Terminal agreement does not imply stepwise dynamics agreement."
+    ],
+    "unvalidated_goals": [
+      "Candidate outcome model",
+      "Candidate ranking",
+      "Incremental value of a learned world representation",
+      "Closed-loop intervention improvement",
+      "Real-robot deployment"
+    ]
+  },
+  "stop_statement": {
+    "en": "The exact same-state counterfactual route is closed. The project will not move to a third simulator, add another reward model, or continue replay-infrastructure repair.",
+    "zh": "精确同状态反事实路线已经关闭。本项目不会迁移到第三个模拟器，不会继续增加奖励模型，也不会继续修复重放基础设施。"
+  },
+  "sources": [
+    {
+      "path": "artifacts/lg_r0/libero_40ep_evaluation.json",
+      "sha256": "0030031abe0496137375c5d8b55615fbe44c8c00f4196df5e2851865b36be1d7",
+      "json_pointers": [
+        "/overall/completed_episodes",
+        "/overall/success_rate",
+        "/overall/successes",
+        "/official_400_episode_equivalent",
+        "/result_scope"
+      ]
+    },
+    {
+      "path": "artifacts/lg_r0/world_model_interface_audit.json",
+      "sha256": "d3faaab6517db5043fb9f071a2af0a093e18e895cbcace76877f84943db6c698",
+      "json_pointers": [
+        "/external_numeric_candidate_actions_supported",
+        "/native_scalar_scores",
+        "/numeric_action_chunk_consumed_by_predictor"
+      ]
+    },
+    {
+      "path": "artifacts/lg_r1/dataset_manifest.json",
+      "sha256": "95edde00bac8ec8b44e38c091b61b9c27f7fe39c2975df2eab859d406bec5114",
+      "json_pointers": [
+        "/valid_rollout_episodes",
+        "/natural_failed_episodes",
+        "/tasks",
+        "/suites"
+      ]
+    },
+    {
+      "path": "artifacts/lg_r1/sarm_results.json",
+      "sha256": "8674acb28e89c071afbae8c94636772892426d63be331d6fa498a118d52d59bb",
+      "json_pointers": [
+        "/test/progress",
+        "/test/pairwise",
+        "/test/temporal"
+      ]
+    },
+    {
+      "path": "artifacts/lg_r1/lg_r2_gate.json",
+      "sha256": "83039002f6585cb497d09a57c0fcbe06e9a55193b9cc5d9ac88fe5c757781a5e",
+      "json_pointers": [
+        "/LG_R2_AUTHORIZED",
+        "/status",
+        "/checks/natural_failed_episodes"
+      ]
+    },
+    {
+      "path": "artifacts/lg_r1b/dataset_manifest.json",
+      "sha256": "c8b9b4682cb70ebb9cf687db53ed8412ccb8d58f962b166520f26dcd8fd2a45a",
+      "json_pointers": [
+        "/valid_rollout_episodes",
+        "/natural_failed_episodes",
+        "/current_samples",
+        "/tasks",
+        "/suites"
+      ]
+    },
+    {
+      "path": "artifacts/lg_r1b/sarm_zero_shot_results.json",
+      "sha256": "dbf37448ec4ec6e5e3aac923b1b002c7627e759bd173e82327586bf5744cdc8c",
+      "json_pointers": [
+        "/held_out_task",
+        "/lg_r1_in_distribution_test"
+      ]
+    },
+    {
+      "path": "artifacts/lg_r1b/lg_r2_gate.json",
+      "sha256": "55942bd7bcbf7b333383641c14c8f6310cd9d2804b62d90b0fca26acdf75ce27",
+      "json_pointers": [
+        "/LG_R2_AUTHORIZED",
+        "/status",
+        "/full_checks"
+      ]
+    },
+    {
+      "path": "artifacts/lg_r1c/evaluation_summary.json",
+      "sha256": "e9917c0a4860c767c2d088e9ce23cbad63f0bb0a678a2063ef212e3005d60551",
+      "json_pointers": [
+        "/models",
+        "/gate",
+        "/result_class"
+      ]
+    },
+    {
+      "path": "artifacts/lg_r1c/lg_r2_gate.json",
+      "sha256": "87cd1dda1745fe9c7218fbe8ba7c390a76799775e057222257947d31eaba1f02",
+      "json_pointers": [
+        "/candidate_gates",
+        "/result_class",
+        "/status"
+      ]
+    },
+    {
+      "path": "artifacts/lg_r2a/state_only_results.json",
+      "sha256": "64370c5114c8f2ac6230825275328021b96244324d11cbd8a1aa6122e1f5be9b",
+      "json_pointers": [
+        "/metrics/progress_delta/short",
+        "/metrics/classification/terminal_failure"
+      ]
+    },
+    {
+      "path": "artifacts/lg_r2a/state_action_results.json",
+      "sha256": "efc27d6e4cdc25b22468936f2e6dc8dda27713b46cdbe8aecd94d40b731b1be7",
+      "json_pointers": [
+        "/metrics/progress_delta/short",
+        "/metrics/classification/terminal_failure"
+      ]
+    },
+    {
+      "path": "artifacts/lg_r2a/leave_task6_out_results.json",
+      "sha256": "e2be207de9307eb31cc52c4a47b05d4e51607fb8d1de9c5730fdb72677f548df",
+      "json_pointers": [
+        "/models/state_only",
+        "/models/state_action"
+      ]
+    },
+    {
+      "path": "artifacts/lg_r2a/lg_r2b_gate.json",
+      "sha256": "81e7a59a10cb2d1637426c24842ef162157b47e7849f29489a53e9e8447bd1c1",
+      "json_pointers": [
+        "/inputs/incremental_value",
+        "/inputs/robustness",
+        "/result_class"
+      ]
+    },
+    {
+      "path": "artifacts/lg_r2b0/candidate_source_manifest.json",
+      "sha256": "c6dbcbf4858448f9fee1a9a2ddc2cb2bc599373ee936b52a6f8c2646bce9bd42",
+      "json_pointers": [
+        "/different_seed_generation",
+        "/policy_generated_candidate_ratio"
+      ]
+    },
+    {
+      "path": "artifacts/lg_r2b0/state_restore_validation.json",
+      "sha256": "be967240294bcd8229d87f320180438dc4f2056884249d715f6e262be57a3c8f",
+      "json_pointers": [
+        "/restore_failures",
+        "/terminal_result_mismatches",
+        "/maximum_observed_numeric_error",
+        "/status"
+      ]
+    },
+    {
+      "path": "artifacts/lg_r2b0/lg_r2b1_gate.json",
+      "sha256": "d0bf712f1730719d7311d97659f91cbc93ddbe9797705239ba3f2d7b43f0da72",
+      "json_pointers": [
+        "/result",
+        "/status",
+        "/stop_reason"
+      ]
+    },
+    {
+      "path": "artifacts/lg_rb01/faithful_replay_validation.json",
+      "sha256": "c5f35dd612385b06580cf8531dec4fe1e01bf2825d781c8438f94963693dd385",
+      "json_pointers": [
+        "/completed_replay_count",
+        "/official_state_validator_failures",
+        "/per_step_state_failures",
+        "/details"
+      ]
+    },
+    {
+      "path": "artifacts/lg_rb01/lg_rb1_gate.json",
+      "sha256": "01bc2b00b06e6dfdba52185c57b2301a96bef0d261d1413073a48b919937490b",
+      "json_pointers": [
+        "/decision",
+        "/authorization",
+        "/route_status"
+      ]
+    }
+  ]
+}
