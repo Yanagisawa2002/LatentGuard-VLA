@@ -1,0 +1,25 @@
+{
+  "candidate_generation": false,
+  "candidate_ranking": false,
+  "changed_files_scanned": 33,
+  "counterfactual_rollout": false,
+  "final_seeds_accessed": false,
+  "foundation_models_frozen": true,
+  "intervention": false,
+  "langmani_imported": false,
+  "langmani_modified": false,
+  "new_rollouts": 0,
+  "pointworld_used": false,
+  "repository": {
+    "baseline_commit": "a2cdd476fe4c45e453f6d9535fd6c3ae6b2a83a5",
+    "baseline_is_ancestor": true,
+    "branch": "codex/lg-r2a-action-conditioning",
+    "head_commit": "f867f97c09e8785b91c1c94c18cae1b316795f59",
+    "origin_repository": "Yanagisawa2002/LatentGuard-VLA"
+  },
+  "robolab_used": false,
+  "schema_version": "latentguard.lg_r2a.source_validation.v1",
+  "secret_scan_hits": [],
+  "status": "pass",
+  "synthetic_action_training": false
+}

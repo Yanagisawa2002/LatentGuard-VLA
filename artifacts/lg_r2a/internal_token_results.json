@@ -1,0 +1,8 @@
+{
+  "general_external_candidate_deployable": false,
+  "reason": "Frozen LG-R1c cache contains current pooled Qwen representation only; recomputing action-token or JEPA temporal caches was not necessary for the primary numeric-action identifiability question.",
+  "schema_version": "latentguard.lg_r2a.internal_token.results.v1",
+  "self_generated_action_only_if_run": true,
+  "status": "not_run_optional",
+  "used_for_gate": false
+}

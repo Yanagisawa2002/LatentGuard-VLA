@@ -1,0 +1,21 @@
+{
+  "interpretation": "offline action-sensitivity surrogate only",
+  "mean_absolute_prediction_changes": {
+    "events": 0.0006215916946530342,
+    "progress": 0.01700153574347496,
+    "regression": 0.006088781636208296,
+    "stagnation": 0.010362407192587852,
+    "terminal": 0.0008065936854109168
+  },
+  "protocol": {
+    "different_episode": true,
+    "mean_absolute_short_prediction_change": 0.016404440626502037,
+    "real_executed_actions_only": true,
+    "same_task": true,
+    "similar_stage_and_progress": true,
+    "true_same_state_counterfactual": false
+  },
+  "schema_version": "latentguard.lg_r2a.action_swap_surrogate.results.v1",
+  "status": "pass",
+  "true_same_state_counterfactual": false
+}

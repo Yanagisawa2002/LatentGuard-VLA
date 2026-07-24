@@ -1,0 +1,197 @@
+{
+  "action_only_short_progress": {
+    "kendall_tau_b": 0.2208697497844696,
+    "mae": 0.03394179791212082,
+    "rmse": 0.05937129631638527,
+    "samples": 4848,
+    "sign_accuracy": 0.5979785478547854,
+    "spearman": 0.28973870337332075,
+    "task_macro": {
+      "eligible_tasks": 8,
+      "mae": 0.036474194610491395,
+      "per_task": {
+        "libero_10/task2": {
+          "kendall_tau_b": 0.25701361894607544,
+          "mae": 0.03119663894176483,
+          "rmse": 0.05318125709891319,
+          "samples": 820,
+          "sign_accuracy": 0.6378048780487805,
+          "spearman": 0.3424590707442592
+        },
+        "libero_10/task4": {
+          "kendall_tau_b": 0.17879298329353333,
+          "mae": 0.033053863793611526,
+          "rmse": 0.05494974926114082,
+          "samples": 585,
+          "sign_accuracy": 0.6427350427350428,
+          "spearman": 0.2271388544218133
+        },
+        "libero_10/task6": {
+          "kendall_tau_b": 0.118608258664608,
+          "mae": 0.030865471810102463,
+          "rmse": 0.04680294543504715,
+          "samples": 492,
+          "sign_accuracy": 0.556910569105691,
+          "spearman": 0.15317971663274138
+        },
+        "libero_10/task7": {
+          "kendall_tau_b": 0.24288147687911987,
+          "mae": 0.029333896934986115,
+          "rmse": 0.046240705996751785,
+          "samples": 820,
+          "sign_accuracy": 0.5890243902439024,
+          "spearman": 0.3228969017597675
+        },
+        "libero_10/task8": {
+          "kendall_tau_b": 0.09519197046756744,
+          "mae": 0.028063291683793068,
+          "rmse": 0.0630754753947258,
+          "samples": 486,
+          "sign_accuracy": 0.6378600823045267,
+          "spearman": 0.11922829790594963
+        },
+        "libero_10/task9": {
+          "kendall_tau_b": 0.11211936175823212,
+          "mae": 0.03167857229709625,
+          "rmse": 0.05603162571787834,
+          "samples": 957,
+          "sign_accuracy": 0.5778474399164054,
+          "spearman": 0.13902780874825357
+        },
+        "libero_goal/task6": {
+          "kendall_tau_b": 0.33544307947158813,
+          "mae": 0.06120733544230461,
+          "rmse": 0.08864463865756989,
+          "samples": 305,
+          "sign_accuracy": 0.5639344262295082,
+          "spearman": 0.46677314515429613
+        },
+        "libero_goal/task9": {
+          "kendall_tau_b": 0.29158714413642883,
+          "mae": 0.04639448598027229,
+          "rmse": 0.08607478439807892,
+          "samples": 383,
+          "sign_accuracy": 0.5430809399477807,
+          "spearman": 0.3961632885091823
+        }
+      },
+      "spearman": 0.2708583854845329
+    }
+  },
+  "correlations": {
+    "gripper_switch_count": {
+      "absolute_target_short_delta_spearman": 0.03992801879954315,
+      "state_action_minus_state_only_prediction_spearman": -0.015213219650900363,
+      "state_action_prediction_spearman": 0.02386458542058774,
+      "target_short_delta_spearman": 0.016937234827650548,
+      "within_task_progress_bin_target_spearman": 0.0006231855345558879
+    },
+    "pose_l2_mean": {
+      "absolute_target_short_delta_spearman": -0.005179608538503782,
+      "state_action_minus_state_only_prediction_spearman": -0.0008972053141617553,
+      "state_action_prediction_spearman": -0.015315748788027213,
+      "target_short_delta_spearman": -0.004146559624302064,
+      "within_task_progress_bin_target_spearman": -0.0132117247120623
+    },
+    "rotation_l2_mean": {
+      "absolute_target_short_delta_spearman": 0.013593958009109583,
+      "state_action_minus_state_only_prediction_spearman": -0.03321542845379242,
+      "state_action_prediction_spearman": -0.06362073312465832,
+      "target_short_delta_spearman": 0.023541607485699913,
+      "within_task_progress_bin_target_spearman": -0.002945160001565642
+    },
+    "translation_l2_mean": {
+      "absolute_target_short_delta_spearman": 0.017731137116121117,
+      "state_action_minus_state_only_prediction_spearman": 0.0032372382303884066,
+      "state_action_prediction_spearman": 0.008810640707297415,
+      "target_short_delta_spearman": 0.016429659074459167,
+      "within_task_progress_bin_target_spearman": 0.0049255657831228416
+    }
+  },
+  "interpretation": "Action-only lower MAE with weaker rank correlation is consistent with a near-zero-delta or action-statistics shortcut; it is not evidence of state-conditioned consequence prediction.",
+  "method": "no-fit correlations; within-stratum values subtract means for same task and frozen current-progress bin",
+  "schema_version": "latentguard.lg_r2a.action_magnitude_diagnostic.v1",
+  "shortcut_concern_not_excluded": true,
+  "state_action_short_progress": {
+    "kendall_tau_b": 0.3649144470691681,
+    "mae": 0.040596846491098404,
+    "rmse": 0.05878232792019844,
+    "samples": 4848,
+    "sign_accuracy": 0.48865511551155116,
+    "spearman": 0.46998036542899524,
+    "task_macro": {
+      "eligible_tasks": 8,
+      "mae": 0.04231149144470692,
+      "per_task": {
+        "libero_10/task2": {
+          "kendall_tau_b": 0.4109742045402527,
+          "mae": 0.038023095577955246,
+          "rmse": 0.05414368212223053,
+          "samples": 820,
+          "sign_accuracy": 0.55,
+          "spearman": 0.5291675083208788
+        },
+        "libero_10/task4": {
+          "kendall_tau_b": 0.41502833366394043,
+          "mae": 0.03793996572494507,
+          "rmse": 0.05040054768323898,
+          "samples": 585,
+          "sign_accuracy": 0.5094017094017094,
+          "spearman": 0.5385491395748357
+        },
+        "libero_10/task6": {
+          "kendall_tau_b": 0.20361758768558502,
+          "mae": 0.04041987285017967,
+          "rmse": 0.054832469671964645,
+          "samples": 492,
+          "sign_accuracy": 0.39634146341463417,
+          "spearman": 0.25963431193899644
+        },
+        "libero_10/task7": {
+          "kendall_tau_b": 0.38642239570617676,
+          "mae": 0.03567775338888168,
+          "rmse": 0.04792320355772972,
+          "samples": 820,
+          "sign_accuracy": 0.5195121951219512,
+          "spearman": 0.4958783049792451
+        },
+        "libero_10/task8": {
+          "kendall_tau_b": 0.2453877478837967,
+          "mae": 0.04469054564833641,
+          "rmse": 0.07203178852796555,
+          "samples": 486,
+          "sign_accuracy": 0.39711934156378603,
+          "spearman": 0.30555448340745606
+        },
+        "libero_10/task9": {
+          "kendall_tau_b": 0.25950247049331665,
+          "mae": 0.038482800126075745,
+          "rmse": 0.05578969046473503,
+          "samples": 957,
+          "sign_accuracy": 0.44618599791013586,
+          "spearman": 0.32245124799610014
+        },
+        "libero_goal/task6": {
+          "kendall_tau_b": 0.4058031141757965,
+          "mae": 0.048693254590034485,
+          "rmse": 0.07111167907714844,
+          "samples": 305,
+          "sign_accuracy": 0.6786885245901639,
+          "spearman": 0.5518869040047901
+        },
+        "libero_goal/task9": {
+          "kendall_tau_b": 0.3941914439201355,
+          "mae": 0.054564643651247025,
+          "rmse": 0.08008768409490585,
+          "samples": 383,
+          "sign_accuracy": 0.4490861618798956,
+          "spearman": 0.5366865599171678
+        }
+      },
+      "spearman": 0.4424760575174338
+    }
+  },
+  "status": "pass",
+  "used_for_selection": false,
+  "used_for_training": false
+}

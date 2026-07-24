@@ -1,0 +1,151 @@
+{
+  "aliyun_default_for_downloads": true,
+  "branch": "codex/lg-r2a-action-conditioning",
+  "candidate_generation": false,
+  "candidate_ranking": false,
+  "checkpoints_outside_git": true,
+  "commit": "f867f97c09e8785b91c1c94c18cae1b316795f59",
+  "compact_files": {
+    "action_ablation_results.json": {
+      "bytes": 61404,
+      "locator": "action_ablation_results.json",
+      "sha256": "87d853fc859c1ccabc177eac66ead00d55007306e730b7fbf0fcd8eae85247e3"
+    },
+    "action_contract.json": {
+      "bytes": 2213,
+      "locator": "action_contract.json",
+      "sha256": "7c55218b793779d954cfb7dc9cbcc9f69d595276e6576d6ed532a0424e04af98"
+    },
+    "action_magnitude_diagnostic.json": {
+      "bytes": 7327,
+      "locator": "action_magnitude_diagnostic.json",
+      "sha256": "14b71b15c84d6931a4ecb0bb4c21eea4eb309a4798557a49c5e7a28ec2937a93"
+    },
+    "action_only_results.json": {
+      "bytes": 32245,
+      "locator": "action_only_results.json",
+      "sha256": "8b4289a727a4b2502cc2c60e954442caf7783bb3aafcab46bc5f44a4d7aea86f"
+    },
+    "action_permutation_results.json": {
+      "bytes": 39184,
+      "locator": "action_permutation_results.json",
+      "sha256": "4e05e17653652e9afb42b0be5a5b75f01d938a13892cf7f63922fad7e757ef98"
+    },
+    "action_swap_surrogate_results.json": {
+      "bytes": 709,
+      "locator": "action_swap_surrogate_results.json",
+      "sha256": "070dd8eee6cb63af9d5e85cc42898e69e66f37f9d0a7e97516cde9a48df216f2"
+    },
+    "cv_split_manifest.json": {
+      "bytes": 78602,
+      "locator": "cv_split_manifest.json",
+      "sha256": "051b40d299922c1073ea61e5580ea59cd131dffafa40aa6e161288e44035ee03"
+    },
+    "evaluation_summary.json": {
+      "bytes": 351764,
+      "locator": "evaluation_summary.json",
+      "sha256": "3a584ecb3eb3d20aaebd9f724a5bc5d8d33a69b6105dc97bc476e0e7930a2b8d"
+    },
+    "input_dataset_manifest.json": {
+      "bytes": 4024,
+      "locator": "input_dataset_manifest.json",
+      "sha256": "c6c3e19c37464ed14f2cecf5b29250fc69c00e151014a624e3e0cd8488571b1a"
+    },
+    "internal_token_results.json": {
+      "bytes": 433,
+      "locator": "internal_token_results.json",
+      "sha256": "f6dc9e44159e191e705b990b3ab1899ea88ad07d01ec58671111635b67dd5150"
+    },
+    "leave_task6_out_results.json": {
+      "bytes": 96112,
+      "locator": "leave_task6_out_results.json",
+      "sha256": "e2be207de9307eb31cc52c4a47b05d4e51607fb8d1de9c5730fdb72677f548df"
+    },
+    "lg_r2b_gate.json": {
+      "bytes": 2006,
+      "locator": "lg_r2b_gate.json",
+      "sha256": "81e7a59a10cb2d1637426c24842ef162157b47e7849f29489a53e9e8447bd1c1"
+    },
+    "source_validation.json": {
+      "bytes": 802,
+      "locator": "source_validation.json",
+      "sha256": "3f3d473e498a993415a6eec50f35d171390429d2189225875cb24403b6c6aa27"
+    },
+    "state_action_results.json": {
+      "bytes": 32354,
+      "locator": "state_action_results.json",
+      "sha256": "efc27d6e4cdc25b22468936f2e6dc8dda27713b46cdbe8aecd94d40b731b1be7"
+    },
+    "state_only_results.json": {
+      "bytes": 32326,
+      "locator": "state_only_results.json",
+      "sha256": "64370c5114c8f2ac6230825275328021b96244324d11cbd8a1aa6122e1f5be9b"
+    },
+    "target_manifest.json": {
+      "bytes": 2003,
+      "locator": "target_manifest.json",
+      "sha256": "c1f3fa11c2443490b0931772025b9b8255733140701614e61ca8f387e4052b1c"
+    },
+    "task_macro_results.json": {
+      "bytes": 80657,
+      "locator": "task_macro_results.json",
+      "sha256": "01139ff14d6c0873c61c54c8b64962e23a84edea0e228067adc0a47da17aa649"
+    }
+  },
+  "counterfactual_rollout": false,
+  "downloads_performed": false,
+  "execution_commits": {
+    "evaluation": "f867f97c09e8785b91c1c94c18cae1b316795f59",
+    "training": "1f03f484c9f29e0a3dbfee767b56dbfd34795e3d"
+  },
+  "final_seeds_accessed": false,
+  "foundation_model_training": false,
+  "intervention": false,
+  "network_turbo_sourced_every_session": true,
+  "new_rollouts": 0,
+  "predictions_outside_git": true,
+  "remote_commit_created": false,
+  "run_id": "20260724T070334Z_lg-r2a-action-conditioning_1f03f48_seed0",
+  "run_manifests": {
+    "action_only": {
+      "bytes": 8621,
+      "locator": "runs/action_only/run_manifest.json",
+      "sha256": "35d58d0922fe5824f743a57a02dff020fdcd5edc314b5a76ca767eb37473b9d5"
+    },
+    "state_action": {
+      "bytes": 8741,
+      "locator": "runs/state_action/run_manifest.json",
+      "sha256": "fb543d940ec0a20fadebbb7c7c28e6ce7677b1da95e25540f64613f86cff39a2"
+    },
+    "state_action_proprio": {
+      "bytes": 8853,
+      "locator": "runs/state_action_proprio/run_manifest.json",
+      "sha256": "804ba6092dfad7338232161686d5b4f96f2e2fd3e6872ebfaf77bdd0adddb374"
+    },
+    "state_only": {
+      "bytes": 8599,
+      "locator": "runs/state_only/run_manifest.json",
+      "sha256": "6c2ae8d37bafcac8387784c903daa297447f59dcbc864e3c276f5bf4b7c66b0e"
+    }
+  },
+  "runtime_identity": {
+    "git_branch": "codex/lg-r2a-action-conditioning",
+    "git_commit": "f867f97c09e8785b91c1c94c18cae1b316795f59",
+    "hostname": "autodl-container-c47c48a71b-504676bc",
+    "platform": "Linux-5.15.0-119-generic-x86_64-with-glibc2.35",
+    "python": "3.12.3",
+    "torch": {
+      "available": true,
+      "cuda_available": true,
+      "cuda_version": "12.8",
+      "gpu_name": "NVIDIA GeForce RTX 5090",
+      "version": "2.11.0+cu128"
+    }
+  },
+  "schema_version": "latentguard.lg_r2a.remote_execution_audit.v1",
+  "server_left_running": true,
+  "server_shutdown_requested": false,
+  "simulator_started": false,
+  "source_checkout_clean_after_run": true,
+  "status": "pass"
+}

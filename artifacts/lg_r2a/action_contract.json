@@ -1,0 +1,85 @@
+{
+  "action_dimension": 7,
+  "action_horizon": 7,
+  "dimension_names": [
+    "delta_x",
+    "delta_y",
+    "delta_z",
+    "delta_axis_angle_x",
+    "delta_axis_angle_y",
+    "delta_axis_angle_z",
+    "gripper"
+  ],
+  "dimension_order": "relative_position_xyz,relative_axis_angle_xyz,gripper",
+  "execution_horizon": 7,
+  "gripper_convention": "-1=open, +1=closed",
+  "lower_bounds": [
+    -1.0,
+    -1.0,
+    -1.0,
+    -1.0,
+    -1.0,
+    -1.0,
+    -1.0
+  ],
+  "native_action_mask": "native inference emits null; LG-R2a materializes true for every real action and false only for explicit zero padding",
+  "native_action_mask_observation": {
+    "null": 79326
+  },
+  "native_padding_observation": {
+    "false": 79326
+  },
+  "normalization": "official VLA-JEPA postprocessor output after clipping, gripper pre-snap, checkpoint-statistic unnormalization, and official gripper conversion",
+  "observed_max": [
+    0.9375,
+    0.876366138458252,
+    0.9375,
+    0.29276543855667114,
+    0.28250014781951904,
+    0.375,
+    1.0
+  ],
+  "observed_min": [
+    -0.8796625733375549,
+    -0.8727487921714783,
+    -0.9375,
+    -0.1861477792263031,
+    -0.2050195187330246,
+    -0.3064497113227844,
+    -1.0
+  ],
+  "padding_semantic": "zero rows are padding only where action_mask=false; accepted LG-R2a probe samples have seven real rows and an all-true mask",
+  "padding_value": 0.0,
+  "pose_semantics": "relative OSC pose command",
+  "schema_version": "latentguard.lg_r2a.action_contract.v1",
+  "source_semantic": "frozen real on-policy executed actions only",
+  "units": [
+    "checkpoint_normalized_relative_translation",
+    "checkpoint_normalized_relative_translation",
+    "checkpoint_normalized_relative_translation",
+    "checkpoint_normalized_relative_rotation",
+    "checkpoint_normalized_relative_rotation",
+    "checkpoint_normalized_relative_rotation",
+    "official_binary_gripper_command"
+  ],
+  "upper_bounds": [
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0
+  ],
+  "validation": {
+    "bounds": "pass",
+    "finite": true,
+    "gripper": "pass",
+    "normalization_reproducible_from_frozen_postprocessor_contract": true,
+    "shape": [
+      79326,
+      7
+    ],
+    "status": "pass"
+  }
+}

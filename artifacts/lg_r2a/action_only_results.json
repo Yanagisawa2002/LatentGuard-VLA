@@ -1,0 +1,994 @@
+{
+  "folds": [
+    {
+      "best_validation_score": 0.056447584182024,
+      "best_validation_step": 340,
+      "class_weights_train_only": {
+        "events": [
+          50.0,
+          50.0
+        ],
+        "regression": [
+          46.557376861572266,
+          15.4909086227417,
+          5.770349025726318
+        ],
+        "stagnation": [
+          1.0,
+          1.0,
+          2.4503703117370605
+        ],
+        "terminal": [
+          50.0
+        ]
+      },
+      "elapsed_seconds": 3.6875941678881645,
+      "fold": 0,
+      "inference_latency_ms_per_sample": 0.0014714416465722024,
+      "optimizer_steps": 400,
+      "parameter_report": {
+        "action_encoder_parameters": 5856,
+        "trainable_parameters": 11628,
+        "variant": "action_only"
+      },
+      "selected_thresholds": {
+        "events": [
+          0.4998624622821808,
+          0.7616002380847922
+        ],
+        "regression": [
+          0.903693413734436,
+          0.8095155954360963,
+          0.6545268863439561
+        ],
+        "stagnation": [
+          0.4748532474040985,
+          0.38237734884023666,
+          0.46077903255820274
+        ],
+        "terminal": [
+          0.8439550340175627
+        ]
+      },
+      "test_evaluations": 1,
+      "test_samples": 976,
+      "threshold_selection_split": "validation",
+      "train_samples": 2901,
+      "validation_samples": 971
+    },
+    {
+      "best_validation_score": 0.05347646400332451,
+      "best_validation_step": 340,
+      "class_weights_train_only": {
+        "events": [
+          50.0,
+          50.0
+        ],
+        "regression": [
+          50.0,
+          17.405405044555664,
+          6.6940789222717285
+        ],
+        "stagnation": [
+          1.0,
+          1.0,
+          2.3849494457244873
+        ],
+        "terminal": [
+          50.0
+        ]
+      },
+      "elapsed_seconds": 4.102908443659544,
+      "fold": 1,
+      "inference_latency_ms_per_sample": 0.0026020192308351398,
+      "optimizer_steps": 400,
+      "parameter_report": {
+        "action_encoder_parameters": 5856,
+        "trainable_parameters": 11628,
+        "variant": "action_only"
+      },
+      "selected_thresholds": {
+        "events": [
+          0.0008629219024442135,
+          0.5800071239471422
+        ],
+        "regression": [
+          0.8173680186271668,
+          0.6740044713020321,
+          0.3779042840003967
+        ],
+        "stagnation": [
+          0.5172150731086731,
+          0.3980970978736877,
+          0.6226052522659302
+        ],
+        "terminal": [
+          0.6479895591735846
+        ]
+      },
+      "test_evaluations": 1,
+      "test_samples": 971,
+      "threshold_selection_split": "validation",
+      "train_samples": 2916,
+      "validation_samples": 961
+    },
+    {
+      "best_validation_score": 0.05594489350914955,
+      "best_validation_step": 340,
+      "class_weights_train_only": {
+        "events": [
+          50.0,
+          50.0
+        ],
+        "regression": [
+          45.22222137451172,
+          16.024999618530273,
+          6.801980018615723
+        ],
+        "stagnation": [
+          1.0,
+          1.0,
+          2.38681960105896
+        ],
+        "terminal": [
+          50.0
+        ]
+      },
+      "elapsed_seconds": 4.092948921024799,
+      "fold": 2,
+      "inference_latency_ms_per_sample": 0.001362098555546254,
+      "optimizer_steps": 400,
+      "parameter_report": {
+        "action_encoder_parameters": 5856,
+        "trainable_parameters": 11628,
+        "variant": "action_only"
+      },
+      "selected_thresholds": {
+        "events": [
+          0.016468024961650368,
+          0.5911834317445754
+        ],
+        "regression": [
+          0.9349467754364014,
+          0.8339918065071108,
+          0.6099030053615571
+        ],
+        "stagnation": [
+          0.5758821666240692,
+          0.44601497560739517,
+          0.5757916206121445
+        ],
+        "terminal": [
+          0.5770349675416946
+        ]
+      },
+      "test_evaluations": 1,
+      "test_samples": 961,
+      "threshold_selection_split": "validation",
+      "train_samples": 2912,
+      "validation_samples": 975
+    },
+    {
+      "best_validation_score": 0.056363508105278015,
+      "best_validation_step": 400,
+      "class_weights_train_only": {
+        "events": [
+          50.0,
+          50.0
+        ],
+        "regression": [
+          37.77333450317383,
+          14.178771018981934,
+          5.851312160491943
+        ],
+        "stagnation": [
+          1.0,
+          1.0,
+          2.4407026767730713
+        ],
+        "terminal": [
+          50.0
+        ]
+      },
+      "elapsed_seconds": 3.988260705024004,
+      "fold": 3,
+      "inference_latency_ms_per_sample": 0.0014818579074926674,
+      "optimizer_steps": 400,
+      "parameter_report": {
+        "action_encoder_parameters": 5856,
+        "trainable_parameters": 11628,
+        "variant": "action_only"
+      },
+      "selected_thresholds": {
+        "events": [
+          0.1813243407011034,
+          0.7404807472229004
+        ],
+        "regression": [
+          0.9373049283027649,
+          0.657015517950058,
+          0.6798407530784608
+        ],
+        "stagnation": [
+          0.46469845831394196,
+          0.425402267575264,
+          0.5181185638904571
+        ],
+        "terminal": [
+          0.7602602910995483
+        ]
+      },
+      "test_evaluations": 1,
+      "test_samples": 975,
+      "threshold_selection_split": "validation",
+      "train_samples": 2908,
+      "validation_samples": 965
+    },
+    {
+      "best_validation_score": 0.0571768544614315,
+      "best_validation_step": 400,
+      "class_weights_train_only": {
+        "events": [
+          50.0,
+          50.0
+        ],
+        "regression": [
+          36.75324630737305,
+          14.18994426727295,
+          5.29891300201416
+        ],
+        "stagnation": [
+          1.0,
+          1.0,
+          2.475262403488159
+        ],
+        "terminal": [
+          50.0
+        ]
+      },
+      "elapsed_seconds": 4.091478917747736,
+      "fold": 4,
+      "inference_latency_ms_per_sample": 0.0014625038602389395,
+      "optimizer_steps": 400,
+      "parameter_report": {
+        "action_encoder_parameters": 5856,
+        "trainable_parameters": 11628,
+        "variant": "action_only"
+      },
+      "selected_thresholds": {
+        "events": [
+          0.10977329593151808,
+          0.7690969407558441
+        ],
+        "regression": [
+          0.9595712572336197,
+          0.8643353655934334,
+          0.5917400121688843
+        ],
+        "stagnation": [
+          0.4875771105289459,
+          0.42060089111328125,
+          0.6295934915542603
+        ],
+        "terminal": [
+          0.6465346217155457
+        ]
+      },
+      "test_evaluations": 1,
+      "test_samples": 965,
+      "threshold_selection_split": "validation",
+      "train_samples": 2907,
+      "validation_samples": 976
+    }
+  ],
+  "metrics": {
+    "classification": {
+      "FAILED_PLACEMENT": {
+        "auprc": 0.09202626139596991,
+        "auroc": 0.7664856322031515,
+        "brier": 0.04561793300077552,
+        "descriptive_test_curve_at_recall_0_5": {
+          "false_positive_rate": 0.13701473946439693,
+          "precision": 0.023668639053254437,
+          "recall": 0.5161290322580645,
+          "requested_recall": 0.5,
+          "threshold": 0.2905997335910797
+        },
+        "expected_calibration_error_10_bins": 0.11246846548330404,
+        "f1_validation_selected_threshold": 0.20454545454545456,
+        "false_positive_rate_validation_selected_threshold": 0.009964708324683413,
+        "positives": 31,
+        "precision_validation_selected_threshold": 0.15789473684210525,
+        "prevalence": 0.006394389438943895,
+        "recall_validation_selected_threshold": 0.2903225806451613,
+        "samples": 4848,
+        "task_macro": {
+          "auprc": 0.08362476032074583,
+          "auroc": 0.6206384069076658,
+          "eligible_auprc_tasks": 3,
+          "eligible_auroc_tasks": 3,
+          "per_task": {
+            "libero_10/task2": {
+              "auprc": null,
+              "auroc": null,
+              "brier": 0.02231627031943748,
+              "positives": 0,
+              "prevalence": 0.0,
+              "samples": 820
+            },
+            "libero_10/task4": {
+              "auprc": null,
+              "auroc": null,
+              "brier": 0.04824734565709853,
+              "positives": 0,
+              "prevalence": 0.0,
+              "samples": 585
+            },
+            "libero_10/task6": {
+              "auprc": 0.19636176449319925,
+              "auroc": 0.6159174876847291,
+              "brier": 0.13319337356111524,
+              "positives": 28,
+              "prevalence": 0.056910569105691054,
+              "samples": 492
+            },
+            "libero_10/task7": {
+              "auprc": null,
+              "auroc": null,
+              "brier": 0.038199487720758325,
+              "positives": 0,
+              "prevalence": 0.0,
+              "samples": 820
+            },
+            "libero_10/task8": {
+              "auprc": 0.003105590062111801,
+              "auroc": 0.33814432989690724,
+              "brier": 0.03663895315546262,
+              "positives": 1,
+              "prevalence": 0.00205761316872428,
+              "samples": 486
+            },
+            "libero_10/task9": {
+              "auprc": 0.05140692640692641,
+              "auroc": 0.9078534031413612,
+              "brier": 0.028476867297029473,
+              "positives": 2,
+              "prevalence": 0.0020898641588296763,
+              "samples": 957
+            },
+            "libero_goal/task6": {
+              "auprc": null,
+              "auroc": null,
+              "brier": 0.036882333367519074,
+              "positives": 0,
+              "prevalence": 0.0,
+              "samples": 305
+            },
+            "libero_goal/task9": {
+              "auprc": null,
+              "auroc": null,
+              "brier": 0.05605476678700384,
+              "positives": 0,
+              "prevalence": 0.0,
+              "samples": 383
+            }
+          }
+        }
+      },
+      "OBJECT_DROP": {
+        "auprc": 0.007010864974489222,
+        "auroc": 0.8130165289256198,
+        "brier": 0.008440476902845146,
+        "descriptive_test_curve_at_recall_0_5": {
+          "false_positive_rate": 0.10268595041322313,
+          "precision": 0.007984031936127744,
+          "recall": 0.5,
+          "requested_recall": 0.5,
+          "threshold": 0.07749227434396744
+        },
+        "expected_calibration_error_10_bins": 0.029794521317064223,
+        "f1_validation_selected_threshold": 0.0,
+        "false_positive_rate_validation_selected_threshold": 0.18636363636363637,
+        "positives": 8,
+        "precision_validation_selected_threshold": 0.0,
+        "prevalence": 0.0016501650165016502,
+        "recall_validation_selected_threshold": 0.0,
+        "samples": 4848,
+        "task_macro": {
+          "auprc": 0.016875374285470666,
+          "auroc": 0.6082787486329141,
+          "eligible_auprc_tasks": 3,
+          "eligible_auroc_tasks": 3,
+          "per_task": {
+            "libero_10/task2": {
+              "auprc": null,
+              "auroc": null,
+              "brier": 0.00200276762743039,
+              "positives": 0,
+              "prevalence": 0.0,
+              "samples": 820
+            },
+            "libero_10/task4": {
+              "auprc": null,
+              "auroc": null,
+              "brier": 0.006113587035068979,
+              "positives": 0,
+              "prevalence": 0.0,
+              "samples": 585
+            },
+            "libero_10/task6": {
+              "auprc": 0.01626661504710285,
+              "auroc": 0.754601226993865,
+              "brier": 0.03912094802862481,
+              "positives": 3,
+              "prevalence": 0.006097560975609756,
+              "samples": 492
+            },
+            "libero_10/task7": {
+              "auprc": null,
+              "auroc": null,
+              "brier": 0.0030372878747328552,
+              "positives": 0,
+              "prevalence": 0.0,
+              "samples": 820
+            },
+            "libero_10/task8": {
+              "auprc": 0.0028169014084507044,
+              "auroc": 0.27010309278350514,
+              "brier": 0.0046617432207841526,
+              "positives": 1,
+              "prevalence": 0.00205761316872428,
+              "samples": 486
+            },
+            "libero_10/task9": {
+              "auprc": null,
+              "auroc": null,
+              "brier": 0.0020531257447679945,
+              "positives": 0,
+              "prevalence": 0.0,
+              "samples": 957
+            },
+            "libero_goal/task6": {
+              "auprc": null,
+              "auroc": null,
+              "brier": 0.003765822045252246,
+              "positives": 0,
+              "prevalence": 0.0,
+              "samples": 305
+            },
+            "libero_goal/task9": {
+              "auprc": 0.031542606400858444,
+              "auroc": 0.8001319261213721,
+              "brier": 0.022411507573824138,
+              "positives": 4,
+              "prevalence": 0.010443864229765013,
+              "samples": 383
+            }
+          }
+        }
+      },
+      "regression_short": {
+        "auprc": 0.26607265104960115,
+        "auroc": 0.9097632442569151,
+        "brier": 0.09519219769242909,
+        "descriptive_test_curve_at_recall_0_5": {
+          "false_positive_rate": 0.029746835443037974,
+          "precision": 0.27692307692307694,
+          "recall": 0.5,
+          "requested_recall": 0.5,
+          "threshold": 0.89647376537323
+        },
+        "expected_calibration_error_10_bins": 0.1614653915868036,
+        "f1_validation_selected_threshold": 0.3346303501945525,
+        "false_positive_rate_validation_selected_threshold": 0.022362869198312235,
+        "positives": 108,
+        "precision_validation_selected_threshold": 0.28859060402684567,
+        "prevalence": 0.022277227722772276,
+        "recall_validation_selected_threshold": 0.39814814814814814,
+        "samples": 4848,
+        "task_macro": {
+          "auprc": 0.27121605281533895,
+          "auroc": 0.8783836266345223,
+          "eligible_auprc_tasks": 8,
+          "eligible_auroc_tasks": 8,
+          "per_task": {
+            "libero_10/task2": {
+              "auprc": 0.05314535261495686,
+              "auroc": 0.9583843329253366,
+              "brier": 0.06920660130139683,
+              "positives": 3,
+              "prevalence": 0.003658536585365854,
+              "samples": 820
+            },
+            "libero_10/task4": {
+              "auprc": 0.11148947951273533,
+              "auroc": 0.9518072289156626,
+              "brier": 0.1480141377034784,
+              "positives": 4,
+              "prevalence": 0.006837606837606838,
+              "samples": 585
+            },
+            "libero_10/task6": {
+              "auprc": 0.6034309037269604,
+              "auroc": 0.9015625,
+              "brier": 0.16745348140524582,
+              "positives": 32,
+              "prevalence": 0.06504065040650407,
+              "samples": 492
+            },
+            "libero_10/task7": {
+              "auprc": 0.3508085067255149,
+              "auroc": 0.9770628078817734,
+              "brier": 0.07925476295503842,
+              "positives": 8,
+              "prevalence": 0.00975609756097561,
+              "samples": 820
+            },
+            "libero_10/task8": {
+              "auprc": 0.057575607242284596,
+              "auroc": 0.5573529411764706,
+              "brier": 0.12474995304209889,
+              "positives": 10,
+              "prevalence": 0.0205761316872428,
+              "samples": 486
+            },
+            "libero_10/task9": {
+              "auprc": 0.18032766188996419,
+              "auroc": 0.939594356261023,
+              "brier": 0.048441088332821784,
+              "positives": 12,
+              "prevalence": 0.012539184952978056,
+              "samples": 957
+            },
+            "libero_goal/task6": {
+              "auprc": 0.051177867443344294,
+              "auroc": 0.7649501661129569,
+              "brier": 0.14895091655103543,
+              "positives": 4,
+              "prevalence": 0.013114754098360656,
+              "samples": 305
+            },
+            "libero_goal/task9": {
+              "auprc": 0.7617730433669512,
+              "auroc": 0.9763546798029556,
+              "brier": 0.04794110718973184,
+              "positives": 35,
+              "prevalence": 0.09138381201044386,
+              "samples": 383
+            }
+          }
+        }
+      },
+      "stagnation_short": {
+        "auprc": 0.922751720867543,
+        "auroc": 0.7956260244418077,
+        "brier": 0.1333801620637382,
+        "descriptive_test_curve_at_recall_0_5": {
+          "false_positive_rate": 0.1529745042492918,
+          "precision": 0.9212445308701993,
+          "recall": 0.5001319609395619,
+          "requested_recall": 0.5,
+          "threshold": 0.8712732791900635
+        },
+        "expected_calibration_error_10_bins": 0.0359108901764005,
+        "f1_validation_selected_threshold": 0.8929633300297324,
+        "false_positive_rate_validation_selected_threshold": 0.6411709159584513,
+        "positives": 3789,
+        "precision_validation_selected_threshold": 0.8414662619659118,
+        "prevalence": 0.781559405940594,
+        "recall_validation_selected_threshold": 0.9511744523621009,
+        "samples": 4848,
+        "task_macro": {
+          "auprc": 0.9135619901691447,
+          "auroc": 0.782870096273435,
+          "eligible_auprc_tasks": 8,
+          "eligible_auroc_tasks": 8,
+          "per_task": {
+            "libero_10/task2": {
+              "auprc": 0.9307433930996274,
+              "auroc": 0.8424154243224076,
+              "brier": 0.14776790141878476,
+              "positives": 587,
+              "prevalence": 0.7158536585365853,
+              "samples": 820
+            },
+            "libero_10/task4": {
+              "auprc": 0.8783324181684896,
+              "auroc": 0.782588215142172,
+              "brier": 0.15894852513308197,
+              "positives": 417,
+              "prevalence": 0.7128205128205128,
+              "samples": 585
+            },
+            "libero_10/task6": {
+              "auprc": 0.9448606740448413,
+              "auroc": 0.7395625592572008,
+              "brier": 0.1414013638852222,
+              "positives": 419,
+              "prevalence": 0.8516260162601627,
+              "samples": 492
+            },
+            "libero_10/task7": {
+              "auprc": 0.8952201094025455,
+              "auroc": 0.8156751336898396,
+              "brier": 0.13496918817965617,
+              "positives": 616,
+              "prevalence": 0.751219512195122,
+              "samples": 820
+            },
+            "libero_10/task8": {
+              "auprc": 0.9810065836972336,
+              "auroc": 0.8085234454944923,
+              "brier": 0.08136780679706138,
+              "positives": 449,
+              "prevalence": 0.9238683127572016,
+              "samples": 486
+            },
+            "libero_10/task9": {
+              "auprc": 0.9543666595741507,
+              "auroc": 0.6310671401995603,
+              "brier": 0.09382327699005202,
+              "positives": 876,
+              "prevalence": 0.9153605015673981,
+              "samples": 957
+            },
+            "libero_goal/task6": {
+              "auprc": 0.8679755088310148,
+              "auroc": 0.8870676303562209,
+              "brier": 0.19945573950727827,
+              "positives": 149,
+              "prevalence": 0.4885245901639344,
+              "samples": 305
+            },
+            "libero_goal/task9": {
+              "auprc": 0.8559905745352546,
+              "auroc": 0.7560612217255858,
+              "brier": 0.16203818080242163,
+              "positives": 276,
+              "prevalence": 0.720626631853786,
+              "samples": 383
+            }
+          }
+        }
+      },
+      "terminal_failure": {
+        "auprc": 0.08012828709466929,
+        "auroc": 0.8316966338358783,
+        "brier": 0.03659545615321728,
+        "descriptive_test_curve_at_recall_0_5": {
+          "false_positive_rate": 0.05265348595213319,
+          "precision": 0.08,
+          "recall": 0.5116279069767442,
+          "requested_recall": 0.5,
+          "threshold": 0.4821544587612152
+        },
+        "expected_calibration_error_10_bins": 0.0736494604671042,
+        "f1_validation_selected_threshold": 0.1142857142857143,
+        "false_positive_rate_validation_selected_threshold": 0.018522372528616025,
+        "positives": 43,
+        "precision_validation_selected_threshold": 0.08247422680412371,
+        "prevalence": 0.00886963696369637,
+        "recall_validation_selected_threshold": 0.18604651162790697,
+        "samples": 4848,
+        "task_macro": {
+          "auprc": 0.10157836134289168,
+          "auroc": 0.7113886116574558,
+          "eligible_auprc_tasks": 4,
+          "eligible_auroc_tasks": 4,
+          "per_task": {
+            "libero_10/task2": {
+              "auprc": null,
+              "auroc": null,
+              "brier": 0.012089730518133628,
+              "positives": 0,
+              "prevalence": 0.0,
+              "samples": 820
+            },
+            "libero_10/task4": {
+              "auprc": null,
+              "auroc": null,
+              "brier": 0.02254638121771949,
+              "positives": 0,
+              "prevalence": 0.0,
+              "samples": 585
+            },
+            "libero_10/task6": {
+              "auprc": 0.1315878750448892,
+              "auroc": 0.7300398852424603,
+              "brier": 0.16332127871824678,
+              "positives": 31,
+              "prevalence": 0.06300813008130081,
+              "samples": 492
+            },
+            "libero_10/task7": {
+              "auprc": null,
+              "auroc": null,
+              "brier": 0.019910189824098364,
+              "positives": 0,
+              "prevalence": 0.0,
+              "samples": 820
+            },
+            "libero_10/task8": {
+              "auprc": 0.016649151937601137,
+              "auroc": 0.4429460580912863,
+              "brier": 0.031024750733620734,
+              "positives": 4,
+              "prevalence": 0.00823045267489712,
+              "samples": 486
+            },
+            "libero_10/task9": {
+              "auprc": 0.17950148809523808,
+              "auroc": 0.7484260230849947,
+              "brier": 0.021883096409162615,
+              "positives": 4,
+              "prevalence": 0.0041797283176593526,
+              "samples": 957
+            },
+            "libero_goal/task6": {
+              "auprc": null,
+              "auroc": null,
+              "brier": 0.02128382052923167,
+              "positives": 0,
+              "prevalence": 0.0,
+              "samples": 305
+            },
+            "libero_goal/task9": {
+              "auprc": 0.07857493029383827,
+              "auroc": 0.9241424802110818,
+              "brier": 0.03947628518772808,
+              "positives": 4,
+              "prevalence": 0.010443864229765013,
+              "samples": 383
+            }
+          }
+        }
+      }
+    },
+    "progress_delta": {
+      "long": {
+        "kendall_tau_b": 0.3539351522922516,
+        "mae": 0.10673248022794724,
+        "rmse": 0.14829899370670319,
+        "samples": 3900,
+        "sign_accuracy": 0.7338461538461538,
+        "spearman": 0.5005896286760478,
+        "task_macro": {
+          "eligible_tasks": 8,
+          "mae": 0.14167065173387527,
+          "per_task": {
+            "libero_10/task2": {
+              "kendall_tau_b": 0.4826148748397827,
+              "mae": 0.08037107437849045,
+              "rmse": 0.10227308422327042,
+              "samples": 659,
+              "sign_accuracy": 0.8801213960546282,
+              "spearman": 0.65681319033099
+            },
+            "libero_10/task4": {
+              "kendall_tau_b": 0.3332257568836212,
+              "mae": 0.0632421150803566,
+              "rmse": 0.08121327310800552,
+              "samples": 479,
+              "sign_accuracy": 0.9331941544885177,
+              "spearman": 0.4516305008323954
+            },
+            "libero_10/task6": {
+              "kendall_tau_b": 0.19337137043476105,
+              "mae": 0.09380774199962616,
+              "rmse": 0.1135176345705986,
+              "samples": 441,
+              "sign_accuracy": 0.47845804988662133,
+              "spearman": 0.2647902856760645
+            },
+            "libero_10/task7": {
+              "kendall_tau_b": 0.021533040329813957,
+              "mae": 0.08340001106262207,
+              "rmse": 0.1060481145977974,
+              "samples": 658,
+              "sign_accuracy": 0.8738601823708206,
+              "spearman": 0.023401200792577397
+            },
+            "libero_10/task8": {
+              "kendall_tau_b": 0.2567354440689087,
+              "mae": 0.12128795683383942,
+              "rmse": 0.1436556577682495,
+              "samples": 426,
+              "sign_accuracy": 0.3779342723004695,
+              "spearman": 0.34152608976767834
+            },
+            "libero_10/task9": {
+              "kendall_tau_b": 0.5041337013244629,
+              "mae": 0.07895562052726746,
+              "rmse": 0.10074432939291,
+              "samples": 817,
+              "sign_accuracy": 0.616891064871481,
+              "spearman": 0.6518968875626665
+            },
+            "libero_goal/task6": {
+              "kendall_tau_b": 0.08202938735485077,
+              "mae": 0.36680057644844055,
+              "rmse": 0.3822282552719116,
+              "samples": 144,
+              "sign_accuracy": 1.0,
+              "spearman": 0.1362832189378766
+            },
+            "libero_goal/task9": {
+              "kendall_tau_b": 0.32841727137565613,
+              "mae": 0.2455001175403595,
+              "rmse": 0.2980272173881531,
+              "samples": 276,
+              "sign_accuracy": 0.8695652173913043,
+              "spearman": 0.48847166185325236
+            }
+          },
+          "spearman": 0.37685162946918765
+        }
+      },
+      "medium": {
+        "kendall_tau_b": 0.32067012786865234,
+        "mae": 0.06721536070108414,
+        "rmse": 0.09607401490211487,
+        "samples": 4535,
+        "sign_accuracy": 0.5437706725468577,
+        "spearman": 0.44156278313526054,
+        "task_macro": {
+          "eligible_tasks": 8,
+          "mae": 0.07554089417681098,
+          "per_task": {
+            "libero_10/task2": {
+              "kendall_tau_b": 0.35029304027557373,
+              "mae": 0.05739389732480049,
+              "rmse": 0.08282774686813354,
+              "samples": 771,
+              "sign_accuracy": 0.6536964980544747,
+              "spearman": 0.47668742446329043
+            },
+            "libero_10/task4": {
+              "kendall_tau_b": 0.3042463958263397,
+              "mae": 0.05653328076004982,
+              "rmse": 0.07232388108968735,
+              "samples": 552,
+              "sign_accuracy": 0.6340579710144928,
+              "spearman": 0.42136477707798675
+            },
+            "libero_10/task6": {
+              "kendall_tau_b": 0.18687018752098083,
+              "mae": 0.05914611369371414,
+              "rmse": 0.07181239873170853,
+              "samples": 479,
+              "sign_accuracy": 0.3778705636743215,
+              "spearman": 0.2588440529709673
+            },
+            "libero_10/task7": {
+              "kendall_tau_b": 0.21378426253795624,
+              "mae": 0.05549677088856697,
+              "rmse": 0.07109519094228745,
+              "samples": 769,
+              "sign_accuracy": 0.5916775032509753,
+              "spearman": 0.30331751021639847
+            },
+            "libero_10/task8": {
+              "kendall_tau_b": 0.29049205780029297,
+              "mae": 0.06545249372720718,
+              "rmse": 0.09961984306573868,
+              "samples": 463,
+              "sign_accuracy": 0.3369330453563715,
+              "spearman": 0.37197349457694895
+            },
+            "libero_10/task9": {
+              "kendall_tau_b": 0.32831689715385437,
+              "mae": 0.06161276251077652,
+              "rmse": 0.08031536638736725,
+              "samples": 908,
+              "sign_accuracy": 0.43171806167400884,
+              "spearman": 0.41636905373820626
+            },
+            "libero_goal/task6": {
+              "kendall_tau_b": 0.3660982847213745,
+              "mae": 0.13986420631408691,
+              "rmse": 0.16898226737976074,
+              "samples": 244,
+              "sign_accuracy": 0.8524590163934426,
+              "spearman": 0.5377177645849605
+            },
+            "libero_goal/task9": {
+              "kendall_tau_b": 0.4084039628505707,
+              "mae": 0.1088276281952858,
+              "rmse": 0.16847306489944458,
+              "samples": 349,
+              "sign_accuracy": 0.6303724928366762,
+              "spearman": 0.5740833568603586
+            }
+          },
+          "spearman": 0.42004467931113965
+        }
+      },
+      "short": {
+        "kendall_tau_b": 0.2208697497844696,
+        "mae": 0.03394179791212082,
+        "rmse": 0.05937129631638527,
+        "samples": 4848,
+        "sign_accuracy": 0.5979785478547854,
+        "spearman": 0.28973870337332075,
+        "task_macro": {
+          "eligible_tasks": 8,
+          "mae": 0.036474194610491395,
+          "per_task": {
+            "libero_10/task2": {
+              "kendall_tau_b": 0.25701361894607544,
+              "mae": 0.03119663894176483,
+              "rmse": 0.05318125709891319,
+              "samples": 820,
+              "sign_accuracy": 0.6378048780487805,
+              "spearman": 0.3424590707442592
+            },
+            "libero_10/task4": {
+              "kendall_tau_b": 0.17879298329353333,
+              "mae": 0.033053863793611526,
+              "rmse": 0.05494974926114082,
+              "samples": 585,
+              "sign_accuracy": 0.6427350427350428,
+              "spearman": 0.2271388544218133
+            },
+            "libero_10/task6": {
+              "kendall_tau_b": 0.118608258664608,
+              "mae": 0.030865471810102463,
+              "rmse": 0.04680294543504715,
+              "samples": 492,
+              "sign_accuracy": 0.556910569105691,
+              "spearman": 0.15317971663274138
+            },
+            "libero_10/task7": {
+              "kendall_tau_b": 0.24288147687911987,
+              "mae": 0.029333896934986115,
+              "rmse": 0.046240705996751785,
+              "samples": 820,
+              "sign_accuracy": 0.5890243902439024,
+              "spearman": 0.3228969017597675
+            },
+            "libero_10/task8": {
+              "kendall_tau_b": 0.09519197046756744,
+              "mae": 0.028063291683793068,
+              "rmse": 0.0630754753947258,
+              "samples": 486,
+              "sign_accuracy": 0.6378600823045267,
+              "spearman": 0.11922829790594963
+            },
+            "libero_10/task9": {
+              "kendall_tau_b": 0.11211936175823212,
+              "mae": 0.03167857229709625,
+              "rmse": 0.05603162571787834,
+              "samples": 957,
+              "sign_accuracy": 0.5778474399164054,
+              "spearman": 0.13902780874825357
+            },
+            "libero_goal/task6": {
+              "kendall_tau_b": 0.33544307947158813,
+              "mae": 0.06120733544230461,
+              "rmse": 0.08864463865756989,
+              "samples": 305,
+              "sign_accuracy": 0.5639344262295082,
+              "spearman": 0.46677314515429613
+            },
+            "libero_goal/task9": {
+              "kendall_tau_b": 0.29158714413642883,
+              "mae": 0.04639448598027229,
+              "rmse": 0.08607478439807892,
+              "samples": 383,
+              "sign_accuracy": 0.5430809399477807,
+              "spearman": 0.3961632885091823
+            }
+          },
+          "spearman": 0.2708583854845329
+        }
+      }
+    }
+  },
+  "model": "action_only",
+  "runtime": {
+    "elapsed_seconds": 21.138363637030125,
+    "peak_gpu_memory_bytes": 21530112
+  },
+  "schema_version": "latentguard.lg_r2a.action_only.results.v1",
+  "status": "pass"
+}

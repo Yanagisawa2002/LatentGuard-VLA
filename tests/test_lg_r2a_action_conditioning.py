@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import hashlib
+import json
 from pathlib import Path
 
 import numpy as np
@@ -209,3 +211,104 @@ def test_source_guards_forbid_rollout_synthetic_candidates_and_final_seeds() -> 
     )
     assert '"real_executed_actions_only": True' in sensitivity
     assert '"true_same_state_counterfactual": False' in sensitivity
+
+
+def test_committed_lg_r2a_input_and_target_identities() -> None:
+    artifact_root = ROOT / "artifacts" / "lg_r2a"
+    source = json.loads(
+        (artifact_root / "input_dataset_manifest.json").read_text(encoding="utf-8")
+    )
+    assert source["status"] == "pass"
+    assert source["counts"] == {
+        "episode_leakage": 0,
+        "episodes": 320,
+        "evaluation_windows": 8470,
+        "failure_tasks": 4,
+        "failures": 27,
+        "frames": 79326,
+        "seed_leakage": 0,
+        "successes": 293,
+        "suites": 2,
+        "tasks": 8,
+    }
+    assert source["final_seeds_accessed"] is False
+    targets = json.loads(
+        (artifact_root / "target_manifest.json").read_text(encoding="utf-8")
+    )
+    assert targets["samples"] == 4848
+    assert targets["excluded_incomplete_action_tail_samples"] == 152
+    assert targets["supports"] == {
+        "FAILED_PLACEMENT": 31,
+        "OBJECT_DROP": 8,
+        "terminal_failure": 43,
+    }
+
+
+def test_committed_cv_and_action_contract_pass() -> None:
+    artifact_root = ROOT / "artifacts" / "lg_r2a"
+    contract = json.loads(
+        (artifact_root / "action_contract.json").read_text(encoding="utf-8")
+    )
+    assert contract["validation"]["status"] == "pass"
+    assert contract["action_dimension"] == 7
+    assert contract["action_horizon"] == 7
+    assert contract["execution_horizon"] == 7
+    splits = json.loads(
+        (artifact_root / "cv_split_manifest.json").read_text(encoding="utf-8")
+    )
+    assert splits["validation"]["episode_leakage"] == 0
+    assert splits["validation"]["seed_leakage"] == 0
+    assert [row["failures"] for row in splits["validation"]["folds"]] == [
+        5,
+        6,
+        6,
+        5,
+        5,
+    ]
+
+
+def test_committed_result_b_keeps_lg_r2b_closed() -> None:
+    artifact_root = ROOT / "artifacts" / "lg_r2a"
+    summary = json.loads(
+        (artifact_root / "evaluation_summary.json").read_text(encoding="utf-8")
+    )
+    assert summary["result_class"] == "Result B"
+    assert summary["gate"]["LG_R2B_AUTHORIZED"] is False
+    assert summary["gate"]["checks"]["progress_increment"] is False
+    assert summary["gate"]["checks"]["fold_direction_at_least_4_of_5"] is False
+    assert summary["candidate_generation"] is False
+    assert summary["candidate_ranking"] is False
+    assert summary["intervention"] is False
+    internal = json.loads(
+        (artifact_root / "internal_token_results.json").read_text(encoding="utf-8")
+    )
+    assert internal["used_for_gate"] is False
+    assert internal["general_external_candidate_deployable"] is False
+
+
+def test_committed_remote_hashes_and_execution_commits() -> None:
+    artifact_root = ROOT / "artifacts" / "lg_r2a"
+    audit = json.loads(
+        (artifact_root / "remote_execution_audit.json").read_text(encoding="utf-8")
+    )
+    for name, identity in audit["compact_files"].items():
+        path = artifact_root / name
+        assert path.stat().st_size == identity["bytes"]
+        assert hashlib.sha256(path.read_bytes()).hexdigest() == identity["sha256"]
+    assert audit["execution_commits"] == {
+        "evaluation": "f867f97c09e8785b91c1c94c18cae1b316795f59",
+        "training": "1f03f484c9f29e0a3dbfee767b56dbfd34795e3d",
+    }
+    assert audit["source_checkout_clean_after_run"] is True
+    assert audit["server_left_running"] is True
+
+
+def test_action_magnitude_diagnostic_is_not_selection_evidence() -> None:
+    payload = json.loads(
+        (ROOT / "artifacts" / "lg_r2a" / "action_magnitude_diagnostic.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert payload["shortcut_concern_not_excluded"] is True
+    assert payload["used_for_training"] is False
+    assert payload["used_for_selection"] is False

@@ -1,0 +1,86 @@
+{
+  "action_validation": {
+    "effective_horizon_max": 7,
+    "effective_horizon_min": 7,
+    "finite": true,
+    "full_horizon": true,
+    "observed_max": [
+      0.9375,
+      0.8734863996505737,
+      0.9375,
+      0.2816988229751587,
+      0.28250014781951904,
+      0.375,
+      1.0
+    ],
+    "observed_min": [
+      -0.8796625733375549,
+      -0.8399262428283691,
+      -0.9375,
+      -0.18500079214572906,
+      -0.18488319218158722,
+      -0.3049241006374359,
+      -1.0
+    ],
+    "samples": 4848,
+    "shape": [
+      4848,
+      7,
+      7
+    ],
+    "status": "pass"
+  },
+  "deployable_model_inputs": [
+    "current_vla_representation",
+    "numeric_action_chunk",
+    "action_mask",
+    "effective_action_horizon",
+    "current_proprioception_for_model_d"
+  ],
+  "event_targets": [
+    "OBJECT_DROP",
+    "FAILED_PLACEMENT"
+  ],
+  "event_timing_source": "LG-R1b frozen first_abnormal_step",
+  "excluded_incomplete_action_tail_samples": 152,
+  "horizons": {
+    "long": 49,
+    "medium": 21,
+    "short": 7
+  },
+  "label_only_fields": [
+    "future progress",
+    "future stage regression",
+    "failure taxonomy",
+    "terminal result",
+    "effective target steps"
+  ],
+  "new_rollouts": 0,
+  "prepared_data": {
+    "bytes": 29482643,
+    "locator": "external/prepared_data.npz",
+    "sha256": "0f82239ff8ec296dd7aef2ac0d1f49a66f4cca293516ac71b0e5c60d7c9aa49a"
+  },
+  "progress_delta": "post_progress(t+k-1)-pre_progress(t)",
+  "regression_threshold": 0.02,
+  "samples": 4848,
+  "schema_version": "latentguard.lg_r2a.target_manifest.v1",
+  "stagnation_threshold": 0.02,
+  "status": "pass",
+  "supports": {
+    "FAILED_PLACEMENT": 31,
+    "OBJECT_DROP": 8,
+    "terminal_failure": 43
+  },
+  "synthetic_actions": 0,
+  "terminal_failure": "natural unsuccessful episode whose terminal boundary is within the frozen long horizon",
+  "time_to_failure": {
+    "buckets": [
+      "imminent_lt7",
+      "medium_lt21",
+      "distant_ge21",
+      "past"
+    ],
+    "role": "diagnostic_only"
+  }
+}

@@ -48,6 +48,9 @@ artifacts/lg_r1b/*
 !artifacts/lg_r1c/
 artifacts/lg_r1c/*
 !artifacts/lg_r1c/*.json
+!artifacts/lg_r2a/
+artifacts/lg_r2a/*
+!artifacts/lg_r2a/*.json
 !artifacts/wm_v0/
 artifacts/wm_v0/*
 !artifacts/wm_v0/dataset_manifest.json

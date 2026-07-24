@@ -1,0 +1,341 @@
+{
+  "architecture_search": false,
+  "checkpoint_resume_supported": true,
+  "elapsed_seconds": 25.42325108125806,
+  "feature_cache_frozen": true,
+  "folds": [
+    {
+      "best_validation_score": 0.050116803497076035,
+      "best_validation_step": 380,
+      "class_weights_train_only": {
+        "events": [
+          50.0,
+          50.0
+        ],
+        "regression": [
+          46.557376861572266,
+          15.4909086227417,
+          5.770349025726318
+        ],
+        "stagnation": [
+          1.0,
+          1.0,
+          2.4503703117370605
+        ],
+        "terminal": [
+          50.0
+        ]
+      },
+      "elapsed_seconds": 5.503166116774082,
+      "fold": 0,
+      "inference_latency_ms_per_sample": 0.0024331166059710085,
+      "optimizer_steps": 400,
+      "parameter_report": {
+        "action_encoder_parameters": 5856,
+        "trainable_parameters": 313468,
+        "variant": "state_action_proprio"
+      },
+      "selected_thresholds": {
+        "events": [
+          0.9538086652755737,
+          0.12024573609232903
+        ],
+        "regression": [
+          0.7193025082349741,
+          0.7502047181129461,
+          0.59915691614151
+        ],
+        "stagnation": [
+          0.3544098737835884,
+          0.6159903520345689,
+          0.7096283704042434
+        ],
+        "terminal": [
+          0.0023666124790907004
+        ]
+      },
+      "test_evaluations": 1,
+      "test_samples": 976,
+      "threshold_selection_split": "validation",
+      "train_samples": 2901,
+      "validation_samples": 971
+    },
+    {
+      "best_validation_score": 0.045958518981933594,
+      "best_validation_step": 380,
+      "class_weights_train_only": {
+        "events": [
+          50.0,
+          50.0
+        ],
+        "regression": [
+          50.0,
+          17.405405044555664,
+          6.6940789222717285
+        ],
+        "stagnation": [
+          1.0,
+          1.0,
+          2.3849494457244873
+        ],
+        "terminal": [
+          50.0
+        ]
+      },
+      "elapsed_seconds": 4.358929269015789,
+      "fold": 1,
+      "inference_latency_ms_per_sample": 0.0022837339201942086,
+      "optimizer_steps": 400,
+      "parameter_report": {
+        "action_encoder_parameters": 5856,
+        "trainable_parameters": 313468,
+        "variant": "state_action_proprio"
+      },
+      "selected_thresholds": {
+        "events": [
+          5.537851507142477e-07,
+          0.4321380138397206
+        ],
+        "regression": [
+          0.7528202056884756,
+          0.8925706624984747,
+          0.8648396134376526
+        ],
+        "stagnation": [
+          0.35610962152481085,
+          0.39475248306989624,
+          0.6610906982421881
+        ],
+        "terminal": [
+          0.9711068749427803
+        ]
+      },
+      "test_evaluations": 1,
+      "test_samples": 971,
+      "threshold_selection_split": "validation",
+      "train_samples": 2916,
+      "validation_samples": 961
+    },
+    {
+      "best_validation_score": 0.044056810438632965,
+      "best_validation_step": 380,
+      "class_weights_train_only": {
+        "events": [
+          50.0,
+          50.0
+        ],
+        "regression": [
+          45.22222137451172,
+          16.024999618530273,
+          6.801980018615723
+        ],
+        "stagnation": [
+          1.0,
+          1.0,
+          2.38681960105896
+        ],
+        "terminal": [
+          50.0
+        ]
+      },
+      "elapsed_seconds": 4.768691472709179,
+      "fold": 2,
+      "inference_latency_ms_per_sample": 0.0018199192709289491,
+      "optimizer_steps": 400,
+      "parameter_report": {
+        "action_encoder_parameters": 5856,
+        "trainable_parameters": 313468,
+        "variant": "state_action_proprio"
+      },
+      "selected_thresholds": {
+        "events": [
+          8.027760566619698e-05,
+          0.6996376252174366
+        ],
+        "regression": [
+          0.9908820164203643,
+          0.9912629127502441,
+          0.7019721961021425
+        ],
+        "stagnation": [
+          0.40619349479675293,
+          0.3863375514745716,
+          0.6594513833522796
+        ],
+        "terminal": [
+          0.034828887935727706
+        ]
+      },
+      "test_evaluations": 1,
+      "test_samples": 961,
+      "threshold_selection_split": "validation",
+      "train_samples": 2912,
+      "validation_samples": 975
+    },
+    {
+      "best_validation_score": 0.045484255999326706,
+      "best_validation_step": 380,
+      "class_weights_train_only": {
+        "events": [
+          50.0,
+          50.0
+        ],
+        "regression": [
+          37.77333450317383,
+          14.178771018981934,
+          5.851312160491943
+        ],
+        "stagnation": [
+          1.0,
+          1.0,
+          2.4407026767730713
+        ],
+        "terminal": [
+          50.0
+        ]
+      },
+      "elapsed_seconds": 5.040774680674076,
+      "fold": 3,
+      "inference_latency_ms_per_sample": 0.002502923598513007,
+      "optimizer_steps": 400,
+      "parameter_report": {
+        "action_encoder_parameters": 5856,
+        "trainable_parameters": 313468,
+        "variant": "state_action_proprio"
+      },
+      "selected_thresholds": {
+        "events": [
+          0.0007284482242539527,
+          0.9123766982555372
+        ],
+        "regression": [
+          0.9912000274658204,
+          0.9878814995288849,
+          0.9028226912021639
+        ],
+        "stagnation": [
+          0.43914651632308954,
+          0.47138846293091774,
+          0.8509178781509399
+        ],
+        "terminal": [
+          0.13241034299134533
+        ]
+      },
+      "test_evaluations": 1,
+      "test_samples": 975,
+      "threshold_selection_split": "validation",
+      "train_samples": 2908,
+      "validation_samples": 965
+    },
+    {
+      "best_validation_score": 0.05005759745836258,
+      "best_validation_step": 360,
+      "class_weights_train_only": {
+        "events": [
+          50.0,
+          50.0
+        ],
+        "regression": [
+          36.75324630737305,
+          14.18994426727295,
+          5.29891300201416
+        ],
+        "stagnation": [
+          1.0,
+          1.0,
+          2.475262403488159
+        ],
+        "terminal": [
+          50.0
+        ]
+      },
+      "elapsed_seconds": 4.60484704375267,
+      "fold": 4,
+      "inference_latency_ms_per_sample": 0.0026262656319886446,
+      "optimizer_steps": 400,
+      "parameter_report": {
+        "action_encoder_parameters": 5856,
+        "trainable_parameters": 313468,
+        "variant": "state_action_proprio"
+      },
+      "selected_thresholds": {
+        "events": [
+          0.005240208120085299,
+          0.00017371914873365313
+        ],
+        "regression": [
+          0.7358757555484772,
+          0.9304268956184387,
+          0.7520155683159828
+        ],
+        "stagnation": [
+          0.38475311398506173,
+          0.5831078696250916,
+          0.8378182637691506
+        ],
+        "terminal": [
+          0.02325935335829854
+        ]
+      },
+      "test_evaluations": 1,
+      "test_samples": 965,
+      "threshold_selection_split": "validation",
+      "train_samples": 2907,
+      "validation_samples": 976
+    }
+  ],
+  "foundation_models_frozen": true,
+  "fusion": "single pre-registered concatenation plus action gate",
+  "graceful_interruption_supported": true,
+  "peak_gpu_memory_bytes": 26361344,
+  "prediction_file": "oof_predictions.npz",
+  "resolved_config": {
+    "action_encoder_parameter_cap": 500000,
+    "batch_size": 128,
+    "class_weight_cap": 50.0,
+    "current_proprioception_pre_execution": true,
+    "early_stopping_patience": 12,
+    "foundation_features_frozen": true,
+    "fusion": "concatenation_plus_action_gate",
+    "gradient_clip_norm": 1.0,
+    "learning_rate": 0.0005,
+    "loss_weights": {
+      "events": 0.5,
+      "progress": 1.0,
+      "regression": 0.5,
+      "stagnation": 0.5,
+      "terminal": 0.5
+    },
+    "max_steps_per_fold": 400,
+    "minimum_improvement": 1e-05,
+    "schema_version": "latentguard.lg_r2a.probe_config.v1",
+    "seed": 0,
+    "test_once": true,
+    "variant": "state_action_proprio",
+    "weight_decay": 0.0001
+  },
+  "runtime_identity": {
+    "git_branch": "codex/lg-r2a-action-conditioning",
+    "git_commit": "1f03f484c9f29e0a3dbfee767b56dbfd34795e3d",
+    "hostname": "autodl-container-c47c48a71b-504676bc",
+    "platform": "Linux-5.15.0-119-generic-x86_64-with-glibc2.35",
+    "python": "3.12.3",
+    "torch": {
+      "available": true,
+      "cuda_available": true,
+      "cuda_version": "12.8",
+      "gpu_name": "NVIDIA GeForce RTX 5090",
+      "version": "2.11.0+cu128"
+    }
+  },
+  "schema_version": "latentguard.lg_r2a.probe_run.v1",
+  "seed": 0,
+  "status": "pass",
+  "test_consumption": "one evaluation per sample after fold validation selection",
+  "trainable_components": [
+    "diagnostic_head",
+    "action_encoder"
+  ],
+  "variant": "state_action_proprio"
+}

@@ -1,0 +1,3388 @@
+{
+  "algorithm": "deterministic greedy seed-group assignment; failures first; then taxonomy, task, and cached-window balancing",
+  "assignment_seed": 22031,
+  "assignments": [
+    {
+      "cached_windows": 32,
+      "episode_id": "libero_10-task2-seed3000",
+      "fold": 2,
+      "progress_bin": 1,
+      "seed": 3000,
+      "success": true,
+      "task": "libero_10/task2",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 25,
+      "episode_id": "libero_10-task2-seed3001",
+      "fold": 1,
+      "progress_bin": 1,
+      "seed": 3001,
+      "success": true,
+      "task": "libero_10/task2",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 23,
+      "episode_id": "libero_10-task2-seed3002",
+      "fold": 2,
+      "progress_bin": 1,
+      "seed": 3002,
+      "success": true,
+      "task": "libero_10/task2",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 24,
+      "episode_id": "libero_10-task2-seed3003",
+      "fold": 2,
+      "progress_bin": 1,
+      "seed": 3003,
+      "success": true,
+      "task": "libero_10/task2",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 25,
+      "episode_id": "libero_10-task2-seed3004",
+      "fold": 0,
+      "progress_bin": 1,
+      "seed": 3004,
+      "success": true,
+      "task": "libero_10/task2",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 14,
+      "episode_id": "libero_10-task2-seed3005",
+      "fold": 1,
+      "progress_bin": 1,
+      "seed": 3005,
+      "success": true,
+      "task": "libero_10/task2",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 18,
+      "episode_id": "libero_10-task2-seed3006",
+      "fold": 4,
+      "progress_bin": 1,
+      "seed": 3006,
+      "success": true,
+      "task": "libero_10/task2",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 17,
+      "episode_id": "libero_10-task2-seed3007",
+      "fold": 3,
+      "progress_bin": 1,
+      "seed": 3007,
+      "success": true,
+      "task": "libero_10/task2",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 25,
+      "episode_id": "libero_10-task2-seed3008",
+      "fold": 1,
+      "progress_bin": 1,
+      "seed": 3008,
+      "success": true,
+      "task": "libero_10/task2",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 15,
+      "episode_id": "libero_10-task2-seed3009",
+      "fold": 0,
+      "progress_bin": 1,
+      "seed": 3009,
+      "success": true,
+      "task": "libero_10/task2",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 22,
+      "episode_id": "libero_10-task2-seed4000",
+      "fold": 0,
+      "progress_bin": 1,
+      "seed": 4000,
+      "success": true,
+      "task": "libero_10/task2",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 25,
+      "episode_id": "libero_10-task2-seed4001",
+      "fold": 3,
+      "progress_bin": 1,
+      "seed": 4001,
+      "success": true,
+      "task": "libero_10/task2",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 20,
+      "episode_id": "libero_10-task2-seed4002",
+      "fold": 3,
+      "progress_bin": 1,
+      "seed": 4002,
+      "success": true,
+      "task": "libero_10/task2",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 24,
+      "episode_id": "libero_10-task2-seed4003",
+      "fold": 4,
+      "progress_bin": 1,
+      "seed": 4003,
+      "success": true,
+      "task": "libero_10/task2",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 24,
+      "episode_id": "libero_10-task2-seed4004",
+      "fold": 3,
+      "progress_bin": 1,
+      "seed": 4004,
+      "success": true,
+      "task": "libero_10/task2",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 24,
+      "episode_id": "libero_10-task2-seed4005",
+      "fold": 0,
+      "progress_bin": 1,
+      "seed": 4005,
+      "success": true,
+      "task": "libero_10/task2",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 17,
+      "episode_id": "libero_10-task2-seed4006",
+      "fold": 1,
+      "progress_bin": 1,
+      "seed": 4006,
+      "success": true,
+      "task": "libero_10/task2",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 23,
+      "episode_id": "libero_10-task2-seed4007",
+      "fold": 1,
+      "progress_bin": 1,
+      "seed": 4007,
+      "success": true,
+      "task": "libero_10/task2",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 14,
+      "episode_id": "libero_10-task2-seed4008",
+      "fold": 4,
+      "progress_bin": 1,
+      "seed": 4008,
+      "success": true,
+      "task": "libero_10/task2",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 15,
+      "episode_id": "libero_10-task2-seed4009",
+      "fold": 3,
+      "progress_bin": 1,
+      "seed": 4009,
+      "success": true,
+      "task": "libero_10/task2",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 23,
+      "episode_id": "libero_10-task2-seed4080",
+      "fold": 4,
+      "progress_bin": 1,
+      "seed": 4080,
+      "success": true,
+      "task": "libero_10/task2",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 22,
+      "episode_id": "libero_10-task2-seed4081",
+      "fold": 0,
+      "progress_bin": 1,
+      "seed": 4081,
+      "success": true,
+      "task": "libero_10/task2",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 22,
+      "episode_id": "libero_10-task2-seed4082",
+      "fold": 3,
+      "progress_bin": 1,
+      "seed": 4082,
+      "success": true,
+      "task": "libero_10/task2",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 17,
+      "episode_id": "libero_10-task2-seed4083",
+      "fold": 4,
+      "progress_bin": 1,
+      "seed": 4083,
+      "success": true,
+      "task": "libero_10/task2",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 30,
+      "episode_id": "libero_10-task2-seed4084",
+      "fold": 4,
+      "progress_bin": 1,
+      "seed": 4084,
+      "success": true,
+      "task": "libero_10/task2",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 19,
+      "episode_id": "libero_10-task2-seed4085",
+      "fold": 1,
+      "progress_bin": 1,
+      "seed": 4085,
+      "success": true,
+      "task": "libero_10/task2",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 23,
+      "episode_id": "libero_10-task2-seed4086",
+      "fold": 1,
+      "progress_bin": 1,
+      "seed": 4086,
+      "success": true,
+      "task": "libero_10/task2",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 13,
+      "episode_id": "libero_10-task2-seed4087",
+      "fold": 0,
+      "progress_bin": 1,
+      "seed": 4087,
+      "success": true,
+      "task": "libero_10/task2",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 22,
+      "episode_id": "libero_10-task2-seed4088",
+      "fold": 2,
+      "progress_bin": 1,
+      "seed": 4088,
+      "success": true,
+      "task": "libero_10/task2",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 17,
+      "episode_id": "libero_10-task2-seed4089",
+      "fold": 3,
+      "progress_bin": 1,
+      "seed": 4089,
+      "success": true,
+      "task": "libero_10/task2",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 21,
+      "episode_id": "libero_10-task2-seed4160",
+      "fold": 1,
+      "progress_bin": 1,
+      "seed": 4160,
+      "success": true,
+      "task": "libero_10/task2",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 20,
+      "episode_id": "libero_10-task2-seed4161",
+      "fold": 2,
+      "progress_bin": 1,
+      "seed": 4161,
+      "success": true,
+      "task": "libero_10/task2",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 16,
+      "episode_id": "libero_10-task2-seed4162",
+      "fold": 2,
+      "progress_bin": 1,
+      "seed": 4162,
+      "success": true,
+      "task": "libero_10/task2",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 25,
+      "episode_id": "libero_10-task2-seed4163",
+      "fold": 2,
+      "progress_bin": 1,
+      "seed": 4163,
+      "success": true,
+      "task": "libero_10/task2",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 23,
+      "episode_id": "libero_10-task2-seed4164",
+      "fold": 4,
+      "progress_bin": 1,
+      "seed": 4164,
+      "success": true,
+      "task": "libero_10/task2",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 14,
+      "episode_id": "libero_10-task2-seed4165",
+      "fold": 2,
+      "progress_bin": 1,
+      "seed": 4165,
+      "success": true,
+      "task": "libero_10/task2",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 23,
+      "episode_id": "libero_10-task2-seed4166",
+      "fold": 3,
+      "progress_bin": 1,
+      "seed": 4166,
+      "success": true,
+      "task": "libero_10/task2",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 24,
+      "episode_id": "libero_10-task2-seed4167",
+      "fold": 0,
+      "progress_bin": 1,
+      "seed": 4167,
+      "success": true,
+      "task": "libero_10/task2",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 19,
+      "episode_id": "libero_10-task2-seed4168",
+      "fold": 0,
+      "progress_bin": 1,
+      "seed": 4168,
+      "success": true,
+      "task": "libero_10/task2",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 21,
+      "episode_id": "libero_10-task2-seed4169",
+      "fold": 4,
+      "progress_bin": 1,
+      "seed": 4169,
+      "success": true,
+      "task": "libero_10/task2",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 19,
+      "episode_id": "libero_10-task4-seed3030",
+      "fold": 1,
+      "progress_bin": 1,
+      "seed": 3030,
+      "success": true,
+      "task": "libero_10/task4",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 15,
+      "episode_id": "libero_10-task4-seed3031",
+      "fold": 1,
+      "progress_bin": 1,
+      "seed": 3031,
+      "success": true,
+      "task": "libero_10/task4",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 17,
+      "episode_id": "libero_10-task4-seed3032",
+      "fold": 0,
+      "progress_bin": 1,
+      "seed": 3032,
+      "success": true,
+      "task": "libero_10/task4",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 11,
+      "episode_id": "libero_10-task4-seed3033",
+      "fold": 1,
+      "progress_bin": 1,
+      "seed": 3033,
+      "success": true,
+      "task": "libero_10/task4",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 18,
+      "episode_id": "libero_10-task4-seed3034",
+      "fold": 2,
+      "progress_bin": 1,
+      "seed": 3034,
+      "success": true,
+      "task": "libero_10/task4",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 12,
+      "episode_id": "libero_10-task4-seed3035",
+      "fold": 4,
+      "progress_bin": 1,
+      "seed": 3035,
+      "success": true,
+      "task": "libero_10/task4",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 15,
+      "episode_id": "libero_10-task4-seed3036",
+      "fold": 4,
+      "progress_bin": 1,
+      "seed": 3036,
+      "success": true,
+      "task": "libero_10/task4",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 15,
+      "episode_id": "libero_10-task4-seed3037",
+      "fold": 0,
+      "progress_bin": 1,
+      "seed": 3037,
+      "success": true,
+      "task": "libero_10/task4",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 16,
+      "episode_id": "libero_10-task4-seed3038",
+      "fold": 3,
+      "progress_bin": 1,
+      "seed": 3038,
+      "success": true,
+      "task": "libero_10/task4",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 13,
+      "episode_id": "libero_10-task4-seed3039",
+      "fold": 3,
+      "progress_bin": 1,
+      "seed": 3039,
+      "success": true,
+      "task": "libero_10/task4",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 10,
+      "episode_id": "libero_10-task4-seed4030",
+      "fold": 4,
+      "progress_bin": 1,
+      "seed": 4030,
+      "success": true,
+      "task": "libero_10/task4",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 14,
+      "episode_id": "libero_10-task4-seed4031",
+      "fold": 1,
+      "progress_bin": 1,
+      "seed": 4031,
+      "success": true,
+      "task": "libero_10/task4",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 9,
+      "episode_id": "libero_10-task4-seed4032",
+      "fold": 3,
+      "progress_bin": 1,
+      "seed": 4032,
+      "success": true,
+      "task": "libero_10/task4",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 7,
+      "episode_id": "libero_10-task4-seed4033",
+      "fold": 0,
+      "progress_bin": 1,
+      "seed": 4033,
+      "success": true,
+      "task": "libero_10/task4",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 16,
+      "episode_id": "libero_10-task4-seed4034",
+      "fold": 2,
+      "progress_bin": 1,
+      "seed": 4034,
+      "success": true,
+      "task": "libero_10/task4",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 12,
+      "episode_id": "libero_10-task4-seed4035",
+      "fold": 2,
+      "progress_bin": 1,
+      "seed": 4035,
+      "success": true,
+      "task": "libero_10/task4",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 21,
+      "episode_id": "libero_10-task4-seed4036",
+      "fold": 1,
+      "progress_bin": 1,
+      "seed": 4036,
+      "success": true,
+      "task": "libero_10/task4",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 10,
+      "episode_id": "libero_10-task4-seed4037",
+      "fold": 1,
+      "progress_bin": 1,
+      "seed": 4037,
+      "success": true,
+      "task": "libero_10/task4",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 19,
+      "episode_id": "libero_10-task4-seed4038",
+      "fold": 3,
+      "progress_bin": 1,
+      "seed": 4038,
+      "success": true,
+      "task": "libero_10/task4",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 17,
+      "episode_id": "libero_10-task4-seed4039",
+      "fold": 2,
+      "progress_bin": 1,
+      "seed": 4039,
+      "success": true,
+      "task": "libero_10/task4",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 16,
+      "episode_id": "libero_10-task4-seed4110",
+      "fold": 4,
+      "progress_bin": 1,
+      "seed": 4110,
+      "success": true,
+      "task": "libero_10/task4",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 13,
+      "episode_id": "libero_10-task4-seed4111",
+      "fold": 4,
+      "progress_bin": 1,
+      "seed": 4111,
+      "success": true,
+      "task": "libero_10/task4",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 13,
+      "episode_id": "libero_10-task4-seed4112",
+      "fold": 1,
+      "progress_bin": 1,
+      "seed": 4112,
+      "success": true,
+      "task": "libero_10/task4",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 22,
+      "episode_id": "libero_10-task4-seed4113",
+      "fold": 0,
+      "progress_bin": 1,
+      "seed": 4113,
+      "success": true,
+      "task": "libero_10/task4",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 19,
+      "episode_id": "libero_10-task4-seed4114",
+      "fold": 4,
+      "progress_bin": 1,
+      "seed": 4114,
+      "success": true,
+      "task": "libero_10/task4",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 15,
+      "episode_id": "libero_10-task4-seed4115",
+      "fold": 4,
+      "progress_bin": 1,
+      "seed": 4115,
+      "success": true,
+      "task": "libero_10/task4",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 18,
+      "episode_id": "libero_10-task4-seed4116",
+      "fold": 1,
+      "progress_bin": 1,
+      "seed": 4116,
+      "success": true,
+      "task": "libero_10/task4",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 22,
+      "episode_id": "libero_10-task4-seed4117",
+      "fold": 3,
+      "progress_bin": 1,
+      "seed": 4117,
+      "success": true,
+      "task": "libero_10/task4",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 14,
+      "episode_id": "libero_10-task4-seed4118",
+      "fold": 0,
+      "progress_bin": 1,
+      "seed": 4118,
+      "success": true,
+      "task": "libero_10/task4",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 19,
+      "episode_id": "libero_10-task4-seed4119",
+      "fold": 0,
+      "progress_bin": 1,
+      "seed": 4119,
+      "success": true,
+      "task": "libero_10/task4",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 15,
+      "episode_id": "libero_10-task4-seed4190",
+      "fold": 2,
+      "progress_bin": 1,
+      "seed": 4190,
+      "success": true,
+      "task": "libero_10/task4",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 13,
+      "episode_id": "libero_10-task4-seed4191",
+      "fold": 0,
+      "progress_bin": 1,
+      "seed": 4191,
+      "success": true,
+      "task": "libero_10/task4",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 19,
+      "episode_id": "libero_10-task4-seed4192",
+      "fold": 2,
+      "progress_bin": 1,
+      "seed": 4192,
+      "success": true,
+      "task": "libero_10/task4",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 15,
+      "episode_id": "libero_10-task4-seed4193",
+      "fold": 3,
+      "progress_bin": 1,
+      "seed": 4193,
+      "success": true,
+      "task": "libero_10/task4",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 13,
+      "episode_id": "libero_10-task4-seed4194",
+      "fold": 2,
+      "progress_bin": 1,
+      "seed": 4194,
+      "success": true,
+      "task": "libero_10/task4",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 11,
+      "episode_id": "libero_10-task4-seed4195",
+      "fold": 2,
+      "progress_bin": 1,
+      "seed": 4195,
+      "success": true,
+      "task": "libero_10/task4",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 20,
+      "episode_id": "libero_10-task4-seed4196",
+      "fold": 4,
+      "progress_bin": 1,
+      "seed": 4196,
+      "success": true,
+      "task": "libero_10/task4",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 13,
+      "episode_id": "libero_10-task4-seed4197",
+      "fold": 3,
+      "progress_bin": 1,
+      "seed": 4197,
+      "success": true,
+      "task": "libero_10/task4",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 15,
+      "episode_id": "libero_10-task4-seed4198",
+      "fold": 3,
+      "progress_bin": 1,
+      "seed": 4198,
+      "success": true,
+      "task": "libero_10/task4",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 13,
+      "episode_id": "libero_10-task4-seed4199",
+      "fold": 0,
+      "progress_bin": 1,
+      "seed": 4199,
+      "success": true,
+      "task": "libero_10/task4",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 16,
+      "episode_id": "libero_10-task6-seed3050",
+      "fold": 0,
+      "progress_bin": 2,
+      "seed": 3050,
+      "success": false,
+      "task": "libero_10/task6",
+      "taxonomy": "FAILED_PLACEMENT"
+    },
+    {
+      "cached_windows": 4,
+      "episode_id": "libero_10-task6-seed3051",
+      "fold": 2,
+      "progress_bin": 1,
+      "seed": 3051,
+      "success": true,
+      "task": "libero_10/task6",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 15,
+      "episode_id": "libero_10-task6-seed3052",
+      "fold": 2,
+      "progress_bin": 2,
+      "seed": 3052,
+      "success": false,
+      "task": "libero_10/task6",
+      "taxonomy": "FAILED_PLACEMENT"
+    },
+    {
+      "cached_windows": 24,
+      "episode_id": "libero_10-task6-seed3053",
+      "fold": 2,
+      "progress_bin": 2,
+      "seed": 3053,
+      "success": false,
+      "task": "libero_10/task6",
+      "taxonomy": "FAILED_PLACEMENT"
+    },
+    {
+      "cached_windows": 4,
+      "episode_id": "libero_10-task6-seed3054",
+      "fold": 3,
+      "progress_bin": 1,
+      "seed": 3054,
+      "success": true,
+      "task": "libero_10/task6",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 11,
+      "episode_id": "libero_10-task6-seed3055",
+      "fold": 0,
+      "progress_bin": 1,
+      "seed": 3055,
+      "success": true,
+      "task": "libero_10/task6",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 19,
+      "episode_id": "libero_10-task6-seed3056",
+      "fold": 3,
+      "progress_bin": 2,
+      "seed": 3056,
+      "success": false,
+      "task": "libero_10/task6",
+      "taxonomy": "FAILED_PLACEMENT"
+    },
+    {
+      "cached_windows": 6,
+      "episode_id": "libero_10-task6-seed3057",
+      "fold": 3,
+      "progress_bin": 1,
+      "seed": 3057,
+      "success": true,
+      "task": "libero_10/task6",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 14,
+      "episode_id": "libero_10-task6-seed3058",
+      "fold": 0,
+      "progress_bin": 2,
+      "seed": 3058,
+      "success": false,
+      "task": "libero_10/task6",
+      "taxonomy": "FAILED_PLACEMENT"
+    },
+    {
+      "cached_windows": 13,
+      "episode_id": "libero_10-task6-seed3059",
+      "fold": 4,
+      "progress_bin": 2,
+      "seed": 3059,
+      "success": false,
+      "task": "libero_10/task6",
+      "taxonomy": "FAILED_PLACEMENT"
+    },
+    {
+      "cached_windows": 4,
+      "episode_id": "libero_10-task6-seed4050",
+      "fold": 4,
+      "progress_bin": 1,
+      "seed": 4050,
+      "success": true,
+      "task": "libero_10/task6",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 7,
+      "episode_id": "libero_10-task6-seed4051",
+      "fold": 4,
+      "progress_bin": 2,
+      "seed": 4051,
+      "success": true,
+      "task": "libero_10/task6",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 5,
+      "episode_id": "libero_10-task6-seed4052",
+      "fold": 0,
+      "progress_bin": 1,
+      "seed": 4052,
+      "success": true,
+      "task": "libero_10/task6",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 12,
+      "episode_id": "libero_10-task6-seed4053",
+      "fold": 3,
+      "progress_bin": 1,
+      "seed": 4053,
+      "success": true,
+      "task": "libero_10/task6",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 18,
+      "episode_id": "libero_10-task6-seed4054",
+      "fold": 3,
+      "progress_bin": 2,
+      "seed": 4054,
+      "success": false,
+      "task": "libero_10/task6",
+      "taxonomy": "FAILED_PLACEMENT"
+    },
+    {
+      "cached_windows": 9,
+      "episode_id": "libero_10-task6-seed4055",
+      "fold": 0,
+      "progress_bin": 1,
+      "seed": 4055,
+      "success": true,
+      "task": "libero_10/task6",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 19,
+      "episode_id": "libero_10-task6-seed4056",
+      "fold": 2,
+      "progress_bin": 2,
+      "seed": 4056,
+      "success": false,
+      "task": "libero_10/task6",
+      "taxonomy": "FAILED_PLACEMENT"
+    },
+    {
+      "cached_windows": 15,
+      "episode_id": "libero_10-task6-seed4057",
+      "fold": 4,
+      "progress_bin": 2,
+      "seed": 4057,
+      "success": false,
+      "task": "libero_10/task6",
+      "taxonomy": "FAILED_PLACEMENT"
+    },
+    {
+      "cached_windows": 17,
+      "episode_id": "libero_10-task6-seed4058",
+      "fold": 4,
+      "progress_bin": 2,
+      "seed": 4058,
+      "success": false,
+      "task": "libero_10/task6",
+      "taxonomy": "OBJECT_DROP"
+    },
+    {
+      "cached_windows": 22,
+      "episode_id": "libero_10-task6-seed4059",
+      "fold": 4,
+      "progress_bin": 2,
+      "seed": 4059,
+      "success": false,
+      "task": "libero_10/task6",
+      "taxonomy": "FAILED_PLACEMENT"
+    },
+    {
+      "cached_windows": 19,
+      "episode_id": "libero_10-task6-seed4130",
+      "fold": 4,
+      "progress_bin": 2,
+      "seed": 4130,
+      "success": false,
+      "task": "libero_10/task6",
+      "taxonomy": "FAILED_PLACEMENT"
+    },
+    {
+      "cached_windows": 15,
+      "episode_id": "libero_10-task6-seed4131",
+      "fold": 1,
+      "progress_bin": 2,
+      "seed": 4131,
+      "success": false,
+      "task": "libero_10/task6",
+      "taxonomy": "FAILED_PLACEMENT"
+    },
+    {
+      "cached_windows": 7,
+      "episode_id": "libero_10-task6-seed4132",
+      "fold": 1,
+      "progress_bin": 1,
+      "seed": 4132,
+      "success": true,
+      "task": "libero_10/task6",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 10,
+      "episode_id": "libero_10-task6-seed4133",
+      "fold": 3,
+      "progress_bin": 1,
+      "seed": 4133,
+      "success": true,
+      "task": "libero_10/task6",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 14,
+      "episode_id": "libero_10-task6-seed4134",
+      "fold": 1,
+      "progress_bin": 1,
+      "seed": 4134,
+      "success": true,
+      "task": "libero_10/task6",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 16,
+      "episode_id": "libero_10-task6-seed4135",
+      "fold": 1,
+      "progress_bin": 2,
+      "seed": 4135,
+      "success": false,
+      "task": "libero_10/task6",
+      "taxonomy": "FAILED_PLACEMENT"
+    },
+    {
+      "cached_windows": 15,
+      "episode_id": "libero_10-task6-seed4136",
+      "fold": 3,
+      "progress_bin": 2,
+      "seed": 4136,
+      "success": false,
+      "task": "libero_10/task6",
+      "taxonomy": "FAILED_PLACEMENT"
+    },
+    {
+      "cached_windows": 7,
+      "episode_id": "libero_10-task6-seed4137",
+      "fold": 4,
+      "progress_bin": 1,
+      "seed": 4137,
+      "success": true,
+      "task": "libero_10/task6",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 17,
+      "episode_id": "libero_10-task6-seed4138",
+      "fold": 2,
+      "progress_bin": 2,
+      "seed": 4138,
+      "success": false,
+      "task": "libero_10/task6",
+      "taxonomy": "FAILED_PLACEMENT"
+    },
+    {
+      "cached_windows": 19,
+      "episode_id": "libero_10-task6-seed4139",
+      "fold": 1,
+      "progress_bin": 2,
+      "seed": 4139,
+      "success": false,
+      "task": "libero_10/task6",
+      "taxonomy": "FAILED_PLACEMENT"
+    },
+    {
+      "cached_windows": 6,
+      "episode_id": "libero_10-task6-seed4210",
+      "fold": 0,
+      "progress_bin": 1,
+      "seed": 4210,
+      "success": true,
+      "task": "libero_10/task6",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 6,
+      "episode_id": "libero_10-task6-seed4211",
+      "fold": 1,
+      "progress_bin": 1,
+      "seed": 4211,
+      "success": true,
+      "task": "libero_10/task6",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 10,
+      "episode_id": "libero_10-task6-seed4212",
+      "fold": 2,
+      "progress_bin": 1,
+      "seed": 4212,
+      "success": true,
+      "task": "libero_10/task6",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 7,
+      "episode_id": "libero_10-task6-seed4213",
+      "fold": 2,
+      "progress_bin": 1,
+      "seed": 4213,
+      "success": true,
+      "task": "libero_10/task6",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 16,
+      "episode_id": "libero_10-task6-seed4214",
+      "fold": 3,
+      "progress_bin": 2,
+      "seed": 4214,
+      "success": false,
+      "task": "libero_10/task6",
+      "taxonomy": "FAILED_PLACEMENT"
+    },
+    {
+      "cached_windows": 3,
+      "episode_id": "libero_10-task6-seed4215",
+      "fold": 1,
+      "progress_bin": 1,
+      "seed": 4215,
+      "success": true,
+      "task": "libero_10/task6",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 20,
+      "episode_id": "libero_10-task6-seed4216",
+      "fold": 0,
+      "progress_bin": 2,
+      "seed": 4216,
+      "success": false,
+      "task": "libero_10/task6",
+      "taxonomy": "OBJECT_DROP"
+    },
+    {
+      "cached_windows": 13,
+      "episode_id": "libero_10-task6-seed4217",
+      "fold": 2,
+      "progress_bin": 2,
+      "seed": 4217,
+      "success": false,
+      "task": "libero_10/task6",
+      "taxonomy": "FAILED_PLACEMENT"
+    },
+    {
+      "cached_windows": 17,
+      "episode_id": "libero_10-task6-seed4218",
+      "fold": 0,
+      "progress_bin": 2,
+      "seed": 4218,
+      "success": false,
+      "task": "libero_10/task6",
+      "taxonomy": "FAILED_PLACEMENT"
+    },
+    {
+      "cached_windows": 11,
+      "episode_id": "libero_10-task6-seed4219",
+      "fold": 1,
+      "progress_bin": 2,
+      "seed": 4219,
+      "success": false,
+      "task": "libero_10/task6",
+      "taxonomy": "FAILED_PLACEMENT"
+    },
+    {
+      "cached_windows": 20,
+      "episode_id": "libero_10-task7-seed3040",
+      "fold": 1,
+      "progress_bin": 1,
+      "seed": 3040,
+      "success": true,
+      "task": "libero_10/task7",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 24,
+      "episode_id": "libero_10-task7-seed3041",
+      "fold": 0,
+      "progress_bin": 1,
+      "seed": 3041,
+      "success": true,
+      "task": "libero_10/task7",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 16,
+      "episode_id": "libero_10-task7-seed3042",
+      "fold": 3,
+      "progress_bin": 1,
+      "seed": 3042,
+      "success": true,
+      "task": "libero_10/task7",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 19,
+      "episode_id": "libero_10-task7-seed3043",
+      "fold": 4,
+      "progress_bin": 1,
+      "seed": 3043,
+      "success": true,
+      "task": "libero_10/task7",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 21,
+      "episode_id": "libero_10-task7-seed3044",
+      "fold": 4,
+      "progress_bin": 1,
+      "seed": 3044,
+      "success": true,
+      "task": "libero_10/task7",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 16,
+      "episode_id": "libero_10-task7-seed3045",
+      "fold": 4,
+      "progress_bin": 1,
+      "seed": 3045,
+      "success": true,
+      "task": "libero_10/task7",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 21,
+      "episode_id": "libero_10-task7-seed3046",
+      "fold": 2,
+      "progress_bin": 1,
+      "seed": 3046,
+      "success": true,
+      "task": "libero_10/task7",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 18,
+      "episode_id": "libero_10-task7-seed3047",
+      "fold": 2,
+      "progress_bin": 1,
+      "seed": 3047,
+      "success": true,
+      "task": "libero_10/task7",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 18,
+      "episode_id": "libero_10-task7-seed3048",
+      "fold": 0,
+      "progress_bin": 1,
+      "seed": 3048,
+      "success": true,
+      "task": "libero_10/task7",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 20,
+      "episode_id": "libero_10-task7-seed3049",
+      "fold": 2,
+      "progress_bin": 1,
+      "seed": 3049,
+      "success": true,
+      "task": "libero_10/task7",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 12,
+      "episode_id": "libero_10-task7-seed4040",
+      "fold": 0,
+      "progress_bin": 1,
+      "seed": 4040,
+      "success": true,
+      "task": "libero_10/task7",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 24,
+      "episode_id": "libero_10-task7-seed4041",
+      "fold": 1,
+      "progress_bin": 1,
+      "seed": 4041,
+      "success": true,
+      "task": "libero_10/task7",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 18,
+      "episode_id": "libero_10-task7-seed4042",
+      "fold": 3,
+      "progress_bin": 1,
+      "seed": 4042,
+      "success": true,
+      "task": "libero_10/task7",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 21,
+      "episode_id": "libero_10-task7-seed4043",
+      "fold": 0,
+      "progress_bin": 1,
+      "seed": 4043,
+      "success": true,
+      "task": "libero_10/task7",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 21,
+      "episode_id": "libero_10-task7-seed4044",
+      "fold": 3,
+      "progress_bin": 1,
+      "seed": 4044,
+      "success": true,
+      "task": "libero_10/task7",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 17,
+      "episode_id": "libero_10-task7-seed4045",
+      "fold": 4,
+      "progress_bin": 1,
+      "seed": 4045,
+      "success": true,
+      "task": "libero_10/task7",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 27,
+      "episode_id": "libero_10-task7-seed4046",
+      "fold": 0,
+      "progress_bin": 1,
+      "seed": 4046,
+      "success": true,
+      "task": "libero_10/task7",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 26,
+      "episode_id": "libero_10-task7-seed4047",
+      "fold": 1,
+      "progress_bin": 1,
+      "seed": 4047,
+      "success": true,
+      "task": "libero_10/task7",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 31,
+      "episode_id": "libero_10-task7-seed4048",
+      "fold": 3,
+      "progress_bin": 1,
+      "seed": 4048,
+      "success": true,
+      "task": "libero_10/task7",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 18,
+      "episode_id": "libero_10-task7-seed4049",
+      "fold": 1,
+      "progress_bin": 1,
+      "seed": 4049,
+      "success": true,
+      "task": "libero_10/task7",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 21,
+      "episode_id": "libero_10-task7-seed4120",
+      "fold": 4,
+      "progress_bin": 1,
+      "seed": 4120,
+      "success": true,
+      "task": "libero_10/task7",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 14,
+      "episode_id": "libero_10-task7-seed4121",
+      "fold": 2,
+      "progress_bin": 1,
+      "seed": 4121,
+      "success": true,
+      "task": "libero_10/task7",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 26,
+      "episode_id": "libero_10-task7-seed4122",
+      "fold": 0,
+      "progress_bin": 1,
+      "seed": 4122,
+      "success": true,
+      "task": "libero_10/task7",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 24,
+      "episode_id": "libero_10-task7-seed4123",
+      "fold": 4,
+      "progress_bin": 1,
+      "seed": 4123,
+      "success": true,
+      "task": "libero_10/task7",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 22,
+      "episode_id": "libero_10-task7-seed4124",
+      "fold": 3,
+      "progress_bin": 1,
+      "seed": 4124,
+      "success": true,
+      "task": "libero_10/task7",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 16,
+      "episode_id": "libero_10-task7-seed4125",
+      "fold": 3,
+      "progress_bin": 1,
+      "seed": 4125,
+      "success": true,
+      "task": "libero_10/task7",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 22,
+      "episode_id": "libero_10-task7-seed4126",
+      "fold": 2,
+      "progress_bin": 1,
+      "seed": 4126,
+      "success": true,
+      "task": "libero_10/task7",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 23,
+      "episode_id": "libero_10-task7-seed4127",
+      "fold": 1,
+      "progress_bin": 1,
+      "seed": 4127,
+      "success": true,
+      "task": "libero_10/task7",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 24,
+      "episode_id": "libero_10-task7-seed4128",
+      "fold": 2,
+      "progress_bin": 1,
+      "seed": 4128,
+      "success": true,
+      "task": "libero_10/task7",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 24,
+      "episode_id": "libero_10-task7-seed4129",
+      "fold": 4,
+      "progress_bin": 1,
+      "seed": 4129,
+      "success": true,
+      "task": "libero_10/task7",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 15,
+      "episode_id": "libero_10-task7-seed4200",
+      "fold": 1,
+      "progress_bin": 1,
+      "seed": 4200,
+      "success": true,
+      "task": "libero_10/task7",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 24,
+      "episode_id": "libero_10-task7-seed4201",
+      "fold": 3,
+      "progress_bin": 1,
+      "seed": 4201,
+      "success": true,
+      "task": "libero_10/task7",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 21,
+      "episode_id": "libero_10-task7-seed4202",
+      "fold": 0,
+      "progress_bin": 1,
+      "seed": 4202,
+      "success": true,
+      "task": "libero_10/task7",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 22,
+      "episode_id": "libero_10-task7-seed4203",
+      "fold": 1,
+      "progress_bin": 1,
+      "seed": 4203,
+      "success": true,
+      "task": "libero_10/task7",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 27,
+      "episode_id": "libero_10-task7-seed4204",
+      "fold": 4,
+      "progress_bin": 1,
+      "seed": 4204,
+      "success": true,
+      "task": "libero_10/task7",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 25,
+      "episode_id": "libero_10-task7-seed4205",
+      "fold": 3,
+      "progress_bin": 1,
+      "seed": 4205,
+      "success": true,
+      "task": "libero_10/task7",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 26,
+      "episode_id": "libero_10-task7-seed4206",
+      "fold": 2,
+      "progress_bin": 1,
+      "seed": 4206,
+      "success": true,
+      "task": "libero_10/task7",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 19,
+      "episode_id": "libero_10-task7-seed4207",
+      "fold": 2,
+      "progress_bin": 1,
+      "seed": 4207,
+      "success": true,
+      "task": "libero_10/task7",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 19,
+      "episode_id": "libero_10-task7-seed4208",
+      "fold": 0,
+      "progress_bin": 1,
+      "seed": 4208,
+      "success": true,
+      "task": "libero_10/task7",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 19,
+      "episode_id": "libero_10-task7-seed4209",
+      "fold": 1,
+      "progress_bin": 1,
+      "seed": 4209,
+      "success": true,
+      "task": "libero_10/task7",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 10,
+      "episode_id": "libero_10-task8-seed3020",
+      "fold": 3,
+      "progress_bin": 1,
+      "seed": 3020,
+      "success": true,
+      "task": "libero_10/task8",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 17,
+      "episode_id": "libero_10-task8-seed3021",
+      "fold": 1,
+      "progress_bin": 1,
+      "seed": 3021,
+      "success": true,
+      "task": "libero_10/task8",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 12,
+      "episode_id": "libero_10-task8-seed3022",
+      "fold": 3,
+      "progress_bin": 1,
+      "seed": 3022,
+      "success": true,
+      "task": "libero_10/task8",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 10,
+      "episode_id": "libero_10-task8-seed3023",
+      "fold": 2,
+      "progress_bin": 1,
+      "seed": 3023,
+      "success": true,
+      "task": "libero_10/task8",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 10,
+      "episode_id": "libero_10-task8-seed3024",
+      "fold": 4,
+      "progress_bin": 1,
+      "seed": 3024,
+      "success": true,
+      "task": "libero_10/task8",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 12,
+      "episode_id": "libero_10-task8-seed3025",
+      "fold": 4,
+      "progress_bin": 1,
+      "seed": 3025,
+      "success": true,
+      "task": "libero_10/task8",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 14,
+      "episode_id": "libero_10-task8-seed3026",
+      "fold": 0,
+      "progress_bin": 1,
+      "seed": 3026,
+      "success": true,
+      "task": "libero_10/task8",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 14,
+      "episode_id": "libero_10-task8-seed3027",
+      "fold": 4,
+      "progress_bin": 1,
+      "seed": 3027,
+      "success": true,
+      "task": "libero_10/task8",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 8,
+      "episode_id": "libero_10-task8-seed3028",
+      "fold": 1,
+      "progress_bin": 1,
+      "seed": 3028,
+      "success": true,
+      "task": "libero_10/task8",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 14,
+      "episode_id": "libero_10-task8-seed3029",
+      "fold": 2,
+      "progress_bin": 1,
+      "seed": 3029,
+      "success": true,
+      "task": "libero_10/task8",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 11,
+      "episode_id": "libero_10-task8-seed4020",
+      "fold": 1,
+      "progress_bin": 1,
+      "seed": 4020,
+      "success": true,
+      "task": "libero_10/task8",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 18,
+      "episode_id": "libero_10-task8-seed4021",
+      "fold": 4,
+      "progress_bin": 1,
+      "seed": 4021,
+      "success": true,
+      "task": "libero_10/task8",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 13,
+      "episode_id": "libero_10-task8-seed4022",
+      "fold": 3,
+      "progress_bin": 1,
+      "seed": 4022,
+      "success": true,
+      "task": "libero_10/task8",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 13,
+      "episode_id": "libero_10-task8-seed4023",
+      "fold": 4,
+      "progress_bin": 1,
+      "seed": 4023,
+      "success": true,
+      "task": "libero_10/task8",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 7,
+      "episode_id": "libero_10-task8-seed4024",
+      "fold": 3,
+      "progress_bin": 1,
+      "seed": 4024,
+      "success": true,
+      "task": "libero_10/task8",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 17,
+      "episode_id": "libero_10-task8-seed4025",
+      "fold": 4,
+      "progress_bin": 1,
+      "seed": 4025,
+      "success": true,
+      "task": "libero_10/task8",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 14,
+      "episode_id": "libero_10-task8-seed4026",
+      "fold": 3,
+      "progress_bin": 1,
+      "seed": 4026,
+      "success": true,
+      "task": "libero_10/task8",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 10,
+      "episode_id": "libero_10-task8-seed4027",
+      "fold": 1,
+      "progress_bin": 1,
+      "seed": 4027,
+      "success": true,
+      "task": "libero_10/task8",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 14,
+      "episode_id": "libero_10-task8-seed4028",
+      "fold": 0,
+      "progress_bin": 1,
+      "seed": 4028,
+      "success": true,
+      "task": "libero_10/task8",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 15,
+      "episode_id": "libero_10-task8-seed4029",
+      "fold": 2,
+      "progress_bin": 1,
+      "seed": 4029,
+      "success": true,
+      "task": "libero_10/task8",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 19,
+      "episode_id": "libero_10-task8-seed4100",
+      "fold": 1,
+      "progress_bin": 1,
+      "seed": 4100,
+      "success": false,
+      "task": "libero_10/task8",
+      "taxonomy": "FAILED_PLACEMENT"
+    },
+    {
+      "cached_windows": 9,
+      "episode_id": "libero_10-task8-seed4101",
+      "fold": 2,
+      "progress_bin": 1,
+      "seed": 4101,
+      "success": true,
+      "task": "libero_10/task8",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 18,
+      "episode_id": "libero_10-task8-seed4102",
+      "fold": 0,
+      "progress_bin": 1,
+      "seed": 4102,
+      "success": true,
+      "task": "libero_10/task8",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 11,
+      "episode_id": "libero_10-task8-seed4103",
+      "fold": 0,
+      "progress_bin": 1,
+      "seed": 4103,
+      "success": true,
+      "task": "libero_10/task8",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 18,
+      "episode_id": "libero_10-task8-seed4104",
+      "fold": 3,
+      "progress_bin": 1,
+      "seed": 4104,
+      "success": true,
+      "task": "libero_10/task8",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 9,
+      "episode_id": "libero_10-task8-seed4105",
+      "fold": 1,
+      "progress_bin": 1,
+      "seed": 4105,
+      "success": true,
+      "task": "libero_10/task8",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 7,
+      "episode_id": "libero_10-task8-seed4106",
+      "fold": 4,
+      "progress_bin": 1,
+      "seed": 4106,
+      "success": true,
+      "task": "libero_10/task8",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 9,
+      "episode_id": "libero_10-task8-seed4107",
+      "fold": 0,
+      "progress_bin": 1,
+      "seed": 4107,
+      "success": true,
+      "task": "libero_10/task8",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 15,
+      "episode_id": "libero_10-task8-seed4108",
+      "fold": 2,
+      "progress_bin": 1,
+      "seed": 4108,
+      "success": true,
+      "task": "libero_10/task8",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 7,
+      "episode_id": "libero_10-task8-seed4109",
+      "fold": 2,
+      "progress_bin": 1,
+      "seed": 4109,
+      "success": true,
+      "task": "libero_10/task8",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 9,
+      "episode_id": "libero_10-task8-seed4180",
+      "fold": 4,
+      "progress_bin": 1,
+      "seed": 4180,
+      "success": true,
+      "task": "libero_10/task8",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 17,
+      "episode_id": "libero_10-task8-seed4181",
+      "fold": 0,
+      "progress_bin": 1,
+      "seed": 4181,
+      "success": true,
+      "task": "libero_10/task8",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 10,
+      "episode_id": "libero_10-task8-seed4182",
+      "fold": 0,
+      "progress_bin": 1,
+      "seed": 4182,
+      "success": true,
+      "task": "libero_10/task8",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 8,
+      "episode_id": "libero_10-task8-seed4183",
+      "fold": 3,
+      "progress_bin": 1,
+      "seed": 4183,
+      "success": true,
+      "task": "libero_10/task8",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 15,
+      "episode_id": "libero_10-task8-seed4184",
+      "fold": 1,
+      "progress_bin": 1,
+      "seed": 4184,
+      "success": true,
+      "task": "libero_10/task8",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 13,
+      "episode_id": "libero_10-task8-seed4185",
+      "fold": 2,
+      "progress_bin": 1,
+      "seed": 4185,
+      "success": true,
+      "task": "libero_10/task8",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 12,
+      "episode_id": "libero_10-task8-seed4186",
+      "fold": 2,
+      "progress_bin": 1,
+      "seed": 4186,
+      "success": false,
+      "task": "libero_10/task8",
+      "taxonomy": "OBJECT_DROP"
+    },
+    {
+      "cached_windows": 5,
+      "episode_id": "libero_10-task8-seed4187",
+      "fold": 0,
+      "progress_bin": 1,
+      "seed": 4187,
+      "success": true,
+      "task": "libero_10/task8",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 21,
+      "episode_id": "libero_10-task8-seed4188",
+      "fold": 3,
+      "progress_bin": 1,
+      "seed": 4188,
+      "success": true,
+      "task": "libero_10/task8",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 13,
+      "episode_id": "libero_10-task8-seed4189",
+      "fold": 1,
+      "progress_bin": 1,
+      "seed": 4189,
+      "success": true,
+      "task": "libero_10/task8",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 30,
+      "episode_id": "libero_10-task9-seed3010",
+      "fold": 3,
+      "progress_bin": 2,
+      "seed": 3010,
+      "success": true,
+      "task": "libero_10/task9",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 17,
+      "episode_id": "libero_10-task9-seed3011",
+      "fold": 2,
+      "progress_bin": 2,
+      "seed": 3011,
+      "success": true,
+      "task": "libero_10/task9",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 23,
+      "episode_id": "libero_10-task9-seed3012",
+      "fold": 0,
+      "progress_bin": 2,
+      "seed": 3012,
+      "success": true,
+      "task": "libero_10/task9",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 17,
+      "episode_id": "libero_10-task9-seed3013",
+      "fold": 0,
+      "progress_bin": 2,
+      "seed": 3013,
+      "success": true,
+      "task": "libero_10/task9",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 20,
+      "episode_id": "libero_10-task9-seed3014",
+      "fold": 3,
+      "progress_bin": 2,
+      "seed": 3014,
+      "success": true,
+      "task": "libero_10/task9",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 18,
+      "episode_id": "libero_10-task9-seed3015",
+      "fold": 3,
+      "progress_bin": 2,
+      "seed": 3015,
+      "success": true,
+      "task": "libero_10/task9",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 19,
+      "episode_id": "libero_10-task9-seed3016",
+      "fold": 4,
+      "progress_bin": 2,
+      "seed": 3016,
+      "success": true,
+      "task": "libero_10/task9",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 32,
+      "episode_id": "libero_10-task9-seed3017",
+      "fold": 3,
+      "progress_bin": 3,
+      "seed": 3017,
+      "success": true,
+      "task": "libero_10/task9",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 21,
+      "episode_id": "libero_10-task9-seed3018",
+      "fold": 3,
+      "progress_bin": 2,
+      "seed": 3018,
+      "success": true,
+      "task": "libero_10/task9",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 22,
+      "episode_id": "libero_10-task9-seed3019",
+      "fold": 4,
+      "progress_bin": 2,
+      "seed": 3019,
+      "success": true,
+      "task": "libero_10/task9",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 48,
+      "episode_id": "libero_10-task9-seed4010",
+      "fold": 1,
+      "progress_bin": 3,
+      "seed": 4010,
+      "success": false,
+      "task": "libero_10/task9",
+      "taxonomy": "OBJECT_DROP"
+    },
+    {
+      "cached_windows": 27,
+      "episode_id": "libero_10-task9-seed4011",
+      "fold": 3,
+      "progress_bin": 2,
+      "seed": 4011,
+      "success": true,
+      "task": "libero_10/task9",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 26,
+      "episode_id": "libero_10-task9-seed4012",
+      "fold": 4,
+      "progress_bin": 3,
+      "seed": 4012,
+      "success": true,
+      "task": "libero_10/task9",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 29,
+      "episode_id": "libero_10-task9-seed4013",
+      "fold": 2,
+      "progress_bin": 2,
+      "seed": 4013,
+      "success": true,
+      "task": "libero_10/task9",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 30,
+      "episode_id": "libero_10-task9-seed4014",
+      "fold": 0,
+      "progress_bin": 2,
+      "seed": 4014,
+      "success": true,
+      "task": "libero_10/task9",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 13,
+      "episode_id": "libero_10-task9-seed4015",
+      "fold": 3,
+      "progress_bin": 2,
+      "seed": 4015,
+      "success": true,
+      "task": "libero_10/task9",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 24,
+      "episode_id": "libero_10-task9-seed4016",
+      "fold": 1,
+      "progress_bin": 2,
+      "seed": 4016,
+      "success": true,
+      "task": "libero_10/task9",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 25,
+      "episode_id": "libero_10-task9-seed4017",
+      "fold": 2,
+      "progress_bin": 2,
+      "seed": 4017,
+      "success": true,
+      "task": "libero_10/task9",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 23,
+      "episode_id": "libero_10-task9-seed4018",
+      "fold": 3,
+      "progress_bin": 2,
+      "seed": 4018,
+      "success": true,
+      "task": "libero_10/task9",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 21,
+      "episode_id": "libero_10-task9-seed4019",
+      "fold": 2,
+      "progress_bin": 2,
+      "seed": 4019,
+      "success": true,
+      "task": "libero_10/task9",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 22,
+      "episode_id": "libero_10-task9-seed4090",
+      "fold": 1,
+      "progress_bin": 2,
+      "seed": 4090,
+      "success": true,
+      "task": "libero_10/task9",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 18,
+      "episode_id": "libero_10-task9-seed4091",
+      "fold": 2,
+      "progress_bin": 2,
+      "seed": 4091,
+      "success": true,
+      "task": "libero_10/task9",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 29,
+      "episode_id": "libero_10-task9-seed4092",
+      "fold": 0,
+      "progress_bin": 2,
+      "seed": 4092,
+      "success": true,
+      "task": "libero_10/task9",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 15,
+      "episode_id": "libero_10-task9-seed4093",
+      "fold": 4,
+      "progress_bin": 2,
+      "seed": 4093,
+      "success": true,
+      "task": "libero_10/task9",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 30,
+      "episode_id": "libero_10-task9-seed4094",
+      "fold": 1,
+      "progress_bin": 2,
+      "seed": 4094,
+      "success": true,
+      "task": "libero_10/task9",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 29,
+      "episode_id": "libero_10-task9-seed4095",
+      "fold": 1,
+      "progress_bin": 2,
+      "seed": 4095,
+      "success": true,
+      "task": "libero_10/task9",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 57,
+      "episode_id": "libero_10-task9-seed4096",
+      "fold": 0,
+      "progress_bin": 2,
+      "seed": 4096,
+      "success": false,
+      "task": "libero_10/task9",
+      "taxonomy": "FAILED_PLACEMENT"
+    },
+    {
+      "cached_windows": 21,
+      "episode_id": "libero_10-task9-seed4097",
+      "fold": 0,
+      "progress_bin": 2,
+      "seed": 4097,
+      "success": true,
+      "task": "libero_10/task9",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 15,
+      "episode_id": "libero_10-task9-seed4098",
+      "fold": 0,
+      "progress_bin": 2,
+      "seed": 4098,
+      "success": true,
+      "task": "libero_10/task9",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 31,
+      "episode_id": "libero_10-task9-seed4099",
+      "fold": 2,
+      "progress_bin": 3,
+      "seed": 4099,
+      "success": true,
+      "task": "libero_10/task9",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 21,
+      "episode_id": "libero_10-task9-seed4170",
+      "fold": 1,
+      "progress_bin": 2,
+      "seed": 4170,
+      "success": true,
+      "task": "libero_10/task9",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 20,
+      "episode_id": "libero_10-task9-seed4171",
+      "fold": 2,
+      "progress_bin": 2,
+      "seed": 4171,
+      "success": true,
+      "task": "libero_10/task9",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 20,
+      "episode_id": "libero_10-task9-seed4172",
+      "fold": 0,
+      "progress_bin": 2,
+      "seed": 4172,
+      "success": true,
+      "task": "libero_10/task9",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 13,
+      "episode_id": "libero_10-task9-seed4173",
+      "fold": 1,
+      "progress_bin": 2,
+      "seed": 4173,
+      "success": true,
+      "task": "libero_10/task9",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 39,
+      "episode_id": "libero_10-task9-seed4174",
+      "fold": 4,
+      "progress_bin": 3,
+      "seed": 4174,
+      "success": true,
+      "task": "libero_10/task9",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 23,
+      "episode_id": "libero_10-task9-seed4175",
+      "fold": 2,
+      "progress_bin": 2,
+      "seed": 4175,
+      "success": true,
+      "task": "libero_10/task9",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 17,
+      "episode_id": "libero_10-task9-seed4176",
+      "fold": 1,
+      "progress_bin": 2,
+      "seed": 4176,
+      "success": true,
+      "task": "libero_10/task9",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 30,
+      "episode_id": "libero_10-task9-seed4177",
+      "fold": 4,
+      "progress_bin": 2,
+      "seed": 4177,
+      "success": true,
+      "task": "libero_10/task9",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 22,
+      "episode_id": "libero_10-task9-seed4178",
+      "fold": 4,
+      "progress_bin": 2,
+      "seed": 4178,
+      "success": true,
+      "task": "libero_10/task9",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 20,
+      "episode_id": "libero_10-task9-seed4179",
+      "fold": 4,
+      "progress_bin": 2,
+      "seed": 4179,
+      "success": true,
+      "task": "libero_10/task9",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 4,
+      "episode_id": "libero_goal-task6-seed3060",
+      "fold": 0,
+      "progress_bin": 1,
+      "seed": 3060,
+      "success": true,
+      "task": "libero_goal/task6",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 5,
+      "episode_id": "libero_goal-task6-seed3061",
+      "fold": 4,
+      "progress_bin": 1,
+      "seed": 3061,
+      "success": true,
+      "task": "libero_goal/task6",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 8,
+      "episode_id": "libero_goal-task6-seed3062",
+      "fold": 2,
+      "progress_bin": 1,
+      "seed": 3062,
+      "success": true,
+      "task": "libero_goal/task6",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 7,
+      "episode_id": "libero_goal-task6-seed3063",
+      "fold": 2,
+      "progress_bin": 1,
+      "seed": 3063,
+      "success": true,
+      "task": "libero_goal/task6",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 6,
+      "episode_id": "libero_goal-task6-seed3064",
+      "fold": 1,
+      "progress_bin": 1,
+      "seed": 3064,
+      "success": true,
+      "task": "libero_goal/task6",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 12,
+      "episode_id": "libero_goal-task6-seed3065",
+      "fold": 0,
+      "progress_bin": 1,
+      "seed": 3065,
+      "success": true,
+      "task": "libero_goal/task6",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 9,
+      "episode_id": "libero_goal-task6-seed3066",
+      "fold": 3,
+      "progress_bin": 1,
+      "seed": 3066,
+      "success": true,
+      "task": "libero_goal/task6",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 7,
+      "episode_id": "libero_goal-task6-seed3067",
+      "fold": 0,
+      "progress_bin": 1,
+      "seed": 3067,
+      "success": true,
+      "task": "libero_goal/task6",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 5,
+      "episode_id": "libero_goal-task6-seed3068",
+      "fold": 0,
+      "progress_bin": 1,
+      "seed": 3068,
+      "success": true,
+      "task": "libero_goal/task6",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 11,
+      "episode_id": "libero_goal-task6-seed3069",
+      "fold": 4,
+      "progress_bin": 1,
+      "seed": 3069,
+      "success": true,
+      "task": "libero_goal/task6",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 4,
+      "episode_id": "libero_goal-task6-seed4060",
+      "fold": 4,
+      "progress_bin": 1,
+      "seed": 4060,
+      "success": true,
+      "task": "libero_goal/task6",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 7,
+      "episode_id": "libero_goal-task6-seed4061",
+      "fold": 4,
+      "progress_bin": 1,
+      "seed": 4061,
+      "success": true,
+      "task": "libero_goal/task6",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 12,
+      "episode_id": "libero_goal-task6-seed4062",
+      "fold": 3,
+      "progress_bin": 1,
+      "seed": 4062,
+      "success": true,
+      "task": "libero_goal/task6",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 9,
+      "episode_id": "libero_goal-task6-seed4063",
+      "fold": 2,
+      "progress_bin": 1,
+      "seed": 4063,
+      "success": true,
+      "task": "libero_goal/task6",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 10,
+      "episode_id": "libero_goal-task6-seed4064",
+      "fold": 1,
+      "progress_bin": 1,
+      "seed": 4064,
+      "success": true,
+      "task": "libero_goal/task6",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 7,
+      "episode_id": "libero_goal-task6-seed4065",
+      "fold": 3,
+      "progress_bin": 1,
+      "seed": 4065,
+      "success": true,
+      "task": "libero_goal/task6",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 9,
+      "episode_id": "libero_goal-task6-seed4066",
+      "fold": 4,
+      "progress_bin": 1,
+      "seed": 4066,
+      "success": true,
+      "task": "libero_goal/task6",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 11,
+      "episode_id": "libero_goal-task6-seed4067",
+      "fold": 4,
+      "progress_bin": 1,
+      "seed": 4067,
+      "success": true,
+      "task": "libero_goal/task6",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 11,
+      "episode_id": "libero_goal-task6-seed4068",
+      "fold": 2,
+      "progress_bin": 1,
+      "seed": 4068,
+      "success": true,
+      "task": "libero_goal/task6",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 9,
+      "episode_id": "libero_goal-task6-seed4069",
+      "fold": 1,
+      "progress_bin": 1,
+      "seed": 4069,
+      "success": true,
+      "task": "libero_goal/task6",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 9,
+      "episode_id": "libero_goal-task6-seed4140",
+      "fold": 4,
+      "progress_bin": 1,
+      "seed": 4140,
+      "success": true,
+      "task": "libero_goal/task6",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 6,
+      "episode_id": "libero_goal-task6-seed4141",
+      "fold": 3,
+      "progress_bin": 1,
+      "seed": 4141,
+      "success": true,
+      "task": "libero_goal/task6",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 12,
+      "episode_id": "libero_goal-task6-seed4142",
+      "fold": 0,
+      "progress_bin": 1,
+      "seed": 4142,
+      "success": true,
+      "task": "libero_goal/task6",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 9,
+      "episode_id": "libero_goal-task6-seed4143",
+      "fold": 1,
+      "progress_bin": 1,
+      "seed": 4143,
+      "success": true,
+      "task": "libero_goal/task6",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 16,
+      "episode_id": "libero_goal-task6-seed4144",
+      "fold": 1,
+      "progress_bin": 1,
+      "seed": 4144,
+      "success": true,
+      "task": "libero_goal/task6",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 10,
+      "episode_id": "libero_goal-task6-seed4145",
+      "fold": 2,
+      "progress_bin": 1,
+      "seed": 4145,
+      "success": true,
+      "task": "libero_goal/task6",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 7,
+      "episode_id": "libero_goal-task6-seed4146",
+      "fold": 3,
+      "progress_bin": 1,
+      "seed": 4146,
+      "success": true,
+      "task": "libero_goal/task6",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 5,
+      "episode_id": "libero_goal-task6-seed4147",
+      "fold": 2,
+      "progress_bin": 1,
+      "seed": 4147,
+      "success": true,
+      "task": "libero_goal/task6",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 6,
+      "episode_id": "libero_goal-task6-seed4148",
+      "fold": 2,
+      "progress_bin": 1,
+      "seed": 4148,
+      "success": true,
+      "task": "libero_goal/task6",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 11,
+      "episode_id": "libero_goal-task6-seed4149",
+      "fold": 1,
+      "progress_bin": 1,
+      "seed": 4149,
+      "success": true,
+      "task": "libero_goal/task6",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 4,
+      "episode_id": "libero_goal-task6-seed4220",
+      "fold": 3,
+      "progress_bin": 1,
+      "seed": 4220,
+      "success": true,
+      "task": "libero_goal/task6",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 10,
+      "episode_id": "libero_goal-task6-seed4221",
+      "fold": 0,
+      "progress_bin": 1,
+      "seed": 4221,
+      "success": true,
+      "task": "libero_goal/task6",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 10,
+      "episode_id": "libero_goal-task6-seed4222",
+      "fold": 3,
+      "progress_bin": 1,
+      "seed": 4222,
+      "success": true,
+      "task": "libero_goal/task6",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 12,
+      "episode_id": "libero_goal-task6-seed4223",
+      "fold": 4,
+      "progress_bin": 1,
+      "seed": 4223,
+      "success": true,
+      "task": "libero_goal/task6",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 12,
+      "episode_id": "libero_goal-task6-seed4224",
+      "fold": 2,
+      "progress_bin": 1,
+      "seed": 4224,
+      "success": true,
+      "task": "libero_goal/task6",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 9,
+      "episode_id": "libero_goal-task6-seed4225",
+      "fold": 0,
+      "progress_bin": 1,
+      "seed": 4225,
+      "success": true,
+      "task": "libero_goal/task6",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 12,
+      "episode_id": "libero_goal-task6-seed4226",
+      "fold": 3,
+      "progress_bin": 1,
+      "seed": 4226,
+      "success": true,
+      "task": "libero_goal/task6",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 7,
+      "episode_id": "libero_goal-task6-seed4227",
+      "fold": 1,
+      "progress_bin": 1,
+      "seed": 4227,
+      "success": true,
+      "task": "libero_goal/task6",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 5,
+      "episode_id": "libero_goal-task6-seed4228",
+      "fold": 1,
+      "progress_bin": 1,
+      "seed": 4228,
+      "success": true,
+      "task": "libero_goal/task6",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 7,
+      "episode_id": "libero_goal-task6-seed4229",
+      "fold": 0,
+      "progress_bin": 1,
+      "seed": 4229,
+      "success": true,
+      "task": "libero_goal/task6",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 23,
+      "episode_id": "libero_goal-task9-seed3070",
+      "fold": 3,
+      "progress_bin": 2,
+      "seed": 3070,
+      "success": false,
+      "task": "libero_goal/task9",
+      "taxonomy": "OBJECT_DROP"
+    },
+    {
+      "cached_windows": 12,
+      "episode_id": "libero_goal-task9-seed3071",
+      "fold": 2,
+      "progress_bin": 1,
+      "seed": 3071,
+      "success": true,
+      "task": "libero_goal/task9",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 8,
+      "episode_id": "libero_goal-task9-seed3072",
+      "fold": 0,
+      "progress_bin": 1,
+      "seed": 3072,
+      "success": true,
+      "task": "libero_goal/task9",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 6,
+      "episode_id": "libero_goal-task9-seed3073",
+      "fold": 1,
+      "progress_bin": 1,
+      "seed": 3073,
+      "success": true,
+      "task": "libero_goal/task9",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 10,
+      "episode_id": "libero_goal-task9-seed3074",
+      "fold": 4,
+      "progress_bin": 1,
+      "seed": 3074,
+      "success": true,
+      "task": "libero_goal/task9",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 12,
+      "episode_id": "libero_goal-task9-seed3075",
+      "fold": 2,
+      "progress_bin": 1,
+      "seed": 3075,
+      "success": true,
+      "task": "libero_goal/task9",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 9,
+      "episode_id": "libero_goal-task9-seed3076",
+      "fold": 1,
+      "progress_bin": 1,
+      "seed": 3076,
+      "success": true,
+      "task": "libero_goal/task9",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 5,
+      "episode_id": "libero_goal-task9-seed3077",
+      "fold": 0,
+      "progress_bin": 1,
+      "seed": 3077,
+      "success": true,
+      "task": "libero_goal/task9",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 7,
+      "episode_id": "libero_goal-task9-seed3078",
+      "fold": 2,
+      "progress_bin": 1,
+      "seed": 3078,
+      "success": true,
+      "task": "libero_goal/task9",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 13,
+      "episode_id": "libero_goal-task9-seed3079",
+      "fold": 0,
+      "progress_bin": 1,
+      "seed": 3079,
+      "success": true,
+      "task": "libero_goal/task9",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 8,
+      "episode_id": "libero_goal-task9-seed4070",
+      "fold": 4,
+      "progress_bin": 1,
+      "seed": 4070,
+      "success": true,
+      "task": "libero_goal/task9",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 10,
+      "episode_id": "libero_goal-task9-seed4071",
+      "fold": 1,
+      "progress_bin": 1,
+      "seed": 4071,
+      "success": true,
+      "task": "libero_goal/task9",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 8,
+      "episode_id": "libero_goal-task9-seed4072",
+      "fold": 1,
+      "progress_bin": 1,
+      "seed": 4072,
+      "success": true,
+      "task": "libero_goal/task9",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 11,
+      "episode_id": "libero_goal-task9-seed4073",
+      "fold": 3,
+      "progress_bin": 1,
+      "seed": 4073,
+      "success": true,
+      "task": "libero_goal/task9",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 11,
+      "episode_id": "libero_goal-task9-seed4074",
+      "fold": 3,
+      "progress_bin": 1,
+      "seed": 4074,
+      "success": true,
+      "task": "libero_goal/task9",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 12,
+      "episode_id": "libero_goal-task9-seed4075",
+      "fold": 1,
+      "progress_bin": 1,
+      "seed": 4075,
+      "success": true,
+      "task": "libero_goal/task9",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 12,
+      "episode_id": "libero_goal-task9-seed4076",
+      "fold": 0,
+      "progress_bin": 1,
+      "seed": 4076,
+      "success": true,
+      "task": "libero_goal/task9",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 10,
+      "episode_id": "libero_goal-task9-seed4077",
+      "fold": 0,
+      "progress_bin": 1,
+      "seed": 4077,
+      "success": true,
+      "task": "libero_goal/task9",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 4,
+      "episode_id": "libero_goal-task9-seed4078",
+      "fold": 1,
+      "progress_bin": 1,
+      "seed": 4078,
+      "success": true,
+      "task": "libero_goal/task9",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 9,
+      "episode_id": "libero_goal-task9-seed4079",
+      "fold": 2,
+      "progress_bin": 1,
+      "seed": 4079,
+      "success": true,
+      "task": "libero_goal/task9",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 12,
+      "episode_id": "libero_goal-task9-seed4150",
+      "fold": 4,
+      "progress_bin": 1,
+      "seed": 4150,
+      "success": true,
+      "task": "libero_goal/task9",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 11,
+      "episode_id": "libero_goal-task9-seed4151",
+      "fold": 2,
+      "progress_bin": 1,
+      "seed": 4151,
+      "success": true,
+      "task": "libero_goal/task9",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 13,
+      "episode_id": "libero_goal-task9-seed4152",
+      "fold": 4,
+      "progress_bin": 1,
+      "seed": 4152,
+      "success": true,
+      "task": "libero_goal/task9",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 13,
+      "episode_id": "libero_goal-task9-seed4153",
+      "fold": 3,
+      "progress_bin": 1,
+      "seed": 4153,
+      "success": true,
+      "task": "libero_goal/task9",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 9,
+      "episode_id": "libero_goal-task9-seed4154",
+      "fold": 0,
+      "progress_bin": 1,
+      "seed": 4154,
+      "success": true,
+      "task": "libero_goal/task9",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 9,
+      "episode_id": "libero_goal-task9-seed4155",
+      "fold": 4,
+      "progress_bin": 1,
+      "seed": 4155,
+      "success": true,
+      "task": "libero_goal/task9",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 9,
+      "episode_id": "libero_goal-task9-seed4156",
+      "fold": 3,
+      "progress_bin": 1,
+      "seed": 4156,
+      "success": true,
+      "task": "libero_goal/task9",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 16,
+      "episode_id": "libero_goal-task9-seed4157",
+      "fold": 0,
+      "progress_bin": 1,
+      "seed": 4157,
+      "success": true,
+      "task": "libero_goal/task9",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 8,
+      "episode_id": "libero_goal-task9-seed4158",
+      "fold": 3,
+      "progress_bin": 1,
+      "seed": 4158,
+      "success": true,
+      "task": "libero_goal/task9",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 12,
+      "episode_id": "libero_goal-task9-seed4159",
+      "fold": 1,
+      "progress_bin": 1,
+      "seed": 4159,
+      "success": true,
+      "task": "libero_goal/task9",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 13,
+      "episode_id": "libero_goal-task9-seed4230",
+      "fold": 1,
+      "progress_bin": 1,
+      "seed": 4230,
+      "success": true,
+      "task": "libero_goal/task9",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 8,
+      "episode_id": "libero_goal-task9-seed4231",
+      "fold": 3,
+      "progress_bin": 1,
+      "seed": 4231,
+      "success": true,
+      "task": "libero_goal/task9",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 5,
+      "episode_id": "libero_goal-task9-seed4232",
+      "fold": 2,
+      "progress_bin": 1,
+      "seed": 4232,
+      "success": true,
+      "task": "libero_goal/task9",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 7,
+      "episode_id": "libero_goal-task9-seed4233",
+      "fold": 4,
+      "progress_bin": 1,
+      "seed": 4233,
+      "success": true,
+      "task": "libero_goal/task9",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 6,
+      "episode_id": "libero_goal-task9-seed4234",
+      "fold": 3,
+      "progress_bin": 1,
+      "seed": 4234,
+      "success": true,
+      "task": "libero_goal/task9",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 5,
+      "episode_id": "libero_goal-task9-seed4235",
+      "fold": 4,
+      "progress_bin": 1,
+      "seed": 4235,
+      "success": true,
+      "task": "libero_goal/task9",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 13,
+      "episode_id": "libero_goal-task9-seed4236",
+      "fold": 2,
+      "progress_bin": 1,
+      "seed": 4236,
+      "success": true,
+      "task": "libero_goal/task9",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 9,
+      "episode_id": "libero_goal-task9-seed4237",
+      "fold": 2,
+      "progress_bin": 1,
+      "seed": 4237,
+      "success": true,
+      "task": "libero_goal/task9",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 7,
+      "episode_id": "libero_goal-task9-seed4238",
+      "fold": 0,
+      "progress_bin": 1,
+      "seed": 4238,
+      "success": true,
+      "task": "libero_goal/task9",
+      "taxonomy": null
+    },
+    {
+      "cached_windows": 11,
+      "episode_id": "libero_goal-task9-seed4239",
+      "fold": 4,
+      "progress_bin": 1,
+      "seed": 4239,
+      "success": true,
+      "task": "libero_goal/task9",
+      "taxonomy": null
+    }
+  ],
+  "fold_count": 5,
+  "group_unit": "episode_and_seed",
+  "held_out_failure_task": {
+    "role": "exploratory_only_if_support_allows",
+    "status": "not_pre_registered_for_gate"
+  },
+  "original_split": {
+    "preserved": true,
+    "role": "compatibility reporting only",
+    "used_as_unique_supervised_conclusion": false
+  },
+  "protocol": [
+    {
+      "outer_fold": 0,
+      "test_consumption": "exactly_once_after_validation_selection",
+      "test_fold": 0,
+      "train_folds": [
+        2,
+        3,
+        4
+      ],
+      "validation_fold": 1
+    },
+    {
+      "outer_fold": 1,
+      "test_consumption": "exactly_once_after_validation_selection",
+      "test_fold": 1,
+      "train_folds": [
+        0,
+        3,
+        4
+      ],
+      "validation_fold": 2
+    },
+    {
+      "outer_fold": 2,
+      "test_consumption": "exactly_once_after_validation_selection",
+      "test_fold": 2,
+      "train_folds": [
+        0,
+        1,
+        4
+      ],
+      "validation_fold": 3
+    },
+    {
+      "outer_fold": 3,
+      "test_consumption": "exactly_once_after_validation_selection",
+      "test_fold": 3,
+      "train_folds": [
+        0,
+        1,
+        2
+      ],
+      "validation_fold": 4
+    },
+    {
+      "outer_fold": 4,
+      "test_consumption": "exactly_once_after_validation_selection",
+      "test_fold": 4,
+      "train_folds": [
+        1,
+        2,
+        3
+      ],
+      "validation_fold": 0
+    }
+  ],
+  "schema_version": "latentguard.lg_r2a.cv_split_manifest.v1",
+  "status": "pass",
+  "validation": {
+    "episode_leakage": 0,
+    "folds": [
+      {
+        "episodes": 64,
+        "failures": 5,
+        "fold": 0,
+        "seeds": 64,
+        "tasks": {
+          "libero_10/task2": 8,
+          "libero_10/task4": 8,
+          "libero_10/task6": 8,
+          "libero_10/task7": 8,
+          "libero_10/task8": 8,
+          "libero_10/task9": 8,
+          "libero_goal/task6": 8,
+          "libero_goal/task9": 8
+        },
+        "taxonomies": {
+          "FAILED_PLACEMENT": 4,
+          "OBJECT_DROP": 1
+        },
+        "windows": 1006
+      },
+      {
+        "episodes": 64,
+        "failures": 6,
+        "fold": 1,
+        "seeds": 64,
+        "tasks": {
+          "libero_10/task2": 8,
+          "libero_10/task4": 8,
+          "libero_10/task6": 8,
+          "libero_10/task7": 8,
+          "libero_10/task8": 8,
+          "libero_10/task9": 8,
+          "libero_goal/task6": 8,
+          "libero_goal/task9": 8
+        },
+        "taxonomies": {
+          "FAILED_PLACEMENT": 5,
+          "OBJECT_DROP": 1
+        },
+        "windows": 999
+      },
+      {
+        "episodes": 64,
+        "failures": 6,
+        "fold": 2,
+        "seeds": 64,
+        "tasks": {
+          "libero_10/task2": 8,
+          "libero_10/task4": 8,
+          "libero_10/task6": 8,
+          "libero_10/task7": 8,
+          "libero_10/task8": 8,
+          "libero_10/task9": 8,
+          "libero_goal/task6": 8,
+          "libero_goal/task9": 8
+        },
+        "taxonomies": {
+          "FAILED_PLACEMENT": 5,
+          "OBJECT_DROP": 1
+        },
+        "windows": 995
+      },
+      {
+        "episodes": 64,
+        "failures": 5,
+        "fold": 3,
+        "seeds": 64,
+        "tasks": {
+          "libero_10/task2": 8,
+          "libero_10/task4": 8,
+          "libero_10/task6": 8,
+          "libero_10/task7": 8,
+          "libero_10/task8": 8,
+          "libero_10/task9": 8,
+          "libero_goal/task6": 8,
+          "libero_goal/task9": 8
+        },
+        "taxonomies": {
+          "FAILED_PLACEMENT": 4,
+          "OBJECT_DROP": 1
+        },
+        "windows": 1001
+      },
+      {
+        "episodes": 64,
+        "failures": 5,
+        "fold": 4,
+        "seeds": 64,
+        "tasks": {
+          "libero_10/task2": 8,
+          "libero_10/task4": 8,
+          "libero_10/task6": 8,
+          "libero_10/task7": 8,
+          "libero_10/task8": 8,
+          "libero_10/task9": 8,
+          "libero_goal/task6": 8,
+          "libero_goal/task9": 8
+        },
+        "taxonomies": {
+          "FAILED_PLACEMENT": 4,
+          "OBJECT_DROP": 1
+        },
+        "windows": 999
+      }
+    ],
+    "seed_leakage": 0,
+    "status": "pass"
+  }
+}

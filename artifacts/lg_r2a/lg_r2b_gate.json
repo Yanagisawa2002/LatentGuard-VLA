@@ -1,0 +1,59 @@
+{
+  "LG_R2B_AUTHORIZED": false,
+  "automatic_lg_r2b_execution": false,
+  "checks": {
+    "action_contract_pass": true,
+    "classification_increment": true,
+    "cv_folds_valid": true,
+    "episode_leakage_zero": true,
+    "fold_direction_at_least_4_of_5": false,
+    "foundation_models_frozen": true,
+    "leave_task6_above_prevalence": true,
+    "model_e_not_used_for_gate": true,
+    "permutation_sensitivity": true,
+    "pre_execution_only": true,
+    "progress_increment": false,
+    "seed_leakage_zero": true,
+    "task_macro_nonnegative": true
+  },
+  "inputs": {
+    "deployability": {
+      "model_e_used_for_gate": false,
+      "pre_execution_only": true
+    },
+    "incremental_value": {
+      "best_action_sensitive_classification_auprc_delta": 0.0542063597816011,
+      "best_action_sensitive_classification_target": "terminal_failure",
+      "short_progress_mae_relative_reduction": 0.009772038175491242,
+      "short_progress_spearman_delta": 0.04002168106249582
+    },
+    "permutation_sensitivity": {
+      "largest_classification_auprc_drop": 0.08393161512072678,
+      "short_progress_mae_relative_worsening": 0.0858095514870064
+    },
+    "required_checks": {
+      "action_contract_status": "pass",
+      "cv_status": "pass",
+      "episode_leakage": 0,
+      "foundation_models_frozen": true,
+      "seed_leakage": 0
+    },
+    "robustness": {
+      "leave_task6_best_auprc": 0.003623778202858991,
+      "leave_task6_corresponding_prevalence": 0.0027548209366391185,
+      "positive_folds": 3,
+      "task_macro_delta": 0.016461358047137983
+    }
+  },
+  "result_class": "Result B",
+  "schema_version": "latentguard.lg_r2a.lg_r2b_gate.v1",
+  "status": "not_authorized",
+  "thresholds": {
+    "classification_auprc_absolute_delta_min": 0.05,
+    "permutation_classification_auprc_drop_min": 0.03,
+    "permutation_mae_relative_worsening_min": 0.1,
+    "positive_fold_count_min": 4,
+    "short_progress_mae_relative_reduction_min": 0.1,
+    "short_progress_spearman_delta_min": 0.1
+  }
+}

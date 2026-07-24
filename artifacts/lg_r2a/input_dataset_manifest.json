@@ -1,0 +1,115 @@
+{
+  "counts": {
+    "episode_leakage": 0,
+    "episodes": 320,
+    "evaluation_windows": 8470,
+    "failure_tasks": 4,
+    "failures": 27,
+    "frames": 79326,
+    "seed_leakage": 0,
+    "successes": 293,
+    "suites": 2,
+    "tasks": 8
+  },
+  "final_seeds_accessed": false,
+  "new_rollouts": 0,
+  "numeric_action_schema": "latentguard.lg_r2a.action_contract.v1",
+  "original_split_preserved": true,
+  "repository": {
+    "baseline_commit": "a2cdd476fe4c45e453f6d9535fd6c3ae6b2a83a5",
+    "baseline_is_ancestor": true,
+    "branch": "codex/lg-r2a-action-conditioning",
+    "head_commit": "1f03f484c9f29e0a3dbfee767b56dbfd34795e3d",
+    "origin_repository": "Yanagisawa2002/LatentGuard-VLA"
+  },
+  "runtime_sources": {
+    "current_samples": {
+      "bytes": 50351034,
+      "locator": "lg_r1b/progress_dataset/current_samples.jsonl",
+      "sha256": "4d96c60c54586d8d4534d477da3e3a94608c7e80b843fb795303ac999393419a"
+    },
+    "reward_windows": {
+      "bytes": 9754225,
+      "locator": "lg_r1c/reward_windows.jsonl",
+      "sha256": "274e9a84a15b79f1748a3fb9a30c12d48e4ef2ae2ae19ef05c72e3eeba860574"
+    },
+    "stage_labels": {
+      "bytes": 125853413,
+      "files": 320,
+      "locator": "lg_r1b/stage_labels/*.jsonl",
+      "sha256": "eb2e238586bd941194c46c1921910b11468a1db57e8b1aa1fa1ad99cf47aeec2"
+    },
+    "vla_feature_cache": {
+      "bytes": 29494592,
+      "dtype": "float32",
+      "foundation_frozen": true,
+      "locator": "lg_r1c/vlajepa-probe/frozen_qwen_features.npz",
+      "sha256": "fb611044793a5752e33940362212625f571b217d3395efb283d75fd7bb79f3d5",
+      "shape": [
+        5000,
+        2048
+      ]
+    }
+  },
+  "schema_version": "latentguard.lg_r2a.input_dataset_manifest.v1",
+  "source_artifacts": {
+    "dataset_manifest": {
+      "bytes": 1327,
+      "locator": "artifacts/lg_r1b/dataset_manifest.json",
+      "sha256": "c8b9b4682cb70ebb9cf687db53ed8412ccb8d58f962b166520f26dcd8fd2a45a"
+    },
+    "failure_registry": {
+      "bytes": 25046,
+      "locator": "artifacts/lg_r1b/failure_registry.json",
+      "sha256": "db85b28490e66dd736f3775c1ae920d6d39972d4a54e4bf3af778bcda630c55c"
+    },
+    "historical_split_manifest": {
+      "bytes": 30903,
+      "locator": "artifacts/lg_r1/split_manifest.json",
+      "sha256": "223605e3f5f5bc05c1aa31f5bca7bf716f1a0fae2fbbc161075f67d577b278cc"
+    },
+    "lg_r0_action_contract": {
+      "bytes": 2925,
+      "locator": "artifacts/lg_r0/libero_contract.json",
+      "sha256": "e0d5add47aa3a9d95352e51cd0db91061ef44796b431af1fc73e94d2b757f5dc"
+    },
+    "lg_r1c_input_manifest": {
+      "bytes": 3093,
+      "locator": "artifacts/lg_r1c/input_dataset_manifest.json",
+      "sha256": "bf37dedc21d53325e76f440e2889b33c12a42759ea8f15f9cf122d4babe932e5"
+    },
+    "processor_serialization": {
+      "bytes": 1179,
+      "locator": "artifacts/lg_r1/processor_serialization_manifest.json",
+      "sha256": "702e9951fb52a7e68725269189be611586213672cf01e9b6d413da457f216f03"
+    },
+    "rollout_manifest": {
+      "bytes": 608058,
+      "locator": "artifacts/lg_r1b/rollout_manifest.json",
+      "sha256": "74f0b5b74af0dcf6115e9c316ece83db312c407f73e7470137b22e525886a08d"
+    },
+    "stage_annotation_report": {
+      "bytes": 612700,
+      "locator": "artifacts/lg_r1b/stage_annotation_report.json",
+      "sha256": "f7874c2dc6dd79c2dfb3ef49cf1a7e94fb723d02cd1fcfc268d770dc83887d6f"
+    },
+    "task_registry": {
+      "bytes": 17918,
+      "locator": "configs/lg_r1b/task_registry.yaml",
+      "sha256": "ae58687791115b371e1203bdfd9f89ae0c98a5286ef2f1427fb5db042cc64578"
+    },
+    "task_seed_registry": {
+      "bytes": 28987,
+      "locator": "artifacts/lg_r1b/task_seed_registry.json",
+      "sha256": "68fc87a46f19389e3b0d3863e8525e91725433f978ce65d1e92ebb0fcd10d3e4"
+    },
+    "window_manifest": {
+      "bytes": 2749,
+      "locator": "artifacts/lg_r1c/window_manifest.json",
+      "sha256": "e544b358c650cd29fd0f16a75758b4dec5cd22e2ab2717cb0cb6b7c445fa9e46"
+    }
+  },
+  "status": "pass",
+  "synthetic_actions": 0,
+  "synthetic_failures": 0
+}

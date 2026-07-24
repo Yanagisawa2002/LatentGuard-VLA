@@ -159,3 +159,23 @@ after completion unless the user separately authorizes shutdown.
 Target materialization must load each compressed frozen feature array once.
 Repeated per-sample decompression is a failed resource-safety gate and must be
 stopped before GPU work.
+
+## Completion record
+
+The accepted remote training revision is
+`1f03f484c9f29e0a3dbfee767b56dbfd34795e3d`; the final no-retraining
+evaluation revision is `f867f97c09e8785b91c1c94c18cae1b316795f59`. The accepted run ID is
+`20260724T070334Z_lg-r2a-action-conditioning_1f03f48_seed0`.
+
+Formal head training consumed 91.2 measured wall-seconds across four models
+(0.025 GPU-hours), substantially below the 0.5-1.5 GPU-hour budget. The
+successful exact-revision gates, training, sensitivity, and evaluation
+completed in minutes. Earlier gate attempts were stopped before formal
+training: one exposed repeated compressed-cache decompression and one exposed
+secret-scanner self-matches. Both fixes were made locally, validated, committed,
+pushed, and synchronized before continuation.
+
+The final result is Result B and `LG_R2B_AUTHORIZED=false`. No rollout,
+simulator, foundation training, candidate generation, ranking, intervention,
+LangMani change, or final-seed access occurred. The server was left powered on
+and idle.
