@@ -5,8 +5,10 @@ The normative contract is
 
 The implementation binds complete exposed simulator arrays, controller state,
 runtime latches, and RNG state. Numeric comparison uses the frozen `1e-6`
-tolerance, while structure, runtime metadata, rendered observation, task
-predicates, termination, and success are exact.
+tolerance, while structure and runtime metadata are exact. The compatibility
+gate initially permits zero rendered-array error and records maximum, mean, and
+differing-value statistics; every render is followed by another complete-state
+comparison. Task predicates, termination, and success are exact.
 
 The completed 10-state by 5-repeat audit will cite
 `artifacts/lg_r2b0/state_restore_validation.json`. Until that artifact passes,

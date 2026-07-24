@@ -182,6 +182,42 @@ def rendered_observation_sha256(raw_observation: dict[str, Any]) -> str:
     return digest.hexdigest()
 
 
+def compare_rendered_observations(
+    expected: dict[str, Any],
+    observed: dict[str, Any],
+) -> dict[str, float | int | bool]:
+    """Compare complete rendered arrays without resizing or coercion."""
+    expected_pixels = expected["pixels"]
+    observed_pixels = observed["pixels"]
+    if set(expected_pixels) != set(observed_pixels):
+        raise ValueError("rendered camera keys changed")
+    total_values = 0
+    different_values = 0
+    absolute_sum = 0.0
+    maximum = 0.0
+    for key in sorted(expected_pixels):
+        left = np.asarray(expected_pixels[key])
+        right = np.asarray(observed_pixels[key])
+        if left.shape != right.shape or left.dtype != right.dtype:
+            raise ValueError(f"rendered camera contract changed: {key}")
+        difference = np.abs(left.astype(np.float64) - right.astype(np.float64))
+        total_values += int(difference.size)
+        different_values += int(np.count_nonzero(difference))
+        absolute_sum += float(np.sum(difference))
+        if difference.size:
+            maximum = max(maximum, float(np.max(difference)))
+    return {
+        "exact": different_values == 0,
+        "compared_values": total_values,
+        "different_values": different_values,
+        "different_value_ratio": (
+            different_values / total_values if total_values else 0.0
+        ),
+        "mean_absolute_error": (absolute_sum / total_values if total_values else 0.0),
+        "maximum_absolute_error": maximum,
+    }
+
+
 def make_libero_environment(
     *,
     suite: str,

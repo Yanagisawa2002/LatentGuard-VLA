@@ -52,6 +52,8 @@ def main() -> None:
     evidence = CounterfactualGateEvidence(
         restore_mismatches=(
             int(restore["restore_failures"])
+            + int(restore.get("render_mismatches", 0))
+            + int(restore.get("post_render_state_mismatches", 0))
             + int(restore["terminal_result_mismatches"])
             + int(restore["task_predicate_mismatches"])
         ),

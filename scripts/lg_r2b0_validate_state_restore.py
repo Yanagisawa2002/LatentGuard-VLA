@@ -11,6 +11,7 @@ from typing import Any
 import numpy as np
 from _lg_r2b0_common import (
     batch_observation,
+    compare_rendered_observations,
     current_observation,
     generate_policy_candidate,
     load_runtime_stack,
@@ -33,6 +34,7 @@ from _lg_r2b0_common import (
 from latentguard.counterfactual.libero_state import (
     LIBERO_STATE_COMPARISON,
     capture_libero_state,
+    compare_libero_states,
     restore_libero_state,
 )
 from latentguard.progress.stages.libero_registry import LiberoStageRegistry
@@ -178,11 +180,19 @@ def main() -> None:
     stage_config = read_yaml(resolve_repo_path(Path(str(config["stage_config"]))))
     stack, preprocessor, postprocessor = load_runtime_stack()
     tolerance = float(config["numeric_tolerance"])
+    pixel_maximum_tolerance = float(config["pixel_maximum_absolute_tolerance"])
+    pixel_mean_tolerance = float(config["pixel_mean_absolute_tolerance"])
+    pixel_ratio_tolerance = float(config["pixel_different_value_ratio_tolerance"])
     probe_results: list[dict[str, Any]] = []
     restore_failures = 0
+    render_mismatches = 0
+    post_render_state_mismatches = 0
     terminal_mismatches = 0
     predicate_mismatches = 0
     maximum_error = 0.0
+    maximum_pixel_error = 0.0
+    maximum_pixel_mean_error = 0.0
+    maximum_pixel_ratio = 0.0
     for probe_index, probe in enumerate(probes):
         suite = str(probe["suite"])
         task_id = int(probe["task_id"])
@@ -241,6 +251,8 @@ def main() -> None:
             traces: list[list[dict[str, Any]]] = []
             terminals: list[dict[str, Any]] = []
             restoration_records: list[dict[str, Any]] = []
+            render_records: list[dict[str, float | int | bool]] = []
+            post_render_state_records: list[dict[str, Any]] = []
             for _repeat in range(repeats):
                 restoration = restore_libero_state(
                     single_env,
@@ -252,10 +264,36 @@ def main() -> None:
                     restore_failures += 1
                     break
                 current = current_observation(single_env)
-                if rendered_observation_sha256(current) != rendered_observation_sha256(
-                    anchor_raw
-                ):
-                    restore_failures += 1
+                render = compare_rendered_observations(anchor_raw, current)
+                render_records.append(render)
+                maximum_pixel_error = max(
+                    maximum_pixel_error,
+                    float(render["maximum_absolute_error"]),
+                )
+                maximum_pixel_mean_error = max(
+                    maximum_pixel_mean_error,
+                    float(render["mean_absolute_error"]),
+                )
+                maximum_pixel_ratio = max(
+                    maximum_pixel_ratio,
+                    float(render["different_value_ratio"]),
+                )
+                render_passed = (
+                    float(render["maximum_absolute_error"]) <= pixel_maximum_tolerance
+                    and float(render["mean_absolute_error"]) <= pixel_mean_tolerance
+                    and float(render["different_value_ratio"]) <= pixel_ratio_tolerance
+                )
+                if not render_passed:
+                    render_mismatches += 1
+                    break
+                post_render_state = compare_libero_states(
+                    snapshot,
+                    capture_libero_state(single_env),
+                    atol=tolerance,
+                )
+                post_render_state_records.append(asdict(post_render_state))
+                if not post_render_state.within_tolerance:
+                    post_render_state_mismatches += 1
                     break
                 raw_batched = batch_observation(current)
                 trace: list[dict[str, Any]] = []
@@ -348,6 +386,8 @@ def main() -> None:
                     "snapshot_structure_sha256": snapshot.structure_sha256,
                     "candidate_content_sha256": candidate.content_sha256,
                     "restorations": restoration_records,
+                    "render_comparisons": render_records,
+                    "post_render_state_comparisons": post_render_state_records,
                     "trace_comparisons": comparisons,
                     "terminal_results": terminals,
                 }
@@ -356,6 +396,8 @@ def main() -> None:
             vector_env.close()
     passed = (
         restore_failures == 0
+        and render_mismatches == 0
+        and post_render_state_mismatches == 0
         and terminal_mismatches == 0
         and predicate_mismatches == 0
         and len(probe_results) == len(probes)
@@ -368,14 +410,24 @@ def main() -> None:
         "config_sha256": sha256_path(config_path),
         "comparison_semantic": LIBERO_STATE_COMPARISON,
         "numeric_tolerance": tolerance,
-        "pixel_comparison": "exact_rendered_observation_sha256",
+        "pixel_comparison": "complete_array_error_statistics_v1",
+        "pixel_tolerances": {
+            "maximum_absolute_error": pixel_maximum_tolerance,
+            "mean_absolute_error": pixel_mean_tolerance,
+            "different_value_ratio": pixel_ratio_tolerance,
+        },
         "probe_states": len(probes),
         "repeats_per_state": repeats,
         "probe_horizon": int(config["probe_horizon"]),
         "restore_failures": restore_failures,
+        "render_mismatches": render_mismatches,
+        "post_render_state_mismatches": post_render_state_mismatches,
         "terminal_result_mismatches": terminal_mismatches,
         "task_predicate_mismatches": predicate_mismatches,
         "maximum_observed_numeric_error": maximum_error,
+        "maximum_observed_pixel_absolute_error": maximum_pixel_error,
+        "maximum_observed_pixel_mean_absolute_error": maximum_pixel_mean_error,
+        "maximum_observed_pixel_different_value_ratio": maximum_pixel_ratio,
         "probe_results": probe_results,
         "optimizer_steps": 0,
         "backward_calls": 0,
@@ -388,6 +440,8 @@ def main() -> None:
             {
                 "status": payload["status"],
                 "restore_failures": restore_failures,
+                "render_mismatches": render_mismatches,
+                "post_render_state_mismatches": post_render_state_mismatches,
                 "terminal_mismatches": terminal_mismatches,
                 "predicate_mismatches": predicate_mismatches,
                 "output": str(path),

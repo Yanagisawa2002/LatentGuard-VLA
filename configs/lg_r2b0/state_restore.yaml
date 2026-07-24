@@ -4,7 +4,11 @@ task_registry: configs/lg_r1b/task_registry.yaml
 stage_config: configs/lg_r1b/stages.yaml
 comparison_semantic: tolerance_verified_complete_runtime_state_v1
 numeric_tolerance: 0.000001
-pixel_comparison: exact_rendered_observation_sha256
+pixel_comparison: complete_array_error_statistics_v1
+pixel_maximum_absolute_tolerance: 0.0
+pixel_mean_absolute_tolerance: 0.0
+pixel_different_value_ratio_tolerance: 0.0
+probe_role: pixel_compatibility_calibration_and_exact_gate
 repeats: 5
 probe_horizon: 49
 source_policy_seed_base: 700000
@@ -22,6 +26,8 @@ probes:
   - {suite: libero_goal, task_id: 9, seed: 3071, step_index: 70, episode_horizon: 300, candidate_inference_seed: 700209, instruction: put the wine bottle on the rack}
 hard_stop:
   restore_failures: 0
+  render_mismatches: 0
+  post_render_state_mismatches: 0
   terminal_result_mismatches: 0
   task_predicate_mismatches: 0
   minimum_probe_states: 10

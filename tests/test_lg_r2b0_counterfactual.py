@@ -356,6 +356,32 @@ def test_repeated_restored_branch_dynamics_are_deterministic() -> None:
     )
 
 
+def test_complete_render_comparison_records_exact_error_statistics(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    monkeypatch.syspath_prepend(str(SCRIPTS))
+    common = importlib.import_module("_lg_r2b0_common")
+    expected = {
+        "pixels": {
+            "main": np.zeros((2, 2, 3), dtype=np.uint8),
+            "wrist": np.ones((1, 1, 3), dtype=np.uint8),
+        }
+    }
+    observed = {
+        "pixels": {
+            "main": np.zeros((2, 2, 3), dtype=np.uint8),
+            "wrist": np.asarray([[[1, 2, 1]]], dtype=np.uint8),
+        }
+    }
+    result = common.compare_rendered_observations(expected, observed)
+    assert result["exact"] is False
+    assert result["compared_values"] == 15
+    assert result["different_values"] == 1
+    assert result["different_value_ratio"] == pytest.approx(1 / 15)
+    assert result["mean_absolute_error"] == pytest.approx(1 / 15)
+    assert result["maximum_absolute_error"] == 1.0
+
+
 def _anchor_records() -> list[dict[str, Any]]:
     config = yaml.safe_load(
         (ROOT / "configs" / "lg_r2b0" / "anchors.yaml").read_text(encoding="utf-8")
