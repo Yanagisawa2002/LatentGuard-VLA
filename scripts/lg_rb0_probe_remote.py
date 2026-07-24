@@ -75,7 +75,7 @@ def _main() -> None:
             auto_register_droid_envs,
         )
 
-        repo = Path.cwd().resolve()
+        repo = Path(__file__).resolve().parents[1]
         output = args.output_dir.resolve()
         protocol = yaml.safe_load(args.protocol.read_text(encoding="utf-8"))
         if not isinstance(protocol, dict):

@@ -91,7 +91,7 @@ def _git(root: Path, *arguments: str) -> str:
 
 
 def _validate_checkout(expected_commit: str) -> None:
-    root = Path.cwd().resolve()
+    root = Path(__file__).resolve().parents[1]
     if _git(root, "rev-parse", "HEAD") != expected_commit:
         raise RuntimeError("remote checkout does not match expected commit")
     if _git(root, "status", "--porcelain"):
