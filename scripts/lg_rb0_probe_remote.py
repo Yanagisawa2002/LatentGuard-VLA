@@ -15,6 +15,7 @@ from typing import Any
 import cv2  # noqa: F401  # RoboLab requires OpenCV before Isaac Lab.
 import yaml
 from isaaclab.app import AppLauncher
+from packaging.version import Version
 
 from latentguard.adapters.robolab.state_schema import flatten_state_tree
 
@@ -95,7 +96,10 @@ def _main() -> None:
             "isaacsim": "5.1.0",
             "isaaclab": "2.3.2.post1",
         }
-        if any(versions[key] != value for key, value in expected_versions.items()):
+        if any(
+            Version(versions[key]) != Version(value)
+            for key, value in expected_versions.items()
+        ):
             raise RuntimeError(f"frozen package identity mismatch: {versions}")
         if sys.version_info[:2] != (3, 11):
             raise RuntimeError("LG-RB0 requires Python 3.11")
