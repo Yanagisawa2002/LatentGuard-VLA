@@ -22,7 +22,7 @@ The execution environment is created outside the checkout:
 python -m venv --system-site-packages "$LG_R1C_ENV_ROOT/.venv-lg-r1c"
 "$LG_R1C_ENV_ROOT/.venv-lg-r1c/bin/python" -m pip install \
   --index-url https://mirrors.aliyun.com/pypi/simple \
-  --no-deps -e "$LATENTGUARD_REMOTE_REPO"
+  --no-build-isolation --no-deps -e "$LATENTGUARD_REMOTE_REPO"
 ```
 
 The overlay must report LeRobot `0.6.0` and the integration commit
