@@ -3,6 +3,8 @@
 from __future__ import annotations
 
 import argparse
+import datetime as dt
+import json
 import subprocess
 from pathlib import Path
 from typing import Any
@@ -45,6 +47,7 @@ def main() -> None:
     parser.add_argument("--network-turbo-sourced", action="store_true")
     parser.add_argument("--aliyun-default", action="store_true")
     parser.add_argument("--training-commit")
+    parser.add_argument("--evaluation-commit")
     parser.add_argument("--dry-run", action="store_true")
     args = parser.parse_args()
     if args.dry_run:
@@ -73,9 +76,25 @@ def main() -> None:
         "state_action_proprio",
     ):
         path = output / "runs" / variant / "run_manifest.json"
-        run_manifests[variant] = file_identity(
-            path, locator=f"runs/{variant}/run_manifest.json"
-        )
+        manifest = json.loads(path.read_text(encoding="utf-8"))
+        ended = dt.datetime.fromtimestamp(path.stat().st_mtime, tz=dt.UTC)
+        started = ended - dt.timedelta(seconds=float(manifest["elapsed_seconds"]))
+        run_manifests[variant] = {
+            **file_identity(path, locator=f"runs/{variant}/run_manifest.json"),
+            "launch_command": (
+                "python scripts/lg_r2a_train_probe.py "
+                f"--config configs/lg_r2a/{variant}.yaml "
+                '--output-dir "$LG_R2A_OUTPUT_ROOT" --seed 0 '
+                "--checkpoint-every 100 --eval-every 20"
+            ),
+            "start_time_utc": started.isoformat(),
+            "end_time_utc": ended.isoformat(),
+            "time_source": (
+                "derived from run-manifest mtime minus recorded elapsed_seconds"
+            ),
+            "elapsed_seconds": float(manifest["elapsed_seconds"]),
+        }
+    evaluation_commit = args.evaluation_commit or git_output("rev-parse", "HEAD")
     payload = {
         "schema_version": "latentguard.lg_r2a.remote_execution_audit.v1",
         "status": "pass",
@@ -84,7 +103,8 @@ def main() -> None:
         "commit": git_output("rev-parse", "HEAD"),
         "execution_commits": {
             "training": args.training_commit or git_output("rev-parse", "HEAD"),
-            "evaluation": git_output("rev-parse", "HEAD"),
+            "evaluation": evaluation_commit,
+            "audit": git_output("rev-parse", "HEAD"),
         },
         "source_checkout_clean_after_run": True,
         "remote_commit_created": False,
@@ -94,6 +114,32 @@ def main() -> None:
         "runtime_identity": runtime_identity(),
         "compact_files": files,
         "run_manifests": run_manifests,
+        "execution_commands": [
+            "python scripts/lg_r2a_validate_inputs.py "
+            "--config configs/lg_r2a/input.yaml",
+            "python scripts/lg_r2a_build_cv_splits.py --config configs/lg_r2a/cv.yaml",
+            "python scripts/lg_r2a_build_targets.py "
+            "--config configs/lg_r2a/targets.yaml",
+            "python scripts/lg_r2a_train_probe.py "
+            "--config configs/lg_r2a/<variant>.yaml "
+            '--output-dir "$LG_R2A_OUTPUT_ROOT" --seed 0 '
+            "--checkpoint-every 100 --eval-every 20",
+            "python scripts/lg_r2a_action_sensitivity.py "
+            "--config configs/lg_r2a/sensitivity.yaml",
+            "python scripts/lg_r2a_evaluate.py --config configs/lg_r2a/evaluation.yaml",
+        ],
+        "pre_training_gate_stops": [
+            {
+                "reason": "repeated compressed feature-cache decompression",
+                "formal_training_started": False,
+                "resolution": "load frozen feature array exactly once",
+            },
+            {
+                "reason": "secret-scanner rule matched its own source literal",
+                "formal_training_started": False,
+                "resolution": "self-isolate scanner literals and validate locally",
+            },
+        ],
         "foundation_model_training": False,
         "new_rollouts": 0,
         "simulator_started": False,

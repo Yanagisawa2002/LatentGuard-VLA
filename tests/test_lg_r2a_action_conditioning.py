@@ -295,10 +295,17 @@ def test_committed_remote_hashes_and_execution_commits() -> None:
         path = artifact_root / name
         assert path.stat().st_size == identity["bytes"]
         assert hashlib.sha256(path.read_bytes()).hexdigest() == identity["sha256"]
-    assert audit["execution_commits"] == {
-        "evaluation": "f867f97c09e8785b91c1c94c18cae1b316795f59",
-        "training": "1f03f484c9f29e0a3dbfee767b56dbfd34795e3d",
-    }
+    assert audit["execution_commits"]["training"] == (
+        "1f03f484c9f29e0a3dbfee767b56dbfd34795e3d"
+    )
+    assert audit["execution_commits"]["evaluation"] == (
+        "f867f97c09e8785b91c1c94c18cae1b316795f59"
+    )
+    assert len(audit["execution_commands"]) == 6
+    assert all(
+        row["formal_training_started"] is False
+        for row in audit["pre_training_gate_stops"]
+    )
     assert audit["source_checkout_clean_after_run"] is True
     assert audit["server_left_running"] is True
 
